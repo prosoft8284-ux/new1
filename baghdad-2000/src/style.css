@@ -1237,3 +1237,17 @@ kbd {
   font-size: 15px;
   gap: 7px;
 }
+
+/* move the weapon bar under the top bar so it never covers the gauges */
+#hud .weapons {
+  top: max(84px, calc(env(safe-area-inset-top) + 74px));
+  bottom: auto;
+}
+
+@media (pointer: coarse) {
+  #hud .weapons {
+    top: max(84px, calc(env(safe-area-inset-top) + 74px));
+    bottom: auto;
+    max-width: 82vw;
+  }
+}
