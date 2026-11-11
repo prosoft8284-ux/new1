@@ -644,7 +644,35 @@ export function createWorld(scene) {
   root.add(dust);
 
   // ---- landmarks, plaza, market and street furniture ----
-  function prop(w, h, d, mat, x, y, z, ry = 0) {
+  // Breakable props are kept out of the merge and drawn as instanced meshes so
+  // hundreds of crates and lamps still cost only a handful of draw calls.
+  const breakableList = [];
+  const breakableGeos = new Map();
+
+  function prop(w, h, d, mat, x, y, z, ry = 0, opts = {}) {
+    const breakable = opts.breakable !== false;
+    const key = mat.uuid + ':' + w.toFixed(2) + 'x' + h.toFixed(2) + 'x' + d.toFixed(2);
+    if (breakable) {
+      let geo = breakableGeos.get(key);
+      if (!geo) {
+        geo = new THREE.BoxGeometry(w, h, d);
+        breakableGeos.set(key, geo);
+      }
+      breakableList.push({
+        key,
+        geo,
+        mat,
+        x,
+        y,
+        z,
+        ry,
+        radius: Math.max(w, d) * 0.5,
+        points: Math.max(3, Math.round(2 + h * 2)),
+        power: opts.power || (h < 2.6 ? 4 : 9),
+        alive: true,
+      });
+      return null;
+    }
     const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
     m.position.set(x, y, z);
     m.rotation.y = ry;
@@ -719,9 +747,9 @@ export function createWorld(scene) {
   {
     const bx = -96;
     const bz = 64;
-    prop(3.1, 2.7, 11.4, flatMats[0], bx, 1.55, bz);
-    prop(3.2, 0.9, 10.4, darkMat, bx, 2.35, bz);
-    prop(3.3, 0.5, 11.6, blastWallMat, bx, 0.55, bz);
+    prop(3.1, 2.7, 11.4, flatMats[0], bx, 1.55, bz, 0, { breakable: false });
+    prop(3.2, 0.9, 10.4, darkMat, bx, 2.35, bz, 0, { breakable: false });
+    prop(3.3, 0.5, 11.6, blastWallMat, bx, 0.55, bz, 0, { breakable: false });
     for (const dz of [-4.2, 4.2]) {
       for (const dx of [-1.6, 1.6]) {
         const tyre = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.34, 10), tyreMat);
@@ -813,6 +841,29 @@ export function createWorld(scene) {
     root.add(board);
   }
 
+  // extra street clutter: every crate, barrel and barrier can be smashed
+  {
+    const rows = [-HALF + CELL * 2, -HALF + CELL * 5, -HALF + CELL * 7];
+    for (let r = 0; r < rows.length; r++) {
+      const line = rows[r];
+      for (let i = 0; i < 6; i++) {
+        const z = -HALF + CELL * 1 + i * CELL * 0.9;
+        const x = line + (i % 2 ? 9.2 : -9.2);
+        const kind = (i + r) % 3;
+        if (kind === 0) {
+          prop(1.1, 1.1, 1.1, sandbagMat, x, 0.55, z, rnd() * 0.6, { power: 4 });
+          prop(0.9, 0.9, 0.9, dumpsterMats[i % dumpsterMats.length], x + 0.2, 1.5, z + 0.1, rnd() * 0.6, { power: 4 });
+        } else if (kind === 1) {
+          prop(0.8, 1.2, 0.8, metalMat, x, 0.6, z, rnd() * 0.4, { power: 4 });
+          prop(0.8, 1.2, 0.8, metalMat, x + 0.9, 0.6, z + 0.4, rnd() * 0.4, { power: 4 });
+        } else {
+          prop(1.5, 0.5, 0.4, blastWallMat, x, 0.3, z, 0.2, { power: 5 });
+          prop(0.5, 0.5, 0.5, tyreMat, x - 0.7, 1.0, z + 0.3, rnd(), { power: 4 });
+        }
+      }
+    }
+  }
+
   // ---- merge static geometry: thousands of meshes -> a dozen draw calls ----
   function mergeStatics() {
     root.updateMatrixWorld(true);
@@ -850,6 +901,58 @@ export function createWorld(scene) {
   }
 
   mergeStatics();
+
+  // ---- instanced destructibles ----
+  const breakableMeshes = [];
+  {
+    const groups = new Map();
+    for (const b of breakableList) {
+      let g = groups.get(b.key);
+      if (!g) {
+        g = { geo: b.geo, mat: b.mat, items: [] };
+        groups.set(b.key, g);
+      }
+      g.items.push(b);
+    }
+    const m = new THREE.Matrix4();
+    for (const g of groups.values()) {
+      const mesh = new THREE.InstancedMesh(g.geo, g.mat, g.items.length);
+      mesh.castShadow = true;
+      mesh.frustumCulled = false;
+      g.items.forEach((it, i) => {
+        it.mesh = mesh;
+        it.index = i;
+        m.makeRotationY(it.ry);
+        m.setPosition(it.x, it.y, it.z);
+        mesh.setMatrixAt(i, m);
+      });
+      mesh.instanceMatrix.needsUpdate = true;
+      root.add(mesh);
+      breakableMeshes.push(mesh);
+    }
+  }
+
+  const brokenMat = new THREE.Matrix4().makeScale(0.0001, 0.0001, 0.0001);
+  let destroyed = 0;
+
+  // Smash every prop within reach; returns what broke so the caller can pay out.
+  function breakAt(x, z, radius, power) {
+    const hits = [];
+    for (const b of breakableList) {
+      if (!b.alive) continue;
+      const dx = b.x - x;
+      const dz = b.z - z;
+      const reach = radius + b.radius;
+      if (dx * dx + dz * dz > reach * reach) continue;
+      if (power < b.power) continue;
+      b.alive = false;
+      b.mesh.setMatrixAt(b.index, brokenMat);
+      b.mesh.instanceMatrix.needsUpdate = true;
+      destroyed += 1;
+      hits.push({ x: b.x, y: b.y, z: b.z, points: b.points });
+    }
+    return hits;
+  }
 
   // ---- spawn points along the roads ----
   const spawnPoints = [];
@@ -930,6 +1033,11 @@ export function createWorld(scene) {
     isInsideBuilding,
     setShadows,
     setAtmosphere,
+    breakAt,
+    breakableCount: breakableList.length,
+    get destroyed() {
+      return destroyed;
+    },
     bounds: HALF,
   };
 }

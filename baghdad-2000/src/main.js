@@ -567,6 +567,27 @@ function stepGameplay(dt) {
   car.update(dt, input, eff, game.boosting);
   resolveCollisions();
 
+  // smash everything that is not a building
+  const hitSpeed = Math.abs(car.state.speed);
+  if (hitSpeed > 5.5) {
+    const wrecked = world.breakAt(car.state.pos.x, car.state.pos.z, 2.4 + Math.min(2.4, hitSpeed * 0.09), hitSpeed);
+    if (wrecked.length) {
+      let pts = 0;
+      for (const b of wrecked) {
+        pts += b.points;
+        effects.sparkBurst(tmpF.set(b.x, b.y, b.z), 2);
+        effects.dustBurst(tmpF.set(b.x, 0.25, b.z), 2, 0.9);
+      }
+      game.runPoints += pts;
+      progress.points += pts;
+      car.state.speed *= 0.93;
+      game.shake = Math.max(game.shake, 0.18);
+      audio.impact(0.55);
+      buzz(10);
+      ui.message('+' + pts + ' · ' + wrecked.length + ' تخریب', 'kill');
+    }
+  }
+
   car.forward(fwd);
   carVel.copy(fwd).multiplyScalar(car.state.speed);
   weapons.update(dt, { firing: input.fire, pos: car.state.pos, forward: fwd, running: true }, zombies);
@@ -895,7 +916,9 @@ window.__b2k = {
   world,
   zombies,
   weapons,
+  audio,
   env,
+  get destroyed() { return world.destroyed; },
   get stats() { return stats; },
   get fps() { return fpsSmooth; },
   get quality() { return { mode: qualityMode, level: qualityLevel }; },

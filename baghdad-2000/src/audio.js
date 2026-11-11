@@ -131,14 +131,35 @@ export function createAudio() {
     const bar = s % 32;
     if (bar === 0 || bar === 6 || bar === 10 || bar === 14) kick(t, bar === 0 ? 0.55 : 0.4);
     if (bar === 4 || bar === 12 || bar === 20 || bar === 28) tek(t);
-    if (intensity >= 2 && bar % 2 === 1) hat(t, 0.05);
-    if (bar === 0 || bar === 16) bassNote(t, 0.28);
-    if (intensity >= 2) {
+    if (bar % 2 === 1) hat(t, intensity >= 2 ? 0.06 : 0.035);
+    if (bar === 8 || bar === 24) tek(t, 0.26);
+    if (bar === 0 || bar === 16) bassNote(t, 0.34);
+    if (bar === 0 || bar === 8 || bar === 16 || bar === 24) pad(t, bar === 16 ? 3 : 0);
+    if (intensity >= 1) {
       for (const [at, deg, len] of MELODY) {
         if (at === bar) pluck(semis(D3, HIJAZ[deg]), t, 0.18 + len * 0.06, 0.11);
       }
     }
     if (intensity >= 3 && (bar === 30)) pluck(semis(D3, 12), t, 0.3, 0.1);
+  }
+
+  function pad(t, degree = 0) {
+    const root = semis(D3, HIJAZ[degree] || 0);
+    for (const [mul, gain] of [[1, 0.05], [1.5, 0.035], [2, 0.025]]) {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      const f = ctx.createBiquadFilter();
+      f.type = 'lowpass';
+      f.frequency.value = 1200;
+      osc.type = 'triangle';
+      osc.frequency.value = root * mul;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(gain, t + 0.5);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 2.4);
+      osc.connect(f).connect(g).connect(musicBus);
+      osc.start(t);
+      osc.stop(t + 2.5);
+    }
   }
 
   function schedule() {
@@ -149,6 +170,33 @@ export function createAudio() {
       playStep(step, Math.max(nextNoteTime, ctx.currentTime + 0.01));
       step = (step + 1) % 32;
       nextNoteTime += STEP;
+    }
+  }
+
+  // short exhaust bark when the throttle is stabbed
+  let lastRev = 0;
+  function rev(engineRef, t) {
+    if (!ctx || muted) return;
+    if (t - lastRev < 0.28) return;
+    lastRev = t;
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    const f = ctx.createBiquadFilter();
+    f.type = 'lowpass';
+    f.frequency.setValueAtTime(520, t);
+    f.frequency.exponentialRampToValueAtTime(2600, t + 0.18);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(120, t);
+    osc.frequency.exponentialRampToValueAtTime(240, t + 0.16);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.2, t + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+    osc.connect(f).connect(g).connect(sfxBus);
+    osc.start(t);
+    osc.stop(t + 0.34);
+    if (engineRef) {
+      engineRef.revGain.gain.setTargetAtTime(0.16, t, 0.02);
+      engineRef.revGain.gain.setTargetAtTime(0.05, t + 0.12, 0.08);
     }
   }
 
@@ -166,10 +214,10 @@ export function createAudio() {
         return;
       }
       master = ctx.createGain();
-      master.gain.value = muted ? 0 : 0.85;
+      master.gain.value = muted ? 0 : 0.95;
       master.connect(ctx.destination);
       musicBus = ctx.createGain();
-      musicBus.gain.value = 0.32;
+      musicBus.gain.value = 0.46;
       musicBus.connect(master);
       sfxBus = ctx.createGain();
       sfxBus.gain.value = 0.8;
@@ -204,7 +252,20 @@ export function createAudio() {
       wind.loop = true;
       wind.start();
 
-      engine = { oscA, oscB, filter, gain, windGain };
+      // a dedicated exhaust crackle so pressing the gas is unmistakable
+      const revFilter = ctx.createBiquadFilter();
+      revFilter.type = 'bandpass';
+      revFilter.frequency.value = 820;
+      revFilter.Q.value = 1.1;
+      const revGain = ctx.createGain();
+      revGain.gain.value = 0.9;
+      revFilter.connect(revGain).connect(sfxBus);
+      const revNoise = connectNoise(revFilter, revGain, sfxBus);
+      revNoise.loop = true;
+      revNoise.start();
+      revGain.gain.value = 0.0001;
+
+      engine = { oscA, oscB, filter, gain, windGain, revFilter, revGain, revNoise };
       started = true;
       step = 0;
       nextNoteTime = ctx.currentTime + 0.08;
@@ -238,14 +299,20 @@ export function createAudio() {
         engine.oscA.frequency.setTargetAtTime(base, t, 0.08);
         engine.oscB.frequency.setTargetAtTime(base * 0.5, t, 0.12);
         engine.filter.frequency.setTargetAtTime(380 + speed * 1500 + boost * 700, t, 0.1);
-        engine.gain.gain.setTargetAtTime(0.05 + speed * 0.11 + thr * 0.05 + boost * 0.05, t, 0.12);
-        engine.windGain.gain.setTargetAtTime(0.012 + speed * 0.05, t, 0.2);
+        engine.gain.gain.setTargetAtTime(0.1 + speed * 0.17 + thr * 0.1 + boost * 0.06, t, 0.1);
+        engine.windGain.gain.setTargetAtTime(0.016 + speed * 0.06, t, 0.2);
+        // rev crackle follows the throttle and speed
+        engine.revFilter.frequency.setTargetAtTime(620 + speed * 1400 + thr * 260, t, 0.09);
+        engine.revGain.gain.setTargetAtTime(0.008 + thr * 0.075 + speed * 0.03, t, 0.08);
+
+        if (s.throttle && !this._thr) rev(this, t);
+        this._thr = !!s.throttle;
       }
 
       const targetIntensity = s.intensity || 1;
       if (targetIntensity !== intensity) {
         intensity = targetIntensity;
-        musicBus.gain.setTargetAtTime(0.26 + intensity * 0.05, t, 0.4);
+        musicBus.gain.setTargetAtTime(0.4 + intensity * 0.06, t, 0.4);
       }
       musicLevel = musicBus.gain.value;
       schedule();
@@ -382,6 +449,17 @@ export function createAudio() {
       osc.connect(g).connect(sfxBus);
       osc.start(t);
       osc.stop(t + 0.72);
+    },
+
+    levels() {
+      return {
+        started,
+        muted,
+        state: ctx ? ctx.state : 'none',
+        master: master ? +master.gain.value.toFixed(2) : null,
+        music: musicBus ? +musicBus.gain.value.toFixed(2) : null,
+        engine: engine ? +engine.gain.gain.value.toFixed(3) : null,
+      };
     },
 
     gameOver() {
