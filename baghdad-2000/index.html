@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#141109" />
+    <title>بغداد ۲۰۰۰ — جاده‌ی زامبی</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+
+    <div id="speedlines" class="fx"></div>
+    <div id="vignette" class="fx"></div>
+    <div id="rampage-tint" class="fx"></div>
+    <div id="flash" class="fx"></div>
+
+    <section id="hud" class="hidden">
+      <div class="hud-top">
+        <div class="panel stats">
+          <div class="stat">
+            <span class="label">امتیاز</span>
+            <strong id="hud-score">۰</strong>
+          </div>
+          <div class="stat">
+            <span class="label">زامبی</span>
+            <strong id="hud-kills">۰</strong>
+          </div>
+          <div class="stat">
+            <span class="label">رکورد</span>
+            <strong id="hud-best">۰</strong>
+          </div>
+        </div>
+
+        <div id="hud-combo" class="combo-wrap">
+          <div class="combo-x" id="hud-combo-mult">×۱</div>
+          <div class="combo-bar"><i id="hud-combo-bar"></i></div>
+        </div>
+
+        <button id="btn-mute" class="icon-btn" title="صدا" aria-label="صدا">🔊</button>
+      </div>
+
+      <div id="hud-rampage" class="rampage-badge hidden">دیوانه‌وار!</div>
+
+      <div class="hud-bottom">
+        <div class="panel gauges">
+          <div class="gauge-label">
+            <span>سلامت</span><span id="hud-health-text">۱۰۰</span>
+          </div>
+          <div class="bar health"><i id="hud-health-fill"></i></div>
+
+          <div class="gauge-label">
+            <span>نیترو</span><span id="hud-boost" class="hint">Shift</span>
+          </div>
+          <div class="bar nitro"><i id="hud-nitro-fill"></i></div>
+        </div>
+
+        <div class="speedo">
+          <div class="speedo-value" id="hud-speed">۰</div>
+          <div class="speedo-unit">km/h</div>
+        </div>
+      </div>
+
+      <div id="msg" class="msg"></div>
+    </section>
+
+    <div id="start" class="screen">
+      <div class="screen-card">
+        <p class="kicker">العراق · ۲۰۰۰</p>
+        <h1>بغداد ۲۰۰۰</h1>
+        <h2>جاده‌ی زامبی</h2>
+        <p class="lead">
+          BMW زرشکی قدیمی، شهری خاک‌گرفته و زامبی‌هایی که دنبال تو می‌آیند. گاز بده، زیرشان بگیر،
+          امتیاز جمع کن و ماشین را تا دندان مسلح کن.
+        </p>
+        <div class="key-grid">
+          <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>رانندگی</span></div>
+          <div><kbd>Space</kbd><span>دریفت / ترمز دستی</span></div>
+          <div><kbd>Shift</kbd><span>نیترو</span></div>
+          <div><kbd>G</kbd><span>تعمیرگاه</span></div>
+          <div><kbd>M</kbd><span>صدا</span></div>
+          <div><kbd>Esc</kbd><span>توقف</span></div>
+        </div>
+        <button id="btn-start" class="big-btn">سوار شو</button>
+      </div>
+    </div>
+
+    <div id="garage" class="screen hidden">
+      <div class="screen-card wide">
+        <header class="garage-head">
+          <h2>تعمیرگاه</h2>
+          <div class="garage-meta">
+            <span>امتیاز: <strong id="garage-points">۰</strong></span>
+            <span>سطح کل: <strong id="garage-levels">۰/۲۵</strong></span>
+          </div>
+        </header>
+        <div id="garage-list" class="garage-list"></div>
+        <footer class="garage-foot">
+          <button id="btn-repair" class="big-btn ghost">
+            تعمیر کامل (<span id="repair-cost">۴۵</span>)
+          </button>
+          <button id="btn-close-garage" class="big-btn">برگرد به جاده</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="pause" class="screen hidden">
+      <div class="screen-card small">
+        <h2>توقف</h2>
+        <p>برای ادامه دکمه را بزن یا <kbd>Esc</kbd>.</p>
+        <button id="btn-resume" class="big-btn">ادامه</button>
+        <button id="btn-pause-garage" class="big-btn ghost">تعمیرگاه</button>
+      </div>
+    </div>
+
+    <div id="gameover" class="screen hidden">
+      <div class="screen-card small">
+        <h2>ماشین از کار افتاد</h2>
+        <div class="go-stats">
+          <div><span>امتیاز این دور</span><strong id="go-score">۰</strong></div>
+          <div><span>زامبی کشته‌شده</span><strong id="go-kills">۰</strong></div>
+          <div><span>رکورد</span><strong id="go-best">۰</strong></div>
+        </div>
+        <button id="btn-restart" class="big-btn">دوباره</button>
+        <button id="btn-go-garage" class="big-btn ghost">تعمیرگاه</button>
+      </div>
+    </div>
+
+    <div id="touch" class="hidden">
+      <div class="touch-side">
+        <button data-touch="left" aria-label="چپ">◀</button>
+        <button data-touch="right" aria-label="راست">▶</button>
+      </div>
+      <div class="touch-side">
+        <button data-touch="boost" class="boost" aria-label="نیترو">🔥</button>
+        <button data-touch="brake" aria-label="ترمز">⏹</button>
+        <button data-touch="gas" class="gas" aria-label="گاز">▲</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
