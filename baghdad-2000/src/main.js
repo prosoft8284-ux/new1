@@ -569,8 +569,8 @@ function stepGameplay(dt) {
 
   // smash everything that is not a building
   const hitSpeed = Math.abs(car.state.speed);
-  if (hitSpeed > 5.5) {
-    const wrecked = world.breakAt(car.state.pos.x, car.state.pos.z, 2.4 + Math.min(2.4, hitSpeed * 0.09), hitSpeed);
+  if (hitSpeed > 4.2) {
+    const wrecked = world.breakAt(car.state.pos.x, car.state.pos.z, 3.1 + Math.min(2.4, hitSpeed * 0.09), hitSpeed);
     if (wrecked.length) {
       let pts = 0;
       for (const b of wrecked) {

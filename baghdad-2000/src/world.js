@@ -651,17 +651,22 @@ export function createWorld(scene) {
 
   function prop(w, h, d, mat, x, y, z, ry = 0, opts = {}) {
     const breakable = opts.breakable !== false;
-    const key = mat.uuid + ':' + w.toFixed(2) + 'x' + h.toFixed(2) + 'x' + d.toFixed(2);
     if (breakable) {
+      // one unit cube per material, sized per instance, so every prop of that
+      // material shares a single instanced draw call
+      const key = mat.uuid;
       let geo = breakableGeos.get(key);
       if (!geo) {
-        geo = new THREE.BoxGeometry(w, h, d);
+        geo = new THREE.BoxGeometry(1, 1, 1);
         breakableGeos.set(key, geo);
       }
       breakableList.push({
         key,
         geo,
         mat,
+        w,
+        h,
+        d,
         x,
         y,
         z,
@@ -841,28 +846,32 @@ export function createWorld(scene) {
     root.add(board);
   }
 
-  // extra street clutter: every crate, barrel and barrier can be smashed
-  {
-    const rows = [-HALF + CELL * 2, -HALF + CELL * 5, -HALF + CELL * 7];
-    for (let r = 0; r < rows.length; r++) {
-      const line = rows[r];
-      for (let i = 0; i < 6; i++) {
-        const z = -HALF + CELL * 1 + i * CELL * 0.9;
-        const x = line + (i % 2 ? 9.2 : -9.2);
-        const kind = (i + r) % 3;
-        if (kind === 0) {
-          prop(1.1, 1.1, 1.1, sandbagMat, x, 0.55, z, rnd() * 0.6, { power: 4 });
-          prop(0.9, 0.9, 0.9, dumpsterMats[i % dumpsterMats.length], x + 0.2, 1.5, z + 0.1, rnd() * 0.6, { power: 4 });
-        } else if (kind === 1) {
-          prop(0.8, 1.2, 0.8, metalMat, x, 0.6, z, rnd() * 0.4, { power: 4 });
-          prop(0.8, 1.2, 0.8, metalMat, x + 0.9, 0.6, z + 0.4, rnd() * 0.4, { power: 4 });
-        } else {
-          prop(1.5, 0.5, 0.4, blastWallMat, x, 0.3, z, 0.2, { power: 5 });
-          prop(0.5, 0.5, 0.5, tyreMat, x - 0.7, 1.0, z + 0.3, rnd(), { power: 4 });
-        }
+  // breakable clutter is seeded below once carStart is known
+  function seedBreakableStreet() {
+    const roadX = -HALF + CELL * 4;
+    const startZ = -HALF + CELL * 2;
+    for (let i = 0; i < 42; i++) {
+      const z = startZ + 4 + i * 7;
+      const side = i % 2 ? 1 : -1;
+      const lane = i % 4 === 0 ? 0.6 : i % 4 === 2 ? 2.6 : 5.2 + (i % 3) * 0.8;
+      const x = roadX + side * lane;
+      const kind = i % 4;
+      if (kind === 0) {
+        prop(1.0, 1.0, 1.0, sandbagMat, x, 0.5, z, i * 0.7, { power: 4 });
+      } else if (kind === 1) {
+        prop(0.75, 1.15, 0.75, metalMat, x, 0.58, z, i * 0.4, { power: 4 });
+        prop(0.75, 1.15, 0.75, metalMat, x + side * 1.0, 0.58, z + 0.5, i * 0.2, { power: 4 });
+      } else if (kind === 2) {
+        prop(1.4, 0.36, 0.36, blastWallMat, x, 0.42, z, 0.1, { power: 5 });
+        prop(1.4, 0.36, 0.36, blastWallMat, x, 0.8, z, 0.1, { power: 5 });
+      } else {
+        prop(0.55, 0.55, 0.55, tyreMat, x, 0.9, z, i, { power: 4 });
+        prop(0.55, 0.55, 0.55, tyreMat, x, 0.32, z + 0.4, i, { power: 4 });
       }
     }
   }
+
+  seedBreakableStreet();
 
   // ---- merge static geometry: thousands of meshes -> a dozen draw calls ----
   function mergeStatics() {
@@ -919,11 +928,16 @@ export function createWorld(scene) {
       const mesh = new THREE.InstancedMesh(g.geo, g.mat, g.items.length);
       mesh.castShadow = true;
       mesh.frustumCulled = false;
+      const pos = new THREE.Vector3();
+      const quat = new THREE.Quaternion();
+      const scl = new THREE.Vector3();
       g.items.forEach((it, i) => {
         it.mesh = mesh;
         it.index = i;
-        m.makeRotationY(it.ry);
-        m.setPosition(it.x, it.y, it.z);
+        pos.set(it.x, it.y, it.z);
+        quat.setFromAxisAngle(new THREE.Vector3(0, 1, 0), it.ry);
+        scl.set(it.w, it.h, it.d);
+        m.compose(pos, quat, scl);
         mesh.setMatrixAt(i, m);
       });
       mesh.instanceMatrix.needsUpdate = true;

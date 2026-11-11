@@ -305,7 +305,7 @@ export function createAudio() {
         engine.revFilter.frequency.setTargetAtTime(620 + speed * 1400 + thr * 260, t, 0.09);
         engine.revGain.gain.setTargetAtTime(0.008 + thr * 0.075 + speed * 0.03, t, 0.08);
 
-        if (s.throttle && !this._thr) rev(this, t);
+        if (s.throttle && !this._thr) rev(engine, t);
         this._thr = !!s.throttle;
       }
 
