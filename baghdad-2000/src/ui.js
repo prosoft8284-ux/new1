@@ -435,14 +435,14 @@ export function createUI(handlers) {
     },
 
     setVibe(on) {
-      if (dom.btnSettingsVibe) dom.btnSettingsVibe.textContent = on ? '📳 لرزش: روشن' : '📳 لرزش: خاموش';
+      if (dom.btnSettingsVibe) dom.btnSettingsVibe.textContent = on ? 'لرزش: روشن' : 'لرزش: خاموش';
     },
 
     setMuted(muted) {
       dom.btnMute?.classList.toggle('off', muted);
       if (dom.btnMute) dom.btnMute.textContent = muted ? '🔇' : '🔊';
       if (dom.btnMenuSound) dom.btnMenuSound.textContent = muted ? 'صدا: خاموش' : 'صدا: روشن';
-      if (dom.btnSettingsSound) dom.btnSettingsSound.textContent = muted ? '🔇 صدا: خاموش' : '🔊 صدا: روشن';
+      if (dom.btnSettingsSound) dom.btnSettingsSound.textContent = muted ? 'صدا: خاموش' : 'صدا: روشن';
     },
 
     repairCost: REPAIR_COST,
