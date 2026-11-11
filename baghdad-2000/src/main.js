@@ -7,6 +7,7 @@ import { createUI } from './ui.js';
 import { createAudio } from './audio.js';
 import { createEffects } from './effects.js';
 import { createWeapons, WEAPONS, weaponCost } from './weapons.js';
+import { createEnvironment } from './environment.js';
 
 const REPAIR_COST = 60;
 
@@ -75,6 +76,16 @@ const audio = createAudio();
 const car = createCar(scene);
 const zombies = new ZombieManager(scene, effects, (x, z) => world.isInsideBuilding(x, z, 1.2));
 const weapons = createWeapons(scene, car, effects);
+const env = createEnvironment(scene, world, {
+  onChange: (info) => {
+    ui.setWeather(info);
+    ui.message(info.message, 'up');
+  },
+});
+
+function buzz(ms) {
+  if (isCoarse && progress.haptics !== false && navigator.vibrate) navigator.vibrate(ms);
+}
 
 let progress = loadProgress();
 let stats = car.getStats(progress.upgrades);
@@ -82,6 +93,7 @@ let stats = car.getStats(progress.upgrades);
 const game = {
   mode: 'menu', // menu | playing | paused | garage | over
   returnTo: 'racing',
+  settingsFrom: 'menu',
   runPoints: 0,
   kills: 0,
   combo: 1,
@@ -219,6 +231,19 @@ const ui = createUI({
   onSelectWeapon: (key) => selectWeapon(key),
   onBuyWeapon: (key) => buyWeapon(key),
   onQuality: (mode) => setQualityMode(mode),
+  onSettings: () => openSettings(),
+  onCloseSettings: () => closeSettings(),
+  onSoundToggle: () => {
+    const muted = audio.toggleMuted();
+    ui.setMuted(muted);
+  },
+  onVibeToggle: () => {
+    progress.haptics = progress.haptics === false;
+    saveProgress(progress);
+    ui.setVibe(progress.haptics !== false);
+    audio.ui();
+    buzz(18);
+  },
 });
 
 const coarse = isCoarse;
@@ -227,6 +252,8 @@ ui.setMuted(audio.isMuted());
 ui.setDifficulty(game.difficulty);
 ui.refreshMenu(progress);
 ui.showHud(false);
+ui.setVibe(progress.haptics !== false);
+ui.setWeather(env.info);
 
 // ---------- run control ----------
 function startRun() {
@@ -356,6 +383,29 @@ function closeGarage() {
     goMenu();
   } else {
     game.mode = 'playing';
+  }
+}
+
+function openSettings() {
+  game.settingsFrom = game.mode === 'menu' ? 'menu' : 'paused';
+  game.mode = 'settings';
+  ui.showStart(false);
+  ui.showPause(false);
+  ui.hideGarage();
+  ui.hideGameOver();
+  ui.showSettings(true, game.settingsFrom === 'menu' ? 'بازگشت' : 'برگرد به بازی');
+  audio.ui();
+}
+
+function closeSettings() {
+  ui.showSettings(false);
+  if (game.settingsFrom === 'menu') {
+    game.mode = 'menu';
+    ui.showStart(true);
+    ui.refreshMenu(progress);
+  } else {
+    game.mode = 'paused';
+    ui.showPause(true);
   }
 }
 
@@ -513,7 +563,8 @@ function stepGameplay(dt) {
     pointsPerKill: game.rampage > 0 ? stats.pointsPerKill * 2 : stats.pointsPerKill,
   };
 
-  car.update(dt, input, stats, game.boosting);
+  eff.grip = stats.grip * env.grip;
+  car.update(dt, input, eff, game.boosting);
   resolveCollisions();
 
   car.forward(fwd);
@@ -528,6 +579,7 @@ function stepGameplay(dt) {
     game.shake = Math.max(game.shake, 0.3);
     audio.impact(0.7);
     ui.flashDamage(0.7);
+    buzz(24);
     effects.bloodBurst(tmpF.set(hit.x, 0.9, hit.z), 1, false);
     if (dead) {
       endRun();
@@ -614,6 +666,7 @@ function stepGameplay(dt) {
     zombies.spawnNear(car.state.pos, 4 + game.wave * 2, 26, 72, game.kills + game.wave * 6);
     game.shake = Math.max(game.shake, 0.3);
     audio.rampage();
+    env.surge();
     ui.message('موج ' + game.wave + ' رسید', 'up');
   }
 
@@ -745,6 +798,11 @@ function frame(now) {
 
   // While a menu is up the scene is frozen: no simulation, no full-screen
   // re-render, so menus and buttons stay responsive even on weak devices.
+  if (playing) {
+    env.update(realDt, car.state.pos);
+    car.setHeadlights(env.lightLevel);
+  }
+
   if (playing || game.mode === 'over') {
     world.update(realDt, car.state.pos);
     effects.update(realDt, camera);
@@ -837,6 +895,7 @@ window.__b2k = {
   world,
   zombies,
   weapons,
+  env,
   get stats() { return stats; },
   get fps() { return fpsSmooth; },
   get quality() { return { mode: qualityMode, level: qualityLevel }; },

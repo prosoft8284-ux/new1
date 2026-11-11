@@ -158,9 +158,7 @@ export function createWorld(scene) {
   scene.add(sun);
   scene.add(sun.target);
 
-  const sky = new THREE.Mesh(
-    new THREE.SphereGeometry(640, 24, 16),
-    new THREE.ShaderMaterial({
+  const skyMat = new THREE.ShaderMaterial({
       side: THREE.BackSide,
       depthWrite: false,
       fog: false,
@@ -191,9 +189,9 @@ export function createWorld(scene) {
           col = mix(col, sunColor, sun * 0.95);
           col += sunColor * glow * 0.14;
           gl_FragColor = vec4(col, 1.0);
-        }`,
-    })
-  );
+        }      `,
+  });
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(640, 24, 16), skyMat);
   sky.frustumCulled = false;
   scene.add(sky);
 
@@ -299,6 +297,11 @@ export function createWorld(scene) {
     (t) => new THREE.MeshLambertMaterial({ map: makeSignTexture(t), side: THREE.DoubleSide })
   );
   const billboardMats = BILLBOARD_TEXTS.map((t) => new THREE.MeshLambertMaterial({ map: makeSignTexture(t), side: THREE.DoubleSide }));
+  // atmosphere-toggled bits
+  const atmLampMat = new THREE.MeshLambertMaterial({ color: 0x2a2724, emissive: 0xffcf88, emissiveIntensity: 0.05 });
+  const atmWaterMat = new THREE.MeshLambertMaterial({ color: 0x2f6f86 });
+  const atmSignalRed = new THREE.MeshBasicMaterial({ color: 0x5c1a1a });
+  const atmSignalGreen = new THREE.MeshBasicMaterial({ color: 0x1b4d2c });
 
   function addCollider(cx, cz, w, d) {
     colliders.push({ minX: cx - w / 2, maxX: cx + w / 2, minZ: cz - d / 2, maxZ: cz + d / 2 });
@@ -640,6 +643,176 @@ export function createWorld(scene) {
   );
   root.add(dust);
 
+  // ---- landmarks, plaza, market and street furniture ----
+  function prop(w, h, d, mat, x, y, z, ry = 0) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    m.position.set(x, y, z);
+    m.rotation.y = ry;
+    m.castShadow = true;
+    root.add(m);
+    return m;
+  }
+
+  // grand mosque on the horizon (decorative, outside the play area)
+  {
+    const mx = -40;
+    const mz = -430;
+    prop(46, 14, 40, wallMats[0], mx, 7, mz);
+    const dome = new THREE.Mesh(new THREE.SphereGeometry(13, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2), roofMat);
+    dome.position.set(mx, 14, mz);
+    root.add(dome);
+    const drum = new THREE.Mesh(new THREE.CylinderGeometry(13, 13.4, 4, 18), wallMats[1]);
+    drum.position.set(mx, 12, mz);
+    root.add(drum);
+    for (const s of [-1, 1]) {
+      const small = new THREE.Mesh(new THREE.SphereGeometry(5.4, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2), roofMat);
+      small.position.set(mx + s * 17, 14, mz + 12);
+      root.add(small);
+    }
+    const minaret = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 3.1, 54, 12), wallMats[2]);
+    minaret.position.set(mx + 23, 27, mz + 16);
+    root.add(minaret);
+    const balcony = new THREE.Mesh(new THREE.TorusGeometry(3.5, 0.5, 6, 14), metalMat);
+    balcony.rotation.x = Math.PI / 2;
+    balcony.position.set(mx + 23, 44, mz + 16);
+    root.add(balcony);
+    const cap = new THREE.Mesh(new THREE.ConeGeometry(3, 7, 10), roofMat);
+    cap.position.set(mx + 23, 57, mz + 16);
+    root.add(cap);
+  }
+
+  // fountain roundabout
+  {
+    const fx = 160;
+    const fz = 96;
+    const basin = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.8, 1.1, 16), roofMat);
+    basin.position.set(fx, 0.55, fz);
+    basin.castShadow = true;
+    root.add(basin);
+    const water = new THREE.Mesh(new THREE.CylinderGeometry(4.7, 4.7, 0.22, 16), atmWaterMat);
+    water.position.set(fx, 1.02, fz);
+    root.add(water);
+    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.8, 2.6, 10), wallMats[3]);
+    stem.position.set(fx, 2.2, fz);
+    root.add(stem);
+    const bowl = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 1.5, 0.5, 14), roofMat);
+    bowl.position.set(fx, 3.6, fz);
+    root.add(bowl);
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2;
+      const jet = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 2.4, 6), metalMat);
+      jet.position.set(fx + Math.cos(a) * 1.1, 4.6, fz + Math.sin(a) * 1.1);
+      root.add(jet);
+    }
+    addCollider(fx, fz, 11, 11);
+    // benches around the plaza
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + 0.3;
+      const bx = fx + Math.cos(a) * 9.5;
+      const bz = fz + Math.sin(a) * 9.5;
+      prop(2.4, 0.5, 0.8, darkMat, bx, 0.55, bz, -a);
+      prop(2.4, 0.9, 0.16, darkMat, bx - Math.cos(a) * 0.32, 1.05, bz - Math.sin(a) * 0.32, -a);
+    }
+  }
+
+  // wrecked bus blocking a road
+  {
+    const bx = -96;
+    const bz = 64;
+    prop(3.1, 2.7, 11.4, flatMats[0], bx, 1.55, bz);
+    prop(3.2, 0.9, 10.4, darkMat, bx, 2.35, bz);
+    prop(3.3, 0.5, 11.6, blastWallMat, bx, 0.55, bz);
+    for (const dz of [-4.2, 4.2]) {
+      for (const dx of [-1.6, 1.6]) {
+        const tyre = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.34, 10), tyreMat);
+        tyre.rotation.z = Math.PI / 2;
+        tyre.position.set(bx + dx, 0.55, bz + dz);
+        root.add(tyre);
+      }
+    }
+    addCollider(bx, bz, 3.8, 12);
+  }
+
+  // market stalls along the sidewalk
+  {
+    const sx = -149.5;
+    for (let i = 0; i < 5; i++) {
+      const sz = 6 + i * 9;
+      const awning = awningMats[i % awningMats.length];
+      prop(5.6, 0.16, 4.2, awning, sx, 3.1, sz);
+      for (const px of [-2.5, 2.5]) {
+        for (const pz of [-1.8, 1.8]) {
+          prop(0.14, 3.1, 0.14, darkMat, sx + px, 1.55, sz + pz);
+        }
+      }
+      prop(5, 0.5, 1.4, sandbagMat, sx, 1.05, sz + 1.1);
+      prop(1.1, 0.9, 1.1, dumpsterMats[i % dumpsterMats.length], sx + 2.9, 0.45, sz - 1.5);
+      const sign = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 1.3), shopSignMats[i % shopSignMats.length]);
+      sign.position.set(sx + 0.4, 3.9, sz + 2.2);
+      root.add(sign);
+    }
+  }
+
+  // traffic signals + street lamps
+  {
+    const signals = [
+      [32, -96], [96, 32], [-96, -32], [-32, 96],
+    ];
+    for (const [x, z] of signals) {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.2, 6.4, 8), metalMat);
+      pole.position.set(x + 9.4, 3.2, z + 9.4);
+      root.add(pole);
+      prop(3.2, 0.16, 0.16, metalMat, x + 7.9, 6.3, z + 9.4);
+      prop(0.5, 1.25, 0.4, darkMat, x + 6.5, 5.9, z + 9.4);
+      for (let i = 0; i < 3; i++) {
+        const dot = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.22, 0.08), i === 0 ? atmSignalRed : i === 2 ? atmSignalGreen : atmLampMat);
+        dot.position.set(x + 6.5, 6.32 - i * 0.36, z + 9.6);
+        root.add(dot);
+      }
+    }
+    for (let i = 0; i < 12; i++) {
+      const onX = i % 2 === 0;
+      const line = -HALF + CELL * (2 + (i % 4) * 2);
+      const along = -HALF + CELL * (1 + Math.floor(i / 2)) + 12;
+      const x = onX ? line + 10.6 : along;
+      const z = onX ? along : line + 10.6;
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.2, 8.2, 7), metalMat);
+      pole.position.set(x, 4.1, z);
+      root.add(pole);
+      prop(2.2, 0.14, 0.14, metalMat, x + (onX ? -1.1 : 0), 8.1, z + (onX ? 0 : -1.1));
+      const head = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.22, 0.5), atmLampMat);
+      head.position.set(x + (onX ? -2.1 : 0), 8.0, z + (onX ? 0 : -2.1));
+      root.add(head);
+    }
+  }
+
+  // rubble and burnt shells to break up the roads
+  {
+    const spots = [[-32, -32], [96, -160], [-160, 160], [224, 64], [64, 224], [-224, -96]];
+    for (const [x, z] of spots) {
+      for (let i = 0; i < 6; i++) {
+        const s = 0.6 + rnd() * 1.8;
+        prop(s, s * 0.6, s, rubbleMat, x + range(-3.5, 3.5), s * 0.3, z + range(-3.5, 3.5), rnd() * 3);
+      }
+      const shell = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.1, 4.2), darkMat);
+      shell.position.set(x + range(-2, 2), 0.6, z + range(-2, 2));
+      shell.rotation.y = rnd() * 3;
+      shell.castShadow = true;
+      root.add(shell);
+    }
+  }
+
+  // roadside billboards for landmarks
+  for (let i = 0; i < 4; i++) {
+    const x = -HALF + CELL * (2 + i * 2) + 12;
+    const z = -HALF + CELL * 3 - 11;
+    prop(0.2, 6, 0.2, metalMat, x, 3, z);
+    const board = new THREE.Mesh(new THREE.PlaneGeometry(6.4, 3.2), billboardMats[i % billboardMats.length]);
+    board.position.set(x, 6.4, z);
+    board.rotation.y = Math.PI;
+    root.add(board);
+  }
+
   // ---- merge static geometry: thousands of meshes -> a dozen draw calls ----
   function mergeStatics() {
     root.updateMatrixWorld(true);
@@ -716,9 +889,47 @@ export function createWorld(scene) {
     sun.castShadow = on;
   }
 
+  // The environment director drives the whole mood through this one call.
+  function setAtmosphere(a) {
+    if (!a) return;
+    if (a.sunIntensity !== undefined) sun.intensity = a.sunIntensity;
+    if (a.sunColor) sun.color.copy(a.sunColor);
+    if (a.hemiColor) hemi.color.copy(a.hemiColor);
+    if (a.hemiGround) hemi.groundColor.copy(a.hemiGround);
+    if (a.hemiIntensity !== undefined) hemi.intensity = a.hemiIntensity;
+    if (a.fogColor) {
+      scene.fog.color.copy(a.fogColor);
+      scene.background.copy(a.fogColor);
+    }
+    if (a.fogNear !== undefined) scene.fog.near = a.fogNear;
+    if (a.fogFar !== undefined) scene.fog.far = a.fogFar;
+    if (a.sky) {
+      skyMat.uniforms.topColor.value.copy(a.sky.top);
+      skyMat.uniforms.horizonColor.value.copy(a.sky.horizon);
+      skyMat.uniforms.lowColor.value.copy(a.sky.low);
+      skyMat.uniforms.sunColor.value.copy(a.sky.sun);
+    }
+    if (a.dust !== undefined) dust.material.opacity = Math.min(0.95, a.dust);
+    if (a.lamps !== undefined) {
+      atmLampMat.emissiveIntensity = 0.05 + a.lamps * 1.6;
+      atmSignalRed.color.setHex(a.lamps > 0.4 ? 0xff3b24 : 0x5c1a1a);
+      atmSignalGreen.color.setHex(a.lamps > 0.4 ? 0x3dff8a : 0x1b4d2c);
+    }
+  }
+
   function isInsideBuilding(x, z, pad = 0) {
     return colliders.some((c) => x > c.minX - pad && x < c.maxX + pad && z > c.minZ - pad && z < c.maxZ + pad);
   }
 
-  return { colliders, spawnPoints, carStart, headingStart, update, isInsideBuilding, setShadows, bounds: HALF };
+  return {
+    colliders,
+    spawnPoints,
+    carStart,
+    headingStart,
+    update,
+    isInsideBuilding,
+    setShadows,
+    setAtmosphere,
+    bounds: HALF,
+  };
 }

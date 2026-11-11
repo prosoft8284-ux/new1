@@ -42,13 +42,15 @@
 
         <div class="hud-actions">
           <button id="btn-garage" class="icon-btn" title="تعمیرگاه" aria-label="تعمیرگاه">🔧</button>
-          <button id="btn-mute" class="icon-btn" title="صدا" aria-label="صدا">🔊</button>
           <button id="btn-pause" class="icon-btn" title="توقف" aria-label="توقف">⏸</button>
         </div>
       </div>
 
       <div class="hud-mid">
-        <div id="hud-wave" class="wave-badge">موج 1</div>
+        <div class="hud-tags">
+          <div id="hud-wave" class="wave-badge">موج 1</div>
+          <div id="hud-weather" class="wave-badge weather">☀️ صاف</div>
+        </div>
         <div id="hud-rampage" class="rampage-badge hidden">دیوانه‌وار!</div>
       </div>
 
@@ -90,22 +92,13 @@
 
         <p class="lead">گاز بده، موج‌ها را بشکاف و تا وقتی ماشین نفس دارد زامبی‌ها را زیر بگیر.</p>
 
-        <div class="diff-block">
-          <span class="diff-title">سختی</span>
-          <div class="diff-row" id="difficulty">
-            <button class="diff-btn" data-diff="easy">آرام</button>
-            <button class="diff-btn active" data-diff="normal">معمولی</button>
-            <button class="diff-btn" data-diff="hard">جهنمی</button>
-          </div>
-          <p class="diff-hint" id="diff-hint">زامبی‌ها سریع می‌رسند؛ سرعتت سلاح توست.</p>
-        </div>
-
         <button id="btn-start" class="big-btn primary"><span class="btn-ico">▶</span>سوار شو</button>
         <div class="menu-row">
           <button id="btn-menu-garage" class="big-btn ghost"><span class="btn-ico">🔧</span>تعمیرگاه</button>
-          <button id="btn-menu-sound" class="big-btn ghost"><span class="btn-ico">🔊</span>صدا: روشن</button>
+          <button id="btn-menu-settings" class="big-btn ghost"><span class="btn-ico">⚙</span>تنظیمات</button>
         </div>
-        <p class="menu-foot">کلیدها: W A S D · Space دریفت · Shift نیترو · G تعمیرگاه · Esc توقف</p>
+        <p class="menu-sub" id="menu-mode-line">سختی: معمولی · کیفیت: خودکار</p>
+        <p class="menu-foot">W A S D · Space دریفت · Shift نیترو · F شلیک · 1-3 سلاح · Esc توقف</p>
       </div>
     </div>
 
@@ -132,22 +125,15 @@
       <div class="screen-card small">
         <h2>توقف</h2>
         <p class="menu-sub">نفس بگیر. هر وقت آماده بودی برگرد.</p>
-        <div class="diff-block quality-block">
-          <span class="diff-title">کیفیت گرافیک</span>
-          <div class="diff-row" id="quality">
-            <button class="diff-btn" data-q="auto">خودکار</button>
-            <button class="diff-btn active" data-q="high">بالا</button>
-            <button class="diff-btn" data-q="medium">متوسط</button>
-            <button class="diff-btn" data-q="low">کم</button>
-          </div>
-          <p class="diff-hint" id="quality-note">خودکار: با توجه به سرعت دستگاه تنظیم می‌شود.</p>
-        </div>
         <button id="btn-resume" class="big-btn">ادامه</button>
         <div class="menu-row">
           <button id="btn-pause-garage" class="big-btn ghost">تعمیرگاه</button>
-          <button id="btn-pause-restart" class="big-btn ghost">شروع دوباره</button>
+          <button id="btn-pause-settings" class="big-btn ghost">⚙ تنظیمات</button>
         </div>
-        <button id="btn-quit" class="big-btn ghost">منوی اصلی</button>
+        <div class="menu-row">
+          <button id="btn-pause-restart" class="big-btn ghost">دوباره</button>
+          <button id="btn-quit" class="big-btn ghost">منو</button>
+        </div>
       </div>
     </div>
 
@@ -169,13 +155,43 @@
       </div>
     </div>
 
+    <!-- settings -->
+    <div id="settings" class="screen hidden">
+      <div class="screen-card small">
+        <h2>تنظیمات</h2>
+        <div class="diff-block">
+          <span class="diff-title">سختی</span>
+          <div class="diff-row" id="settings-difficulty">
+            <button class="diff-btn" data-diff="easy">آرام</button>
+            <button class="diff-btn active" data-diff="normal">معمولی</button>
+            <button class="diff-btn" data-diff="hard">جهنمی</button>
+          </div>
+          <p class="diff-hint" id="diff-hint">زامبی‌ها سریع می‌رسند؛ سرعتت سلاح توست.</p>
+        </div>
+        <div class="diff-block">
+          <span class="diff-title">کیفیت گرافیک</span>
+          <div class="diff-row" id="quality">
+            <button class="diff-btn active" data-q="auto">خودکار</button>
+            <button class="diff-btn" data-q="high">بالا</button>
+            <button class="diff-btn" data-q="medium">متوسط</button>
+            <button class="diff-btn" data-q="low">کم</button>
+          </div>
+          <p class="diff-hint" id="quality-note">خودکار: با توجه به سرعت دستگاه تنظیم می‌شود.</p>
+        </div>
+        <div class="menu-row">
+          <button id="btn-settings-sound" class="big-btn ghost">🔊 صدا: روشن</button>
+          <button id="btn-settings-vibe" class="big-btn ghost">📳 لرزش: روشن</button>
+        </div>
+        <button id="btn-settings-close" class="big-btn">بازگشت</button>
+      </div>
+    </div>
+
     <div id="touch" class="hidden">
       <div class="touch-side">
         <button data-touch="left" aria-label="چپ">◀</button>
         <button data-touch="right" aria-label="راست">▶</button>
       </div>
       <div class="touch-side">
-        <button id="btn-weapon" class="switch" aria-label="تغییر سلاح">🔁</button>
         <button data-touch="fire" class="fire" aria-label="شلیک">💥</button>
         <button data-touch="boost" class="boost" aria-label="نیترو">🔥</button>
         <button data-touch="drift" class="drift" aria-label="دریفت">⤵</button>

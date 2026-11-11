@@ -61,6 +61,12 @@ export function createUI(handlers) {
     touch: el('touch'),
     boostHint: el('hud-boost'),
     qualityNote: el('quality-note'),
+    weather: el('hud-weather'),
+    menuModeLine: el('menu-mode-line'),
+    settings: el('settings'),
+    btnSettingsClose: el('btn-settings-close'),
+    btnSettingsSound: el('btn-settings-sound'),
+    btnSettingsVibe: el('btn-settings-vibe'),
   };
 
   const last = new Map();
@@ -73,7 +79,17 @@ export function createUI(handlers) {
 
   let msgTimer = 0;
   let flashTimer = 0;
+  let currentDifficulty = 'normal';
+  let currentQuality = 'auto';
   const chips = new Map();
+  const DIFF_NAMES = { easy: 'آرام', normal: 'معمولی', hard: 'جهنمی' };
+  const QUALITY_NAMES = { auto: 'خودکار', high: 'بالا', medium: 'متوسط', low: 'کم' };
+
+  function updateModeLine() {
+    if (!dom.menuModeLine) return;
+    dom.menuModeLine.textContent =
+      'سختی: ' + (DIFF_NAMES[currentDifficulty] || '') + ' · کیفیت: ' + (QUALITY_NAMES[currentQuality] || '');
+  }
 
   el('btn-start')?.addEventListener('click', () => handlers.onStart?.());
   el('btn-close-garage')?.addEventListener('click', () => handlers.onCloseGarage?.());
@@ -91,8 +107,13 @@ export function createUI(handlers) {
   dom.btnMute?.addEventListener('click', () => handlers.onMute?.());
   dom.btnMenuSound?.addEventListener('click', () => handlers.onMute?.());
   el('btn-pause')?.addEventListener('click', () => handlers.onPause?.());
+  el('btn-menu-settings')?.addEventListener('click', () => handlers.onSettings?.());
+  el('btn-pause-settings')?.addEventListener('click', () => handlers.onSettings?.());
+  dom.btnSettingsClose?.addEventListener('click', () => handlers.onCloseSettings?.());
+  dom.btnSettingsSound?.addEventListener('click', () => handlers.onSoundToggle?.());
+  dom.btnSettingsVibe?.addEventListener('click', () => handlers.onVibeToggle?.());
 
-  document.querySelectorAll('#difficulty .diff-btn').forEach((btn) => {
+  document.querySelectorAll('#difficulty .diff-btn, #settings-difficulty .diff-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const diff = btn.getAttribute('data-diff');
       if (diff) handlers.onDifficulty?.(diff);
@@ -222,10 +243,12 @@ export function createUI(handlers) {
     },
 
     setDifficulty(diff) {
-      document.querySelectorAll('#difficulty .diff-btn').forEach((btn) => {
+      currentDifficulty = diff;
+      document.querySelectorAll('#difficulty .diff-btn, #settings-difficulty .diff-btn').forEach((btn) => {
         btn.classList.toggle('active', btn.getAttribute('data-diff') === diff);
       });
       if (dom.diffHint) dom.diffHint.textContent = DIFFICULTY_HINTS[diff] || DIFFICULTY_HINTS.normal;
+      updateModeLine();
     },
 
     setWeapons(levels, selected) {
@@ -387,9 +410,11 @@ export function createUI(handlers) {
     },
 
     setQuality(mode, level, fps) {
+      currentQuality = mode;
       document.querySelectorAll('#quality .diff-btn').forEach((btn) => {
         btn.classList.toggle('active', btn.getAttribute('data-q') === mode);
       });
+      updateModeLine();
       if (dom.qualityNote) {
         const names = { high: 'بالا', medium: 'متوسط', low: 'کم' };
         dom.qualityNote.textContent =
@@ -399,10 +424,25 @@ export function createUI(handlers) {
       }
     },
 
+    showSettings(show, backLabel = 'بازگشت') {
+      if (show && dom.btnSettingsClose) dom.btnSettingsClose.textContent = backLabel;
+      dom.settings?.classList.toggle('hidden', !show);
+    },
+
+    setWeather(info) {
+      if (!dom.weather || !info) return;
+      dom.weather.textContent = info.icon + ' ' + info.name;
+    },
+
+    setVibe(on) {
+      if (dom.btnSettingsVibe) dom.btnSettingsVibe.textContent = on ? '📳 لرزش: روشن' : '📳 لرزش: خاموش';
+    },
+
     setMuted(muted) {
       dom.btnMute?.classList.toggle('off', muted);
       if (dom.btnMute) dom.btnMute.textContent = muted ? '🔇' : '🔊';
       if (dom.btnMenuSound) dom.btnMenuSound.textContent = muted ? 'صدا: خاموش' : 'صدا: روشن';
+      if (dom.btnSettingsSound) dom.btnSettingsSound.textContent = muted ? '🔇 صدا: خاموش' : '🔊 صدا: روشن';
     },
 
     repairCost: REPAIR_COST,

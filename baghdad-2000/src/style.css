@@ -1344,3 +1344,46 @@ kbd {
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
   }
 }
+
+/* ---------- settings, weather tags, control layout ---------- */
+/* RTL flips flex order, which made ◀ appear on the right. Force LTR here. */
+.touch-side {
+  direction: ltr;
+}
+
+.hud-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+#hud-weather.weather {
+  border-color: rgba(140, 200, 255, 0.35);
+  color: #d8ecff;
+}
+
+#settings .screen-card {
+  max-height: min(88vh, 720px);
+  overflow-y: auto;
+}
+
+#settings .diff-block {
+  margin-bottom: 12px;
+}
+
+#settings .menu-row {
+  margin-top: 10px;
+}
+
+#btn-settings-close {
+  margin-top: 12px;
+}
+
+#settings .big-btn.ghost {
+  font-size: 14px;
+}
+
+.menu-sub {
+  text-align: center;
+}

@@ -108,8 +108,10 @@ export function createCar(scene) {
   makeWheel(0.9, -1.46, false);
 
   // ---- headlights ----
+  const headlights = [];
   function addBeam(x) {
     const beam = new THREE.SpotLight(0xffe9bd, 2.4, 52, Math.PI / 5.2, 0.6, 1.1);
+    headlights.push(beam);
     beam.position.set(x, 0.86, 2.16);
     const target = new THREE.Object3D();
     target.position.set(x * 1.7, 0.05, 16);
@@ -219,6 +221,10 @@ export function createCar(scene) {
 
     forward(out = forwardVec) {
       return out.set(Math.sin(state.heading), 0, Math.cos(state.heading));
+    },
+
+    setHeadlights(mult) {
+      for (const beam of headlights) beam.intensity = 2.4 * mult;
     },
 
     exhaustWorld(i, out) {
