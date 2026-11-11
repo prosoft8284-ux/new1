@@ -119,7 +119,7 @@ export function createUI(handlers) {
 
       dom.rampage?.classList.toggle('hidden', !s.rampage);
       dom.rampageTint?.classList.toggle('on', !!s.rampage);
-      dom.lines.style.opacity = String(Math.min(0.85, s.speedLines));
+      dom.lines.style.opacity = String(Math.min(0.55, s.speedLines));
       setText(dom.boostHint, s.boosting ? 'فعال' : 'Shift');
     },
 

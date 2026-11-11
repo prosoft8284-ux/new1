@@ -428,7 +428,7 @@ function stepGameplay(dt) {
       ui.message('ضربه‌ی گروهی! +' + gainedTotal, 'kill');
     } else if (events.kills.length === 1) {
       const k = events.kills[0];
-      ui.message(k.type === 'brute' ? 'بروت خرد شد! +' + gainedTotal : '×' + game.combo + ' +' + gainedTotal, 'kill');
+      ui.message(k.type === 'brute' ? 'بروت خرد شد! +' + gainedTotal : 'کمبو ×' + game.combo + ' · +' + gainedTotal, 'kill');
     } else {
       ui.message('+' + gainedTotal, 'kill');
     }

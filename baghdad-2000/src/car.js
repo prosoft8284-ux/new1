@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const PAINT = 0x8e1a30;
+const PAINT = 0x7e1529;
 
 export function createCar(scene) {
   const root = new THREE.Group();
