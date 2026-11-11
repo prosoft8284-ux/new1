@@ -1251,3 +1251,96 @@ kbd {
     max-width: 82vw;
   }
 }
+
+/* ================= performance pass ================= */
+/* Blurring a live WebGL canvas every frame is the main source of UI jank. */
+#hud .panel,
+#touch button,
+.wave-badge,
+.weapon-chip {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#hud .panel {
+  background: linear-gradient(180deg, rgba(30, 23, 13, 0.9), rgba(13, 10, 6, 0.94));
+}
+
+#touch button {
+  background: rgba(22, 17, 10, 0.86);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  transition: transform 0.07s ease, background 0.1s ease, border-color 0.1s ease;
+  will-change: transform;
+}
+
+#touch button:active,
+#touch button.pressed {
+  transform: scale(0.92);
+  background: rgba(255, 190, 90, 0.42);
+}
+
+.screen {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: radial-gradient(ellipse at center, rgba(20, 14, 7, 0.9), rgba(5, 4, 2, 0.985));
+  animation: screenIn 0.16s ease-out;
+}
+
+@keyframes screenIn {
+  from {
+    opacity: 0;
+    transform: scale(1.01);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.big-btn,
+.icon-btn,
+.diff-btn,
+.up-buy,
+.weapon-chip,
+#touch button {
+  touch-action: manipulation;
+}
+
+.big-btn,
+.icon-btn,
+.diff-btn,
+.up-buy {
+  transition-duration: 0.09s;
+}
+
+.bar i {
+  transition: width 0.1s linear;
+}
+
+.bar {
+  height: 10px;
+}
+
+/* tighter, cleaner HUD blocks */
+.stat .label {
+  letter-spacing: 0.02em;
+}
+
+.gauges {
+  background: linear-gradient(180deg, rgba(30, 23, 13, 0.9), rgba(13, 10, 6, 0.94));
+}
+
+.quality-block {
+  margin-top: 12px;
+}
+
+#quality .diff-btn {
+  font-size: 12px;
+  padding: 9px 4px;
+}
+
+@media (pointer: coarse) {
+  #touch button {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+  }
+}

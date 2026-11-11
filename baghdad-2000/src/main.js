@@ -20,11 +20,21 @@ const DIFFICULTY = {
 // ---------- renderer / scene ----------
 const canvas = document.getElementById('game');
 const isCoarse = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isCoarse ? 1.4 : 1.8));
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+  // MSAA is the most expensive thing a phone can do; skip it there.
+  antialias: !isCoarse,
+  powerPreference: 'high-performance',
+  stencil: false,
+  alpha: false,
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isCoarse ? 1.25 : 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = isCoarse ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
+// Shadows are refreshed on a schedule instead of every frame.
+renderer.shadowMap.autoUpdate = false;
+renderer.shadowMap.needsUpdate = true;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.05;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -208,6 +218,7 @@ const ui = createUI({
   },
   onSelectWeapon: (key) => selectWeapon(key),
   onBuyWeapon: (key) => buyWeapon(key),
+  onQuality: (mode) => setQualityMode(mode),
 });
 
 const coarse = isCoarse;
@@ -216,6 +227,8 @@ ui.setMuted(audio.isMuted());
 ui.setDifficulty(game.difficulty);
 ui.refreshMenu(progress);
 ui.showHud(false);
+ui.setQuality(qualityMode, qualityLevel, fpsSmooth);
+applyQuality(qualityLevel, false);
 
 // ---------- run control ----------
 function startRun() {
@@ -672,21 +685,50 @@ function stepGameplay(dt) {
 let last = performance.now();
 const speedLinesTarget = { value: 0 };
 
-// Adaptive quality: if the device cannot hold a playable frame rate, drop
-// pixel ratio and shadows once rather than stuttering through the run.
+// ---------- quality ----------
+const QUALITY = {
+  high: { dpr: isCoarse ? 1.25 : 1.5, shadows: true, shadowEvery: 1 },
+  medium: { dpr: 1.0, shadows: true, shadowEvery: 2 },
+  low: { dpr: 0.8, shadows: false, shadowEvery: 0 },
+};
+let qualityMode = progress.quality || 'auto';
+let qualityLevel = qualityMode === 'auto' ? 'high' : qualityMode;
 let fpsSmooth = 60;
 let qualityTimer = 0;
-let lowQuality = false;
+let frameCount = 0;
+let hudTimer = 0;
+let renderOnce = true;
+
+function applyQuality(level, announce) {
+  qualityLevel = level;
+  const q = QUALITY[level];
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, q.dpr));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = q.shadows;
+  world.setShadows(q.shadows);
+  if (q.shadows) renderer.shadowMap.needsUpdate = true;
+  ui.setQuality(qualityMode, qualityLevel, fpsSmooth);
+  if (announce) ui.message('کیفیت: ' + (level === 'high' ? 'بالا' : level === 'medium' ? 'متوسط' : 'کم'), 'up');
+}
+
+function setQualityMode(mode) {
+  qualityMode = mode;
+  progress.quality = mode;
+  saveProgress(progress);
+  applyQuality(mode === 'auto' ? (fpsSmooth < 42 ? 'medium' : 'high') : mode, false);
+}
+
 function trackPerformance(dt) {
-  fpsSmooth = fpsSmooth * 0.94 + (1 / Math.max(dt, 0.001)) * 0.06;
+  fpsSmooth = fpsSmooth * 0.9 + (1 / Math.max(dt, 0.001)) * 0.1;
   qualityTimer += dt;
-  if (lowQuality || qualityTimer < 5) return;
-  if (fpsSmooth < 30) {
-    lowQuality = true;
-    renderer.setPixelRatio(1);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    world.setShadows(false);
-    ui.message('کیفیت گرافیک کم شد تا بازی روان بماند', 'up');
+  if (qualityTimer < 1.5) return;
+  qualityTimer = 0;
+  ui.setQuality(qualityMode, qualityLevel, fpsSmooth);
+  if (qualityMode !== 'auto') return;
+  if (fpsSmooth < 34 && qualityLevel !== 'low') {
+    applyQuality(qualityLevel === 'high' ? 'medium' : 'low', true);
+  } else if (fpsSmooth > 52 && qualityLevel === 'medium') {
+    applyQuality('high', false);
   }
 }
 
@@ -697,35 +739,46 @@ function frame(now) {
 
   readKeys();
 
+  const playing = game.mode === 'playing';
   const scale = Number.isFinite(game.timeScale) ? game.timeScale : 1;
-  const dt = realDt * (game.mode === 'playing' ? scale : 1);
-  if (game.mode === 'playing') stepGameplay(dt);
-  if (game.mode === 'playing') trackPerformance(realDt);
+  const dt = realDt * (playing ? scale : 1);
+  if (playing) stepGameplay(dt);
+  trackPerformance(realDt);
 
-  world.update(realDt, car.state.pos);
-  effects.update(realDt, camera);
+  // While a menu is up the scene is frozen: no simulation, no full-screen
+  // re-render, so menus and buttons stay responsive even on weak devices.
+  if (playing || game.mode === 'over') {
+    world.update(realDt, car.state.pos);
+    effects.update(realDt, camera);
+  }
   updateCamera(realDt);
   ui.tick(realDt);
 
   const speedK = Math.min(1, Math.abs(car.state.speed) / 30);
   speedLinesTarget.value = game.mode === 'playing' ? Math.max(speedK * 0.7, game.boosting ? 0.85 : 0) : 0;
 
-  ui.update({
-    points: progress.points,
-    kills: game.kills,
-    best: Math.max(progress.best, game.runPoints),
-    health: car.state.health,
-    maxHealth: car.state.maxHealth,
-    speedKmh: Math.abs(car.state.speed) * 3.6,
-    combo: game.mode === 'playing' ? game.combo : 1,
-    comboTime: game.comboTimer / 3,
-    nitro: game.nitro,
-    boosting: game.boosting,
-    rampage: game.rampage > 0,
-    speedLines: speedLinesTarget.value,
-    wave: game.wave,
-    weapon: weapons.getState(),
-  });
+  // HUD text and bars do not need 60 writes a second; 13 Hz is invisible
+  // to the eye but leaves the frame budget to the renderer.
+  hudTimer += realDt;
+  if (hudTimer >= 0.075 || !playing) {
+    hudTimer = 0;
+    ui.update({
+      points: progress.points,
+      kills: game.kills,
+      best: Math.max(progress.best, game.runPoints),
+      health: car.state.health,
+      maxHealth: car.state.maxHealth,
+      speedKmh: Math.abs(car.state.speed) * 3.6,
+      combo: playing ? game.combo : 1,
+      comboTime: game.comboTimer / 3,
+      nitro: game.nitro,
+      boosting: game.boosting,
+      rampage: game.rampage > 0,
+      speedLines: speedLinesTarget.value,
+      wave: game.wave,
+      weapon: weapons.getState(),
+    });
+  }
 
   audio.update(realDt, {
     speedNorm: speedK,
@@ -734,7 +787,14 @@ function frame(now) {
     intensity: game.rampage > 0 ? 3 : game.combo > 2 ? 2 : 1,
   });
 
-  renderer.render(scene, camera);
+  frameCount += 1;
+  const q = QUALITY[qualityLevel];
+  if (q.shadows && frameCount % q.shadowEvery === 0) renderer.shadowMap.needsUpdate = true;
+
+  if (playing || game.mode === 'over' || renderOnce) {
+    renderer.render(scene, camera);
+    renderOnce = false;
+  }
 }
 
 // ---------- misc ----------
@@ -770,7 +830,20 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // Debug handle for headless checks (draw calls, fps, positions).
-window.__b2k = { scene, renderer, camera, car, game, world, zombies, get stats() { return stats; } };
+window.__b2k = {
+  scene,
+  renderer,
+  camera,
+  car,
+  game,
+  world,
+  zombies,
+  weapons,
+  get stats() { return stats; },
+  get fps() { return fpsSmooth; },
+  get quality() { return { mode: qualityMode, level: qualityLevel }; },
+  setQuality: setQualityMode,
+};
 
 car.reset(world.carStart, world.headingStart, stats);
 camera.position.set(world.carStart.x, 5, world.carStart.z - 11);

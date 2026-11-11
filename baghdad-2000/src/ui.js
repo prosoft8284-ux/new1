@@ -60,6 +60,7 @@ export function createUI(handlers) {
     btnMenuSound: el('btn-menu-sound'),
     touch: el('touch'),
     boostHint: el('hud-boost'),
+    qualityNote: el('quality-note'),
   };
 
   const last = new Map();
@@ -95,6 +96,13 @@ export function createUI(handlers) {
     btn.addEventListener('click', () => {
       const diff = btn.getAttribute('data-diff');
       if (diff) handlers.onDifficulty?.(diff);
+    });
+  });
+
+  document.querySelectorAll('#quality .diff-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const mode = btn.getAttribute('data-q');
+      if (mode) handlers.onQuality?.(mode);
     });
   });
 
@@ -165,8 +173,7 @@ export function createUI(handlers) {
     popCombo() {
       if (!dom.combo) return;
       dom.combo.classList.remove('pop');
-      void dom.combo.offsetWidth;
-      dom.combo.classList.add('pop');
+      requestAnimationFrame(() => dom.combo && dom.combo.classList.add('pop'));
     },
 
     message(text, kind = '') {
@@ -377,6 +384,19 @@ export function createUI(handlers) {
 
     showTouch(show) {
       dom.touch?.classList.toggle('hidden', !show);
+    },
+
+    setQuality(mode, level, fps) {
+      document.querySelectorAll('#quality .diff-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-q') === mode);
+      });
+      if (dom.qualityNote) {
+        const names = { high: 'بالا', medium: 'متوسط', low: 'کم' };
+        dom.qualityNote.textContent =
+          mode === 'auto'
+            ? 'خودکار · اکنون ' + (names[level] || 'بالا') + ' · ' + Math.round(fps) + ' FPS'
+            : 'دستی · ' + (names[level] || 'بالا') + ' · ' + Math.round(fps) + ' FPS';
+      }
     },
 
     setMuted(muted) {

@@ -44,6 +44,7 @@ export function emptyProgress() {
     weapons: { mg: 1, flame: 0, harpoon: 0 },
     weapon: 'mg',
     difficulty: 'normal',
+    quality: 'auto',
   };
 }
 
@@ -61,6 +62,7 @@ export function loadProgress() {
       weapons: { ...base.weapons, ...(parsed.weapons || {}) },
       weapon: parsed.weapon || base.weapon,
       difficulty: parsed.difficulty || base.difficulty,
+      quality: parsed.quality || base.quality,
     };
   } catch {
     return emptyProgress();
