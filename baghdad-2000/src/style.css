@@ -1192,3 +1192,41 @@ kbd {
     gap: 6px;
   }
 }
+
+/* weapon bar: pin it above the gauges instead of floating mid-screen */
+#hud .weapons {
+  position: fixed;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: auto;
+  max-width: min(96vw, 620px);
+  margin: 0;
+  z-index: 12;
+}
+
+@media (pointer: coarse) {
+  #hud .weapons {
+    bottom: max(104px, env(safe-area-inset-bottom));
+    max-width: 72vw;
+  }
+}
+
+#hud .weapon-chip {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: none;
+}
+
+#hud .weapon-chip .w-name {
+  font-size: 10px;
+}
+
+@media (max-width: 720px) {
+  #hud .weapon-chip .w-name {
+    display: none;
+  }
+  #hud .weapon-chip {
+    padding: 6px 9px;
+  }
+}
