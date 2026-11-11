@@ -888,3 +888,51 @@ kbd {
     font-size: 15px;
   }
 }
+
+/* garage: scroll the list, never the footer */
+.screen-card.wide {
+  display: flex;
+  flex-direction: column;
+  max-height: min(88vh, 720px);
+}
+
+.garage-head,
+.garage-foot {
+  flex: 0 0 auto;
+}
+
+.garage-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-inline-end: 6px;
+  margin-bottom: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(240, 170, 60, 0.45) transparent;
+}
+
+.garage-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.garage-list::-webkit-scrollbar-thumb {
+  background: rgba(240, 170, 60, 0.4);
+  border-radius: 999px;
+}
+
+.garage-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.garage-foot {
+  display: flex;
+  gap: 10px;
+}
+
+.garage-foot .big-btn {
+  flex: 1 1 0;
+}
+
+.up-row {
+  padding: 12px 14px;
+}
