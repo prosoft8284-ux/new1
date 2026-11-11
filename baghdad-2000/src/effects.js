@@ -2,6 +2,23 @@ import * as THREE from 'three';
 
 // Pooled billboard particles + ground skid marks, all instanced.
 
+let SOFT_SPRITE = null;
+function softSprite() {
+  if (SOFT_SPRITE) return SOFT_SPRITE;
+  const c = document.createElement('canvas');
+  c.width = 32;
+  c.height = 32;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.45, 'rgba(255,255,255,0.85)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 32, 32);
+  SOFT_SPRITE = new THREE.CanvasTexture(c);
+  return SOFT_SPRITE;
+}
+
 function makeLayer(scene, max, blending) {
   const geo = new THREE.PlaneGeometry(1, 1);
   const mat = new THREE.MeshBasicMaterial({
@@ -9,6 +26,7 @@ function makeLayer(scene, max, blending) {
     depthWrite: false,
     side: THREE.DoubleSide,
     blending,
+    alphaMap: softSprite(),
   });
   const mesh = new THREE.InstancedMesh(geo, mat, max);
   mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
@@ -123,8 +141,8 @@ export function createEffects(scene) {
         spawn(dust, {
           pos: tmp.set(pos.x + (Math.random() - 0.5) * 0.8, 0.15 + Math.random() * 0.2, pos.z + (Math.random() - 0.5) * 0.8).clone(),
           vel: new THREE.Vector3((Math.random() - 0.5) * 2 * power, 0.6 + Math.random() * 1.4 * power, (Math.random() - 0.5) * 2 * power),
-          life: 0.7 + Math.random() * 0.7,
-          size: 0.7 + Math.random() * 0.9,
+          life: 0.45 + Math.random() * 0.45,
+          size: 0.22 + Math.random() * 0.3,
           color: 0xd8c69f,
           gravity: -0.6,
           drag: 1.4,
@@ -136,8 +154,8 @@ export function createEffects(scene) {
       spawn(dust, {
         pos: tmp.copy(pos).clone(),
         vel: new THREE.Vector3((Math.random() - 0.5) * 0.6, 0.4 + Math.random() * 0.5, (Math.random() - 0.5) * 0.6),
-        life: boosting ? 0.5 : 0.8,
-        size: boosting ? 0.5 : 0.45,
+        life: boosting ? 0.3 : 0.45,
+        size: boosting ? 0.14 : 0.18,
         color: boosting ? 0x9fb3c9 : 0x8d887c,
         gravity: -0.5,
         drag: 2.2,
@@ -145,7 +163,7 @@ export function createEffects(scene) {
     },
 
     bloodBurst(pos, dir = 1, big = false) {
-      const n = big ? 16 : 9;
+      const n = big ? 22 : 12;
       for (let i = 0; i < n; i++) {
         spawn(blood, {
           pos: tmp.set(pos.x, 0.7 + Math.random() * 0.7, pos.z).clone(),
@@ -154,9 +172,9 @@ export function createEffects(scene) {
             1.5 + Math.random() * 4.5,
             (Math.random() - 0.5) * 6 + dir * 2
           ),
-          life: 0.5 + Math.random() * 0.7,
-          size: 0.18 + Math.random() * 0.3,
-          color: 0x6d1410,
+          life: 0.35 + Math.random() * 0.45,
+          size: 0.1 + Math.random() * 0.16,
+          color: 0x7a1712,
           gravity: 12,
           drag: 0.6,
         });
@@ -181,8 +199,8 @@ export function createEffects(scene) {
       spawn(dust, {
         pos: tmp.set(pos.x, 1 + Math.random() * 0.4, pos.z).clone(),
         vel: new THREE.Vector3((Math.random() - 0.5) * 0.8, 1.2 + Math.random(), (Math.random() - 0.5) * 0.8),
-        life: 1.4,
-        size: 0.9 + Math.random() * 0.7,
+        life: 1.05,
+        size: 0.32 + Math.random() * 0.3,
         color: 0x3b3833,
         gravity: -0.35,
         drag: 1.1,

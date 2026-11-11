@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const GRID = 9;            // blocks per side
 const CELL = 64;           // block pitch (includes road)
@@ -93,10 +94,72 @@ export function createWorld(scene) {
   scene.add(sun);
   scene.add(sun.target);
 
+  // sky dome (hazy desert gradient)
+  const sky = new THREE.Mesh(
+    new THREE.SphereGeometry(620, 24, 16),
+    new THREE.ShaderMaterial({
+      side: THREE.BackSide,
+      depthWrite: false,
+      fog: false,
+      uniforms: {
+        topColor: { value: new THREE.Color('#8ea6bd') },
+        horizonColor: { value: new THREE.Color('#e8d2ab') },
+        sunColor: { value: new THREE.Color('#fff0c9') },
+      },
+      vertexShader: `
+        varying vec3 vPos;
+        void main() {
+          vPos = normalize(position);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }`,
+      fragmentShader: `
+        varying vec3 vPos;
+        uniform vec3 topColor;
+        uniform vec3 horizonColor;
+        uniform vec3 sunColor;
+        void main() {
+          float h = clamp(vPos.y * 1.5 + 0.08, 0.0, 1.0);
+          vec3 col = mix(horizonColor, topColor, pow(h, 0.85));
+          float sun = pow(max(dot(vPos, normalize(vec3(0.62, 0.5, 0.42))), 0.0), 42.0);
+          gl_FragColor = vec4(mix(col, sunColor, sun * 0.85), 1.0);
+        }`,
+    })
+  );
+  sky.frustumCulled = false;
+  scene.add(sky);
+
+  function makeSandTexture() {
+    const c = document.createElement('canvas');
+    c.width = 256;
+    c.height = 256;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#c8b286';
+    ctx.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 2600; i++) {
+      const v = 150 + Math.floor(Math.random() * 70);
+      ctx.fillStyle = `rgba(${v + 40}, ${v + 22}, ${v - 18}, ${0.05 + Math.random() * 0.16})`;
+      const s = Math.random() * 3 + 0.6;
+      ctx.fillRect(Math.random() * 256, Math.random() * 256, s, s);
+    }
+    for (let i = 0; i < 40; i++) {
+      ctx.fillStyle = `rgba(120, 100, 70, ${0.03 + Math.random() * 0.05})`;
+      ctx.beginPath();
+      ctx.ellipse(Math.random() * 256, Math.random() * 256, 12 + Math.random() * 26, 8 + Math.random() * 18, Math.random() * 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = THREE.RepeatWrapping;
+    t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(46, 46);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 2;
+    return t;
+  }
+
   // ground
   const ground = new THREE.Mesh(
     new THREE.PlaneGeometry(1400, 1400),
-    new THREE.MeshStandardMaterial({ color: 0xc9b48a, roughness: 1 })
+    new THREE.MeshStandardMaterial({ map: makeSandTexture(), color: 0xffffff, roughness: 1 })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
@@ -413,11 +476,71 @@ export function createWorld(scene) {
   }
   const dustGeo = new THREE.BufferGeometry();
   dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+  function makeDustSprite() {
+    const c = document.createElement('canvas');
+    c.width = 32;
+    c.height = 32;
+    const ctx = c.getContext('2d');
+    const g = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    g.addColorStop(0, 'rgba(255,248,232,0.95)');
+    g.addColorStop(0.5, 'rgba(240,226,198,0.35)');
+    g.addColorStop(1, 'rgba(240,226,198,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 32, 32);
+    return new THREE.CanvasTexture(c);
+  }
+
   const dust = new THREE.Points(
     dustGeo,
-    new THREE.PointsMaterial({ color: 0xe6d3ab, size: 0.5, transparent: true, opacity: 0.45, depthWrite: false })
+    new THREE.PointsMaterial({
+      color: 0xe6d3ab,
+      size: 0.42,
+      map: makeDustSprite(),
+      transparent: true,
+      opacity: 0.4,
+      depthWrite: false,
+      alphaTest: 0.02,
+    })
   );
   root.add(dust);
+
+  // ---- merge the static city into a handful of draw calls (mobile critical) ----
+  function mergeStatics() {
+    root.updateMatrixWorld(true);
+    const groups = new Map();
+    const originals = [];
+    root.traverse((obj) => {
+      if (!obj.isMesh || obj.isInstancedMesh) return;
+      const mat = obj.material;
+      if (!mat || Array.isArray(mat)) return;
+      let group = groups.get(mat.uuid);
+      if (!group) {
+        group = { mat, geos: [], cast: false, receive: false };
+        groups.set(mat.uuid, group);
+      }
+      let geo = obj.geometry.clone();
+      geo.applyMatrix4(obj.matrixWorld);
+      if (geo.index) geo = geo.toNonIndexed();
+      group.geos.push(geo);
+      group.cast = group.cast || obj.castShadow;
+      group.receive = group.receive || obj.receiveShadow;
+      originals.push(obj);
+    });
+    for (const obj of originals) {
+      if (obj.parent) obj.parent.remove(obj);
+    }
+    for (const { mat, geos, cast, receive } of groups.values()) {
+      if (!geos.length) continue;
+      const merged = geos.length === 1 ? geos[0] : mergeGeometries(geos, false);
+      if (!merged) continue;
+      const mesh = new THREE.Mesh(merged, mat);
+      mesh.castShadow = cast;
+      mesh.receiveShadow = receive;
+      root.add(mesh);
+    }
+  }
+
+  mergeStatics();
 
   // spawn points along the roads
   const spawnPoints = [];
@@ -455,6 +578,10 @@ export function createWorld(scene) {
     sun.target.updateMatrixWorld();
   }
 
+  function setShadows(on) {
+    sun.castShadow = on;
+  }
+
   function isInsideBuilding(x, z, pad = 0) {
     return colliders.some(
       (c) => x > c.minX - pad && x < c.maxX + pad && z > c.minZ - pad && z < c.maxZ + pad
@@ -468,6 +595,7 @@ export function createWorld(scene) {
     headingStart,
     update,
     isInsideBuilding,
+    setShadows,
     bounds: HALF,
   };
 }

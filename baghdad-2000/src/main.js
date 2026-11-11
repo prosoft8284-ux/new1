@@ -11,8 +11,9 @@ const REPAIR_COST = 45;
 
 // ---------- renderer / scene ----------
 const canvas = document.getElementById('game');
+const isCoarse = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isCoarse ? 1.4 : 1.8));
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -22,6 +23,33 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(62, window.innerWidth / window.innerHeight, 0.1, 900);
+
+// A tiny generated environment map gives the maroon paint and chrome real
+// reflections; without it PBR metal reads almost black.
+function makeEnvTexture() {
+  const c = document.createElement('canvas');
+  c.width = 64;
+  c.height = 32;
+  const ctx = c.getContext('2d');
+  const g = ctx.createLinearGradient(0, 0, 0, 32);
+  g.addColorStop(0, '#a9c0d4');
+  g.addColorStop(0.5, '#e6d0aa');
+  g.addColorStop(0.72, '#d9bd90');
+  g.addColorStop(1, '#7d6a4c');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 32);
+  ctx.fillStyle = 'rgba(255,244,214,0.95)';
+  ctx.beginPath();
+  ctx.arc(46, 11, 4.5, 0, Math.PI * 2);
+  ctx.fill();
+  const t = new THREE.CanvasTexture(c);
+  t.mapping = THREE.EquirectangularReflectionMapping;
+  t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromEquirectangular(makeEnvTexture()).texture;
+scene.environmentIntensity = 0.6;
 
 const world = createWorld(scene);
 const effects = createEffects(scene);
@@ -45,6 +73,7 @@ const game = {
   boosting: false,
   shake: 0,
   slowmo: 0,
+  timeScale: 1,
   crashCooldown: 0,
   spawnTimer: 0,
   dustTimer: 0,
@@ -124,13 +153,14 @@ const ui = createUI({
     startRun();
   },
   onTouch: (move, down) => handleTouch(move, down),
+  onPause: () => togglePause(),
   onMute: () => {
     const muted = audio.toggleMuted();
     ui.setMuted(muted);
   },
 });
 
-const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+const coarse = isCoarse;
 ui.showTouch(coarse);
 ui.setMuted(audio.isMuted());
 ui.showHud(false);
@@ -151,6 +181,7 @@ function startRun() {
   game.nitro = 1;
   game.boosting = false;
   game.slowmo = 0;
+  game.timeScale = 1;
   game.crashCooldown = 0;
   game.spawnTimer = 0.5;
   game.shake = 0;
@@ -438,16 +469,16 @@ function stepGameplay(dt) {
   const rightZ = -fwd.x;
 
   game.dustTimer -= dt;
-  if (game.dustTimer <= 0 && speedAbs > 3) {
-    game.dustTimer = 0.07;
+  if (game.dustTimer <= 0 && speedAbs > 4) {
+    game.dustTimer = 0.13;
     const base = tmpC.copy(car.state.pos).addScaledVector(fwd, -1.5);
-    effects.dustBurst(tmpD.set(base.x + rightX * 0.9, 0.1, base.z + rightZ * 0.9), 1, 0.5 + speedAbs * 0.03);
-    effects.dustBurst(tmpD.set(base.x - rightX * 0.9, 0.1, base.z - rightZ * 0.9), 1, 0.5 + speedAbs * 0.03);
+    const side = Math.random() < 0.5 ? 1 : -1;
+    effects.dustBurst(tmpD.set(base.x + rightX * 0.9 * side, 0.1, base.z + rightZ * 0.9 * side), 1, 0.4 + speedAbs * 0.02);
   }
 
   game.exhaustTimer -= dt;
   if (game.exhaustTimer <= 0 && (input.throttle || game.boosting)) {
-    game.exhaustTimer = 0.07;
+    game.exhaustTimer = 0.1;
     effects.exhaust(car.exhaustWorld(0, tmpE), game.boosting);
   }
 
@@ -489,6 +520,24 @@ function stepGameplay(dt) {
 let last = performance.now();
 const speedLinesTarget = { value: 0 };
 
+// Adaptive quality: if the device cannot hold a playable frame rate, drop
+// pixel ratio and shadows once rather than stuttering through the run.
+let fpsSmooth = 60;
+let qualityTimer = 0;
+let lowQuality = false;
+function trackPerformance(dt) {
+  fpsSmooth = fpsSmooth * 0.94 + (1 / Math.max(dt, 0.001)) * 0.06;
+  qualityTimer += dt;
+  if (lowQuality || qualityTimer < 5) return;
+  if (fpsSmooth < 30) {
+    lowQuality = true;
+    renderer.setPixelRatio(1);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    world.setShadows(false);
+    ui.message('کیفیت گرافیک کم شد تا بازی روان بماند', 'up');
+  }
+}
+
 function frame(now) {
   requestAnimationFrame(frame);
   const realDt = Math.min(0.05, Math.max(0.0001, (now - last) / 1000));
@@ -496,8 +545,10 @@ function frame(now) {
 
   readKeys();
 
-  const dt = realDt * (game.mode === 'playing' ? game.timeScale : 1);
+  const scale = Number.isFinite(game.timeScale) ? game.timeScale : 1;
+  const dt = realDt * (game.mode === 'playing' ? scale : 1);
   if (game.mode === 'playing') stepGameplay(dt);
+  if (game.mode === 'playing') trackPerformance(realDt);
 
   world.update(realDt, car.state.pos);
   effects.update(realDt, camera);
@@ -533,6 +584,27 @@ function frame(now) {
 }
 
 // ---------- misc ----------
+// Surface runtime errors on screen instead of a silent blank canvas.
+function showFatal(text) {
+  let box = document.getElementById('fatal');
+  if (!box) {
+    box = document.createElement('pre');
+    box.id = 'fatal';
+    box.style.cssText =
+      'position:fixed;left:0;right:0;bottom:0;z-index:9999;margin:0;padding:10px 12px;max-height:42vh;overflow:auto;' +
+      'background:rgba(60,10,10,.94);color:#ffd7d7;font:12px/1.6 monospace;white-space:pre-wrap;direction:ltr;text-align:left';
+    document.body.appendChild(box);
+  }
+  box.textContent = (box.textContent + '\n' + text).trim();
+}
+window.addEventListener('error', (e) => {
+  showFatal('ERR: ' + (e.message || e.error) + ' @ ' + (e.filename || '?') + ':' + (e.lineno || 0));
+});
+window.addEventListener('unhandledrejection', (e) => {
+  const r = e.reason;
+  showFatal('REJ: ' + ((r && (r.stack || r.message)) || r));
+});
+
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -542,6 +614,9 @@ window.addEventListener('resize', () => {
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && game.mode === 'playing') togglePause();
 });
+
+// Debug handle for headless checks (draw calls, fps, positions).
+window.__b2k = { scene, renderer, camera, car, game, world, zombies, get stats() { return stats; } };
 
 car.reset(world.carStart, world.headingStart, stats);
 camera.position.set(world.carStart.x, 5, world.carStart.z - 11);

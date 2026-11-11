@@ -684,3 +684,51 @@ kbd {
     display: none;
   }
 }
+
+/* touch devices: keep the HUD clear of the on-screen controls */
+@media (pointer: coarse) {
+  #hud {
+    padding-bottom: 116px;
+  }
+
+  .gauges {
+    width: min(236px, 44vw);
+    padding: 8px 10px;
+  }
+
+  .gauge-label {
+    font-size: 10px;
+  }
+
+  .speedo-value {
+    font-size: clamp(30px, 6vw, 44px);
+  }
+
+  #touch button {
+    width: 62px;
+    height: 62px;
+  }
+
+  #touch button.gas {
+    width: 78px;
+    height: 78px;
+  }
+
+  .stats {
+    padding: 6px 10px;
+    gap: 10px;
+  }
+}
+
+@media (pointer: coarse) and (orientation: landscape) {
+  #hud {
+    padding-bottom: 100px;
+  }
+}
+
+/* notch / rounded screen safety */
+#hud {
+  padding-top: max(14px, env(safe-area-inset-top));
+  padding-left: max(clamp(12px, 2.4vw, 28px), env(safe-area-inset-left));
+  padding-right: max(clamp(12px, 2.4vw, 28px), env(safe-area-inset-right));
+}

@@ -8,12 +8,12 @@ export function createCar(scene) {
   root.add(body);
   scene.add(root);
 
-  const paint = new THREE.MeshStandardMaterial({ color: PAINT, metalness: 0.62, roughness: 0.32 });
-  const paintDark = new THREE.MeshStandardMaterial({ color: 0x4a0c18, metalness: 0.5, roughness: 0.45 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x191715, metalness: 0.25, roughness: 0.85 });
-  const chrome = new THREE.MeshStandardMaterial({ color: 0xd3d8dc, metalness: 0.98, roughness: 0.18 });
-  const glass = new THREE.MeshStandardMaterial({ color: 0x16232a, metalness: 0.6, roughness: 0.12, transparent: true, opacity: 0.78 });
-  const headMat = new THREE.MeshStandardMaterial({ color: 0xfff6da, emissive: 0xffe6ab, emissiveIntensity: 2.4 });
+  const paint = new THREE.MeshStandardMaterial({ color: PAINT, metalness: 0.7, roughness: 0.28 });
+  const paintDark = new THREE.MeshStandardMaterial({ color: 0x4a0c18, metalness: 0.55, roughness: 0.42 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x191715, metalness: 0.3, roughness: 0.8 });
+  const chrome = new THREE.MeshStandardMaterial({ color: 0xd8dde1, metalness: 1, roughness: 0.14 });
+  const glass = new THREE.MeshStandardMaterial({ color: 0x101b22, metalness: 0.85, roughness: 0.06, transparent: true, opacity: 0.82 });
+  const headMat = new THREE.MeshStandardMaterial({ color: 0xfff6da, emissive: 0xffe6ab, emissiveIntensity: 2.6 });
   const tailMat = new THREE.MeshStandardMaterial({ color: 0x4a0a0a, emissive: 0xff2a14, emissiveIntensity: 0.7 });
   const flameMat = new THREE.MeshBasicMaterial({ color: 0x8ad8ff, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
   const flameCoreMat = new THREE.MeshBasicMaterial({ color: 0xfff0c0, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false });
@@ -27,57 +27,71 @@ export function createCar(scene) {
     return m;
   }
 
-  // ---- body shell (period BMW proportions) ----
-  box(1.88, 0.46, 4.18, paint, 0, 0.68, 0);          // main hull
-  box(1.94, 0.24, 3.5, paintDark, 0, 0.42, 0);        // sills
-  box(1.8, 0.16, 1.24, paint, 0, 0.9, 1.42);          // hood
-  box(1.8, 0.14, 1.0, paint, 0, 0.9, -1.58);          // boot lid
-  box(1.62, 0.54, 2.02, paint, 0, 1.27, -0.1);        // cabin
-  box(1.5, 0.12, 1.9, paintDark, 0, 1.56, -0.16);     // roof
-  box(1.66, 0.1, 0.26, chrome, 0, 0.94, 2.06);        // hood trim
+  // ---- low, wide E30-style shell ----
+  box(1.8, 0.46, 4.32, paint, 0, 0.68, 0);            // main hull
+  box(1.86, 0.18, 3.5, paintDark, 0, 0.47, 0);        // sills / valance
+  box(1.72, 0.1, 1.4, paint, 0, 0.93, 1.42);          // hood
+  box(1.72, 0.1, 1.15, paint, 0, 0.93, -1.6);         // boot
+  box(1.78, 0.06, 0.14, chrome, 0, 0.99, 1.98);       // hood lip
+  // greenhouse: narrower and lower than the hull
+  box(1.46, 0.42, 1.9, paint, 0, 1.2, -0.16);         // cabin
+  box(1.38, 0.06, 1.78, paint, 0, 1.42, -0.2);        // roof
   // glass
-  const windshield = box(1.46, 0.46, 0.1, glass, 0, 1.28, 0.93);
-  windshield.rotation.x = -0.32;
-  const rearGlass = box(1.44, 0.42, 0.1, glass, 0, 1.29, -1.13);
-  rearGlass.rotation.x = 0.3;
-  box(1.5, 0.36, 1.7, glass, 0, 1.3, -0.14).scale.set(1, 1, 1);
-  // bumpers + grille
-  box(1.98, 0.2, 0.16, chrome, 0, 0.5, 2.14);
-  box(1.98, 0.2, 0.16, chrome, 0, 0.5, -2.14);
-  box(1.24, 0.24, 0.1, dark, 0, 0.82, 2.14);
-  box(0.34, 0.2, 0.06, chrome, -0.3, 0.82, 2.19);
-  box(0.34, 0.2, 0.06, chrome, 0.3, 0.82, 2.19);
+  const windshield = box(1.3, 0.36, 0.06, glass, 0, 1.22, 0.79);
+  windshield.rotation.x = -0.34;
+  const rearGlass = box(1.26, 0.32, 0.06, glass, 0, 1.22, -1.09);
+  rearGlass.rotation.x = 0.32;
+  box(0.05, 0.28, 1.62, glass, -0.74, 1.2, -0.18);    // side glass
+  box(0.05, 0.28, 1.62, glass, 0.74, 1.2, -0.18);
+  // fender flares
+  box(0.1, 0.3, 1.02, paintDark, -0.9, 0.52, 1.42);
+  box(0.1, 0.3, 1.02, paintDark, 0.9, 0.52, 1.42);
+  box(0.1, 0.3, 1.06, paintDark, -0.9, 0.52, -1.44);
+  box(0.1, 0.3, 1.06, paintDark, 0.9, 0.52, -1.44);
+  // bumpers, grille, kidneys
+  box(1.9, 0.16, 0.14, chrome, 0, 0.52, 2.19);
+  box(1.9, 0.16, 0.14, chrome, 0, 0.52, -2.19);
+  box(1.18, 0.2, 0.08, dark, 0, 0.8, 2.2);
+  box(0.32, 0.17, 0.05, chrome, -0.28, 0.8, 2.24);
+  box(0.32, 0.17, 0.05, chrome, 0.28, 0.8, 2.24);
   // lights
-  box(0.46, 0.18, 0.07, headMat, -0.62, 0.84, 2.13);
-  box(0.46, 0.18, 0.07, headMat, 0.62, 0.84, 2.13);
-  const tailL = box(0.5, 0.16, 0.06, tailMat, -0.6, 0.86, -2.13);
-  const tailR = box(0.5, 0.16, 0.06, tailMat, 0.6, 0.86, -2.13);
-  // side glass so the cabin reads as windows from outside
-  box(0.04, 0.34, 1.62, glass, -0.82, 1.28, -0.16);
-  box(0.04, 0.34, 1.62, glass, 0.82, 1.28, -0.16);
-  // mirrors + door lines + plate
-  box(0.16, 0.1, 0.26, paint, -0.98, 1.16, 0.78);
-  box(0.16, 0.1, 0.26, paint, 0.98, 1.16, 0.78);
-  box(0.62, 0.14, 0.05, chrome, 0, 0.56, 2.2);
-  box(0.62, 0.14, 0.05, chrome, 0, 0.56, -2.2);
+  box(0.42, 0.15, 0.06, headMat, -0.6, 0.82, 2.2);
+  box(0.42, 0.15, 0.06, headMat, 0.6, 0.82, 2.2);
+  const tailL = box(0.46, 0.13, 0.05, tailMat, -0.58, 0.84, -2.2);
+  const tailR = box(0.46, 0.13, 0.05, tailMat, 0.58, 0.84, -2.2);
+  box(0.24, 0.1, 0.04, new THREE.MeshStandardMaterial({ color: 0xd8d2c0, emissive: 0xcfc9b6, emissiveIntensity: 0.5 }), 0, 0.84, -2.21);
+  // trim, mirrors, plates
+  box(1.46, 0.05, 0.05, chrome, 0, 1.02, -1.0);
+  box(0.14, 0.08, 0.2, paintDark, -0.86, 1.06, 0.62);
+  box(0.14, 0.08, 0.2, paintDark, 0.86, 1.06, 0.62);
+  box(0.56, 0.12, 0.04, chrome, 0, 0.58, 2.26);
+  box(0.56, 0.12, 0.04, chrome, 0, 0.58, -2.26);
+  box(0.1, 0.08, 0.1, new THREE.MeshStandardMaterial({ color: 0xe8c46a, metalness: 1, roughness: 0.25 }), 0.55, 0.9, 2.24);
 
   // ---- wheels ----
   const wheels = [];
   const frontPivots = [];
-  const tireGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.3, 18);
-  const hubGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.32, 12);
-  const tireMat = new THREE.MeshStandardMaterial({ color: 0x141312, roughness: 0.95, metalness: 0.05 });
-  const hubMat = new THREE.MeshStandardMaterial({ color: 0xb9bec2, metalness: 0.9, roughness: 0.28 });
+  const tireGeo = new THREE.CylinderGeometry(0.37, 0.37, 0.28, 18);
+  const hubGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.3, 14);
+  const rimGeo = new THREE.BoxGeometry(0.3, 0.2, 0.05);
+  const tireMat = new THREE.MeshStandardMaterial({ color: 0x131211, roughness: 0.95, metalness: 0.05 });
+  const hubMat = new THREE.MeshStandardMaterial({ color: 0xc3c8cc, metalness: 0.95, roughness: 0.25 });
 
   function makeWheel(x, z, isFront) {
     const pivot = new THREE.Group();
-    pivot.position.set(x, 0.38, z);
+    pivot.position.set(x, 0.37, z);
     const spin = new THREE.Group();
     const tire = new THREE.Mesh(tireGeo, tireMat);
     tire.rotation.z = Math.PI / 2;
     tire.castShadow = true;
     const hub = new THREE.Mesh(hubGeo, hubMat);
     hub.rotation.z = Math.PI / 2;
+    for (let s = 0; s < 4; s++) {
+      const spoke = new THREE.Mesh(rimGeo, hubMat);
+      spoke.rotation.x = (s / 4) * Math.PI;
+      spoke.position.x = x > 0 ? 0.16 : -0.16;
+      spin.add(spoke);
+    }
     spin.add(tire);
     spin.add(hub);
     pivot.add(spin);
@@ -85,29 +99,29 @@ export function createCar(scene) {
     wheels.push(spin);
     if (isFront) frontPivots.push(pivot);
   }
-  makeWheel(-0.94, 1.4, true);
-  makeWheel(0.94, 1.4, true);
-  makeWheel(-0.94, -1.44, false);
-  makeWheel(0.94, -1.44, false);
+  makeWheel(-0.9, 1.4, true);
+  makeWheel(0.9, 1.4, true);
+  makeWheel(-0.9, -1.46, false);
+  makeWheel(0.9, -1.46, false);
 
   // ---- headlights ----
   function addBeam(x) {
-    const beam = new THREE.SpotLight(0xffe9bd, 2.6, 52, Math.PI / 5.2, 0.6, 1.1);
-    beam.position.set(x, 0.88, 2.1);
+    const beam = new THREE.SpotLight(0xffe9bd, 2.4, 52, Math.PI / 5.2, 0.6, 1.1);
+    beam.position.set(x, 0.86, 2.16);
     const target = new THREE.Object3D();
-    target.position.set(x * 1.6, 0.1, 16);
+    target.position.set(x * 1.7, 0.05, 16);
     body.add(target);
     beam.target = target;
     body.add(beam);
   }
-  addBeam(-0.62);
-  addBeam(0.62);
+  addBeam(-0.6);
+  addBeam(0.6);
 
   // ---- nitro flames ----
   const flames = [];
   [-0.42, 0.42].forEach((x) => {
     const holder = new THREE.Group();
-    holder.position.set(x, 0.56, -2.26);
+    holder.position.set(x, 0.5, -2.3);
     const outer = new THREE.Mesh(new THREE.ConeGeometry(0.17, 1.15, 10, 1, true), flameMat);
     outer.rotation.x = -Math.PI / 2;
     const core = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.62, 8, 1, true), flameCoreMat);
@@ -119,9 +133,9 @@ export function createCar(scene) {
   });
 
   const exhaustL = new THREE.Object3D();
-  exhaustL.position.set(-0.45, 0.45, -2.2);
+  exhaustL.position.set(-0.45, 0.42, -2.24);
   const exhaustR = new THREE.Object3D();
-  exhaustR.position.set(0.45, 0.45, -2.2);
+  exhaustR.position.set(0.45, 0.42, -2.24);
   body.add(exhaustL, exhaustR);
 
   const state = {
@@ -252,9 +266,9 @@ export function createCar(scene) {
       body.position.y = Math.sin(state.time * 22) * Math.min(0.012, Math.abs(state.speed) * 0.0005);
 
       // wheels
-      state.wheelSpin -= (state.speed * dt) / 0.38;
+      state.wheelSpin -= (state.speed * dt) / 0.37;
       for (const w of wheels) w.rotation.x = state.wheelSpin;
-      const steerAngle = input.steer * 0.45;
+      const steerAngle = input.steer * 0.42;
       for (const p of frontPivots) p.rotation.y += (-steerAngle - p.rotation.y) * Math.min(1, dt * 12);
 
       // brake lights

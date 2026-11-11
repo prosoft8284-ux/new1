@@ -6,8 +6,10 @@ function el(id) {
   return document.getElementById(id);
 }
 
+// Latin digits: they render identically on every Android font, unlike Persian
+// numerals whose zero is a dot and reads like a missing value on the HUD.
 function fa(n) {
-  return String(n).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+  return String(n);
 }
 
 export function createUI(handlers) {
@@ -43,6 +45,7 @@ export function createUI(handlers) {
     goKills: el('go-kills'),
     goBest: el('go-best'),
     btnMute: el('btn-mute'),
+    btnPause: el('btn-pause'),
     touch: el('touch'),
     boostHint: el('hud-boost'),
   };
@@ -67,6 +70,7 @@ export function createUI(handlers) {
   el('btn-restart')?.addEventListener('click', () => handlers.onRestart?.());
   el('btn-go-garage')?.addEventListener('click', () => handlers.onGarage?.());
   dom.btnMute?.addEventListener('click', () => handlers.onMute?.());
+  dom.btnPause?.addEventListener('click', () => handlers.onPause?.());
 
   const touchButtons = document.querySelectorAll('#touch [data-touch]');
   touchButtons.forEach((btn) => {
