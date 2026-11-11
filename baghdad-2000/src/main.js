@@ -219,7 +219,7 @@ function startRun() {
   ui.hideGarage();
   ui.hideGameOver();
   ui.showHud(true);
-  ui.message('موج ۱ — گاز بده', 'up');
+  ui.message('موج 1 — گاز بده', 'up');
   audio.start();
 }
 
