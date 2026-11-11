@@ -35,11 +35,11 @@ const LEG_GEO = mergeGeometries([
 ]);
 
 const VARIANTS = {
-  walker: { scale: 1, speedMin: 1.0, speedMax: 1.8, points: 1, killFactor: 1, hit: 1, shirt: 0x6b5b42, skin: 0x8b9a6b, pants: 0x4a4235 },
-  runner: { scale: 0.92, speedMin: 3.1, speedMax: 4.3, points: 2, killFactor: 0.85, hit: 0.8, shirt: 0x8c3a33, skin: 0x9aa47a, pants: 0x33302b },
-  brute: { scale: 1.5, speedMin: 0.8, speedMax: 1.35, points: 3, killFactor: 1.55, hit: 1.7, shirt: 0x3f4650, skin: 0x767f5c, pants: 0x2a2723 },
-  crawler: { scale: 0.85, speedMin: 2.4, speedMax: 3.2, points: 2, killFactor: 0.8, hit: 0.6, shirt: 0x5a5344, skin: 0x93a075, pants: 0x3b3630 },
-  screamer: { scale: 1.05, speedMin: 1.4, speedMax: 2.0, points: 2, killFactor: 1, hit: 1, shirt: 0xb9b2a2, skin: 0xa8b18a, pants: 0x4d463c },
+  walker: { scale: 1, speedMin: 1.35, speedMax: 2.2, points: 1, killFactor: 1, hit: 1, shirt: 0x6b5b42, skin: 0x8b9a6b, pants: 0x4a4235 },
+  runner: { scale: 0.92, speedMin: 3.7, speedMax: 5.0, points: 2, killFactor: 0.85, hit: 0.8, shirt: 0x8c3a33, skin: 0x9aa47a, pants: 0x33302b },
+  brute: { scale: 1.5, speedMin: 1.05, speedMax: 1.7, points: 3, killFactor: 1.55, hit: 1.7, shirt: 0x3f4650, skin: 0x767f5c, pants: 0x2a2723 },
+  crawler: { scale: 0.85, speedMin: 2.9, speedMax: 3.8, points: 2, killFactor: 0.8, hit: 0.6, shirt: 0x5a5344, skin: 0x93a075, pants: 0x3b3630 },
+  screamer: { scale: 1.05, speedMin: 1.8, speedMax: 2.5, points: 2, killFactor: 1, hit: 1, shirt: 0xb9b2a2, skin: 0xa8b18a, pants: 0x4d463c },
 };
 
 const rootDummy = new THREE.Object3D();
@@ -58,6 +58,9 @@ export class ZombieManager {
     this.zombies = [];
     this.active = 0;
     this.time = 0;
+    // set per run from the difficulty preset
+    this.speedMul = 1;
+    this.chaseRange = 70;
 
     const make = (geo, castShadow = true) => {
       const mesh = new THREE.InstancedMesh(
@@ -280,10 +283,12 @@ export class ZombieManager {
       const dist = Math.hypot(dx, dz);
       let moving = false;
 
-      if (dist < 34 && dist > 0.01) {
+      if (dist < this.chaseRange && dist > 0.01) {
+        // far away they shamble, close in they commit: you cannot idle safely.
+        const urgency = dist < 34 ? 1 : 0.5;
+        const chase = (zb.type === 'runner' ? 1.2 : zb.type === 'crawler' ? 1.1 : 1) * this.speedMul * urgency;
         zb.heading = Math.atan2(dx, dz);
         moving = true;
-        const chase = zb.type === 'runner' ? 1.2 : zb.type === 'crawler' ? 1.1 : 1;
         zb.pos.x += (dx / dist) * zb.speed * chase * dt;
         zb.pos.z += (dz / dist) * zb.speed * chase * dt;
       }

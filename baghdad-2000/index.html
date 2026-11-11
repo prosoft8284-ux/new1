@@ -23,33 +23,39 @@
         <div class="panel stats">
           <div class="stat">
             <span class="label">امتیاز</span>
-            <strong id="hud-score">۰</strong>
+            <strong id="hud-score">0</strong>
           </div>
           <div class="stat">
             <span class="label">زامبی</span>
-            <strong id="hud-kills">۰</strong>
+            <strong id="hud-kills">0</strong>
           </div>
           <div class="stat">
             <span class="label">رکورد</span>
-            <strong id="hud-best">۰</strong>
+            <strong id="hud-best">0</strong>
           </div>
         </div>
 
         <div id="hud-combo" class="combo-wrap">
-          <div class="combo-x" id="hud-combo-mult">×۱</div>
+          <div class="combo-x" id="hud-combo-mult">×1</div>
           <div class="combo-bar"><i id="hud-combo-bar"></i></div>
         </div>
 
-        <button id="btn-mute" class="icon-btn" title="صدا" aria-label="صدا">🔊</button>
-        <button id="btn-pause" class="icon-btn" title="توقف" aria-label="توقف">⏸</button>
+        <div class="hud-actions">
+          <button id="btn-garage" class="icon-btn" title="تعمیرگاه" aria-label="تعمیرگاه">🔧</button>
+          <button id="btn-mute" class="icon-btn" title="صدا" aria-label="صدا">🔊</button>
+          <button id="btn-pause" class="icon-btn" title="توقف" aria-label="توقف">⏸</button>
+        </div>
       </div>
 
-      <div id="hud-rampage" class="rampage-badge hidden">دیوانه‌وار!</div>
+      <div class="hud-mid">
+        <div id="hud-wave" class="wave-badge">موج ۱</div>
+        <div id="hud-rampage" class="rampage-badge hidden">دیوانه‌وار!</div>
+      </div>
 
       <div class="hud-bottom">
         <div class="panel gauges">
           <div class="gauge-label">
-            <span>سلامت</span><span id="hud-health-text">۱۰۰</span>
+            <span>سلامت</span><span id="hud-health-text">100</span>
           </div>
           <div class="bar health"><i id="hud-health-fill"></i></div>
 
@@ -60,7 +66,7 @@
         </div>
 
         <div class="speedo">
-          <div class="speedo-value" id="hud-speed">۰</div>
+          <div class="speedo-value" id="hud-speed">0</div>
           <div class="speedo-unit">km/h</div>
         </div>
       </div>
@@ -68,65 +74,86 @@
       <div id="msg" class="msg"></div>
     </section>
 
+    <!-- main menu -->
     <div id="start" class="screen">
       <div class="screen-card">
         <p class="kicker">العراق · ۲۰۰۰</p>
         <h1>بغداد ۲۰۰۰</h1>
         <h2>جاده‌ی زامبی</h2>
-        <p class="lead">
-          BMW زرشکی قدیمی، شهری خاک‌گرفته و زامبی‌هایی که دنبال تو می‌آیند. گاز بده، زیرشان بگیر،
-          امتیاز جمع کن و ماشین را تا دندان مسلح کن.
-        </p>
-        <div class="key-grid">
-          <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>رانندگی</span></div>
-          <div><kbd>Space</kbd><span>دریفت / ترمز دستی</span></div>
-          <div><kbd>Shift</kbd><span>نیترو</span></div>
-          <div><kbd>G</kbd><span>تعمیرگاه</span></div>
-          <div><kbd>M</kbd><span>صدا</span></div>
-          <div><kbd>Esc</kbd><span>توقف</span></div>
+
+        <div class="menu-stats">
+          <div><span>رکورد</span><strong id="start-best">0</strong></div>
+          <div><span>کل کشته‌ها</span><strong id="start-kills">0</strong></div>
         </div>
+
+        <p class="lead">گاز بده، موج‌ها را بشکاف و تا وقتی ماشین نفس دارد زامبی‌ها را زیر بگیر.</p>
+
+        <div class="diff-block">
+          <span class="diff-title">سختی</span>
+          <div class="diff-row" id="difficulty">
+            <button class="diff-btn" data-diff="easy">آرام</button>
+            <button class="diff-btn active" data-diff="normal">معمولی</button>
+            <button class="diff-btn" data-diff="hard">جهنمی</button>
+          </div>
+          <p class="diff-hint" id="diff-hint">زامبی‌ها سریع می‌رسند؛ سرعتت سلاح توست.</p>
+        </div>
+
         <button id="btn-start" class="big-btn">سوار شو</button>
+        <div class="menu-row">
+          <button id="btn-menu-garage" class="big-btn ghost">تعمیرگاه</button>
+          <button id="btn-menu-sound" class="big-btn ghost">صدا: روشن</button>
+        </div>
+        <p class="menu-foot">کلیدها: W A S D · Space دریفت · Shift نیترو · G تعمیرگاه · Esc توقف</p>
       </div>
     </div>
 
+    <!-- garage -->
     <div id="garage" class="screen hidden">
       <div class="screen-card wide">
         <header class="garage-head">
           <h2>تعمیرگاه</h2>
           <div class="garage-meta">
-            <span>امتیاز: <strong id="garage-points">۰</strong></span>
-            <span>سطح کل: <strong id="garage-levels">۰/۲۵</strong></span>
+            <span>امتیاز: <strong id="garage-points">0</strong></span>
+            <span>سطح کل: <strong id="garage-levels">0/25</strong></span>
           </div>
         </header>
         <div id="garage-list" class="garage-list"></div>
         <footer class="garage-foot">
-          <button id="btn-repair" class="big-btn ghost">
-            تعمیر کامل (<span id="repair-cost">۴۵</span>)
-          </button>
-          <button id="btn-close-garage" class="big-btn">برگرد به جاده</button>
+          <button id="btn-repair" class="big-btn ghost">تعمیر کامل (<span id="repair-cost">60</span>)</button>
+          <button id="btn-close-garage" class="big-btn">بازگشت</button>
         </footer>
       </div>
     </div>
 
+    <!-- pause -->
     <div id="pause" class="screen hidden">
       <div class="screen-card small">
         <h2>توقف</h2>
-        <p>برای ادامه دکمه را بزن یا <kbd>Esc</kbd>.</p>
+        <p class="menu-sub">نفس بگیر. هر وقت آماده بودی برگرد.</p>
         <button id="btn-resume" class="big-btn">ادامه</button>
-        <button id="btn-pause-garage" class="big-btn ghost">تعمیرگاه</button>
+        <div class="menu-row">
+          <button id="btn-pause-garage" class="big-btn ghost">تعمیرگاه</button>
+          <button id="btn-pause-restart" class="big-btn ghost">شروع دوباره</button>
+        </div>
+        <button id="btn-quit" class="big-btn ghost">منوی اصلی</button>
       </div>
     </div>
 
+    <!-- game over -->
     <div id="gameover" class="screen hidden">
       <div class="screen-card small">
         <h2>ماشین از کار افتاد</h2>
         <div class="go-stats">
-          <div><span>امتیاز این دور</span><strong id="go-score">۰</strong></div>
-          <div><span>زامبی کشته‌شده</span><strong id="go-kills">۰</strong></div>
-          <div><span>رکورد</span><strong id="go-best">۰</strong></div>
+          <div><span>امتیاز این دور</span><strong id="go-score">0</strong></div>
+          <div><span>زامبی کشته‌شده</span><strong id="go-kills">0</strong></div>
+          <div><span>رکورد</span><strong id="go-best">0</strong></div>
+          <div><span>رسیده به موج</span><strong id="go-wave">1</strong></div>
         </div>
         <button id="btn-restart" class="big-btn">دوباره</button>
-        <button id="btn-go-garage" class="big-btn ghost">تعمیرگاه</button>
+        <div class="menu-row">
+          <button id="btn-go-garage" class="big-btn ghost">تعمیرگاه</button>
+          <button id="btn-go-menu" class="big-btn ghost">منوی اصلی</button>
+        </div>
       </div>
     </div>
 
@@ -137,6 +164,7 @@
       </div>
       <div class="touch-side">
         <button data-touch="boost" class="boost" aria-label="نیترو">🔥</button>
+        <button data-touch="drift" class="drift" aria-label="دریفت">⤵</button>
         <button data-touch="brake" aria-label="ترمز">⏹</button>
         <button data-touch="gas" class="gas" aria-label="گاز">▲</button>
       </div>

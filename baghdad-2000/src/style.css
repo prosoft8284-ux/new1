@@ -732,3 +732,133 @@ kbd {
   padding-left: max(clamp(12px, 2.4vw, 28px), env(safe-area-inset-left));
   padding-right: max(clamp(12px, 2.4vw, 28px), env(safe-area-inset-right));
 }
+
+/* ---------- revised menus ---------- */
+.hud-actions {
+  display: flex;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+
+.hud-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.wave-badge {
+  padding: 5px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ffe9bf;
+  background: rgba(20, 16, 10, 0.72);
+  border: 1px solid rgba(240, 168, 60, 0.4);
+}
+
+.menu-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 6px 0 14px;
+}
+
+.menu-stats div {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.menu-stats span {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.menu-stats strong {
+  font-size: 20px;
+  color: var(--amber-soft);
+}
+
+.diff-block {
+  margin: 0 0 16px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.diff-title {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.diff-row {
+  display: flex;
+  gap: 8px;
+}
+
+.diff-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--sand);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.diff-btn.active {
+  background: linear-gradient(180deg, #ffd27a, #ee9b2c);
+  border-color: transparent;
+  color: #241403;
+  box-shadow: 0 8px 20px rgba(238, 155, 44, 0.28);
+}
+
+.diff-hint {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  opacity: 0.75;
+}
+
+.menu-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.menu-row .big-btn {
+  flex: 1 1 140px;
+}
+
+.menu-foot {
+  margin: 14px 0 0;
+  font-size: 11px;
+  line-height: 1.8;
+  opacity: 0.55;
+}
+
+.menu-sub {
+  margin: 0 0 14px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+#touch button.drift {
+  border-color: rgba(255, 210, 140, 0.45);
+  font-size: 24px;
+}

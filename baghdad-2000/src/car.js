@@ -164,15 +164,16 @@ export function createCar(scene) {
     const ti = u.tires || 0;
     return {
       maxSpeed: 31 + e * 3.3,
-      accel: 12.5 + e * 1.75,
+      accel: 12 + e * 1.7,
       brake: 24 + ti * 1.2,
       turn: 1.62 + ti * 0.11,
       grip: 6.2 + ti * 0.6,
-      killSpeed: Math.max(2.1, 6.4 - ram * 0.85),
-      killRadius: 2.35 + sp * 0.22,
-      zombieDamage: Math.max(2, 7.5 - ch * 0.95),
-      pointsPerKill: 13 + sp * 2.4,
-      maxHealth: 100 + ch * 32,
+      // You must actually carry speed to flatten a walker; brutes need more.
+      killSpeed: Math.max(2.6, 7.6 - ram * 0.9),
+      killRadius: 2.05 + sp * 0.2,
+      zombieDamage: Math.max(3, 9.5 - ch * 1.0),
+      pointsPerKill: 10 + sp * 2,
+      maxHealth: 100 + ch * 28,
     };
   }
 

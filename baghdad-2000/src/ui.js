@@ -1,14 +1,18 @@
 import { UPGRADES, MAX_LEVEL, upgradeCost, totalUpgradeLevels } from './upgrades.js';
 
-const REPAIR_COST = 45;
+const REPAIR_COST = 60;
+
+const DIFFICULTY_HINTS = {
+  easy: 'زامبی‌ها کندتر و کم‌آسیب‌ترند؛ برای گرم‌کردن و لذت بردن.',
+  normal: 'زامبی‌ها سریع می‌رسند؛ سرعتت سلاح توست.',
+  hard: 'موج‌های بی‌رحم، آسیب زیاد و زامبی‌های پیگیر. فقط برای حرفه‌ای‌ها.',
+};
 
 function el(id) {
   return document.getElementById(id);
 }
 
-// Latin digits: they render identically on every Android font, unlike Persian
-// numerals whose zero is a dot and reads like a missing value on the HUD.
-function fa(n) {
+function num(n) {
   return String(n);
 }
 
@@ -21,6 +25,7 @@ export function createUI(handlers) {
     combo: el('hud-combo'),
     comboMult: el('hud-combo-mult'),
     comboBar: el('hud-combo-bar'),
+    wave: el('hud-wave'),
     speed: el('hud-speed'),
     healthFill: el('hud-health-fill'),
     healthBar: el('hud-health-fill')?.parentElement,
@@ -33,19 +38,24 @@ export function createUI(handlers) {
     flash: el('flash'),
     lines: el('speedlines'),
     start: el('start'),
+    startBest: el('start-best'),
+    startKills: el('start-kills'),
+    diffHint: el('diff-hint'),
     garage: el('garage'),
     garageList: el('garage-list'),
     garagePoints: el('garage-points'),
     garageLevels: el('garage-levels'),
     btnRepair: el('btn-repair'),
     repairCost: el('repair-cost'),
+    btnCloseGarage: el('btn-close-garage'),
     pause: el('pause'),
     gameover: el('gameover'),
     goScore: el('go-score'),
     goKills: el('go-kills'),
     goBest: el('go-best'),
+    goWave: el('go-wave'),
     btnMute: el('btn-mute'),
-    btnPause: el('btn-pause'),
+    btnMenuSound: el('btn-menu-sound'),
     touch: el('touch'),
     boostHint: el('hud-boost'),
   };
@@ -60,20 +70,32 @@ export function createUI(handlers) {
 
   let msgTimer = 0;
   let flashTimer = 0;
+  let difficulty = 'normal';
 
-  // ---- buttons ----
   el('btn-start')?.addEventListener('click', () => handlers.onStart?.());
   el('btn-close-garage')?.addEventListener('click', () => handlers.onCloseGarage?.());
   el('btn-repair')?.addEventListener('click', () => handlers.onRepair?.());
   el('btn-resume')?.addEventListener('click', () => handlers.onResume?.());
   el('btn-pause-garage')?.addEventListener('click', () => handlers.onGarage?.());
+  el('btn-pause-restart')?.addEventListener('click', () => handlers.onRestart?.());
+  el('btn-quit')?.addEventListener('click', () => handlers.onMenu?.());
   el('btn-restart')?.addEventListener('click', () => handlers.onRestart?.());
   el('btn-go-garage')?.addEventListener('click', () => handlers.onGarage?.());
+  el('btn-go-menu')?.addEventListener('click', () => handlers.onMenu?.());
+  el('btn-menu-garage')?.addEventListener('click', () => handlers.onGarage?.());
+  el('btn-garage')?.addEventListener('click', () => handlers.onGarage?.());
   dom.btnMute?.addEventListener('click', () => handlers.onMute?.());
-  dom.btnPause?.addEventListener('click', () => handlers.onPause?.());
+  dom.btnMenuSound?.addEventListener('click', () => handlers.onMute?.());
+  el('btn-pause')?.addEventListener('click', () => handlers.onPause?.());
 
-  const touchButtons = document.querySelectorAll('#touch [data-touch]');
-  touchButtons.forEach((btn) => {
+  document.querySelectorAll('#difficulty .diff-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const diff = btn.getAttribute('data-diff');
+      if (diff) handlers.onDifficulty?.(diff);
+    });
+  });
+
+  document.querySelectorAll('#touch [data-touch]').forEach((btn) => {
     const move = btn.getAttribute('data-touch');
     const down = (e) => {
       e.preventDefault();
@@ -93,11 +115,12 @@ export function createUI(handlers) {
 
   return {
     update(s) {
-      setText(dom.score, fa(s.points));
-      setText(dom.kills, fa(s.kills));
-      setText(dom.best, fa(s.best));
-      setText(dom.speed, fa(Math.round(s.speedKmh)));
-      setText(dom.healthText, fa(Math.round(s.health)));
+      setText(dom.score, num(s.points));
+      setText(dom.kills, num(s.kills));
+      setText(dom.best, num(s.best));
+      setText(dom.speed, num(Math.round(s.speedKmh)));
+      setText(dom.healthText, num(Math.round(s.health)));
+      setText(dom.wave, 'موج ' + num(s.wave || 1));
 
       if (dom.healthFill) {
         const pct = Math.max(0, Math.min(100, (s.health / s.maxHealth) * 100));
@@ -110,10 +133,9 @@ export function createUI(handlers) {
         dom.nitroBar?.classList.toggle('ready', pct > 25);
       }
 
-      const comboOn = s.combo > 1;
-      dom.combo?.classList.toggle('on', comboOn);
-      if (comboOn) {
-        setText(dom.comboMult, '×' + fa(s.combo));
+      dom.combo?.classList.toggle('on', s.combo > 1);
+      if (s.combo > 1) {
+        setText(dom.comboMult, '×' + num(s.combo));
         if (dom.comboBar) dom.comboBar.style.width = Math.round(s.comboTime * 100) + '%';
       }
 
@@ -170,10 +192,28 @@ export function createUI(handlers) {
       dom.pause?.classList.toggle('hidden', !show);
     },
 
+    refreshMenu(progress) {
+      setText(dom.startBest, num(progress.best));
+      setText(dom.startKills, num(progress.kills));
+    },
+
+    setDifficulty(diff) {
+      difficulty = diff;
+      document.querySelectorAll('#difficulty .diff-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.getAttribute('data-diff') === diff);
+      });
+      if (dom.diffHint) dom.diffHint.textContent = DIFFICULTY_HINTS[diff] || DIFFICULTY_HINTS.normal;
+    },
+
+    getDifficulty() {
+      return difficulty;
+    },
+
     showGameOver(data) {
-      setText(dom.goScore, fa(data.points));
-      setText(dom.goKills, fa(data.kills));
-      setText(dom.goBest, fa(data.best));
+      setText(dom.goScore, num(data.points));
+      setText(dom.goKills, num(data.kills));
+      setText(dom.goBest, num(data.best));
+      setText(dom.goWave, num(data.wave || 1));
       dom.gameover?.classList.remove('hidden');
     },
 
@@ -181,9 +221,12 @@ export function createUI(handlers) {
       dom.gameover?.classList.add('hidden');
     },
 
-    showGarage(progress, health, maxHealth) {
-      if (dom.garagePoints) dom.garagePoints.textContent = fa(progress.points);
-      if (dom.garageLevels) dom.garageLevels.textContent = fa(totalUpgradeLevels(progress.upgrades)) + '/' + fa(UPGRADES.length * MAX_LEVEL);
+    showGarage(progress, health, maxHealth, backLabel = 'بازگشت') {
+      if (dom.garagePoints) dom.garagePoints.textContent = num(progress.points);
+      if (dom.garageLevels) {
+        dom.garageLevels.textContent = num(totalUpgradeLevels(progress.upgrades)) + '/' + num(UPGRADES.length * MAX_LEVEL);
+      }
+      if (dom.btnCloseGarage) dom.btnCloseGarage.textContent = backLabel;
       this.renderGarage(progress, health, maxHealth);
       dom.garage?.classList.remove('hidden');
     },
@@ -206,7 +249,7 @@ export function createUI(handlers) {
 
         const info = document.createElement('div');
         const h3 = document.createElement('h3');
-        h3.textContent = up.name + ' · سطح ' + fa(level);
+        h3.textContent = up.name + ' · سطح ' + num(level);
         const p = document.createElement('p');
         p.textContent = up.desc;
         const pips = document.createElement('div');
@@ -220,7 +263,7 @@ export function createUI(handlers) {
 
         const btn = document.createElement('button');
         btn.className = 'up-buy' + (maxed ? ' max' : '');
-        btn.textContent = maxed ? 'حداکثر' : 'ارتقا · ' + fa(cost);
+        btn.textContent = maxed ? 'حداکثر' : 'ارتقا · ' + num(cost);
         btn.disabled = maxed || !affordable;
         btn.addEventListener('click', () => handlers.onBuy?.(up.key));
 
@@ -230,7 +273,7 @@ export function createUI(handlers) {
 
       const full = health >= maxHealth;
       if (dom.btnRepair) dom.btnRepair.disabled = full || progress.points < REPAIR_COST;
-      if (dom.repairCost) dom.repairCost.textContent = fa(REPAIR_COST);
+      if (dom.repairCost) dom.repairCost.textContent = num(REPAIR_COST);
     },
 
     showTouch(show) {
@@ -240,6 +283,7 @@ export function createUI(handlers) {
     setMuted(muted) {
       dom.btnMute?.classList.toggle('off', muted);
       if (dom.btnMute) dom.btnMute.textContent = muted ? '🔇' : '🔊';
+      if (dom.btnMenuSound) dom.btnMenuSound.textContent = muted ? 'صدا: خاموش' : 'صدا: روشن';
     },
 
     repairCost: REPAIR_COST,

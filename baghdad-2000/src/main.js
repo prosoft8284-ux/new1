@@ -7,7 +7,14 @@ import { createUI } from './ui.js';
 import { createAudio } from './audio.js';
 import { createEffects } from './effects.js';
 
-const REPAIR_COST = 45;
+const REPAIR_COST = 60;
+
+// Difficulty presets: pressure comes from zombie pace, spawn rate, damage and waves.
+const DIFFICULTY = {
+  easy: { zombieSpeed: 0.85, spawnEvery: 0.8, maxActive: 30, damage: 0.7, points: 1.25, initial: 14, waveEvery: 55, chase: 52 },
+  normal: { zombieSpeed: 1, spawnEvery: 0.5, maxActive: 42, damage: 1, points: 1, initial: 22, waveEvery: 42, chase: 70 },
+  hard: { zombieSpeed: 1.18, spawnEvery: 0.34, maxActive: 54, damage: 1.4, points: 0.85, initial: 30, waveEvery: 32, chase: 90 },
+};
 
 // ---------- renderer / scene ----------
 const canvas = document.getElementById('game');
@@ -82,12 +89,15 @@ const game = {
   smokeTimer: 0,
   saveTimer: 0,
   best: progress.best,
+  wave: 1,
+  waveTimer: 0,
+  difficulty: progress.difficulty || 'normal',
 };
 
 // ---------- input ----------
 const keys = new Set();
 const input = { throttle: false, brake: false, steer: 0, handbrake: false, boost: false };
-const touchState = { throttle: false, brake: false, steer: 0, boost: false };
+const touchState = { throttle: false, brake: false, steer: 0, boost: false, handbrake: false };
 
 function readKeys() {
   const up = keys.has('w') || keys.has('arrowup');
@@ -98,7 +108,7 @@ function readKeys() {
   input.throttle = up || touchState.throttle;
   input.brake = down || touchState.brake;
   input.steer = keySteer !== 0 ? keySteer : touchState.steer;
-  input.handbrake = keys.has(' ');
+  input.handbrake = keys.has(' ') || touchState.handbrake;
   input.boost = keys.has('shift') || touchState.boost;
 }
 
@@ -106,6 +116,7 @@ function handleTouch(move, down) {
   if (move === 'gas') touchState.throttle = down;
   else if (move === 'brake') touchState.brake = down;
   else if (move === 'boost') touchState.boost = down;
+  else if (move === 'drift') touchState.handbrake = down;
   else if (move === 'left') touchState.steer = down ? -1 : touchState.steer === -1 ? 0 : touchState.steer;
   else if (move === 'right') touchState.steer = down ? 1 : touchState.steer === 1 ? 0 : touchState.steer;
 }
@@ -154,6 +165,17 @@ const ui = createUI({
   },
   onTouch: (move, down) => handleTouch(move, down),
   onPause: () => togglePause(),
+  onMenu: () => {
+    audio.ui();
+    goMenu();
+  },
+  onDifficulty: (diff) => {
+    game.difficulty = diff;
+    progress.difficulty = diff;
+    saveProgress(progress);
+    ui.setDifficulty(diff);
+    audio.ui();
+  },
   onMute: () => {
     const muted = audio.toggleMuted();
     ui.setMuted(muted);
@@ -163,14 +185,19 @@ const ui = createUI({
 const coarse = isCoarse;
 ui.showTouch(coarse);
 ui.setMuted(audio.isMuted());
+ui.setDifficulty(game.difficulty);
+ui.refreshMenu(progress);
 ui.showHud(false);
 
 // ---------- run control ----------
 function startRun() {
+  const cfg = DIFFICULTY[game.difficulty] || DIFFICULTY.normal;
   stats = car.getStats(progress.upgrades);
   car.reset(world.carStart, world.headingStart, stats);
+  zombies.speedMul = cfg.zombieSpeed;
+  zombies.chaseRange = cfg.chase;
   zombies.reset();
-  zombies.spawnNear(world.carStart, 26, 15, 72, 0);
+  zombies.spawnNear(world.carStart, cfg.initial, 13, 64, 0);
   game.mode = 'playing';
   game.runPoints = 0;
   game.kills = 0;
@@ -183,14 +210,16 @@ function startRun() {
   game.slowmo = 0;
   game.timeScale = 1;
   game.crashCooldown = 0;
-  game.spawnTimer = 0.5;
+  game.spawnTimer = 0.6;
   game.shake = 0;
+  game.wave = 1;
+  game.waveTimer = 0;
   ui.showStart(false);
   ui.showPause(false);
   ui.hideGarage();
   ui.hideGameOver();
   ui.showHud(true);
-  ui.message('گاز بده و زیرشان بگیر', 'up');
+  ui.message('موج ۱ — گاز بده', 'up');
   audio.start();
 }
 
@@ -200,7 +229,22 @@ function endRun() {
   game.best = progress.best;
   saveProgress(progress);
   audio.gameOver();
-  ui.showGameOver({ points: game.runPoints, kills: game.kills, best: progress.best });
+  ui.refreshMenu(progress);
+  ui.showGameOver({ points: game.runPoints, kills: game.kills, best: progress.best, wave: game.wave });
+}
+
+function goMenu() {
+  game.mode = 'menu';
+  game.boosting = false;
+  ui.showHud(false);
+  ui.showPause(false);
+  ui.hideGarage();
+  ui.hideGameOver();
+  ui.showStart(true);
+  ui.refreshMenu(progress);
+  zombies.reset();
+  stats = car.getStats(progress.upgrades);
+  car.reset(world.carStart, world.headingStart, stats);
 }
 
 function togglePause() {
@@ -215,11 +259,11 @@ function togglePause() {
 
 function openGarage() {
   if (game.mode === 'garage') return;
-  game.returnTo = game.mode === 'over' ? 'over' : 'racing';
+  game.returnTo = game.mode === 'over' ? 'over' : game.mode === 'menu' ? 'menu' : 'racing';
   game.mode = 'garage';
   ui.showPause(false);
   ui.hideGameOver();
-  ui.showGarage(progress, car.state.health, car.state.maxHealth);
+  ui.showGarage(progress, car.state.health, car.state.maxHealth, game.returnTo === 'menu' ? 'بازگشت' : 'برگرد به جاده');
   audio.ui();
 }
 
@@ -227,7 +271,9 @@ function closeGarage() {
   ui.hideGarage();
   if (game.returnTo === 'over') {
     game.mode = 'over';
-    ui.showGameOver({ points: game.runPoints, kills: game.kills, best: progress.best });
+    ui.showGameOver({ points: game.runPoints, kills: game.kills, best: progress.best, wave: game.wave });
+  } else if (game.returnTo === 'menu') {
+    goMenu();
   } else {
     game.mode = 'playing';
   }
@@ -379,6 +425,7 @@ function stepGameplay(dt) {
     game.nitro = Math.min(1, game.nitro + 0.08 * dt);
   }
 
+  const cfg = DIFFICULTY[game.difficulty] || DIFFICULTY.normal;
   const eff = {
     ...stats,
     killSpeed: game.rampage > 0 ? stats.killSpeed * 0.55 : stats.killSpeed,
@@ -391,7 +438,9 @@ function stepGameplay(dt) {
   const events = zombies.update(dt, car.state.pos, car.state.speed, eff);
 
   for (const hit of events.hits) {
-    const dead = car.damage(hit.damage);
+    const dead = car.damage(hit.damage * cfg.damage);
+    car.state.speed *= 0.6;
+    car.state.lat *= 0.5;
     game.shake = Math.max(game.shake, 0.3);
     audio.impact(0.7);
     ui.flashDamage(0.7);
@@ -413,7 +462,7 @@ function stepGameplay(dt) {
         ui.popCombo();
       }
       const typeMult = kill.type === 'brute' ? 3 : kill.type === 'walker' ? 1 : 2;
-      const gained = Math.round(eff.pointsPerKill * typeMult * game.combo);
+      const gained = Math.round(eff.pointsPerKill * typeMult * game.combo * cfg.points);
       gainedTotal += gained;
       game.runPoints += gained;
       progress.points += gained;
@@ -425,7 +474,11 @@ function stepGameplay(dt) {
     }
     if (events.kills.length >= 3) {
       game.slowmo = 0.5;
+      game.shake = Math.max(game.shake, 0.35);
       ui.message('ضربه‌ی گروهی! +' + gainedTotal, 'kill');
+    } else if (events.kills.length === 2) {
+      game.slowmo = 0.22;
+      ui.message('دو‌تایی! +' + gainedTotal, 'kill');
     } else if (events.kills.length === 1) {
       const k = events.kills[0];
       ui.message(k.type === 'brute' ? 'بروت خرد شد! +' + gainedTotal : 'کمبو ×' + game.combo + ' · +' + gainedTotal, 'kill');
@@ -453,12 +506,22 @@ function stepGameplay(dt) {
     }
   }
 
-  // spawning
+  // waves: each surge is announced and dumps a pack around you
+  game.waveTimer += dt;
+  if (game.waveTimer >= cfg.waveEvery) {
+    game.waveTimer = 0;
+    game.wave += 1;
+    zombies.spawnNear(car.state.pos, 4 + game.wave * 2, 26, 72, game.kills + game.wave * 6);
+    game.shake = Math.max(game.shake, 0.3);
+    audio.rampage();
+    ui.message('موج ' + game.wave + ' رسید', 'up');
+  }
+
   game.spawnTimer -= dt;
   if (game.spawnTimer <= 0) {
-    game.spawnTimer = 0.45;
-    if (zombies.active < 38) {
-      zombies.spawnNear(car.state.pos, 1 + (Math.random() < 0.35 ? 1 : 0), 42, 92, game.kills);
+    game.spawnTimer = cfg.spawnEvery;
+    if (zombies.active < cfg.maxActive) {
+      zombies.spawnNear(car.state.pos, 1 + (Math.random() < 0.3 ? 1 : 0), 44, 96, game.kills + game.wave * 5);
     }
   }
 
@@ -571,6 +634,7 @@ function frame(now) {
     boosting: game.boosting,
     rampage: game.rampage > 0,
     speedLines: speedLinesTarget.value,
+    wave: game.wave,
   });
 
   audio.update(realDt, {
