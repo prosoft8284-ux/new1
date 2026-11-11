@@ -105,7 +105,9 @@ body {
 .hud-top {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
 }
 
 .panel {
@@ -118,8 +120,10 @@ body {
 
 .stats {
   display: flex;
-  gap: clamp(10px, 2vw, 26px);
+  gap: clamp(8px, 1.6vw, 24px);
   padding: 9px 16px;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .stat {
@@ -143,7 +147,7 @@ body {
 
 .icon-btn {
   pointer-events: auto;
-  margin-inline-start: auto;
+  flex: 0 0 auto;
   width: 44px;
   height: 44px;
   font-size: 19px;
@@ -861,4 +865,26 @@ kbd {
 #touch button.drift {
   border-color: rgba(255, 210, 140, 0.45);
   font-size: 24px;
+}
+
+@media (max-width: 620px) {
+  .hud-actions {
+    gap: 6px;
+  }
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  .stats {
+    gap: 6px;
+    padding: 6px 9px;
+  }
+  .stat {
+    min-width: 36px;
+  }
+  .stat strong {
+    font-size: 15px;
+  }
 }
