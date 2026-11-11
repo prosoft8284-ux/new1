@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const PAINT = 0x6d1224;
+const PAINT = 0x8e1a30;
 
 export function createCar(scene) {
   const root = new THREE.Group();
@@ -8,8 +8,8 @@ export function createCar(scene) {
   root.add(body);
   scene.add(root);
 
-  const paint = new THREE.MeshStandardMaterial({ color: PAINT, metalness: 0.7, roughness: 0.28 });
-  const paintDark = new THREE.MeshStandardMaterial({ color: 0x4a0c18, metalness: 0.55, roughness: 0.42 });
+  const paint = new THREE.MeshStandardMaterial({ color: PAINT, metalness: 0.45, roughness: 0.32 });
+  const paintDark = new THREE.MeshStandardMaterial({ color: 0x5c0f20, metalness: 0.4, roughness: 0.45 });
   const dark = new THREE.MeshStandardMaterial({ color: 0x191715, metalness: 0.3, roughness: 0.8 });
   const chrome = new THREE.MeshStandardMaterial({ color: 0xd8dde1, metalness: 1, roughness: 0.14 });
   const glass = new THREE.MeshStandardMaterial({ color: 0x101b22, metalness: 0.85, roughness: 0.06, transparent: true, opacity: 0.82 });
@@ -66,6 +66,9 @@ export function createCar(scene) {
   box(0.14, 0.08, 0.2, paintDark, 0.86, 1.06, 0.62);
   box(0.56, 0.12, 0.04, chrome, 0, 0.58, 2.26);
   box(0.56, 0.12, 0.04, chrome, 0, 0.58, -2.26);
+  // rear panel inset + boot lip so the back is not one flat slab
+  box(1.5, 0.26, 0.05, paintDark, 0, 0.68, -2.17);
+  box(1.42, 0.07, 0.09, paint, 0, 1.0, -2.05);
   box(0.1, 0.08, 0.1, new THREE.MeshStandardMaterial({ color: 0xe8c46a, metalness: 1, roughness: 0.25 }), 0.55, 0.9, 2.24);
 
   // ---- wheels ----
@@ -75,7 +78,7 @@ export function createCar(scene) {
   const hubGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.3, 14);
   const rimGeo = new THREE.BoxGeometry(0.3, 0.2, 0.05);
   const tireMat = new THREE.MeshStandardMaterial({ color: 0x131211, roughness: 0.95, metalness: 0.05 });
-  const hubMat = new THREE.MeshStandardMaterial({ color: 0xc3c8cc, metalness: 0.95, roughness: 0.25 });
+  const hubMat = new THREE.MeshStandardMaterial({ color: 0x7d848a, metalness: 0.85, roughness: 0.38 });
 
   function makeWheel(x, z, isFront) {
     const pivot = new THREE.Group();

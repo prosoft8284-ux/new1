@@ -412,7 +412,7 @@ function stepGameplay(dt) {
         game.combo = nextCombo;
         ui.popCombo();
       }
-      const typeMult = kill.type === 'brute' ? 3 : kill.type === 'runner' ? 2 : 1;
+      const typeMult = kill.type === 'brute' ? 3 : kill.type === 'walker' ? 1 : 2;
       const gained = Math.round(eff.pointsPerKill * typeMult * game.combo);
       gainedTotal += gained;
       game.runPoints += gained;

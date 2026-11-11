@@ -141,9 +141,9 @@ export function createEffects(scene) {
         spawn(dust, {
           pos: tmp.set(pos.x + (Math.random() - 0.5) * 0.8, 0.15 + Math.random() * 0.2, pos.z + (Math.random() - 0.5) * 0.8).clone(),
           vel: new THREE.Vector3((Math.random() - 0.5) * 2 * power, 0.6 + Math.random() * 1.4 * power, (Math.random() - 0.5) * 2 * power),
-          life: 0.45 + Math.random() * 0.45,
-          size: 0.22 + Math.random() * 0.3,
-          color: 0xd8c69f,
+          life: 0.4 + Math.random() * 0.4,
+          size: 0.16 + Math.random() * 0.2,
+          color: 0xc9b68e,
           gravity: -0.6,
           drag: 1.4,
         });
@@ -154,8 +154,8 @@ export function createEffects(scene) {
       spawn(dust, {
         pos: tmp.copy(pos).clone(),
         vel: new THREE.Vector3((Math.random() - 0.5) * 0.6, 0.4 + Math.random() * 0.5, (Math.random() - 0.5) * 0.6),
-        life: boosting ? 0.3 : 0.45,
-        size: boosting ? 0.14 : 0.18,
+        life: boosting ? 0.28 : 0.4,
+        size: boosting ? 0.11 : 0.14,
         color: boosting ? 0x9fb3c9 : 0x8d887c,
         gravity: -0.5,
         drag: 2.2,
@@ -205,6 +205,19 @@ export function createEffects(scene) {
         gravity: -0.35,
         drag: 1.1,
       });
+    },
+
+    bloodDecal(x, z, size = 0.9) {
+      const p = spawn(skids, {
+        pos: tmp.set(x, 0.05, z).clone(),
+        vel: new THREE.Vector3(0, 0, 0),
+        life: 16,
+        size,
+        color: 0x4a0d0a,
+        billboard: false,
+      });
+      p.rot = Math.random() * Math.PI * 2;
+      return p;
     },
 
     skidMark(x, z, heading) {
