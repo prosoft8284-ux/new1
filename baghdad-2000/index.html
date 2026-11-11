@@ -52,6 +52,8 @@
         <div id="hud-rampage" class="rampage-badge hidden">دیوانه‌وار!</div>
       </div>
 
+      <div id="hud-weapons" class="weapons"></div>
+
       <div class="hud-bottom">
         <div class="panel gauges">
           <div class="gauge-label">
@@ -98,10 +100,10 @@
           <p class="diff-hint" id="diff-hint">زامبی‌ها سریع می‌رسند؛ سرعتت سلاح توست.</p>
         </div>
 
-        <button id="btn-start" class="big-btn">سوار شو</button>
+        <button id="btn-start" class="big-btn primary"><span class="btn-ico">▶</span>سوار شو</button>
         <div class="menu-row">
-          <button id="btn-menu-garage" class="big-btn ghost">تعمیرگاه</button>
-          <button id="btn-menu-sound" class="big-btn ghost">صدا: روشن</button>
+          <button id="btn-menu-garage" class="big-btn ghost"><span class="btn-ico">🔧</span>تعمیرگاه</button>
+          <button id="btn-menu-sound" class="big-btn ghost"><span class="btn-ico">🔊</span>صدا: روشن</button>
         </div>
         <p class="menu-foot">کلیدها: W A S D · Space دریفت · Shift نیترو · G تعمیرگاه · Esc توقف</p>
       </div>
@@ -163,6 +165,8 @@
         <button data-touch="right" aria-label="راست">▶</button>
       </div>
       <div class="touch-side">
+        <button id="btn-weapon" class="switch" aria-label="تغییر سلاح">🔁</button>
+        <button data-touch="fire" class="fire" aria-label="شلیک">💥</button>
         <button data-touch="boost" class="boost" aria-label="نیترو">🔥</button>
         <button data-touch="drift" class="drift" aria-label="دریفت">⤵</button>
         <button data-touch="brake" aria-label="ترمز">⏹</button>

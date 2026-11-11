@@ -41,6 +41,9 @@ export function emptyProgress() {
     kills: 0,
     best: 0,
     upgrades: { engine: 0, chassis: 0, ram: 0, spikes: 0, tires: 0 },
+    weapons: { mg: 1, flame: 0, harpoon: 0 },
+    weapon: 'mg',
+    difficulty: 'normal',
   };
 }
 
@@ -55,6 +58,9 @@ export function loadProgress() {
       kills: Number(parsed.kills) || 0,
       best: Number(parsed.best) || 0,
       upgrades: { ...base.upgrades, ...(parsed.upgrades || {}) },
+      weapons: { ...base.weapons, ...(parsed.weapons || {}) },
+      weapon: parsed.weapon || base.weapon,
+      difficulty: parsed.difficulty || base.difficulty,
     };
   } catch {
     return emptyProgress();

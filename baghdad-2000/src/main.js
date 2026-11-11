@@ -6,6 +6,7 @@ import { loadProgress, saveProgress, UPGRADES, MAX_LEVEL, upgradeCost } from './
 import { createUI } from './ui.js';
 import { createAudio } from './audio.js';
 import { createEffects } from './effects.js';
+import { createWeapons, WEAPONS, weaponCost } from './weapons.js';
 
 const REPAIR_COST = 60;
 
@@ -63,6 +64,7 @@ const effects = createEffects(scene);
 const audio = createAudio();
 const car = createCar(scene);
 const zombies = new ZombieManager(scene, effects, (x, z) => world.isInsideBuilding(x, z, 1.2));
+const weapons = createWeapons(scene, car, effects);
 
 let progress = loadProgress();
 let stats = car.getStats(progress.upgrades);
@@ -93,11 +95,12 @@ const game = {
   waveTimer: 0,
   difficulty: progress.difficulty || 'normal',
 };
+let mouseDown = false;
 
 // ---------- input ----------
 const keys = new Set();
-const input = { throttle: false, brake: false, steer: 0, handbrake: false, boost: false };
-const touchState = { throttle: false, brake: false, steer: 0, boost: false, handbrake: false };
+const input = { throttle: false, brake: false, steer: 0, handbrake: false, boost: false, fire: false };
+const touchState = { throttle: false, brake: false, steer: 0, boost: false, handbrake: false, fire: false };
 
 function readKeys() {
   const up = keys.has('w') || keys.has('arrowup');
@@ -110,6 +113,7 @@ function readKeys() {
   input.steer = keySteer !== 0 ? keySteer : touchState.steer;
   input.handbrake = keys.has(' ') || touchState.handbrake;
   input.boost = keys.has('shift') || touchState.boost;
+  input.fire = keys.has('f') || keys.has('j') || mouseDown || touchState.fire;
 }
 
 function handleTouch(move, down) {
@@ -117,6 +121,7 @@ function handleTouch(move, down) {
   else if (move === 'brake') touchState.brake = down;
   else if (move === 'boost') touchState.boost = down;
   else if (move === 'drift') touchState.handbrake = down;
+  else if (move === 'fire') touchState.fire = down;
   else if (move === 'left') touchState.steer = down ? -1 : touchState.steer === -1 ? 0 : touchState.steer;
   else if (move === 'right') touchState.steer = down ? 1 : touchState.steer === 1 ? 0 : touchState.steer;
 }
@@ -132,13 +137,27 @@ window.addEventListener('keydown', (e) => {
   } else if (k === 'm') {
     const muted = audio.toggleMuted();
     ui.setMuted(muted);
+  } else if (k === 'q' || k === 'e') {
+    weapons.next();
+    progress.weapon = weapons.state.selected;
+    ui.setWeapons(progress.weapons, weapons.state.selected);
+    saveProgress(progress);
+  } else if (k === '1' || k === '2' || k === '3') {
+    selectWeapon(WEAPONS[Number(k) - 1].key);
   } else if (k === 'r' && game.mode === 'over') {
     ui.hideGameOver();
     startRun();
   }
 });
 window.addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
+canvas.addEventListener('pointerdown', (e) => {
+  if (e.pointerType === 'mouse' && game.mode === 'playing') mouseDown = true;
+});
+window.addEventListener('pointerup', () => {
+  mouseDown = false;
+});
 window.addEventListener('blur', () => {
+  mouseDown = false;
   keys.clear();
   touchState.throttle = false;
   touchState.brake = false;
@@ -180,6 +199,15 @@ const ui = createUI({
     const muted = audio.toggleMuted();
     ui.setMuted(muted);
   },
+  onSwitchWeapon: () => {
+    weapons.next();
+    progress.weapon = weapons.state.selected;
+    saveProgress(progress);
+    ui.setWeapons(progress.weapons, weapons.state.selected);
+    audio.ui();
+  },
+  onSelectWeapon: (key) => selectWeapon(key),
+  onBuyWeapon: (key) => buyWeapon(key),
 });
 
 const coarse = isCoarse;
@@ -194,6 +222,7 @@ function startRun() {
   const cfg = DIFFICULTY[game.difficulty] || DIFFICULTY.normal;
   stats = car.getStats(progress.upgrades);
   car.reset(world.carStart, world.headingStart, stats);
+  zonesetup();
   zombies.speedMul = cfg.zombieSpeed;
   zombies.chaseRange = cfg.chase;
   zombies.reset();
@@ -219,8 +248,47 @@ function startRun() {
   ui.hideGarage();
   ui.hideGameOver();
   ui.showHud(true);
+  ui.setWeapons(progress.weapons, weapons.state.selected);
+  ui.setWeaponState(weapons.getState());
   ui.message('موج 1 — گاز بده', 'up');
   audio.start();
+}
+
+function zonesetup() {
+  weapons.setLevels(progress.weapons);
+  weapons.select(progress.weapon || 'mg');
+  weapons.reset();
+}
+
+function selectWeapon(key) {
+  if (!weapons.owns(key)) return;
+  weapons.select(key);
+  progress.weapon = key;
+  saveProgress(progress);
+  ui.setWeapons(progress.weapons, key);
+  ui.setWeaponState(weapons.getState());
+  ui.renderGarage(progress, car.state.health, car.state.maxHealth, key);
+  audio.ui();
+}
+
+function buyWeapon(key) {
+  const w = WEAPONS.find((x) => x.key === key);
+  if (!w) return;
+  const level = progress.weapons[key] || 0;
+  if (level >= 3) return;
+  const cost = weaponCost(w, level);
+  if (progress.points < cost) return;
+  progress.points -= cost;
+  progress.weapons[key] = level + 1;
+  progress.weapon = key;
+  weapons.setLevels(progress.weapons);
+  weapons.select(key);
+  weapons.reset();
+  saveProgress(progress);
+  audio.levelUp();
+  ui.setWeapons(progress.weapons, key);
+  ui.renderGarage(progress, car.state.health, car.state.maxHealth, key);
+  ui.message(w.name + ' نصب شد · سطح ' + (level + 1), 'up');
 }
 
 function endRun() {
@@ -242,6 +310,7 @@ function goMenu() {
   ui.hideGameOver();
   ui.showStart(true);
   ui.refreshMenu(progress);
+  zonesetup();
   zombies.reset();
   stats = car.getStats(progress.upgrades);
   car.reset(world.carStart, world.headingStart, stats);
@@ -263,7 +332,7 @@ function openGarage() {
   game.mode = 'garage';
   ui.showPause(false);
   ui.hideGameOver();
-  ui.showGarage(progress, car.state.health, car.state.maxHealth, game.returnTo === 'menu' ? 'بازگشت' : 'برگرد به جاده');
+  ui.showGarage(progress, car.state.health, car.state.maxHealth, game.returnTo === 'menu' ? 'بازگشت' : 'برگرد به جاده', weapons.state.selected);
   audio.ui();
 }
 
@@ -294,7 +363,7 @@ function buyUpgrade(key) {
   if (key === 'chassis') car.state.health = Math.min(stats.maxHealth, car.state.health + (stats.maxHealth - oldMax));
   saveProgress(progress);
   audio.levelUp();
-  ui.renderGarage(progress, car.state.health, car.state.maxHealth);
+  ui.renderGarage(progress, car.state.health, car.state.maxHealth, weapons.state.selected);
   ui.message(upgrade.name + ' ارتقا یافت · سطح ' + (level + 1), 'up');
 }
 
@@ -305,7 +374,7 @@ function repairCar() {
   car.repair();
   saveProgress(progress);
   audio.ui();
-  ui.renderGarage(progress, car.state.health, car.state.maxHealth);
+  ui.renderGarage(progress, car.state.health, car.state.maxHealth, weapons.state.selected);
   ui.message('ماشین تعمیر شد', 'up');
 }
 
@@ -383,6 +452,7 @@ function resolveCollisions() {
 }
 
 // ---------- camera ----------
+const carVel = new THREE.Vector3();
 const camPos = new THREE.Vector3();
 const camTarget = new THREE.Vector3();
 const fwd = new THREE.Vector3();
@@ -435,7 +505,10 @@ function stepGameplay(dt) {
   car.update(dt, input, stats, game.boosting);
   resolveCollisions();
 
-  const events = zombies.update(dt, car.state.pos, car.state.speed, eff);
+  car.forward(fwd);
+  carVel.copy(fwd).multiplyScalar(car.state.speed);
+  weapons.update(dt, { firing: input.fire, pos: car.state.pos, forward: fwd, running: true }, zombies);
+  const events = zombies.update(dt, car.state.pos, car.state.speed, eff, carVel);
 
   for (const hit of events.hits) {
     const dead = car.damage(hit.damage * cfg.damage);
@@ -449,6 +522,22 @@ function stepGameplay(dt) {
       endRun();
       return;
     }
+  }
+
+  if (zombies.killQueue.length) {
+    let weaponPoints = 0;
+    for (const kill of zombies.killQueue) {
+      const typeMult = kill.type === 'brute' ? 3 : kill.type === 'walker' ? 1 : 2;
+      const gained = Math.round(stats.pointsPerKill * 0.8 * typeMult * cfg.points);
+      weaponPoints += gained;
+      game.runPoints += gained;
+      progress.points += gained;
+      progress.kills += 1;
+      game.kills += 1;
+      audio.kill(1);
+    }
+    zombies.killQueue.length = 0;
+    if (weaponPoints > 0) ui.message('+' + weaponPoints, 'kill');
   }
 
   if (events.kills.length) {
@@ -635,6 +724,7 @@ function frame(now) {
     rampage: game.rampage > 0,
     speedLines: speedLinesTarget.value,
     wave: game.wave,
+    weapon: weapons.getState(),
   });
 
   audio.update(realDt, {

@@ -182,6 +182,7 @@ export function createCar(scene) {
 
   const car = {
     group: root,
+    bodyGroup: body,
     state,
 
     getStats,

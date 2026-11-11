@@ -936,3 +936,259 @@ kbd {
 .up-row {
   padding: 12px 14px;
 }
+
+/* ---------- button system ---------- */
+.big-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 54px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffdd9c 0%, #f4a72f 58%, #dd8a17 100%);
+  box-shadow: 0 12px 26px rgba(238, 155, 44, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  transition: transform 0.12s ease, box-shadow 0.16s ease, filter 0.16s ease;
+}
+
+.big-btn:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+}
+
+.big-btn:active {
+  transform: translateY(1px) scale(0.995);
+  box-shadow: 0 4px 12px rgba(238, 155, 44, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.big-btn:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.5) brightness(0.78);
+  box-shadow: none;
+  transform: none;
+}
+
+.big-btn.ghost {
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--sand);
+  box-shadow: none;
+}
+
+.big-btn.ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 205, 120, 0.45);
+}
+
+.btn-ico {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.icon-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  border: 1px solid rgba(255, 205, 120, 0.22);
+  background: linear-gradient(180deg, rgba(58, 45, 26, 0.94), rgba(20, 15, 9, 0.96));
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.1s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.icon-btn:hover {
+  border-color: rgba(255, 205, 120, 0.55);
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: translateY(1px) scale(0.96);
+}
+
+.big-btn:focus-visible,
+.icon-btn:focus-visible,
+.diff-btn:focus-visible,
+.up-buy:focus-visible,
+.weapon-chip:focus-visible,
+#touch button:focus-visible {
+  outline: 2px solid #ffd27a;
+  outline-offset: 2px;
+}
+
+.up-buy {
+  transition: transform 0.1s ease, filter 0.15s ease, border-color 0.15s ease;
+}
+
+.up-buy:not(:disabled):hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.up-buy:not(:disabled):active {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* ---------- mounted weapons ---------- */
+.weapons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: stretch;
+  pointer-events: auto;
+  padding: 0 10px;
+  margin-bottom: 8px;
+}
+
+.weapon-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 96px;
+  max-width: 148px;
+  padding: 7px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(30, 24, 14, 0.82), rgba(12, 9, 5, 0.9));
+  color: var(--sand);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.12s ease, background 0.15s ease;
+}
+
+.weapon-chip:not(:disabled):hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 205, 120, 0.45);
+}
+
+.weapon-chip.active {
+  border-color: rgba(255, 205, 120, 0.8);
+  background: linear-gradient(180deg, rgba(74, 52, 22, 0.9), rgba(34, 24, 10, 0.95));
+  box-shadow: 0 0 0 1px rgba(255, 205, 120, 0.28), 0 10px 22px rgba(0, 0, 0, 0.45);
+}
+
+.weapon-chip.locked {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.weapon-chip .w-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.weapon-chip .w-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  min-width: 0;
+}
+
+.weapon-chip .w-name {
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.weapon-chip .w-note {
+  font-size: 9px;
+  opacity: 0.6;
+}
+
+.weapon-chip .w-bar {
+  display: block;
+  width: 58px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.weapon-chip .w-bar i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #ffd27a, #ee9b2c);
+  transition: width 0.1s linear;
+}
+
+.weapon-chip.overheat .w-bar i {
+  background: #ff5a2d;
+}
+
+.weapon-key {
+  margin-inline-start: auto;
+  font-size: 9px;
+  opacity: 0.45;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 5px;
+  padding: 0 4px;
+}
+
+.garage-sub {
+  margin: 4px 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--amber);
+  opacity: 0.9;
+}
+
+.weapon-row {
+  border-color: rgba(255, 205, 120, 0.16);
+}
+
+.w-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.up-buy.equip {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--sand);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.up-buy.equip.on {
+  border-color: rgba(255, 205, 120, 0.7);
+  color: #ffd27a;
+}
+
+#touch button.fire {
+  width: 76px;
+  height: 76px;
+  font-size: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 150, 80, 0.6);
+  background: radial-gradient(circle at 34% 28%, #ffb15c, #d6481c 72%);
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(214, 72, 28, 0.45);
+}
+
+#touch button.fire.pressed {
+  transform: scale(0.94);
+  filter: brightness(1.15);
+}
+
+#touch button.switch {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  font-size: 20px;
+}
+
+@media (max-width: 720px) {
+  .weapon-chip {
+    min-width: 0;
+    padding: 6px 8px;
+  }
+  .weapon-chip .w-name {
+    display: none;
+  }
+  .weapon-chip .w-bar {
+    width: 40px;
+  }
+  .weapons {
+    gap: 6px;
+  }
+}

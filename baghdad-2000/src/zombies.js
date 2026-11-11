@@ -35,11 +35,11 @@ const LEG_GEO = mergeGeometries([
 ]);
 
 const VARIANTS = {
-  walker: { scale: 1, speedMin: 1.35, speedMax: 2.2, points: 1, killFactor: 1, hit: 1, shirt: 0x6b5b42, skin: 0x8b9a6b, pants: 0x4a4235 },
-  runner: { scale: 0.92, speedMin: 3.7, speedMax: 5.0, points: 2, killFactor: 0.85, hit: 0.8, shirt: 0x8c3a33, skin: 0x9aa47a, pants: 0x33302b },
-  brute: { scale: 1.5, speedMin: 1.05, speedMax: 1.7, points: 3, killFactor: 1.55, hit: 1.7, shirt: 0x3f4650, skin: 0x767f5c, pants: 0x2a2723 },
-  crawler: { scale: 0.85, speedMin: 2.9, speedMax: 3.8, points: 2, killFactor: 0.8, hit: 0.6, shirt: 0x5a5344, skin: 0x93a075, pants: 0x3b3630 },
-  screamer: { scale: 1.05, speedMin: 1.8, speedMax: 2.5, points: 2, killFactor: 1, hit: 1, shirt: 0xb9b2a2, skin: 0xa8b18a, pants: 0x4d463c },
+  walker: { scale: 1, speedMin: 1.35, speedMax: 2.2, points: 1, killFactor: 1, hit: 1, hp: 1, shirt: 0x6b5b42, skin: 0x8b9a6b, pants: 0x4a4235 },
+  runner: { scale: 0.92, speedMin: 3.7, speedMax: 5.0, points: 2, killFactor: 0.85, hit: 0.8, hp: 1, shirt: 0x8c3a33, skin: 0x9aa47a, pants: 0x33302b },
+  brute: { scale: 1.5, speedMin: 1.05, speedMax: 1.7, points: 3, killFactor: 1.55, hit: 1.7, hp: 3.6, shirt: 0x3f4650, skin: 0x767f5c, pants: 0x2a2723 },
+  crawler: { scale: 0.85, speedMin: 2.9, speedMax: 3.8, points: 2, killFactor: 0.8, hit: 0.6, hp: 0.9, shirt: 0x5a5344, skin: 0x93a075, pants: 0x3b3630 },
+  screamer: { scale: 1.05, speedMin: 1.8, speedMax: 2.5, points: 2, killFactor: 1, hit: 1, hp: 1.2, shirt: 0xb9b2a2, skin: 0xa8b18a, pants: 0x4d463c },
 };
 
 const rootDummy = new THREE.Object3D();
@@ -61,6 +61,7 @@ export class ZombieManager {
     // set per run from the difficulty preset
     this.speedMul = 1;
     this.chaseRange = 70;
+    this.killQueue = [];
 
     const make = (geo, castShadow = true) => {
       const mesh = new THREE.InstancedMesh(
@@ -114,6 +115,13 @@ export class ZombieManager {
         deathT: 0,
         deathSpin: 0,
         riseT: 0,
+        hp: 1,
+        maxHp: 1,
+        dodgeT: 0,
+        dodge: 1,
+        side: 1,
+        lungeT: 0,
+        lungeCd: 0,
         type: 'walker',
         points: 1,
         killFactor: 1,
@@ -142,6 +150,12 @@ export class ZombieManager {
     zb.deathT = 0;
     zb.deathSpin = 0;
     zb.riseT = 0.55;
+    zb.hp = cfg.hp;
+    zb.maxHp = cfg.hp;
+    zb.dodgeT = 0;
+    zb.lungeT = 0;
+    zb.lungeCd = 0;
+    zb.side = Math.random() < 0.5 ? -1 : 1;
     zb.color.setHex(cfg.skin);
     zb.shirt.setHex(cfg.shirt);
     zb.pants.setHex(cfg.pants);
@@ -184,6 +198,7 @@ export class ZombieManager {
     for (const z of this.zombies) z.active = false;
     this.zombies.length = 0;
     this.active = 0;
+    this.killQueue.length = 0;
     this.writeInstances();
   }
 
@@ -254,7 +269,7 @@ export class ZombieManager {
     this.eyes.instanceMatrix.needsUpdate = true;
   }
 
-  update(dt, playerPos, playerSpeed, stats) {
+  update(dt, playerPos, playerSpeed, stats, playerVel) {
     this.time += dt;
     const kills = [];
     const hits = [];
@@ -283,14 +298,61 @@ export class ZombieManager {
       const dist = Math.hypot(dx, dz);
       let moving = false;
 
+      // ---- smarter pursuit ----
+      const vx = playerVel ? playerVel.x : 0;
+      const vz = playerVel ? playerVel.z : 0;
+      const vLen = Math.hypot(vx, vz);
+      if (zb.dodgeT > 0) zb.dodgeT -= dt;
+      if (zb.lungeT > 0) zb.lungeT -= dt;
+      else if (zb.lungeCd > 0) zb.lungeCd -= dt;
+
       if (dist < this.chaseRange && dist > 0.01) {
-        // far away they shamble, close in they commit: you cannot idle safely.
+        // aim where the car will be, not where it was
+        const lead = Math.min(0.9, dist / 26);
+        const ax = playerPos.x + vx * lead;
+        const az = playerPos.z + vz * lead;
+
+        // brutes never flinch; everything else sidesteps an incoming bumper
+        if (zb.type !== 'brute' && zb.dodgeT <= 0 && zb.lungeT <= 0 && vLen > 8 && dist < 24) {
+          const closing = (-dx * vx - dz * vz) / (dist * vLen || 1);
+          if (closing > 0.55) {
+            zb.dodgeT = 0.5 + Math.random() * 0.25;
+            zb.dodge = Math.random() < 0.5 ? -1 : 1;
+          }
+        }
+
+        let mx = 0;
+        let mz = 0;
+        if (zb.dodgeT > 0) {
+          // strafe out of the car's path
+          mx = (-dz / dist) * zb.dodge;
+          mz = (dx / dist) * zb.dodge;
+        } else if (dist > 15) {
+          // flank: arc toward a shoulder instead of charging down the barrel
+          const len = Math.hypot(ax - zb.pos.x, az - zb.pos.z) || 1;
+          const bx = (ax - zb.pos.x) / len;
+          const bz = (az - zb.pos.z) / len;
+          const a = 0.62 * zb.side;
+          mx = bx * Math.cos(a) - bz * Math.sin(a);
+          mz = bx * Math.sin(a) + bz * Math.cos(a);
+        } else {
+          const len = Math.hypot(ax - zb.pos.x, az - zb.pos.z) || 1;
+          mx = (ax - zb.pos.x) / len;
+          mz = (az - zb.pos.z) / len;
+          // close in for a lunge that punishes standing still
+          if (dist < 8 && zb.lungeCd <= 0 && vLen > 5) {
+            zb.lungeT = 0.34;
+            zb.lungeCd = 2.6;
+          }
+        }
+
         const urgency = dist < 34 ? 1 : 0.5;
-        const chase = (zb.type === 'runner' ? 1.2 : zb.type === 'crawler' ? 1.1 : 1) * this.speedMul * urgency;
-        zb.heading = Math.atan2(dx, dz);
+        const burst = zb.lungeT > 0 ? 2.15 : zb.dodgeT > 0 ? 1.4 : 1;
+        const chase = (zb.type === 'runner' ? 1.2 : zb.type === 'crawler' ? 1.1 : 1) * this.speedMul * urgency * burst;
+        zb.heading = Math.atan2(mx, mz);
         moving = true;
-        zb.pos.x += (dx / dist) * zb.speed * chase * dt;
-        zb.pos.z += (dz / dist) * zb.speed * chase * dt;
+        zb.pos.x += mx * zb.speed * chase * dt;
+        zb.pos.z += mz * zb.speed * chase * dt;
       }
 
       const speedWalk = zb.type === 'crawler' ? 9 : 6 + zb.speed * 1.8;
@@ -324,5 +386,51 @@ export class ZombieManager {
     this.active = this.zombies.filter((z) => z.active).length;
     this.writeInstances();
     return { kills, hits };
+  }
+
+  // ---------- weapon damage ----------
+  damageZombie(zb, amount, source = 'weapon') {
+    if (!zb || !zb.active || zb.dying) return false;
+    zb.hp -= amount;
+    if (zb.hp > 0) return false;
+    zb.dying = true;
+    zb.deathT = 0;
+    zb.riseT = 0;
+    zb.deathSpin = (Math.random() - 0.5) * 8;
+    this.effects.bloodBurst(tmpVec.set(zb.pos.x, 0.9, zb.pos.z), 1, zb.type === 'brute');
+    this.effects.bloodDecal(zb.pos.x, zb.pos.z, 0.8 + Math.random() * 0.7);
+    this.killQueue.push({ type: zb.type, x: zb.pos.x, z: zb.pos.z, source });
+    return true;
+  }
+
+  damageInCone(origin, dir, range, cosHalf, amount, source = 'weapon') {
+    let hits = 0;
+    for (const zb of this.zombies) {
+      if (!zb.active || zb.dying) continue;
+      const dx = zb.pos.x - origin.x;
+      const dz = zb.pos.z - origin.z;
+      const d = Math.hypot(dx, dz);
+      if (d > range || d < 0.01) continue;
+      if ((dx * dir.x + dz * dir.z) / d < cosHalf) continue;
+      hits += 1;
+      this.damageZombie(zb, amount, source);
+    }
+    return hits;
+  }
+
+  nearestInFront(origin, dir, range, cosHalf) {
+    let best = null;
+    let bestD = range;
+    for (const zb of this.zombies) {
+      if (!zb.active || zb.dying) continue;
+      const dx = zb.pos.x - origin.x;
+      const dz = zb.pos.z - origin.z;
+      const d = Math.hypot(dx, dz);
+      if (d > bestD || d < 0.01) continue;
+      if ((dx * dir.x + dz * dir.z) / d < cosHalf) continue;
+      best = zb;
+      bestD = d;
+    }
+    return best;
   }
 }

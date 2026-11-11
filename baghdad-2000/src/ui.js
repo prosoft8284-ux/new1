@@ -1,4 +1,5 @@
 import { UPGRADES, MAX_LEVEL, upgradeCost, totalUpgradeLevels } from './upgrades.js';
+import { WEAPONS, weaponCost } from './weapons.js';
 
 const REPAIR_COST = 60;
 
@@ -37,6 +38,7 @@ export function createUI(handlers) {
     msg: el('msg'),
     flash: el('flash'),
     lines: el('speedlines'),
+    weaponsBar: el('hud-weapons'),
     start: el('start'),
     startBest: el('start-best'),
     startKills: el('start-kills'),
@@ -70,7 +72,7 @@ export function createUI(handlers) {
 
   let msgTimer = 0;
   let flashTimer = 0;
-  let difficulty = 'normal';
+  const chips = new Map();
 
   el('btn-start')?.addEventListener('click', () => handlers.onStart?.());
   el('btn-close-garage')?.addEventListener('click', () => handlers.onCloseGarage?.());
@@ -84,6 +86,7 @@ export function createUI(handlers) {
   el('btn-go-menu')?.addEventListener('click', () => handlers.onMenu?.());
   el('btn-menu-garage')?.addEventListener('click', () => handlers.onGarage?.());
   el('btn-garage')?.addEventListener('click', () => handlers.onGarage?.());
+  el('btn-weapon')?.addEventListener('click', () => handlers.onSwitchWeapon?.());
   dom.btnMute?.addEventListener('click', () => handlers.onMute?.());
   dom.btnMenuSound?.addEventListener('click', () => handlers.onMute?.());
   el('btn-pause')?.addEventListener('click', () => handlers.onPause?.());
@@ -112,6 +115,19 @@ export function createUI(handlers) {
     btn.addEventListener('pointercancel', up);
     btn.addEventListener('pointerleave', up);
   });
+
+  function updateWeaponChips(state) {
+    if (!state) return;
+    for (const [key, chip] of chips) {
+      const active = key === state.key;
+      chip.root.classList.toggle('active', active);
+      chip.root.classList.toggle('overheat', key === state.key && state.overheat);
+      if (key === state.key) {
+        chip.bar.style.width = Math.round(Math.max(0, Math.min(1, state.ratio)) * 100) + '%';
+        chip.note.textContent = state.note;
+      }
+    }
+  }
 
   return {
     update(s) {
@@ -143,6 +159,7 @@ export function createUI(handlers) {
       dom.rampageTint?.classList.toggle('on', !!s.rampage);
       dom.lines.style.opacity = String(Math.min(0.55, s.speedLines));
       setText(dom.boostHint, s.boosting ? 'فعال' : 'Shift');
+      if (s.weapon) updateWeaponChips(s.weapon);
     },
 
     popCombo() {
@@ -198,15 +215,40 @@ export function createUI(handlers) {
     },
 
     setDifficulty(diff) {
-      difficulty = diff;
       document.querySelectorAll('#difficulty .diff-btn').forEach((btn) => {
         btn.classList.toggle('active', btn.getAttribute('data-diff') === diff);
       });
       if (dom.diffHint) dom.diffHint.textContent = DIFFICULTY_HINTS[diff] || DIFFICULTY_HINTS.normal;
     },
 
-    getDifficulty() {
-      return difficulty;
+    setWeapons(levels, selected) {
+      if (!dom.weaponsBar) return;
+      dom.weaponsBar.innerHTML = '';
+      chips.clear();
+      WEAPONS.forEach((w, i) => {
+        const level = (levels && levels[w.key]) || 0;
+        const root = document.createElement('button');
+        root.className = 'weapon-chip' + (level > 0 ? '' : ' locked') + (selected === w.key ? ' active' : '');
+        root.type = 'button';
+        root.disabled = level === 0;
+        root.innerHTML =
+          '<span class="w-icon">' + w.icon + '</span>' +
+          '<span class="w-meta"><span class="w-name">' + w.name + '</span>' +
+          '<span class="w-bar"><i></i></span></span>' +
+          '<span class="weapon-key">' + (i + 1) + '</span>';
+        const note = document.createElement('span');
+        note.className = 'w-note';
+        note.textContent = level > 0 ? w.tag : 'قفل';
+        root.querySelector('.w-meta').appendChild(note);
+        root.addEventListener('click', () => handlers.onSelectWeapon?.(w.key));
+        dom.weaponsBar.appendChild(root);
+        chips.set(w.key, { root, bar: root.querySelector('.w-bar i'), note });
+        if (level === 0) root.querySelector('.w-bar').style.display = 'none';
+      });
+    },
+
+    setWeaponState(state) {
+      updateWeaponChips(state);
     },
 
     showGameOver(data) {
@@ -221,13 +263,16 @@ export function createUI(handlers) {
       dom.gameover?.classList.add('hidden');
     },
 
-    showGarage(progress, health, maxHealth, backLabel = 'بازگشت') {
+    showGarage(progress, health, maxHealth, backLabel = 'بازگشت', selectedWeapon) {
       if (dom.garagePoints) dom.garagePoints.textContent = num(progress.points);
       if (dom.garageLevels) {
-        dom.garageLevels.textContent = num(totalUpgradeLevels(progress.upgrades)) + '/' + num(UPGRADES.length * MAX_LEVEL);
+        const total =
+          totalUpgradeLevels(progress.upgrades) +
+          Object.values(progress.weapons || {}).reduce((a, b) => a + b, 0);
+        dom.garageLevels.textContent = num(total) + '/' + num(UPGRADES.length * MAX_LEVEL + WEAPONS.length * 3);
       }
       if (dom.btnCloseGarage) dom.btnCloseGarage.textContent = backLabel;
-      this.renderGarage(progress, health, maxHealth);
+      this.renderGarage(progress, health, maxHealth, selectedWeapon);
       dom.garage?.classList.remove('hidden');
     },
 
@@ -235,9 +280,15 @@ export function createUI(handlers) {
       dom.garage?.classList.add('hidden');
     },
 
-    renderGarage(progress, health, maxHealth) {
+    renderGarage(progress, health, maxHealth, selectedWeapon) {
       if (!dom.garageList) return;
       dom.garageList.innerHTML = '';
+
+      const upHead = document.createElement('h3');
+      upHead.className = 'garage-sub';
+      upHead.textContent = 'ارتقای ماشین';
+      dom.garageList.appendChild(upHead);
+
       for (const up of UPGRADES) {
         const level = progress.upgrades[up.key] || 0;
         const maxed = level >= MAX_LEVEL;
@@ -268,6 +319,54 @@ export function createUI(handlers) {
         btn.addEventListener('click', () => handlers.onBuy?.(up.key));
 
         row.append(info, btn);
+        dom.garageList.appendChild(row);
+      }
+
+      const wHead = document.createElement('h3');
+      wHead.className = 'garage-sub';
+      wHead.textContent = 'تسلیحات سوارشده';
+      dom.garageList.appendChild(wHead);
+
+      for (const w of WEAPONS) {
+        const level = (progress.weapons && progress.weapons[w.key]) || 0;
+        const maxed = level >= 3;
+        const cost = weaponCost(w, level);
+        const affordable = !maxed && progress.points >= cost;
+
+        const row = document.createElement('div');
+        row.className = 'up-row weapon-row';
+
+        const info = document.createElement('div');
+        const h3 = document.createElement('h3');
+        h3.textContent = w.icon + ' ' + w.name + ' · سطح ' + num(level);
+        const p = document.createElement('p');
+        p.textContent = w.desc;
+        const pips = document.createElement('div');
+        pips.className = 'pips';
+        for (let i = 0; i < 3; i++) {
+          const pip = document.createElement('i');
+          if (i < level) pip.className = 'on';
+          pips.appendChild(pip);
+        }
+        info.append(h3, p, pips);
+
+        const actions = document.createElement('div');
+        actions.className = 'w-actions';
+
+        const buy = document.createElement('button');
+        buy.className = 'up-buy' + (maxed ? ' max' : '');
+        buy.textContent = maxed ? 'حداکثر' : level === 0 ? 'سوار کن · ' + num(cost) : 'ارتقا · ' + num(cost);
+        buy.disabled = maxed || !affordable;
+        buy.addEventListener('click', () => handlers.onBuyWeapon?.(w.key));
+
+        const equip = document.createElement('button');
+        equip.className = 'up-buy equip' + (selectedWeapon === w.key ? ' on' : '');
+        equip.textContent = selectedWeapon === w.key ? 'نصب‌شده' : 'انتخاب';
+        equip.disabled = level === 0;
+        equip.addEventListener('click', () => handlers.onSelectWeapon?.(w.key));
+
+        actions.append(buy, equip);
+        row.append(info, actions);
         dom.garageList.appendChild(row);
       }
 
