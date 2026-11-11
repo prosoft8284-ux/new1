@@ -1230,3 +1230,10 @@ kbd {
     padding: 6px 9px;
   }
 }
+
+/* keep short menu actions on one line now that they carry icons */
+.menu-row .big-btn {
+  white-space: nowrap;
+  font-size: 15px;
+  gap: 7px;
+}
