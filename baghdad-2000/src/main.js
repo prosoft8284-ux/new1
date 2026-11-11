@@ -227,8 +227,6 @@ ui.setMuted(audio.isMuted());
 ui.setDifficulty(game.difficulty);
 ui.refreshMenu(progress);
 ui.showHud(false);
-ui.setQuality(qualityMode, qualityLevel, fpsSmooth);
-applyQuality(qualityLevel, false);
 
 // ---------- run control ----------
 function startRun() {
@@ -849,4 +847,6 @@ car.reset(world.carStart, world.headingStart, stats);
 camera.position.set(world.carStart.x, 5, world.carStart.z - 11);
 camera.lookAt(world.carStart.x, 1.6, world.carStart.z + 6);
 world.update(0.016, car.state.pos);
+applyQuality(qualityLevel, false);
+ui.setQuality(qualityMode, qualityLevel, fpsSmooth);
 requestAnimationFrame(frame);
