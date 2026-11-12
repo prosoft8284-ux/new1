@@ -162,7 +162,7 @@ export function createWeapons(scene, car, effects) {
 
   const state = {
     levels: { mg: 0, flame: 0, harpoon: 0 },
-    selected: 'mg',
+    selected: null,
     heat: 0,
     fuel: 1,
     ammo: WEAPON_MAX,
@@ -192,9 +192,9 @@ export function createWeapons(scene, car, effects) {
 
   function setLevels(levels) {
     state.levels = { mg: 0, flame: 0, harpoon: 0, ...(levels || {}) };
-    if (!state.levels[state.selected]) {
+    if (!state.selected || !(state.levels[state.selected] > 0)) {
       const firstOwned = WEAPONS.find((w) => state.levels[w.key] > 0);
-      state.selected = firstOwned ? firstOwned.key : 'mg';
+      state.selected = firstOwned ? firstOwned.key : null;
     }
     mg.visible = state.levels.mg > 0;
     flame.visible = state.levels.flame > 0;
@@ -207,7 +207,11 @@ export function createWeapons(scene, car, effects) {
 
   function next() {
     const owned = WEAPONS.filter((w) => state.levels[w.key] > 0);
-    if (owned.length < 2) return;
+    if (owned.length < 1) return;
+    if (owned.length === 1) {
+      state.selected = owned[0].key;
+      return;
+    }
     const i = owned.findIndex((w) => w.key === state.selected);
     state.selected = owned[(i + 1) % owned.length].key;
   }
@@ -232,6 +236,9 @@ export function createWeapons(scene, car, effects) {
   }
 
   function getState() {
+    if (!state.selected) {
+      return { key: null, name: 'بدون سلاح', icon: '—', level: 0, ratio: 0, ready: false, note: 'نصب کن' };
+    }
     const w = weaponByKey(state.selected);
     const level = state.levels[w.key] || 0;
     let ratio = 1;

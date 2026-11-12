@@ -133,7 +133,8 @@ function readKeys() {
   input.throttle = up || touchState.throttle;
   input.brake = down || touchState.brake;
   input.steer = keySteer !== 0 ? keySteer : touchState.steer;
-  input.handbrake = keys.has(' ') || touchState.handbrake;
+  // brake + steering on touch becomes a drift, so the pad needs one button less
+  input.handbrake = keys.has(' ') || touchState.handbrake || (touchState.brake && touchState.steer !== 0);
   input.boost = keys.has('shift') || touchState.boost;
   input.fire = keys.has('f') || keys.has('j') || mouseDown || touchState.fire;
 }
@@ -265,6 +266,7 @@ function startRun() {
   zombies.chaseRange = cfg.chase;
   zombies.reset();
   zombies.spawnNear(world.carStart, cfg.initial, 13, 64, 0);
+  zombies.spawnCity(world.spawnPoints, Math.round(cfg.initial * 2.6), world.carStart, 30, 0);
   game.mode = 'playing';
   game.runPoints = 0;
   game.kills = 0;
@@ -288,7 +290,10 @@ function startRun() {
   ui.showHud(true);
   ui.setWeapons(progress.weapons, weapons.state.selected);
   ui.setWeaponState(weapons.getState());
-  ui.message('موج 1 — گاز بده', 'up');
+  ui.message(
+    WEAPONS.some((w) => progress.weapons[w.key] > 0) ? 'موج 1 — گاز بده' : 'بدون سلاح! از تعمیرگاه نصب کن',
+    'up'
+  );
   audio.start();
 }
 
@@ -685,6 +690,7 @@ function stepGameplay(dt) {
     game.waveTimer = 0;
     game.wave += 1;
     zombies.spawnNear(car.state.pos, 4 + game.wave * 2, 26, 72, game.kills + game.wave * 6);
+    zombies.spawnCity(world.spawnPoints, 4 + game.wave, car.state.pos, 55, game.kills + game.wave * 6);
     game.shake = Math.max(game.shake, 0.3);
     audio.rampage();
     env.surge();
@@ -696,6 +702,10 @@ function stepGameplay(dt) {
     game.spawnTimer = cfg.spawnEvery;
     if (zombies.active < cfg.maxActive) {
       zombies.spawnNear(car.state.pos, 1 + (Math.random() < 0.3 ? 1 : 0), 44, 96, game.kills + game.wave * 5);
+    }
+    // keep the rest of the city populated too, so packs appear from every street
+    if (zombies.active < cfg.maxActive + 34) {
+      zombies.spawnCity(world.spawnPoints, 2 + (Math.random() < 0.4 ? 1 : 0), car.state.pos, 58, game.kills + game.wave * 5);
     }
   }
 
@@ -916,6 +926,7 @@ window.__b2k = {
   world,
   zombies,
   weapons,
+  zombies,
   audio,
   env,
   get destroyed() { return world.destroyed; },

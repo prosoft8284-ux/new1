@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
-const MAX_ACTIVE = 46;
+const MAX_ACTIVE = 96;
 
 function boxGeo(w, h, d, x = 0, y = 0, z = 0) {
   const g = new THREE.BoxGeometry(w, h, d);
@@ -168,6 +168,44 @@ export class ZombieManager {
     return zb;
   }
 
+  rollVariant(difficulty) {
+    const roll = Math.random();
+    const bruteChance = 0.05 + Math.min(0.1, difficulty * 0.01);
+    const runnerChance = 0.2 + Math.min(0.18, difficulty * 0.018);
+    const crawlerChance = 0.08;
+    const screamerChance = 0.05;
+    if (roll < bruteChance) return 'brute';
+    if (roll < bruteChance + runnerChance) return 'runner';
+    if (roll < bruteChance + runnerChance + crawlerChance) return 'crawler';
+    if (roll < bruteChance + runnerChance + crawlerChance + screamerChance) return 'screamer';
+    return 'walker';
+  }
+
+  // spread a pack over the whole city, not just the block around the car
+  spawnCity(points, count, playerPos, minDist = 40, difficulty = 0) {
+    if (!points || !points.length) return 0;
+    let spawned = 0;
+    for (let i = 0; i < count; i++) {
+      let pick = null;
+      for (let tries = 0; tries < 10; tries++) {
+        const candidate = points[(Math.random() * points.length) | 0];
+        if (!playerPos || Math.hypot(candidate.x - playerPos.x, candidate.z - playerPos.z) > minDist) {
+          pick = candidate;
+          break;
+        }
+      }
+      if (!pick) continue;
+      const zb = this.spawnAt(
+        pick.x + (Math.random() - 0.5) * 4,
+        pick.z + (Math.random() - 0.5) * 4,
+        this.rollVariant(difficulty)
+      );
+      if (zb) spawned += 1;
+    }
+    this.active = this.zombies.filter((z) => z.active).length;
+    return spawned;
+  }
+
   spawnNear(pos, count, minRadius = 26, maxRadius = 74, difficulty = 0) {
     for (let i = 0; i < count; i++) {
       let x = 0;
@@ -179,17 +217,7 @@ export class ZombieManager {
         z = pos.z + Math.sin(a) * r;
         if (!this.isBlocked(x, z)) break;
       }
-      const roll = Math.random();
-      const bruteChance = 0.05 + Math.min(0.1, difficulty * 0.01);
-      const runnerChance = 0.2 + Math.min(0.18, difficulty * 0.018);
-      const crawlerChance = 0.08;
-      const screamerChance = 0.05;
-      let variant = 'walker';
-      if (roll < bruteChance) variant = 'brute';
-      else if (roll < bruteChance + runnerChance) variant = 'runner';
-      else if (roll < bruteChance + runnerChance + crawlerChance) variant = 'crawler';
-      else if (roll < bruteChance + runnerChance + crawlerChance + screamerChance) variant = 'screamer';
-      this.spawnAt(x, z, variant);
+      this.spawnAt(x, z, this.rollVariant(difficulty));
     }
     this.active = this.zombies.filter((z) => z.active).length;
   }
