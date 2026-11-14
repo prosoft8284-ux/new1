@@ -47,26 +47,40 @@ def normalize(text: str) -> str:
     return _SPACES.sub(" ", t).strip().lower()
 
 
-# Letters that only occur in Persian (or are the Persian form) vs Arabic-only forms.
-_PERSIAN_MARKERS = set("پچژگکی")
-_ARABIC_MARKERS = set("يكةىئؤ")
+# Letters that exist in only one of the two scripts. ی/ک are deliberately left
+# out: Tesseract's Arabic model often emits their Persian forms, so treating them
+# as a Persian signal mislabels Arabic books (it did, before this fix).
+_PERSIAN_LETTERS = set("پچژگۀ")
+_ARABIC_LETTERS = set("ةىئؤ")
+
+# Function words are a much stronger signal than single letters.
+_PERSIAN_WORDS = {
+    "است", "که", "را", "های", "برای", "این", "آن", "با", "از", "شود",
+    "شد", "باشد", "نیست", "کرد", "می", "بر", "تا", "هم", "یک", "چه",
+}
+_ARABIC_WORDS = {
+    "في", "من", "على", "إلى", "الى", "الذي", "التي", "هذا", "هذه",
+    "كان", "لا", "ما", "عن", "أن", "إن", "مع", "بين", "كل", "هو", "هي",
+    "ثم", "قد", "ولا", "وهو", "كما",
+}
 
 
 def detect_language(text: str) -> str:
-    """Cheap fa/ar/mixed detector for Persian and Arabic script.
+    """fa / ar / mixed detector for Persian and Arabic script (weighted).
 
-    Persian and Arabic share almost all letters, so the discriminator is the
-    handful of letters that differ: پ چ ژ گ and the Persian ک/ی versus Arabic
-    ك/ي/ة/ى. Diacritics and Arabic-Indic vs Persian digits are deliberately
-    ignored because both scripts use them.
+    Signals, strongest first: script-exclusive letters (پ چ ژ گ vs ة ى ئ ؤ) and
+    function words. Persian ک/ی are ignored because they are not exclusive.
     """
     if not text:
         return "fa"
-    fa = sum(1 for ch in text if ch in _PERSIAN_MARKERS)
-    ar = sum(1 for ch in text if ch in _ARABIC_MARKERS)
-    if fa >= 5 and fa > 2 * ar:
+    tokens = normalize(text).split()
+    fa_words = sum(1 for tok in tokens if tok in _PERSIAN_WORDS)
+    ar_words = sum(1 for tok in tokens if tok in _ARABIC_WORDS)
+    fa = 3 * sum(1 for ch in text if ch in _PERSIAN_LETTERS) + fa_words
+    ar = 3 * sum(1 for ch in text if ch in _ARABIC_LETTERS) + ar_words
+    if fa >= 3 and fa >= 2 * ar:
         return "fa"
-    if ar >= 5 and ar > 2 * fa:
+    if ar >= 3 and ar >= 2 * fa:
         return "ar"
     if fa or ar:
         return "mixed"
@@ -83,6 +97,8 @@ def lam_alef_variants(term: str) -> list[str]:
     out = [term]
     if len(term) < 4:
         return out
+    # Swap the pair in both directions (mid-word only; the leading «ال» of the
+    # Arabic article is left alone).
     if "ال" in term[1:]:
         out.append(term.replace("لا", "\x00").replace("ال", "لا").replace("\x00", "لا"))
     if "لا" in term[1:]:

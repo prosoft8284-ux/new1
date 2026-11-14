@@ -2,5 +2,9 @@ duckdb>=1.1
 lancedb>=0.15
 pyarrow>=16
 numpy>=1.26
+pymupdf>=1.24
 # optional but recommended: real multilingual embeddings (falls back to hashing if missing)
 fastembed>=0.3
+# only needed by sample/make_scanned_pdf.py (building test scans)
+arabic-reshaper>=3.0
+python-bidi>=0.4
