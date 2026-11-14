@@ -7,3 +7,10 @@ android/build/
 android/local.properties
 apk-probe/
 *.log
+bermuda/game/node_modules/
+bermuda/game/dist/
+bermuda/game/android/.gradle/
+bermuda/game/android/app/build/
+bermuda/game/android/build/
+bermuda/game/android/local.properties
+bermuda/game/android/app/src/main/assets/public/

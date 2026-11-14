@@ -1,0 +1,23 @@
+{
+  "name": "bermuda-survival",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 3100 --strictPort",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --host 0.0.0.0 --port 3101"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.3",
+    "@capacitor/core": "^6.2.3",
+    "pixi.js": "^8.6.6"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.3",
+    "playwright": "^1.49.1",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}

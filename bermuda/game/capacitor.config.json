@@ -1,0 +1,8 @@
+{
+  "appId": "com.bermuda.survival",
+  "appName": "Bermuda Occupied",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false
+  }
+}

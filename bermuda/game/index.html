@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <title>Bermuda — Occupied Island</title>
+  <style>
+    :root {
+      --ink: #f0e8d8;
+      --dim: #a9b7b0;
+      --gold: #d8b878;
+      --red: #d2453f;
+      --blue: #4fb6e8;
+      --panel: rgba(10, 12, 16, 0.82);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #080a0c; }
+    body {
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+      color: var(--ink);
+      user-select: none;
+      touch-action: none;
+    }
+    #app, #app canvas { position: fixed; inset: 0; width: 100%; height: 100%; }
+    .hidden { display: none !important; }
+
+    #hud { position: fixed; inset: 0; pointer-events: none; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+
+    .panel { background: var(--panel); border: 1px solid rgba(216, 184, 120, 0.35); border-radius: 6px; }
+
+    #vitals { position: absolute; top: 12px; left: 12px; padding: 10px 12px; min-width: 210px; }
+    #vitals .row { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.06em; color: var(--dim); }
+    #hpbar { height: 12px; width: 210px; background: #201c18; border: 1px solid #4a4034; border-radius: 3px; overflow: hidden; margin: 6px 0 8px; }
+    #hpFill { height: 100%; width: 100%; background: linear-gradient(90deg, #c33c35, #e2645b); transition: width 0.15s linear; }
+    .stat { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+    .stat b { color: var(--ink); font-weight: 600; }
+    .chip { display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px; border-radius: 4px; background: rgba(255,255,255,0.06); font-size: 12px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    #topright { position: absolute; top: 12px; right: 12px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    #minimapWrap { padding: 6px; }
+    #minimap { display: block; width: 150px; height: 150px; border-radius: 4px; }
+    #clock { font-size: 12px; letter-spacing: 0.08em; color: var(--dim); }
+    #objective { padding: 8px 10px; font-size: 12px; line-height: 1.45; text-align: right; max-width: 230px; }
+    #objective b { color: var(--gold); }
+
+    #prompt {
+      position: absolute; left: 50%; bottom: 132px; transform: translateX(-50%);
+      padding: 8px 14px; font-size: 13px; letter-spacing: 0.04em; white-space: nowrap;
+      background: var(--panel); border: 1px solid rgba(216, 184, 120, 0.45); border-radius: 5px;
+    }
+    #prompt .key { color: var(--gold); font-weight: 700; }
+    #holdbar { position: absolute; left: 50%; bottom: 118px; transform: translateX(-50%); width: 180px; height: 5px; background: #241f1a; border-radius: 3px; overflow: hidden; }
+    #holdFill { height: 100%; width: 0%; background: var(--gold); }
+
+    #toast { position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); padding: 9px 16px; font-size: 14px; letter-spacing: 0.04em; opacity: 0; transition: opacity 0.25s; background: var(--panel); border-left: 3px solid var(--gold); }
+
+    #crosshair { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border: 1px solid rgba(240, 232, 216, 0.5); border-radius: 50%; }
+    #crosshair::after { content: ""; position: absolute; inset: 7px; background: rgba(240, 232, 216, 0.8); border-radius: 50%; }
+
+    #stickBase { position: absolute; width: 118px; height: 118px; margin: -59px 0 0 -59px; border-radius: 50%; border: 1px solid rgba(240,232,216,0.22); background: rgba(16,20,24,0.35); display: none; }
+    #stickKnob { position: absolute; width: 50px; height: 50px; margin: -25px 0 0 -25px; border-radius: 50%; background: rgba(240,232,216,0.28); border: 1px solid rgba(240,232,216,0.45); display: none; }
+
+    #actions { position: absolute; right: 14px; bottom: 16px; display: grid; grid-template-columns: repeat(2, 62px); gap: 8px; pointer-events: auto; }
+    .btn {
+      height: 62px; border-radius: 8px; background: rgba(16,20,26,0.78); border: 1px solid rgba(216,184,120,0.35);
+      color: var(--ink); font-size: 11px; letter-spacing: 0.06em; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 3px; cursor: pointer;
+    }
+    .btn:active { background: rgba(216,184,120,0.22); }
+    .btn .big { font-size: 17px; font-weight: 700; }
+    .btn.wide { grid-column: span 2; height: 46px; flex-direction: row; gap: 8px; }
+
+    #weaponCard { position: absolute; bottom: 16px; left: 14px; padding: 9px 12px; min-width: 168px; }
+    #weaponName { font-size: 13px; letter-spacing: 0.08em; color: var(--gold); }
+    #ammo { font-size: 26px; font-weight: 700; letter-spacing: 0.04em; }
+    #ammo small { font-size: 14px; color: var(--dim); font-weight: 400; }
+
+    .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: radial-gradient(ellipse at 50% 40%, rgba(22,28,34,0.94), rgba(6,8,10,0.98)); text-align: center; padding: 24px; }
+    .title { font-size: clamp(26px, 6vw, 52px); letter-spacing: 0.16em; color: var(--ink); text-shadow: 0 0 24px rgba(216,184,120,0.25); }
+    .sub { font-size: 13px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; }
+    .body { max-width: 520px; font-size: 14px; line-height: 1.7; color: var(--dim); }
+    .cta { pointer-events: auto; padding: 12px 26px; font-size: 14px; letter-spacing: 0.12em; background: rgba(216,184,120,0.14); border: 1px solid var(--gold); color: var(--ink); border-radius: 4px; cursor: pointer; }
+    .cta:active { background: rgba(216,184,120,0.3); }
+    .loading { width: 240px; height: 4px; background: #1c1f22; border-radius: 2px; overflow: hidden; }
+    .loading > i { display: block; height: 100%; width: 0%; background: var(--gold); transition: width 0.2s; }
+
+    #mapScreen { position: fixed; inset: 0; background: rgba(6,8,10,0.96); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 14px; }
+    #mapCanvas { max-width: 92vw; max-height: 78vh; border: 1px solid rgba(216,184,120,0.4); border-radius: 4px; }
+    #mapLegend { display: flex; gap: 18px; font-size: 12px; color: var(--dim); flex-wrap: wrap; justify-content: center; }
+    .lg { display: flex; align-items: center; gap: 6px; }
+    .sq { width: 10px; height: 10px; border-radius: 2px; }
+    #mapClose { pointer-events: auto; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <div id="hud" class="hidden">
+    <div id="vitals" class="panel">
+      <div class="row"><span>HEALTH</span><span id="hpText" style="margin-left:auto">100</span></div>
+      <div id="hpbar"><div id="hpFill"></div></div>
+      <div class="row" style="gap:12px">
+        <span class="chip"><span class="dot" style="background:#e2645b"></span><b id="medkitCount">0</b> medkits</span>
+        <span class="chip"><span class="dot" style="background:#6ec46e"></span><b id="herbCount">0</b> herbs</span>
+      </div>
+    </div>
+
+    <div id="topright">
+      <div id="minimapWrap" class="panel"><canvas id="minimap" width="150" height="150"></canvas></div>
+      <div id="clock" class="panel" style="padding:5px 9px">06:00 · DAY</div>
+      <div id="objective" class="panel">Liberate <b id="campCount">0/4</b> camps<br>Hack <b id="towerCount">0/3</b> radio towers</div>
+    </div>
+
+    <div id="crosshair" class="hidden"></div>
+    <div id="stickBase"></div>
+    <div id="stickKnob"></div>
+    <div id="prompt" class="hidden"></div>
+    <div id="holdbar" class="hidden"><div id="holdFill"></div></div>
+    <div id="toast"></div>
+
+    <div id="weaponCard" class="panel">
+      <div id="weaponName">M9 SIDEARM</div>
+      <div id="ammo">12 <small>/ 60</small></div>
+    </div>
+
+    <div id="actions">
+      <div class="btn" id="btnHeal"><span class="big">+</span>HEAL</div>
+      <div class="btn" id="btnReload"><span class="big">R</span>RELOAD</div>
+      <div class="btn" id="btnSwitch"><span class="big">⇄</span>WEAPON</div>
+      <div class="btn" id="btnUse"><span class="big">E</span>USE</div>
+      <div class="btn wide" id="btnMap"><span class="big">▣</span>MAP</div>
+    </div>
+  </div>
+
+  <div id="titleScreen" class="screen">
+    <div class="sub">Bermuda Triangle · 2000</div>
+    <div class="title">OCCUPIED ISLAND</div>
+    <div class="body">The aliens took the island. Cut their camps, hack the towers and take it back.<br>
+      Left side of the screen moves, right side aims and fires.<br>
+      <span style="color:#d8b878">WASD</span> move · <span style="color:#d8b878">Mouse</span> aim · <span style="color:#d8b878">LMB</span> fire · <span style="color:#d8b878">R</span> reload · <span style="color:#d8b878">E</span> use · <span style="color:#d8b878">H</span> heal · <span style="color:#d8b878">M</span> map</div>
+    <div class="loading"><i id="loadBar"></i></div>
+    <button class="cta" id="btnStart">DEPLOY</button>
+  </div>
+
+  <div id="deadScreen" class="screen hidden">
+    <div class="sub">Signal lost</div>
+    <div class="title">YOU DIED</div>
+    <div class="body" id="deadStats"></div>
+    <button class="cta" id="btnRespawn">RESPAWN AT CAMP</button>
+  </div>
+
+  <div id="winScreen" class="screen hidden">
+    <div class="sub">Island liberated</div>
+    <div class="title">BERMUDA IS OURS</div>
+    <div class="body" id="winStats"></div>
+    <button class="cta" id="btnAgain">PLAY AGAIN</button>
+  </div>
+
+  <div id="mapScreen" class="hidden">
+    <div id="mapLegend">
+      <span class="lg"><span class="sq" style="background:#e2645b"></span>Occupied camp</span>
+      <span class="lg"><span class="sq" style="background:#4fb6e8"></span>Liberated</span>
+      <span class="lg"><span class="sq" style="background:#c48cf0"></span>Alien zone</span>
+      <span class="lg"><span class="sq" style="background:#d8b878"></span>Radio tower</span>
+    </div>
+    <canvas id="mapCanvas" width="900" height="900"></canvas>
+    <button class="cta" id="mapClose">CLOSE</button>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

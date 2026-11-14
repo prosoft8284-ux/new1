@@ -1,0 +1,67 @@
+{
+  "selected": "tech_specialist",
+  "note": "Protagonist roster from the character sheet. Only the selected survivor is modeled in the current build; the rest stay as data so they can be unlocked or swapped later.",
+  "characters": [
+    {
+      "id": "tech_specialist",
+      "name": "Tech Specialist",
+      "name_fa": "متخصص فناوری",
+      "selected": true,
+      "color": "#3fa9f5",
+      "summary": "کنترل‌کنندهٔ فناوری‌های پیشرفته",
+      "strengths": ["هک کردن ادوات فضایی", "کاهش سپر مناره‌ها", "پهپاد بازیابی"],
+      "weakness": "سلامتی کم؛ باید از فاصله بجنگد",
+      "start_point": "harbor"
+    },
+    {
+      "id": "wandering_ghost",
+      "name": "Wandering Ghost",
+      "name_fa": "روح سرگردان",
+      "selected": false,
+      "color": "#a56cf0",
+      "summary": "سریع و ماهر در استفاده از قدرت‌های ذهنی",
+      "strengths": ["نامرئی شدن کوتاه", "گیج کردن دشمن", "فرار سریع"],
+      "weakness": "آسیب مستقیم پایین"
+    },
+    {
+      "id": "warrior",
+      "name": "Warrior",
+      "name_fa": "جنگجو",
+      "selected": false,
+      "color": "#e05555",
+      "summary": "مقاوم و قدرتمند با توانایی‌های زیستی",
+      "strengths": ["زره سنگین", "ضربه نزدیک", "بازیابی سریع"],
+      "weakness": "کند و پرصدا"
+    },
+    {
+      "id": "mutant",
+      "name": "Flesh-grown",
+      "name_fa": "جهش‌یافته",
+      "selected": false,
+      "color": "#7ad94f",
+      "summary": "دارای DNA بیگانه و قدرت‌های جهش‌یافته",
+      "strengths": ["پرش بلند", "سم", "بازیابی از کشته‌ها"],
+      "weakness": "مصرف مداوم انرژی"
+    },
+    {
+      "id": "alien_samurai",
+      "name": "Alien Samurai",
+      "name_fa": "سامورایی فضایی",
+      "selected": false,
+      "color": "#ff9b45",
+      "summary": "ترکیبی از مهارت رزمی و قدرت‌های انرژی",
+      "strengths": ["ضربه شمشیر انرژی", "جذب گلوله", "موج انفجاری"],
+      "weakness": "نیاز به نزدیکی برای بیشترین آسیب"
+    },
+    {
+      "id": "lone_traveler",
+      "name": "Lone Traveler",
+      "name_fa": "مسافر تنها",
+      "selected": false,
+      "color": "#e8c15a",
+      "summary": "سازگار و همه‌فن‌حریف در شرایط سخت",
+      "strengths": ["ساخت و تعمیر", "شکار و منابع", "استقامت"],
+      "weakness": "بدون قدرت ویژه در نبرد"
+    }
+  ]
+}
