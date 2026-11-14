@@ -1,0 +1,9 @@
+.venv/
+data/
+books/
+sample/*.pdf
+sample/*.png
+sample/scan*.jsonl
+__pycache__/
+*.duckdb
+*.duckdb.wal
