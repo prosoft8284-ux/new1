@@ -11,12 +11,13 @@ dies at book 900 should not lose its index work.
 from __future__ import annotations
 
 import json
+import os
 import re
 import time
 from pathlib import Path
 
 from .ingest import run_ingest
-from .pdf import extract_pdf, write_jsonl
+from .pdf import extract_many, write_jsonl
 
 
 def _slug(rel: str) -> str:
@@ -103,17 +104,45 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
     ingested = {"documents": 0, "chunks": 0, "skipped_duplicates": 0}
     started = time.time()
 
-    for i, (pdf, key, stat) in enumerate(pending, start=1):
+    group_size = max(1, min(8, int(extract_kwargs.get("workers") or os.cpu_count() or 4)))
+
+    def pending_with_results():
+        """Extract a group of books on one shared pool, then yield them one by one."""
+        nonlocal proc_seconds
+        for offset in range(0, len(pending), group_size):
+            group = pending[offset:offset + group_size]
+            started_group = time.time()
+            try:
+                results = extract_many([pdf for pdf, _k, _s in group],
+                                       root=str(root_path), progress=progress,
+                                       **extract_kwargs)
+            except Exception as exc:  # noqa: BLE001 - report, never abort the queue
+                results = [{"pdf": str(pdf), "error": str(exc), "page_texts": {}}
+                           for pdf, _k, _s in group]
+            group_seconds = time.time() - started_group
+            proc_seconds += group_seconds
+            # Pages are interleaved across the group, so split its wall time by
+            # page count instead of pretending each book timed itself.
+            total_pages = sum(max(1, item.get("pages") or 1) for item in results) or 1
+            for item in results:
+                share = group_seconds * (max(1, item.get("pages") or 1)) / total_pages
+                item["seconds"] = round(share, 1)
+                ran = item.get("ocr_this_run") or 0
+                item["pages_per_sec"] = round(ran / share, 2) if share else 0.0
+            found = {str(Path(item["pdf"])): item for item in results}
+            for item in group:
+                yield item, found.get(str(item[0]))
+
+    for i, ((pdf, key, stat), extracted) in enumerate(pending_with_results(), start=1):
         book_started = time.time()
-        try:
-            extracted = extract_pdf(pdf, root=str(root_path), progress=progress, **extract_kwargs)
-        except Exception as exc:  # noqa: BLE001 - one bad book must not stop 999 others
+        if not extracted or extracted.get("error") or not extracted.get("page_texts"):
+            error = (extracted or {}).get("error", "متني استخراج نشد")
             proc_seconds += time.time() - book_started
             failed += 1
-            books[key] = {"status": "failed", "error": str(exc)[:300],
-                          "size": stat.st_size, "mtime": int(stat.st_mtime)}
+            books[key] = {"status": "failed", "error": str(error)[:300],
+                          "size": stat.st_size, "mtime": int(st.st_mtime)}
             manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
-            print(f"[library] ✗ {pdf.name}: {exc}", flush=True)
+            print(f"[library] ✗ {pdf.name}: {error}", flush=True)
             continue
 
         rel = pdf.relative_to(base).as_posix()

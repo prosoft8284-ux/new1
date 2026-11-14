@@ -44,6 +44,8 @@ def main(argv: list[str] | None = None) -> int:
     ing.add_argument("--overlap", type=int, default=120)
     ing.add_argument("--limit", type=int, default=None, help="حداکثر تعداد تکه برای تست")
     ing.add_argument("--rebuild", action="store_true", help="پاک کردن ایندکس قبلی")
+    ing.add_argument("--index-type", default="auto", choices=["auto", "none", "sq", "pq"],
+                     help="ایندکس برداری: auto (SQ بعد از ۵۰ هزار بردار) | none | sq | pq")
 
     sea = sub.add_parser("search", help="جست‌وجوی ترکیبی")
     sea.add_argument("query")
@@ -56,6 +58,9 @@ def main(argv: list[str] | None = None) -> int:
     sea.add_argument("--year-from", type=int, default=None)
     sea.add_argument("--year-to", type=int, default=None)
     sea.add_argument("--no-cache", action="store_true")
+    sea.add_argument("--rerank", default="off", choices=["off", "heuristic"],
+                     help="بازرتبه‌بندی کاندیدها (پیش‌فرض خاموش؛ در مجموعه آزمون سود نشان نداد)")
+    sea.add_argument("--rerank-k", type=int, default=20, help="چند کاندید بازرتبه‌بندی شود")
     sea.add_argument("--json", action="store_true", help="خروجی JSON")
     sea.add_argument("--context", action="store_true", help="چاپ پرامپت آماده برای مدل زبانی")
 
@@ -101,7 +106,7 @@ def main(argv: list[str] | None = None) -> int:
         summary = run_ingest(
             input_path=args.input, root=args.root, embedder_backend=args.embedder,
             model=args.model, max_chars=args.max_chars, overlap=args.overlap,
-            rebuild=args.rebuild, limit=args.limit,
+            rebuild=args.rebuild, limit=args.limit, index_type=args.index_type,
         )
         print(json.dumps(summary, ensure_ascii=False, indent=2))
         return 0
@@ -153,7 +158,8 @@ def main(argv: list[str] | None = None) -> int:
         "year_to": args.year_to,
     }
     retriever = Retriever(root=args.root, k_vec=args.k_vec, k_lex=args.k_lex,
-                          use_cache=not args.no_cache)
+                          use_cache=not args.no_cache, rerank=args.rerank,
+                          rerank_k=args.rerank_k)
     result = retriever.search(args.query, k=args.k, filters=filters)
 
     if args.json:

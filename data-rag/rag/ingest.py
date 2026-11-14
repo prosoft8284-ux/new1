@@ -81,6 +81,7 @@ class _RawWriter:
         self._buf: dict[tuple[str, str], list[dict]] = {}
         self._rows = 0
         self.files = 0
+        self.written: list[Path] = []
 
     def add(self, part: tuple[str, str], row: dict) -> None:
         self._buf.setdefault(part, []).append(row)
@@ -109,7 +110,9 @@ class _RawWriter:
         idx = self.counters[part]
         self.counters[part] = idx + 1
         table = pa.Table.from_pylist(rows, schema=parquet_schema())
-        pq.write_table(table, out_dir / f"part-{idx:05d}.parquet", compression=COMPRESSION)
+        target = out_dir / f"part-{idx:05d}.parquet"
+        pq.write_table(table, target, compression=COMPRESSION)
+        self.written.append(target)
         self.files += 1
 
 
@@ -145,31 +148,86 @@ def _load_existing_doc_ids(root: Path) -> set[str]:
         return set()
 
 
-def _build_corpus_db(raw_dir: Path, root: Path) -> str:
-    """Materialise the Parquet corpus into a DuckDB table for fast lexical filtering.
+# `year` is a hive partition column, so pages without a date arrive as the
+# literal "unknown"; TRY_CAST turns those into NULL instead of failing the load.
+CORPUS_COLUMNS_SQL = (
+    "id, doc_id, chunk_index, title, text, norm, title_norm, source, published, "
+    "lang, tokens, category, TRY_CAST(year AS INTEGER) AS year"
+)
 
-    Parquet stays the source of truth (portable, cheap, rebuildable); this file is
-    a disposable cache that gives DuckDB zone maps and column statistics instead of
-    re-opening every partition on each query.
+
+def _update_corpus_db(raw_dir: Path, root: Path, new_files: list[Path], rebuild: bool):
+    """Keep the DuckDB corpus in sync without rewriting it on every batch.
+
+    Parquet stays the source of truth. On a fresh or `--rebuild` run the whole
+    corpus is materialised; otherwise only the files written by this run are
+    appended, so adding the 1000th book no longer re-reads the first 999.
     """
     import duckdb
 
     db_path = root / "corpus.duckdb"
-    if db_path.exists():
-        db_path.unlink()
-    con = duckdb.connect(str(db_path))
     glob = str(raw_dir / "**" / "*.parquet")
-    con.execute(
-        "CREATE OR REPLACE TABLE chunks AS "
-        "SELECT * FROM read_parquet(?, hive_partitioning=true)",
-        [glob],
-    )
+    started = time.time()
+    con = duckdb.connect(str(db_path))
     try:
-        con.execute("CHECKPOINT")
-    except Exception:  # noqa: BLE001
-        pass
-    con.close()
-    return str(db_path)
+        has_table = bool(con.execute(
+            "SELECT count(*) FROM information_schema.tables WHERE table_name='chunks'"
+        ).fetchone()[0])
+        if rebuild or not has_table:
+            con.execute("DROP TABLE IF EXISTS chunks")
+            con.execute(
+                f"CREATE TABLE chunks AS SELECT {CORPUS_COLUMNS_SQL} "
+                "FROM read_parquet(?, hive_partitioning=true)",
+                [glob],
+            )
+            mode = "rebuild"
+        elif new_files:
+            con.execute(
+                f"INSERT INTO chunks SELECT {CORPUS_COLUMNS_SQL} "
+                "FROM read_parquet(?, hive_partitioning=true)",
+                [[str(p) for p in new_files]],
+            )
+            mode = "incremental"
+        else:
+            mode = "unchanged"
+        try:
+            con.execute("CHECKPOINT")
+        except Exception:  # noqa: BLE001
+            pass
+    finally:
+        con.close()
+    return str(db_path), mode, round(time.time() - started, 2)
+
+
+SQ_MIN_ROWS = 50_000
+
+
+def build_vector_index(table, rows: int, index_type: str, dim: int) -> str:
+    """Add an ANN index (scalar-quantised HNSW) once a table is worth one.
+
+    Below ~50k vectors a flat scan is already fast and an index only adds build
+    time and disk, so `auto` stays brute force until then.
+    """
+    if index_type == "none" or not rows:
+        return "none"
+    if index_type == "auto":
+        if rows < SQ_MIN_ROWS:
+            return f"brute-force ({rows})"
+        index_type = "sq"
+    partitions = max(1, min(1024, rows // 1000))
+    sub_vectors = max(1, dim // 8)
+    try:
+        if index_type == "sq":
+            table.create_index(metric="cosine", vector_column_name="vector",
+                               index_type="IVF_HNSW_SQ", num_partitions=partitions,
+                               num_sub_vectors=sub_vectors, replace=True)
+        else:
+            table.create_index(metric="cosine", vector_column_name="vector",
+                               index_type="IVF_PQ", num_partitions=partitions,
+                               num_sub_vectors=sub_vectors, replace=True)
+        return index_type
+    except Exception as exc:  # noqa: BLE001 - index is an optimisation, never fatal
+        return f"skipped ({type(exc).__name__}: {str(exc)[:100]})"
 
 
 def _vector_table(ids: list[str], doc_ids: list[str], cats: list[str], langs: list[str],
@@ -199,7 +257,7 @@ def _vector_table(ids: list[str], doc_ids: list[str], cats: list[str], langs: li
 def run_ingest(input_path: str, root: str = "data", embedder_backend: str = "auto",
                model: str | None = None, max_chars: int = 900, overlap: int = 120,
                rebuild: bool = False, limit: int | None = None,
-               progress_hint: bool = True) -> dict:
+               progress_hint: bool = True, index_type: str = "auto") -> dict:
     import lancedb
 
     root_path = Path(root)
@@ -280,7 +338,7 @@ def run_ingest(input_path: str, root: str = "data", embedder_backend: str = "aut
         if not lang or lang == "auto":
             lang = detect_language(text)
         part = _partition_of(rec)
-        year_num = int(part[1]) if part[1].isdigit() else 0
+        year_num = int(part[1]) if part[1].isdigit() else None
 
         for i, piece in enumerate(chunk_text(text, max_chars=max_chars, overlap_chars=overlap)):
             cid = f"{doc_id}#{i}"
@@ -318,12 +376,17 @@ def run_ingest(input_path: str, root: str = "data", embedder_backend: str = "aut
     except Exception:  # noqa: BLE001
         pass
 
-    corpus_db = _build_corpus_db(raw_dir, root_path)
+    vector_index = build_vector_index(table, table.count_rows(), index_type, embedder.dim)
+    corpus_db, corpus_mode, corpus_seconds = _update_corpus_db(
+        raw_dir, root_path, writer.written, rebuild)
     parquet_bytes = sum(f.stat().st_size for f in raw_dir.rglob("*.parquet"))
     return {
         "documents": docs,
         "skipped_duplicates": skipped,
         "chunks": chunks,
+        "vector_index": vector_index,
+        "corpus_mode": corpus_mode,
+        "corpus_seconds": corpus_seconds,
         "parquet_files": writer.files,
         "parquet_mb": round(parquet_bytes / 1e6, 2),
         "vectors": table.count_rows(),

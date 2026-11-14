@@ -37,7 +37,10 @@ def _lance_str(value: str) -> str:
 
 class Retriever:
     def __init__(self, root: str = "data", k_vec: int = 60, k_lex: int = 60,
-                 use_cache: bool = True):
+                 use_cache: bool = True, rerank: str = "off",
+                 rerank_k: int = 20):
+        self.rerank = rerank
+        self.rerank_k = max(1, rerank_k)
         self.root = Path(root)
         self.raw_glob = str(self.root / "raw" / "**" / "*.parquet")
         meta_path = self.root / "idx" / "meta.json"
@@ -154,6 +157,37 @@ class Retriever:
                 scores[cid] = scores.get(cid, 0.0) + 1.0 / (RRF_K + rank + 1)
         return sorted(scores.items(), key=lambda kv: -kv[1])
 
+    # -- reranking ---------------------------------------------------------
+    def _rerank(self, query: str, fused: list[tuple[str, float]],
+                docs: dict[str, dict]) -> list[tuple[str, float]]:
+        """Re-score the fused candidates on cheap, query-aware signals.
+
+        Fusion only knows ranks. This second look uses what a reader would use:
+        how many query terms actually appear, whether the exact phrase is there,
+        whether the title answers the question, and whether the chunk is a
+        sensible length (very short or very long chunks rarely help).
+        """
+        terms = query_terms(query)
+        query_norm = normalize(query)
+        ceiling = max((score for _cid, score in fused), default=1.0) or 1.0
+        scored: list[tuple[str, float]] = []
+        for cid, base in fused:
+            row = docs.get(cid)
+            if not row:
+                continue
+            text = normalize(row["text"])
+            title = normalize(row.get("title") or "")
+            coverage = (sum(1 for t in terms if t in text) / len(terms)) if terms else 0.0
+            title_hit = (sum(1 for t in terms if t in title) / len(terms)) if terms else 0.0
+            phrase = 1.0 if query_norm and query_norm in text else 0.0
+            length = len(row["text"])
+            penalty = 0.0 if 200 <= length <= 1200 else min(1.0, abs(length - 700) / 1400)
+            score = (0.45 * (base / ceiling) + 0.30 * coverage + 0.15 * phrase
+                     + 0.10 * title_hit - 0.05 * penalty)
+            scored.append((cid, round(score, 6)))
+        scored.sort(key=lambda kv: -kv[1])
+        return scored
+
     # -- cache -------------------------------------------------------------
     def _ensure_cache(self) -> None:
         if self._cache_ready:
@@ -244,7 +278,10 @@ class Retriever:
 
         lance_where, sql_where, params = self._filters(filters)
 
-        sig = json.dumps(filters or {}, sort_keys=True, ensure_ascii=False)
+        # Ordering depends on the rerank settings too, so they belong in the key;
+        # otherwise a cached fuzzy ranking leaks into a reranked query.
+        sig = json.dumps([filters or {}, self.rerank, self.rerank_k],
+                         sort_keys=True, ensure_ascii=False)
         source = "hybrid"
         fused: list[tuple[str, float]] = []
         docs: dict[str, dict] = {}
@@ -262,8 +299,14 @@ class Retriever:
             terms = query_terms(query)
             lex_hits = self.lexical(terms, sql_where, params, self.k_lex)
             vec_hits = self.vector(qvec, lance_where, self.k_vec)
-            fused = self.fuse(vec_hits, lex_hits)[:k]
-            docs = self.fetch([cid for cid, _ in fused])
+            fused = self.fuse(vec_hits, lex_hits)
+            if self.rerank != "off" and len(fused) > 1:
+                fused = fused[: self.rerank_k]
+                docs = self.fetch([cid for cid, _ in fused])
+                fused = self._rerank(query, fused, docs)[:k]
+            else:
+                fused = fused[:k]
+                docs = self.fetch([cid for cid, _ in fused])
             self.cache_store(query, qvec, [cid for cid, _ in fused], sig)
         results = []
         for rank, (cid, score) in enumerate(fused, start=1):
@@ -287,11 +330,19 @@ class Retriever:
             "query": query,
             "terms": query_terms(query),
             "path": source,
+            "rerank": self.rerank,
             "candidates": {"vectors": self.k_vec, "lexical": self.k_lex},
             "embed_ms": round(embed_ms, 1),
             "total_ms": round((time.perf_counter() - t0) * 1000, 1),
             "results": results,
         }
+
+    def _index_info(self) -> str:
+        try:
+            names = [str(getattr(idx, "index_type", idx)) for idx in self.table.list_indices()]
+        except Exception:  # noqa: BLE001 - older lancedb has no listing API
+            return "unknown"
+        return ", ".join(names) if names else "brute-force"
 
     def stats(self) -> dict:
         row = self.con.execute(
@@ -308,6 +359,7 @@ class Retriever:
             "parquet_files": len(files),
             "parquet_mb": round(sum(f.stat().st_size for f in files) / 1e6, 2),
             "vectors": self.table.count_rows(),
+            "vector_index": self._index_info(),
             "embedder": self.meta.get("model"),
             "dim": self.meta.get("dim"),
             "corpus_db": "corpus.duckdb" if self.chunks_source == "corpus.chunks" else None,

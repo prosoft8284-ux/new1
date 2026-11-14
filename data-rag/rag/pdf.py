@@ -24,7 +24,8 @@ import shutil
 import subprocess
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from .textutil import detect_language
@@ -311,36 +312,42 @@ def _parse_pages(spec: str | None, count: int) -> list[int]:
     return [p for p in pages if 0 <= p < count]
 
 
-def extract_pdf(pdf_path: str | Path, root: str = "data", dpi: int | str = "auto",
-                lang: str = "fas", model: str = "fast", psm: int = 6,
-                workers: int | None = None, pages: str | None = None,
-                force_ocr: bool = False, min_text_coverage: float = 0.08,
-                tesseract: str | None = None, tessdata: str | None = None,
-                progress: bool = True) -> dict:
-    """Extract text from a PDF, OCR-ing only the scanned pages.
+@dataclass
+class _BookPlan:
+    pdf: Path
+    wanted: list[int]
+    plan: list[tuple[int, str, str | None]]
+    cache: Path
+    lang: str
+    dpi: int
+    native: int | None
+    cached_hits: int
+    ocr_planned: int
+    ocr_pages: list[int]
+    engine: str = field(default="")
 
-    `dpi="auto"` uses the page images' own resolution (clamped to 150-400) so a
-    200 dpi scan is not pointlessly upscaled to 300. Pass an int to force one.
-    """
+
+def _plan_book(pdf_path, root: str = "data", dpi: int | str = "auto", lang: str = "fas",
+               model: str = "fast", psm: int = 6, pages: str | None = None,
+               force_ocr: bool = False, min_text_coverage: float = 0.08,
+               tesseract: str | None = None, tessdata: str | None = None) -> _BookPlan:
+    """Decide per page: reuse the text layer, the page cache, or OCR."""
     import pymupdf
 
     pdf = Path(pdf_path)
     if not pdf.exists():
         raise SystemExit(f"فایل PDF پیدا نشد: {pdf}")
-    workers = workers or min(16, os.cpu_count() or 4)
     root_path = Path(root)
 
     doc = pymupdf.open(pdf)
     wanted = _parse_pages(pages, doc.page_count)
     if not wanted:
+        doc.close()
         raise SystemExit("هیچ صفحه‌ای برای پردازش انتخاب نشد")
 
     native = _book_dpi(doc, wanted)
-    if isinstance(dpi, str) and dpi.lower() == "auto":
-        effective_dpi = max(150, min(400, native or 300))
-    else:
-        effective_dpi = int(dpi)
-
+    effective_dpi = (max(150, min(400, native or 300))
+                     if isinstance(dpi, str) and dpi.lower() == "auto" else int(dpi))
     cache = _cache_dir(root_path, pdf, effective_dpi, lang, model, psm)
 
     plan: list[tuple[int, str, str | None]] = []
@@ -361,74 +368,181 @@ def extract_pdf(pdf_path: str | Path, root: str = "data", dpi: int | str = "auto
 
     ocr_pages = [p for p, kind, _ in plan if kind == "ocr"]
     if lang == "auto":
-        lang = _auto_lang(pdf, ocr_pages, effective_dpi, model, psm, tesseract, tessdata)
-        if progress and ocr_pages:
-            print(f"[pdf] زبان تشخیص‌داده‌شده: {lang}", flush=True)
-    engine = None
-    if ocr_pages:
-        engine = OcrEngine(lang=lang, dpi=effective_dpi, model=model, psm=psm,
-                           tesseract=tesseract, tessdata=tessdata)
-        if progress:
-            print(f"[pdf] {pdf.name}: {engine.version()} dpi={effective_dpi}"
-                  f"{' (بومی)' if native else ''} | OCR {len(ocr_pages)} صفحه"
-                  f" + {len(plan) - len(ocr_pages)} متنی/کش | workers={workers}",
-                  flush=True)
+        if ocr_pages:
+            lang = _auto_lang(pdf, ocr_pages, effective_dpi, model, psm, tesseract, tessdata)
+        else:
+            sample = " ".join(str(payload) for _p, kind, payload in plan
+                              if kind in ("text", "cached") and payload)
+            lang = {"fa": "fas", "ar": "ara", "mixed": "fas+ara"}.get(
+                detect_language(sample), "fas")
 
-    results: dict[int, str] = {}
+    return _BookPlan(pdf=pdf, wanted=wanted, plan=plan, cache=cache, lang=lang,
+                     dpi=effective_dpi, native=native, cached_hits=cached_hits,
+                     ocr_planned=ocr_planned, ocr_pages=ocr_pages)
+
+
+def _run_plans(plans: list[_BookPlan], *, model: str, psm: int, workers: int,
+               tesseract: str | None, tessdata: str | None,
+               progress: bool = True) -> tuple[dict[int, dict[int, str]], dict[int, list[str]]]:
+    """Run every OCR page of every book on one pool: no per-book tail waste."""
+    import pymupdf
+
+    results: dict[int, dict[int, str]] = {i: {} for i in range(len(plans))}
+    failures: dict[int, list[str]] = {i: [] for i in range(len(plans))}
+    engines: dict[tuple[str, int], OcrEngine] = {}
+    handles: dict[int, _DocHandles] = {}
+    remaining = {i: len(p.ocr_pages) for i, p in enumerate(plans)}
+    total = sum(remaining.values())
+    if not total:
+        return results, failures
+
+    lock = threading.Lock()
+
+    def engine_for(plan: _BookPlan) -> OcrEngine:
+        key = (plan.lang, plan.dpi)
+        with lock:
+            if key not in engines:
+                engines[key] = OcrEngine(lang=plan.lang, dpi=plan.dpi, model=model,
+                                         psm=psm, tesseract=tesseract, tessdata=tessdata)
+                plan.engine = engines[key].version()
+        return engines[key]
+
+    def work(idx: int, pno: int) -> tuple[int, int, str]:
+        plan = plans[idx]
+        with lock:
+            handle = handles.get(idx)
+            if handle is None:
+                handle = handles[idx] = _DocHandles(plan.pdf)
+        page = handle.page(pno)
+        pix = page.get_pixmap(dpi=plan.dpi, colorspace=pymupdf.csGRAY, annots=False)
+        text = engine_for(plan).ocr_pgm(_pgm_bytes(pix))
+        (plan.cache / f"p{pno + 1:05d}.txt").write_text(text, encoding="utf-8")
+        return idx, pno, text
+
+    done = 0
     started = time.time()
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        jobs = {pool.submit(work, i, pno): (i, pno)
+                for i, plan in enumerate(plans) for pno in plan.ocr_pages}
+        for future in as_completed(jobs):
+            idx, _page_no = jobs[future]
+            try:
+                _idx, pno, text = future.result()
+                results[idx][pno] = text
+            except Exception as exc:  # noqa: BLE001 - one bad page must not kill the batch
+                failures[idx].append(str(exc)[:200])
+            done += 1
+            remaining[idx] -= 1
+            if remaining[idx] == 0:
+                finished = handles.pop(idx, None)
+                if finished:
+                    finished.close()
+            if progress and done % 100 == 0:
+                rate = done / max(1e-6, time.time() - started)
+                print(f"[pdf] {done}/{total} صفحه ({rate:.2f} صفحه/ثانیه)", flush=True)
 
-    if ocr_pages:
-        handles = _DocHandles(pdf)
+    for handle in handles.values():
+        handle.close()
+    return results, failures
 
-        def work(pno: int) -> tuple[int, str]:
-            page = handles.page(pno)
-            pix = page.get_pixmap(dpi=effective_dpi, colorspace=pymupdf.csGRAY, annots=False)
-            text = engine.ocr_pgm(_pgm_bytes(pix))
-            (cache / f"p{pno + 1:05d}.txt").write_text(text, encoding="utf-8")
-            return pno, text
 
-        done = 0
-        try:
-            with ThreadPoolExecutor(max_workers=workers) as pool:
-                for pno, text in pool.map(work, ocr_pages):
-                    results[pno] = text
-                    done += 1
-                    if progress and done % 50 == 0:
-                        rate = done / max(1e-6, time.time() - started)
-                        eta = (len(ocr_pages) - done) / max(rate, 1e-6)
-                        print(f"[pdf] {done}/{len(ocr_pages)} صفحه"
-                              f" ({rate:.2f} صفحه/ثانیه، ETA {eta/60:.1f} دقیقه)",
-                              flush=True)
-        finally:
-            handles.close()
-
-    for pno, kind, payload in plan:
+def _finish_book(plan: _BookPlan, results: dict[int, str], started: float,
+                 failures: list[str] | None = None) -> dict:
+    merged = dict(results)
+    for pno, kind, payload in plan.plan:
         if kind in ("cached", "text"):
-            results[pno] = str(payload)
-
-    ordered = [reflow(results[p].splitlines()) for p in wanted]
+            merged[pno] = str(payload)
+    ordered = [reflow(merged.get(p, "").splitlines()) for p in plan.wanted]
     ordered = _strip_repeating_lines(ordered)
     texts = [t for t in ordered if t.strip()]
     elapsed = time.time() - started
-
+    ran = len(plan.ocr_pages)
     return {
-        "pdf": str(pdf),
-        "pages": len(wanted),
-        "ocr_pages": ocr_planned,
-        "ocr_this_run": len(ocr_pages),
-        "text_pages": len(wanted) - ocr_planned,
-        "cached_pages": cached_hits,
+        "pdf": str(plan.pdf),
+        "pages": len(plan.wanted),
+        "ocr_pages": plan.ocr_planned,
+        "ocr_this_run": ran,
+        "text_pages": len(plan.wanted) - plan.ocr_planned,
+        "cached_pages": plan.cached_hits,
         "empty_pages": len(ordered) - len(texts),
+        "errors": len(failures or []),
         "chars": sum(len(t) for t in texts),
         "seconds": round(elapsed, 1),
-        "pages_per_sec": round(len(ocr_pages) / elapsed, 2) if ocr_pages and elapsed else 0.0,
-        "dpi": effective_dpi,
-        "native_dpi": native,
-        "cache_dir": str(cache),
-        "engine": engine.version() if engine else (
-            "cached pages" if cached_hits and ocr_planned else "text-layer only"),
-        "page_texts": {p + 1: ordered[i] for i, p in enumerate(wanted)},
+        "pages_per_sec": round(ran / elapsed, 2) if ran and elapsed else 0.0,
+        "dpi": plan.dpi,
+        "native_dpi": plan.native,
+        "cache_dir": str(plan.cache),
+        "lang": plan.lang,
+        "engine": plan.engine or ("cached pages" if plan.cached_hits and plan.ocr_planned
+                                  else "text-layer only"),
+        "page_texts": {p + 1: ordered[i] for i, p in enumerate(plan.wanted)},
     }
+
+
+def extract_pdf(pdf_path: str | Path, root: str = "data", dpi: int | str = "auto",
+                lang: str = "fas", model: str = "fast", psm: int = 6,
+                workers: int | None = None, pages: str | None = None,
+                force_ocr: bool = False, min_text_coverage: float = 0.08,
+                tesseract: str | None = None, tessdata: str | None = None,
+                progress: bool = True) -> dict:
+    """Extract text from a PDF, OCR-ing only the scanned pages.
+
+    `dpi="auto"` uses the page images' own resolution (clamped to 150-400) so a
+    200 dpi scan is not pointlessly upscaled to 300. Pass an int to force one.
+    """
+    plan = _plan_book(pdf_path, root=root, dpi=dpi, lang=lang, model=model, psm=psm,
+                      pages=pages, force_ocr=force_ocr,
+                      min_text_coverage=min_text_coverage,
+                      tesseract=tesseract, tessdata=tessdata)
+    workers = workers or min(16, os.cpu_count() or 4)
+    if progress and plan.ocr_pages:
+        print(f"[pdf] {plan.pdf.name}: lang={plan.lang} dpi={plan.dpi}"
+              f"{' (بومی)' if plan.native else ''} | OCR {len(plan.ocr_pages)} صفحه"
+              f" + {len(plan.plan) - len(plan.ocr_pages)} متنی/کش | workers={workers}",
+              flush=True)
+    started = time.time()
+    results, failures = _run_plans([plan], model=model, psm=psm, workers=workers,
+                                   tesseract=tesseract, tessdata=tessdata,
+                                   progress=progress)
+    return _finish_book(plan, results.get(0, {}), started, failures.get(0))
+
+
+def extract_many(pdf_paths, root: str = "data", dpi: int | str = "auto", lang: str = "fas",
+                 model: str = "fast", psm: int = 6, workers: int | None = None,
+                 force_ocr: bool = False, min_text_coverage: float = 0.08,
+                 tesseract: str | None = None, tessdata: str | None = None,
+                 progress: bool = True) -> list[dict]:
+    """Extract several books with one shared pool of OCR workers.
+
+    Per-book pools leave the machine idle at the end of every short book; a single
+    pool over all their pages keeps every core busy and is what makes a 1000-book
+    run behave like one long job.
+    """
+    workers = workers or min(16, os.cpu_count() or 4)
+    started = time.time()
+    plans: list[_BookPlan] = []
+    output: list[dict] = []
+    for path in pdf_paths:
+        try:
+            plans.append(_plan_book(path, root=root, dpi=dpi, lang=lang, model=model,
+                                    psm=psm, force_ocr=force_ocr,
+                                    min_text_coverage=min_text_coverage,
+                                    tesseract=tesseract, tessdata=tessdata))
+        except SystemExit as exc:
+            output.append({"pdf": str(path), "error": str(exc), "page_texts": {}})
+    if not plans:
+        return output
+
+    if progress:
+        total = sum(len(p.ocr_pages) for p in plans)
+        print(f"[pdf] {len(plans)} کتاب، {total} صفحه OCR، workers={workers}", flush=True)
+
+    results, failures = _run_plans(plans, model=model, psm=psm, workers=workers,
+                                   tesseract=tesseract, tessdata=tessdata,
+                                   progress=progress)
+    for i, plan in enumerate(plans):
+        output.append(_finish_book(plan, results.get(i, {}), started, failures.get(i)))
+    return output
 
 
 def write_jsonl(extracted: dict, out_path: str | Path, title: str | None = None,
