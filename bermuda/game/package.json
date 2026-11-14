@@ -7,6 +7,7 @@
     "dev": "vite --host 0.0.0.0 --port 3100 --strictPort",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
+    "test:logic": "esbuild test/entry.ts --bundle --format=esm --platform=node --alias:pixi.js=./test/pixi-stub.mjs --outfile=test/bundle.mjs --log-level=warning && node test/logic.mjs",
     "preview": "vite preview --host 0.0.0.0 --port 3101"
   },
   "dependencies": {
