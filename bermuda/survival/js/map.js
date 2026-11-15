@@ -836,13 +836,20 @@
   P.drawMarker = function (c, poi, sx, sy, selected) {
     var def = ICONS[poi.type] || ICONS.region;
     var r = 13;
+    var libState = window.SAVE ? SAVE.get('lib:' + (poi.id || poi.type), null) : null;
+    var free = !!(libState && libState.liberated);
     // shadow
     c.beginPath(); c.arc(sx, sy + 2, r + 1, 0, 6.2832);
     c.fillStyle = 'rgba(0,8,14,0.45)'; c.fill();
     // token
     c.beginPath(); c.arc(sx, sy, r, 0, 6.2832);
     c.fillStyle = 'rgba(6,20,30,0.92)'; c.fill();
-    c.lineWidth = 2; c.strokeStyle = def.c; c.stroke();
+    c.lineWidth = 2; c.strokeStyle = free ? '#7ee6a8' : def.c; c.stroke();
+    if (free) {
+      c.beginPath(); c.arc(sx, sy, r + 3.5, 0, 6.2832);
+      c.strokeStyle = 'rgba(126,230,168,.45)';
+      c.lineWidth = 1.2; c.stroke();
+    }
     // glyph
     c.save();
     c.translate(sx - 11, sy - 11);

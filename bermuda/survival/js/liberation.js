@@ -18,6 +18,8 @@ window.LIB = (function () {
     pulse: 0,
     tick: 0,
     spawn: null,
+    player: null,
+    onLiberated: null,
     toast: null,
     particles: null,
     sfx: null,
@@ -29,6 +31,8 @@ window.LIB = (function () {
   function init(o) {
     o = o || {};
     S.spawn = o.spawn || null;
+    S.player = o.player || null;
+    S.onLiberated = o.onLiberated || null;
     S.toast = o.toast || function () {};
     S.particles = o.particles || function () {};
     S.sfx = o.sfx || null;
@@ -37,12 +41,15 @@ window.LIB = (function () {
   }
 
   function start() {
-    var S2 = (window.SCENE && window.SCENE.S) || 1.6;
-    var kind = (S.region && S.region.kind) || 'jungle';
-    var campy = kind === 'camp' || kind === 'outpost' || kind === 'town' || kind === 'depot' ||
-      kind === 'airstrip' || kind === 'village' || kind === 'beach';
-    if (campy) { S.node.x = 300 * S2; S.node.y = 655 * S2; }
-    else { S.node.x = 1205 * S2; S.node.y = 425 * S2; }
+    // the relay stands where the region's kit says, so a city block, a runway
+    // and a temple each defend a different piece of ground
+    if (window.SCENE && window.SCENE.relay) {
+      var rp = window.SCENE.relay();
+      S.node.x = rp.x; S.node.y = rp.y;
+    } else {
+      S.node.x = 300 * ((window.SCENE && window.SCENE.S) || 1.6);
+      S.node.y = 655 * ((window.SCENE && window.SCENE.S) || 1.6);
+    }
     S.node.hp = S.node.maxHp;
     S.node.alive = true;
 
@@ -84,6 +91,8 @@ window.LIB = (function () {
   function liberate() {
     S.phase = PHASE.FREE;
     S.timer = 0;
+    if (window.META) META.addSalvage(60);
+    if (S.onLiberated) S.onLiberated(S.key);
     if (window.SAVE) {
       SAVE.set('lib:' + S.key, { liberated: true, at: Date.now() });
       SAVE.set('heat:' + S.key, Math.round(S.heat * 0.35));
@@ -100,10 +109,20 @@ window.LIB = (function () {
 
   function heatMul() { return 1 + S.heat / 110; }
 
+  var GUARD_RADIUS = 360;
+  function playerDist() {
+    var p = S.player && S.player();
+    if (!p) return 0;
+    return Math.hypot(p.x - S.node.x, p.y - S.node.y);
+  }
+
   function update(dt) {
     if (S.phase === PHASE.DEFENSE) {
-      S.timer -= dt;
       S.pulse -= dt;
+      // you have to hold the ground: running away freezes the clock
+      var near = playerDist() < GUARD_RADIUS;
+      S.holding = near;
+      if (near) S.timer -= dt;
       // defence waves: a steady pressure that grows a little with heat
       S.tick += dt;
       var every = Math.max(4.5, 8.5 - S.heat / 22);
@@ -181,13 +200,16 @@ window.LIB = (function () {
     ctx.restore();
   }
 
+  function fa(n) { return String(n).replace(/\d/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'[d]; }); }
+
   function hudText() {
-    if (S.phase === PHASE.FREE) return 'منطقه آزاد است — گشت‌ها قطع شدند';
+    if (S.phase === PHASE.FREE) return 'منطقه آزاد شد — اینجا کار تمام است';
     if (S.phase === PHASE.DEFENSE) {
-      return 'DEFENSE — ' + Math.ceil(S.timer) + 's · گره را نگه دار';
+      if (S.holding === false) return 'از رله دور شدی! برگرد داخل حلقه تا زمان ادامه پیدا کند · ' + fa(Math.ceil(S.timer)) + ' ثانیه';
+      return 'دفاع — ' + fa(Math.ceil(S.timer)) + ' ثانیه مانده · رله را نگه دار';
     }
     var pct = Math.round(Math.max(0, S.node.hp) / S.node.maxHp * 100);
-    return 'گرهٔ رله را نابود کن (' + pct + '%) · گرما ' + Math.round(S.heat);
+    return 'رلهٔ منطقه را نابود کن (' + fa(pct) + '٪) · گرما ' + fa(Math.round(S.heat)) + ' (گرما = موج سنگین‌تر)';
   }
 
   return {
@@ -195,6 +217,8 @@ window.LIB = (function () {
     hitTest: hitTest, hitNode: hitNode, noise: noise, heatMul: heatMul,
     active: active, controlsWaves: controlsWaves,
     hudText: hudText,
+    guardRadius: function () { return GUARD_RADIUS; },
+    nearNode: function () { return playerDist(); },
     phase: function () { return S.phase; },
     heat: function () { return S.heat; },
     node: function () { return S.node; },

@@ -200,6 +200,9 @@
     closeCard();
   }
 
+  var verEl = document.getElementById('mapVer');
+  if (verEl) verEl.textContent = 'v4.0';
+
   /* ---------------- POI card ---------------- */
   var card = document.getElementById('card');
   var cardIcon = document.getElementById('cardIcon');
@@ -233,6 +236,7 @@
       card.appendChild(enter);
     }
     var lib = window.SAVE ? SAVE.get('lib:' + (poi.id || poi.type), null) : null;
+    buildShop(poi);
     enter.textContent = (lib && lib.liberated) ? 'ورود به منطقهٔ آزاد' : 'ورود به این منطقه';
     enter.dataset.liberated = (lib && lib.liberated) ? '1' : '';
     enter.href = 'preview.html?poi=' + encodeURIComponent(poi.id || '') +
@@ -241,6 +245,14 @@
     card.classList.remove('hidden');
     dirty = true;
   }
+  function refreshProgress() {
+    var chip = document.getElementById('progressChip');
+    if (!chip || !window.META) return;
+    var n = META.liberatedCount(), t = META.poiTotal();
+    chip.textContent = 'آزاد: ' + n + (t ? ' / ' + t : '');
+    if (t && n >= t) chip.classList.add('done');
+  }
+
   function closeCard() {
     selected = null;
     card.classList.add('hidden');
@@ -255,6 +267,62 @@
     clampCam(); dirty = true;
     toast('مسیر به «' + selected.name + '» فعال شد');
   });
+
+  /* ---------------- shops, workbenches and supply caches ---------------- */
+  function buildShop(poi) {
+    var box = document.getElementById('shopBox');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'shopBox';
+      box.className = 'shop-box';
+      card.appendChild(box);
+    }
+    if (!window.META || ['shop', 'workbench', 'safehouse'].indexOf(poi.type) < 0) {
+      box.style.display = 'none';
+      box.innerHTML = '';
+      return;
+    }
+    box.style.display = '';
+    var html = '<div class="shop-head"><b>قطعات:</b><span id="shopSalv">' + META.salvage() + '</span></div>';
+    if (poi.type === 'shop') {
+      html += META.weaponList().map(function (w) {
+        if (w.owned) return '<div class="shop-row done"><span>' + w.name + '</span><em>خریداری‌شده</em></div>';
+        return '<div class="shop-row"><span>' + w.name + '</span>' +
+          '<button class="shop-buy" data-buy-w="' + w.key + '">' + w.cost + ' قطعه</button></div>';
+      }).join('');
+    } else if (poi.type === 'workbench') {
+      html += Object.keys(META.UPGRADES).map(function (k) {
+        var d = META.UPGRADES[k], lvl = META.upgradeLevel(k);
+        if (lvl >= d.max) return '<div class="shop-row done"><span>' + d.name + '</span><em>حداکثر</em></div>';
+        return '<div class="shop-row"><span>' + d.name + ' <small>' + lvl + '/' + d.max + '</small>' +
+          '<i>' + d.desc + '</i></span><button class="shop-buy" data-buy-u="' + k + '">' +
+          META.upgradeCost(k) + ' قطعه</button></div>';
+      }).join('');
+    } else {
+      var claimed = META.claimed(poi.id || poi.type);
+      html += '<div class="shop-row' + (claimed ? ' done' : '') + '"><span>جعبهٔ تدارک منطقه</span>' +
+        (claimed ? '<em>برداشت شد</em>' : '<button class="shop-buy" data-claim="1">برداشت</button>') + '</div>';
+    }
+    box.innerHTML = html;
+    Array.prototype.forEach.call(box.querySelectorAll('[data-buy-w]'), function (b) {
+      b.addEventListener('click', function () {
+        if (META.unlockWeapon(b.getAttribute('data-buy-w'))) { toast('سلاح خریداری شد'); buildShop(poi); }
+        else toast('قطعات کافی نیست');
+      });
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('[data-buy-u]'), function (b) {
+      b.addEventListener('click', function () {
+        if (META.buyUpgrade(b.getAttribute('data-buy-u'))) { toast('ارتقا انجام شد'); buildShop(poi); }
+        else toast('قطعات کافی نیست');
+      });
+    });
+    var claim = box.querySelector('[data-claim]');
+    if (claim) claim.addEventListener('click', function () {
+      var gain = META.claimCache(poi.id || poi.type);
+      toast(gain ? 'جعبه باز شد: ' + gain + ' قطعه' : 'قبلاً برداشت شده');
+      buildShop(poi);
+    });
+  }
 
   function svgIcon(type) {
     var d = BS.ICONS[type] || BS.ICONS.region;
@@ -453,6 +521,11 @@
         setLoad('آماده‌سازی رابط…', 0.99);
         setTimeout(function () {
           ready = true;
+          // the profile needs to know how many regions exist for the victory check
+          if (window.META) {
+            META.setPoiTotal((BS.world.pois || []).length);
+            refreshProgress();
+          }
           restoreCam();
           cam.x = BS.W * 0.5; cam.y = BS.H * 0.47;
           cam.z = minZoom * 1.01;

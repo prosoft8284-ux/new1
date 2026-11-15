@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.ValueCallback;
 import android.app.Activity;
 
 public class MainActivity extends Activity {
@@ -23,15 +24,21 @@ public class MainActivity extends Activity {
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
+        // the game is a local asset bundle: no remote content, no universal
+        // file access, and the http cache is fine to keep (faster relaunches)
         s.setAllowFileAccess(true);
-        s.setAllowFileAccessFromFileURLs(true);
-        s.setAllowUniversalAccessFromFileURLs(true);
+        s.setAllowContentAccess(false);
+        s.setAllowFileAccessFromFileURLs(false);
+        s.setAllowUniversalAccessFromFileURLs(false);
         s.setMediaPlaybackRequiresUserGesture(false);
-        s.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        s.setCacheMode(WebSettings.LOAD_DEFAULT);
+        s.setSupportZoom(false);
+        s.setBuiltInZoomControls(false);
+        s.setTextZoom(100);
         s.setLoadWithOverviewMode(true);
         s.setUseWideViewPort(true);
         if (Build.VERSION.SDK_INT >= 21) {
-            s.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         }
         web.setBackgroundColor(0xff050b14);
         web.setWebViewClient(new WebViewClient());
@@ -60,10 +67,20 @@ public class MainActivity extends Activity {
         if (focus) hideBars();
     }
 
+    /* back button: let the page decide (pause, then the map), and only leave
+       the app when the page says it has nothing left to close */
     @Override
     public void onBackPressed() {
-        if (web != null && web.canGoBack()) web.goBack();
-        else super.onBackPressed();
+        if (web == null) { super.onBackPressed(); return; }
+        web.evaluateJavascript("(window.__onBack && window.__onBack()) ? '1' : '0'",
+            new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String value) {
+                    if (value != null && value.indexOf('1') >= 0) return;
+                    if (web != null && web.canGoBack()) web.goBack();
+                    else MainActivity.super.onBackPressed();
+                }
+            });
     }
 
     @Override

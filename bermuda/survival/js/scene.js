@@ -8,6 +8,7 @@ window.SCENE = (function () {
   var W = Math.round(1600 * S), H = Math.round(1000 * S);
   var bg = null;
   var props = [];       // sorted by y, with collision radii
+  var solids = [];      // colliders of scenery baked into the background
   var shorePoints = [];
   var rnd = mulberry(20261115);
 
@@ -29,6 +30,11 @@ window.SCENE = (function () {
       tint: profile.tint || null,
       kit: profile.kit || ''
     };
+    // a different seed per region keeps two cities from being the same city
+    var tag = (profile.id || '') + '|' + (profile.name || '') + '|' + P.kit;
+    var seed = 20261115;
+    for (var ti = 0; ti < tag.length; ti++) seed = (Math.imul(seed, 31) + tag.charCodeAt(ti)) | 0;
+    rnd = mulberry(seed);
     return P;
   }
 
@@ -77,6 +83,7 @@ window.SCENE = (function () {
       if (P.tint) { c.fillStyle = P.tint; c.fillRect(0, 0, W, H); }
       bg = cv;
       buildProps();
+      bakeFlat(c);
       return cv;
     }
 
@@ -265,9 +272,40 @@ window.SCENE = (function () {
     props.push(o);
   }
 
+  var FLAT = { rubble: 1, fence: 1, tank: 1, car: 1 };
+
+  /* ground-level scenery never overlaps an actor, so it is painted straight
+     into the terrain canvas once and only its collider survives. */
+  function bakeFlat(c) {
+    for (var i = props.length - 1; i >= 0; i--) {
+      var p = props[i];
+      if (!FLAT[p.kind] || !window.PROPS2 || !PROPS2[p.kind]) continue;
+      PROPS2[p.kind](c, p, 0);
+      solids.push({ x: p.x, y: p.y, r: p.r || 12, kind: p.kind });
+      props.splice(i, 1);
+    }
+  }
+
+  function clearArea(x, y, r) {
+    for (var i = props.length - 1; i >= 0; i--) {
+      var p = props[i];
+      if (Math.hypot(p.x - x, p.y - y) < r) props.splice(i, 1);
+    }
+    for (var j = solids.length - 1; j >= 0; j--) {
+      if (Math.hypot(solids[j].x - x, solids[j].y - y) < r) solids.splice(j, 1);
+    }
+  }
+
   function buildProps() {
     if (window.KITS && window.KITS.has(P.kit)) {
       window.KITS.props(P.kit, addProp, W, H, S, rnd);
+      // keep the relay pad and every entrance walkable
+      var km = window.KITMETA ? KITMETA.forKit(P.kit) : null;
+      if (km) {
+        clearArea(km.relay.fx * W, km.relay.fy * H, 92);
+        km.spawns.forEach(function (q) { clearArea(q.fx * W, q.fy * H, 62); });
+      }
+      clearArea(1010 * S, 566 * S, 96);
       props.sort(function (a, b) { return a.y - b.y; });
       return;
     }
@@ -379,13 +417,81 @@ window.SCENE = (function () {
       }
       if (Math.hypot(x - p.x, y - p.y) < (p.r || 10) * 0.8) return true;
     }
+    for (var j = 0; j < solids.length; j++) {
+      if (Math.hypot(x - solids[j].x, y - solids[j].y) < (solids[j].r || 10) * 0.8) return true;
+    }
     return false;
+  }
+
+  /* what a bullet runs into: solid scenery, and destructible cover */
+  function propAt(x, y) {
+    for (var i = 0; i < props.length; i++) {
+      var p = props[i];
+      if (p.kind === 'fire' || p.kind === 'crystal' || p.kind === 'nest' || p.kind === 'bush') continue;
+      if (p.box) {
+        if (x > p.box.x - p.box.w / 2 && x < p.box.x + p.box.w / 2 &&
+            y > p.box.y - p.box.h / 2 && y < p.box.y + p.box.h / 2) return p;
+        continue;
+      }
+      if (Math.hypot(x - p.x, y - p.y) < (p.r || 10) * 0.6) return p;
+    }
+    for (var j = 0; j < solids.length; j++) {
+      if (Math.hypot(x - solids[j].x, y - solids[j].y) < (solids[j].r || 10) * 0.6) return solids[j];
+    }
+    return null;
+  }
+
+  /* standing next to low cover: aliens lose some of their bite */
+  function coverAt(x, y) {
+    var km = window.KITMETA ? KITMETA.forRegion({ kit: P.kit || 'beach' }) : null;
+    var want = km ? km.cover : 'bush';
+    for (var i = 0; i < props.length; i++) {
+      var p = props[i];
+      if (p.kind !== want && p.kind !== 'sandbag' && p.kind !== 'crate' && p.kind !== 'rubble') continue;
+      if (Math.hypot(x - p.x, y - p.y) < 34) return true;
+    }
+    return false;
+  }
+
+  function relay() {
+    var km = window.KITMETA ? KITMETA.forRegion({ kit: P.kit || 'beach' }) : null;
+    if (!km) return { x: 300 * S, y: 655 * S };
+    return { x: km.relay.fx * W, y: km.relay.fy * H };
+  }
+
+  function spawnPoints() {
+    var km = window.KITMETA ? KITMETA.forRegion({ kit: P.kit || 'beach' }) : null;
+    var list = [];
+    if (!km) return list;
+    for (var i = 0; i < km.spawns.length; i++) {
+      var q = km.spawns[i];
+      list.push({ x: q.fx * W, y: q.fy * H });
+    }
+    return list;
+  }
+
+  function isKit() { return !!(window.KITS && window.KITS.has(P.kit)); }
+
+  /* a spawn point that is not inside a wall */
+  function safeSpawn(x, y) {
+    x = clamp(x, 40, W - 40);
+    y = clamp(y, 40, H - 40);
+    if (!blocked(x, y)) return { x: x, y: y };
+    for (var r = 20; r <= 220; r += 20) {
+      for (var a = 0; a < 8; a++) {
+        var px = x + Math.cos(a * 0.785 + r) * r, py = y + Math.sin(a * 0.785 + r) * r;
+        if (px > 40 && py > 40 && px < W - 40 && py < H - 40 && !blocked(px, py)) return { x: px, y: py };
+      }
+    }
+    return { x: x, y: y };
   }
 
   return {
     configure: configure, profile: function () { return P; },
-    W: W, H: H, S: S, props: props, bake: bake, shoreY: shoreY, blocked: blocked,
+    W: W, H: H, S: S, props: props, solids: solids, bake: bake, shoreY: shoreY, blocked: blocked,
     distToPath: distToPath, propsList: props,
+    propAt: propAt, coverAt: coverAt, relay: relay, spawnPoints: spawnPoints,
+    isKit: isKit, safeSpawn: safeSpawn, clearArea: clearArea,
     pt: function (x, y) { return { x: x * S, y: y * S }; },
     get bg() { return bg; }
   };

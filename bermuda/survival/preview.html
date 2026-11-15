@@ -9,6 +9,15 @@
 </head>
 <body>
 
+<div id="loading">
+  <div class="load-box">
+    <div class="load-logo">BERMUDA<span>SURVIVAL</span></div>
+    <div class="load-bar"><i></i></div>
+    <div class="load-txt">در حال ساخت منطقه…</div>
+  </div>
+</div>
+<span id="verline" class="verline"></span>
+
 <!-- ============ GAME ============ -->
 <canvas id="game"></canvas>
 <div id="vignette"></div>
@@ -54,7 +63,7 @@
 
   <div class="hud-map">
     <canvas id="minimap" width="150" height="110"></canvas>
-    <span>جزیره‌ی برمودا · بخش ساحلی</span>
+    <span id="miniLabel">جزیره‌ی برمودا · بخش ساحلی</span>
   </div>
 </div>
 
@@ -103,12 +112,41 @@
       </div>
       <div class="bestline" id="bestline"></div>
       <button id="btnStart" class="go" disabled>آماده برای بقا</button>
+      <a id="btnResumeRegion" class="go ghost" href="preview.html"><span>ادامهٔ آخرین منطقه</span></a>
       <a class="maplink" href="index.html">بازگشت به نقشه‌ی کامل جزیره</a>
     </div>
   </div>
 </div>
 
-<!-- ============ PAUSE / DEATH ============ -->
+<!-- ============ FIRST-RUN COACHING ============ -->
+<div id="tut" class="screen hidden">
+  <div class="modal-box tut-box">
+    <h2>سه چیز که باید بدانی</h2>
+    <ol class="tut-list">
+      <li><b>حرکت:</b> جوی‌استیک چپ (روی کامپیوتر: WASD).</li>
+      <li><b>شلیک:</b> دکمهٔ شلیک را به سمت هدف بکش — همان طرف شلیک می‌شود. جوی‌استیک چپ را ول نکن تا هم‌زمان بدوی.</li>
+      <li><b>هدف:</b> با فلش بنفش سمت رله برو، نابودش کن، بعد ۷۵ ثانیه داخل حلقهٔ رله بایست تا منطقه آزاد شود.</li>
+    </ol>
+    <button id="tutOk" class="go">فهمیدم</button>
+  </div>
+</div>
+
+<!-- ============ PAUSE ============ -->
+<div id="pause" class="screen hidden">
+  <div class="modal-box">
+    <h2>توقف</h2>
+    <div class="pause-rows">
+      <button id="pResume" class="go">ادامه</button>
+      <button id="pSound" class="go ghost">صدا: روشن</button>
+      <button id="pQuality" class="go ghost">کیفیت: کامل</button>
+      <button id="pRestart" class="go ghost">شروع دوباره</button>
+      <a id="pMap" class="go ghost" href="index.html">بازگشت به نقشه</a>
+    </div>
+    <p class="pause-note" id="pauseNote"></p>
+  </div>
+</div>
+
+<!-- ============ DEATH / VICTORY ============ -->
 <div id="toast"></div>
 
 <div id="modal" class="screen hidden">
@@ -124,11 +162,13 @@
 
 <script src="js/pix.js"></script>
 <script src="js/props.js"></script>
+<script src="js/save.js"></script>
+<script src="js/meta.js"></script>
 <script src="js/regions.js"></script>
+<script src="js/kitmeta.js"></script>
 <script src="js/props2.js"></script>
 <script src="js/kits.js"></script>
 <script src="js/scene.js"></script>
-<script src="js/save.js"></script>
 <script src="js/sfx.js"></script>
 <script src="js/liberation.js"></script>
 <script src="js/game.js"></script>

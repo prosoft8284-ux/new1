@@ -103,6 +103,82 @@ window.SFX = (function () {
     }
   };
 
+  /* ---------------- music + ambience ----------------
+     A small procedural score: a slow pad, a sparse arpeggio and a noise bed
+     that changes character with the region. No audio files. */
+  var musicOn = false, musicKit = '', musicTimer = 0, musicNodes = null;
+  var SCALES = {
+    beach: [0, 3, 5, 7, 10], jungle: [0, 2, 5, 7, 9], city: [0, 1, 4, 7, 8],
+    military: [0, 2, 3, 7, 10], alien: [0, 1, 5, 6, 10], temple: [0, 3, 5, 8, 10],
+    airport: [0, 2, 4, 7, 9]
+  };
+
+  function musicStart(kit) {
+    init();
+    if (!ready || !ctx) return;
+    if (musicOn && musicKit === kit) return;
+    musicStop();
+    musicKit = kit || 'beach';
+    musicOn = true;
+    var pad = ctx.createGain();
+    pad.gain.value = 0.0001;
+    pad.connect(master);
+    var filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass'; filt.frequency.value = 520; filt.Q.value = 0.7;
+    filt.connect(pad);
+    var oscs = [];
+    [55, 82.5, 110].forEach(function (fr, i) {
+      var o = ctx.createOscillator();
+      o.type = i === 2 ? 'triangle' : 'sawtooth';
+      o.frequency.value = fr * (1 + (i - 1) * 0.004);
+      var g = ctx.createGain(); g.gain.value = 0.16;
+      o.connect(g); g.connect(filt);
+      o.start();
+      oscs.push(o);
+    });
+    var lfo = ctx.createOscillator(); lfo.frequency.value = 0.08;
+    var lg = ctx.createGain(); lg.gain.value = 170;
+    lfo.connect(lg); lg.connect(filt.frequency); lfo.start();
+    oscs.push(lfo);
+    pad.gain.linearRampToValueAtTime(0.09, ctx.currentTime + 2.4);
+    musicNodes = { pad: pad, oscs: oscs };
+    var scale = SCALES[musicKit] || SCALES.beach;
+    var step = 0;
+    musicTimer = setInterval(function () {
+      if (!ready || muted || !ctx || ctx.state !== 'running' || !musicOn) return;
+      var deg = scale[(step * 3) % scale.length];
+      var oct = (step % 4 === 0) ? 3 : 2;
+      var fr = 110 * Math.pow(2, (deg + (oct - 2) * 12) / 12);
+      var t = ctx.currentTime + 0.05;
+      var o = ctx.createOscillator(); o.type = 'sine';
+      o.frequency.setValueAtTime(fr, t);
+      var g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.05, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t + 1.7);
+      step++;
+    }, 900);
+  }
+
+  function musicStop() {
+    musicOn = false;
+    if (musicTimer) { clearInterval(musicTimer); musicTimer = 0; }
+    if (musicNodes && ctx) {
+      try {
+        musicNodes.pad.gain.cancelScheduledValues(ctx.currentTime);
+        musicNodes.pad.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
+        musicNodes.oscs.forEach(function (o) { try { o.stop(ctx.currentTime + 0.7); } catch (e) {} });
+      } catch (e) {}
+    }
+    musicNodes = null;
+  }
+
+  function setVolume(v) {
+    if (master) master.gain.value = muted ? 0 : Math.max(0, Math.min(1, v));
+  }
+
   return {
     init: init,
     unlock: unlock,
@@ -231,6 +307,17 @@ window.SFX = (function () {
         noise(o, t, 0.9, 'lowpass', 900, 120, 0.9, 0.4);
       });
     },
+    ready: function () {
+      voice(null, null, function (o, t) {
+        [660, 880].forEach(function (f, i) { tone(o, t + i * 0.08, 'triangle', f, f * 1.02, 0.16, 0.12); });
+      });
+    },
+    victory: function () {
+      voice(null, null, function (o, t) {
+        [523, 659, 784, 1046].forEach(function (f, i) { tone(o, t + i * 0.14, 'triangle', f, f, 0.55, 0.16); });
+      });
+    },
+    musicStart: musicStart, musicStop: musicStop, setVolume: setVolume,
     click: function () { voice(null, null, function (o, t) { noise(o, t, 0.03, 'bandpass', 2400, 2200, 3, 0.14); }); }
   };
 })();
