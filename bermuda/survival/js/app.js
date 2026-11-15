@@ -224,6 +224,18 @@
     var d = poi.danger || 1;
     var pct = Math.round(d / 5 * 100);
     cardRisk.innerHTML = 'سطح خطر: <b style="color:' + (d >= 4 ? '#ff7b8b' : d >= 3 ? '#ffd479' : '#8ce6b4') + '">' + DANGER_TXT[d] + ' ' + pct + '%</b>';
+    var enter = document.getElementById('cardEnter');
+    if (!enter) {
+      enter = document.createElement('a');
+      enter.id = 'cardEnter';
+      enter.className = 'go';
+      enter.style.cssText = 'display:block;margin-top:10px;text-align:center;text-decoration:none';
+      card.appendChild(enter);
+    }
+    enter.textContent = 'ورود به این منطقه';
+    enter.href = 'preview.html?poi=' + encodeURIComponent(poi.id || '') +
+      '&type=' + encodeURIComponent(poi.type || '') +
+      '&name=' + encodeURIComponent(poi.name || '');
     card.classList.remove('hidden');
     dirty = true;
   }

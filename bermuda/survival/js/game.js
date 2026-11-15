@@ -7,6 +7,17 @@
   var dpr = 1, vw = 0, vh = 0, zoom = 2.2;
 
   var cam = { x: 300, y: 700 };
+
+  /* ---------------- region (map -> scene) ---------------- */
+  var REGION = null;
+  (function initRegion() {
+    var q = new URLSearchParams(location.search);
+    var type = q.get('type') || '';
+    var name = q.get('name') || '';
+    if (window.REGIONS) REGION = REGIONS.forType(type, name);
+    if (REGION && window.SCENE && SCENE.configure) SCENE.configure(REGION);
+    if (REGION && REGION.name) document.title = 'BERMUDA SURVIVAL — ' + REGION.name;
+  })();
   var G = {
     running: false, paused: false, over: false, t: 0, last: 0,
     player: null, aliens: [], bullets: [], ebullets: [], parts: [], drops: [],
@@ -120,6 +131,9 @@
     var n = 3 + Math.floor(G.wave * 1.6);
     var cx = 1205 * SCENE.S, cy = 425 * SCENE.S;
     var pool = ['parasite', 'runner', 'skitter'];
+    if (G.wave >= 1 && REGION && REGION.aliens) {
+      REGION.aliens.forEach(function (k) { if (pool.indexOf(k) < 0) pool.push(k); });
+    }
     if (G.wave >= 2) pool.push('winged', 'runner', 'bomber');
     if (G.wave >= 3) pool.push('neural', 'warrior', 'brute');
     if (G.wave >= 4) pool.push('warlock', 'mutant', 'brute');
@@ -1094,7 +1108,7 @@
       document.getElementById('touchBtns').classList.remove('hidden');
     }
     elName.textContent = def.name;
-    elClass.textContent = def.cls;
+    elClass.textContent = (REGION ? REGION.name + ' · ' : '') + def.cls;
     if (window.SAVE) SAVE.set('char', def.key);
     G.player = makePlayer(def);
     G.running = true; G.paused = false; G.over = false;

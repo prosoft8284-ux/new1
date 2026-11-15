@@ -11,6 +11,26 @@ window.SCENE = (function () {
   var shorePoints = [];
   var rnd = mulberry(20261115);
 
+  // region profile (set by configure() before bake)
+  var P = {
+    name: '', jungle: 1, palms: 1, camp: true, crash: true,
+    shoreShift: 0, tint: null
+  };
+
+  function configure(profile) {
+    if (!profile) return P;
+    P = {
+      name: profile.name || '',
+      jungle: profile.jungle == null ? 1 : profile.jungle,
+      palms: profile.palms == null ? 1 : profile.palms,
+      camp: !!profile.camp,
+      crash: !!profile.crash,
+      shoreShift: profile.shoreShift || 0,
+      tint: profile.tint || null
+    };
+    return P;
+  }
+
   function mulberry(a) {
     return function () {
       a |= 0; a = (a + 0x6D2B79F5) | 0;
@@ -39,7 +59,7 @@ window.SCENE = (function () {
 
   function shoreY(x) {
     var d = x / S;
-    return (772 + Math.sin(d * 0.0052) * 20 + Math.sin(d * 0.0131 + 1.7) * 9 +
+    return (772 + P.shoreShift + Math.sin(d * 0.0052) * 20 + Math.sin(d * 0.0131 + 1.7) * 9 +
       (fbm(d * 0.01, 3.2, 3) - 0.5) * 26) * S;
   }
 
@@ -114,6 +134,7 @@ window.SCENE = (function () {
     // second trail: camp → northern ridge lookout
     drawPath(c, [[430 * S, 640 * S], [620 * S, 520 * S], [800 * S, 430 * S], [900 * S, 300 * S]], 12 * S);
 
+    if (P.crash) {
     // crash crater
     var cx = 1205 * S, cy = 425 * S;
     var g = c.createRadialGradient(cx, cy, 10, cx, cy, 150 * S);
@@ -138,6 +159,7 @@ window.SCENE = (function () {
       c.fillRect(px | 0, py | 0, 4, 4);
     }
 
+    }
     // camp clearing
     var cg = c.createRadialGradient(300 * S, 690 * S, 8, 300 * S, 690 * S, 110 * S);
     cg.addColorStop(0, 'rgba(120,102,72,.85)');
@@ -183,6 +205,7 @@ window.SCENE = (function () {
     for (x = 0; x <= W; x += 4) { if (x === 0) c.moveTo(x, shoreY(x)); else c.lineTo(x, shoreY(x)); }
     c.stroke();
 
+    if (P.tint) { c.fillStyle = P.tint; c.fillRect(0, 0, W, H); }
     bg = cv;
     buildProps();
     return cv;
@@ -229,14 +252,14 @@ window.SCENE = (function () {
     var campX = 300 * S, campY = 690 * S, nestX = 1205 * S, nestY = 425 * S;
 
     // palms along the shore
-    for (i = 0; i < 34 * S * S; i++) {
+    for (i = 0; i < 34 * S * S * P.palms; i++) {
       x = 60 + rnd() * (W - 120);
       y = shoreY(x) - (20 + rnd() * 60) * S;
       if (Math.hypot(x - campX, y - campY) < 130 * S) continue;
       addProp({ kind: 'palm', x: x, y: y, s: 0.85 + rnd() * 0.5, r: 12, lean: (rnd() - 0.5) * 0.5 });
     }
     // jungle trees
-    for (i = 0; i < 210 * S * S; i++) {
+    for (i = 0; i < 210 * S * S * P.jungle; i++) {
       x = 30 + rnd() * (W - 60);
       y = (40 + rnd() * 600) * S;
       if (y > shoreY(x) - 90 * S) continue;
@@ -261,6 +284,7 @@ window.SCENE = (function () {
       addProp({ kind: rnd() < 0.5 ? 'rock' : 'bush', x: x, y: y, s: 0.5 + rnd() * 0.5, r: 10 });
     }
 
+    if (P.camp) {
     // main camp
     addProp({ kind: 'tent', x: campX, y: campY - 18, r: 26 });
     addProp({ kind: 'fire', x: campX + 52, y: campY + 22, r: 9 });
@@ -270,6 +294,7 @@ window.SCENE = (function () {
     addProp({ kind: 'sandbag', x: campX + 66, y: campY + 2, r: 12 });
     addProp({ kind: 'antenna', x: campX + 80, y: campY - 50, r: 8 });
 
+    }
     // second camp: ranger post on the eastern shore
     addProp({ kind: 'tent', x: W - 210, y: shoreY(W - 210) - 60, r: 26 });
     addProp({ kind: 'crate', x: W - 270, y: shoreY(W - 270) - 40, r: 10 });
@@ -282,6 +307,7 @@ window.SCENE = (function () {
       addProp({ kind: 'rock', x: 190 + Math.cos(la) * lr, y: 300 * S * 0.55 + Math.sin(la) * lr * 0.6, s: 0.8 + rnd(), r: 12 });
     }
 
+    if (P.crash) {
     // alien crash site
     addProp({ kind: 'wreck', x: 1150 * S, y: 470 * S, r: 34, rot: 0.6, s: 1.1 });
     addProp({ kind: 'wreck', x: 1268 * S, y: 372 * S, r: 26, rot: -1.2, s: 0.8 });
@@ -300,6 +326,7 @@ window.SCENE = (function () {
     }
     addProp({ kind: 'nest', x: nestX, y: nestY + 15, r: 40 });
 
+    }
     props.sort(function (a, b) { return a.y - b.y; });
   }
 
@@ -328,6 +355,7 @@ window.SCENE = (function () {
   }
 
   return {
+    configure: configure, profile: function () { return P; },
     W: W, H: H, S: S, props: props, bake: bake, shoreY: shoreY, blocked: blocked,
     distToPath: distToPath, propsList: props,
     pt: function (x, y) { return { x: x * S, y: y * S }; },
