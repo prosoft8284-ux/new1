@@ -196,7 +196,7 @@
       fireCd: 0, dodge: 0, dodgeCd: 0, hurt: 0, moving: 0,
       knockX: 0, knockY: 0, dmgMul: def.dmg / 22,
       abCd: 0, abT: 0, invis: 0, buff: 0,
-      sprite: PIX.SURVIVORS[def.key], radius: 13
+      sprite: PIX.SURVIVORS[def.key], radius: 13, aiming: false
     };
   }
   function curW(p) { return W_BY[p.cur]; }
@@ -290,7 +290,7 @@
     st.mag--; p.fireCd = w.rate;
 
     for (var i = 0; i < w.pellets; i++) {
-      var a = p.aim + (Math.random() - 0.5) * w.spread * 2;
+      var a = p.aim + (Math.random() - 0.5) * w.spread * 2 * (p.aiming ? 0.45 : 1);
       if (w.pellets > 1) a += (i - (w.pellets - 1) / 2) * 0.05;
       var sp = w.speed * rand(0.94, 1.06);
       if (window.LIB) LIB.noise(1.2);
@@ -523,8 +523,9 @@
       p.vx *= 0.90; p.vy *= 0.90;
     } else {
       var spdMul = p.buff > 0 ? 1.35 : 1;
-      p.x += mx * p.speed * spdMul * dt;
-      p.y += my * p.speed * spdMul * dt;
+      var aimMul = p.aiming ? 0.62 : 1;
+      p.x += mx * p.speed * spdMul * aimMul * dt;
+      p.y += my * p.speed * spdMul * aimMul * dt;
     }
     p.x += p.knockX * dt; p.y += p.knockY * dt;
     p.knockX *= 0.86; p.knockY *= 0.86;
@@ -548,6 +549,7 @@
       }
     }
     var fireNow = point.down || keys['j'] || firePressed;
+    p.aiming = !!fireNow;
     if (fireNow && (!wasFire || curW(p).auto)) shoot();
     wasFire = fireNow;
 
@@ -732,9 +734,9 @@
   function drawProp(p) {
     var t = performance.now();
     switch (p.kind) {
-      case 'palm': PROPS.palm(ctx, p, t); break;
-      case 'tree': PROPS.tree(ctx, p, t); break;
-      case 'bush': PROPS.bush(ctx, p, t); break;
+      case 'palm': PROPS.palmBase(ctx, p, t); break;
+      case 'tree': PROPS.treeBase(ctx, p, t); break;
+      case 'bush': PROPS.bushBase(ctx, p, t); break;
       case 'rock': PROPS.rock(ctx, p, t); break;
       case 'tent': PROPS.tent(ctx, p, t); break;
       case 'fire': PROPS.fire(ctx, p, t); break;
@@ -922,22 +924,40 @@
       else if (o.kind === '_player') drawEntity(o.e, true);
       else drawProp(o);
     }
-    // when the canopy swallows the player, leave a faint silhouette so he is
-    // never lost behind the leaves
-    if (G.player) {
-      var occluded = false;
-      for (i = 0; i < SCENE.props.length; i++) {
-        var pp = SCENE.props[i];
-        if (pp.kind !== 'tree' && pp.kind !== 'palm' && pp.kind !== 'bush') continue;
-        if (pp.y > G.player.y + 4 && pp.y - G.player.y < 96 && Math.abs(pp.x - G.player.x) < 42) {
-          occluded = true; break;
-        }
-      }
-      if (occluded) {
-        ctx.globalAlpha = 0.22;
-        drawEntity(G.player, true);
-        ctx.globalAlpha = 1;
-      }
+    // canopy layer: leaves sit above everything, so the player walks UNDER a
+    // tree while its trunk still blocks him. Nearer crowns are drawn last.
+    var crowns = [];
+    for (i = 0; i < SCENE.props.length; i++) {
+      if (PROPS.crownKinds[SCENE.props[i].kind]) crowns.push(SCENE.props[i]);
+    }
+    crowns.sort(function (a, b) { return a.y - b.y; });
+    for (i = 0; i < crowns.length; i++) {
+      var cp = crowns[i];
+      ctx.globalAlpha = 0.94;
+      PROPS[PROPS.crownKinds[cp.kind]](ctx, cp, t);
+    }
+    ctx.globalAlpha = 1;
+
+    // aiming reticle + laser sight
+    if (G.player && G.player.aiming) {
+      var ap = G.player;
+      var ax0 = ap.x + Math.cos(ap.aim) * 20, ay0 = ap.y - 14 + Math.sin(ap.aim) * 20;
+      var ax1 = ap.x + Math.cos(ap.aim) * 250, ay1 = ap.y - 14 + Math.sin(ap.aim) * 250;
+      ctx.globalAlpha = 0.5;
+      ctx.strokeStyle = 'rgba(255,64,80,.9)';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([6, 7]);
+      ctx.beginPath(); ctx.moveTo(ax0, ay0); ctx.lineTo(ax1, ay1); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 0.95;
+      ctx.beginPath(); ctx.arc(ax1, ay1, 11, 0, 6.2832); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(ax1 - 18, ay1); ctx.lineTo(ax1 - 5, ay1);
+      ctx.moveTo(ax1 + 5, ay1); ctx.lineTo(ax1 + 18, ay1);
+      ctx.moveTo(ax1, ay1 - 18); ctx.lineTo(ax1, ay1 - 5);
+      ctx.moveTo(ax1, ay1 + 5); ctx.lineTo(ax1, ay1 + 18);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
     }
 
     // loot

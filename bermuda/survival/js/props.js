@@ -3,19 +3,22 @@ window.PROPS = (function () {
   'use strict';
   function circ(c, x, y, r, col) { c.fillStyle = col; c.beginPath(); c.arc(x, y, r, 0, 6.2832); c.fill(); }
 
-  function palm(c, p, t) {
+  function palmBase(c, p, t) {
     var s = p.s, x = p.x, y = p.y;
     var sway = Math.sin(t * 0.0016 + x) * 2.4 * s;
-    // shadow
     c.globalAlpha = 0.22; c.fillStyle = '#08180c';
     c.beginPath(); c.ellipse(x + 6 * s, y + 2, 20 * s, 6 * s, 0, 0, 6.2832); c.fill();
     c.globalAlpha = 1;
-    // trunk
     c.strokeStyle = '#6b4d2c'; c.lineWidth = 4.5 * s; c.lineCap = 'round';
     c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + p.lean * 18 * s, y - 28 * s, x + p.lean * 26 * s + sway, y - 52 * s); c.stroke();
     c.strokeStyle = 'rgba(150,112,66,.7)'; c.lineWidth = 1.6 * s; c.stroke();
+  }
+
+  // the fronds live on their own layer so the player can walk beneath them
+  function palmCrown(c, p, t) {
+    var s = p.s, x = p.x, y = p.y;
+    var sway = Math.sin(t * 0.0016 + x) * 2.4 * s;
     var tx = x + p.lean * 26 * s + sway, ty = y - 52 * s;
-    // fronds
     for (var i = 0; i < 7; i++) {
       var a = (i / 7) * 6.2832 + 0.4;
       var len = 22 * s + (i % 2) * 6 * s;
@@ -29,13 +32,19 @@ window.PROPS = (function () {
     circ(c, tx, ty, 3 * s, '#28522b');
   }
 
-  function tree(c, p, t) {
+  function palm(c, p, t) { palmBase(c, p, t); palmCrown(c, p, t); }
+
+  function treeBase(c, p) {
     var s = p.s, x = p.x, y = p.y;
     c.globalAlpha = 0.25; c.fillStyle = '#06130a';
     c.beginPath(); c.ellipse(x + 5 * s, y + 3, 26 * s, 9 * s, 0, 0, 6.2832); c.fill();
     c.globalAlpha = 1;
     c.fillStyle = '#3b2a1c'; c.fillRect(x - 4 * s, y - 20 * s, 8 * s, 22 * s);
     c.fillStyle = '#4d3826'; c.fillRect(x - 4 * s, y - 20 * s, 3 * s, 22 * s);
+  }
+
+  function treeCrown(c, p, t) {
+    var s = p.s, x = p.x, y = p.y;
     var sway = Math.sin(t * 0.0012 + x * 0.1) * 1.6;
     circ(c, x + sway, y - 40 * s, 26 * s, '#1b4527');
     circ(c, x - 15 * s + sway, y - 31 * s, 19 * s, '#215430');
@@ -46,7 +55,14 @@ window.PROPS = (function () {
     circ(c, x + 2 * s + sway, y - 62 * s, 7 * s, '#4a9552');
   }
 
-  function bush(c, p) {
+  function bushBase(c, p) {
+    var s = p.s;
+    c.globalAlpha = 0.2; c.fillStyle = '#06130a';
+    c.beginPath(); c.ellipse(p.x + 3 * s, p.y + 2, 13 * s, 5 * s, 0, 0, 6.2832); c.fill();
+    c.globalAlpha = 1;
+  }
+
+  function bushCrown(c, p) {
     var s = p.s;
     circ(c, p.x, p.y - 6 * s, 12 * s, '#24552e');
     circ(c, p.x - 9 * s, p.y - 2 * s, 9 * s, '#1f4a26');
@@ -54,6 +70,9 @@ window.PROPS = (function () {
     circ(c, p.x - 2 * s, p.y - 11 * s, 8 * s, '#3e8043');
     circ(c, p.x + 4 * s, p.y - 8 * s, 4 * s, '#4e9a50');
   }
+
+  function tree(c, p, t) { treeBase(c, p, t); treeCrown(c, p, t); }
+  function bush(c, p) { bushBase(c, p); bushCrown(c, p); }
 
   function rock(c, p) {
     var s = p.s, x = p.x, y = p.y;
@@ -212,6 +231,10 @@ window.PROPS = (function () {
 
   return {
     palm: palm, tree: tree, bush: bush, rock: rock, circ: circ, tent: tent, fire: fire,
+    palmBase: palmBase, palmCrown: palmCrown,
+    treeBase: treeBase, treeCrown: treeCrown,
+    bushBase: bushBase, bushCrown: bushCrown,
+    crownKinds: { tree: 'treeCrown', palm: 'palmCrown', bush: 'bushCrown' },
     crate: crate, sandbag: sandbag, antenna: antenna, wreck: wreck, crystal: crystal,
     spire: spire, nest: nest
   };
