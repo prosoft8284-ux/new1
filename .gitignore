@@ -14,3 +14,5 @@ bermuda/game/android/app/build/
 bermuda/game/android/build/
 bermuda/game/android/local.properties
 bermuda/game/android/app/src/main/assets/public/
+bermuda/survival/android/assets/
+bermuda/survival/.build/
