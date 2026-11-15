@@ -32,6 +32,12 @@
     <button id="btnPause" class="mini" aria-label="توقف">II</button>
   </div>
 
+  <div class="goalbar">
+    <b id="goalText">هدف: رلهٔ فضایی را بشکن</b>
+    <span class="gsep"></span>
+    <small id="goalSub">مناطق آزاد: ۰</small>
+  </div>
+
   <div class="hud-bottom">
     <div class="vitals">
       <div class="bar hp"><i id="hpFill"></i><span id="hpTxt">۱۰۰</span></div>
@@ -54,7 +60,7 @@
 
 <div id="joystick" class="hidden"><i></i><b class="joy-label">حرکت</b></div>
 <div id="touchBtns" class="hidden">
-  <button id="btnFire" class="tbtn tbtn-fire" aria-label="شلیک"><b>◉</b><span>شلیک</span></button>
+  <button id="btnFire" class="tbtn tbtn-fire" aria-label="شلیک و نشانه‌گیری"><b>◎</b><span>بکش و شلیک</span></button>
   <button id="btnAbility" class="tbtn tbtn-ability" aria-label="توانایی"><i></i><b>✦</b><span>توانایی</span></button>
   <button id="btnDodge" class="tbtn tbtn-dodge" aria-label="جاخالی"><b>»</b><span>جاخالی</span></button>
   <button id="btnReload" class="tbtn tbtn-small tbtn-reload" aria-label="خشاب‌گذاری"><b>R</b></button>
@@ -76,11 +82,21 @@
       <span>پیش‌نمایش صحنه · بخش ساحلی جزیره</span>
     </div>
     <h1>یکی از بازماندگان را انتخاب کن</h1>
+    <div class="mission">
+      <b>هدف: جزیرهٔ برمودا را از دست بیگانه‌ها آزاد کن</b>
+      <div class="msteps">
+        <span><i>۱</i> هر منطقه یک <b>رلهٔ فضایی</b> دارد — با شلیک نابودش کن.</span>
+        <span><i>۲</i> بعد از شکستن رله، <b>۷۵ ثانیه</b> جلوی امواج را بگیر.</span>
+        <span><i>۳</i> منطقه آزاد می‌شود و در نقشه سبز می‌ماند؛ برو منطقهٔ بعد.</span>
+      </div>
+      <small>مردن تو را به همین منطقه برمی‌گرداند؛ آزادسازی‌ها ذخیره می‌شوند.</small>
+    </div>
     <div class="chars" id="chars"></div>
     <div class="start-foot">
       <div class="hints">
         <span><kbd>W A S D</kbd> حرکت</span>
         <span><kbd>کلیک</kbd> شلیک</span>
+        <span><kbd>روی گوشی</kbd> دکمهٔ شلیک را به سمت هدف بکش</span>
         <span><kbd>Shift</kbd> جاخالی</span>
         <span><kbd>R</kbd> خشاب</span>
         <span><kbd>1-4</kbd> تعویض سلاح</span>

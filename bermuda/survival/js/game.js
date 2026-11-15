@@ -469,7 +469,9 @@
     // aim
     var camScreenX = (p.x - cam.x) * zoom + vw / 2;
     var camScreenY = (p.y - cam.y) * zoom + vh / 2;
-    if (point.active && !joy.active) {
+    if (aimStick.active && aimStick.len > 12) {
+      p.aim = Math.atan2(aimStick.dy, aimStick.dx);
+    } else if (point.active && !joy.active) {
       p.aim = Math.atan2((point.y - camScreenY) / zoom, (point.x - camScreenX) / zoom);
     } else {
       var best = null, bd = 1e9;
@@ -479,7 +481,7 @@
       }
       if (best) p.aim = Math.atan2(best.y - p.y, best.x - p.x);
     }
-    if ((G.touch || joy.active) && G.aliens.length) {
+    if (!(aimStick.active && aimStick.len > 12) && (G.touch || joy.active) && G.aliens.length) {
       var aBest = null, aDist = 1e9, aAng = 0;
       for (var ai = 0; ai < G.aliens.length; ai++) {
         var ao = G.aliens[ai], ad = dist(ao, p);
@@ -490,6 +492,7 @@
       }
       if (aBest) p.aim += (((aAng - p.aim + Math.PI * 3) % (Math.PI * 2)) - Math.PI) * 0.5;
     }
+    var stickAiming = aimStick.active && aimStick.len > 12;
     if (Math.cos(p.aim) > 0.15) p.face = 1;
     else if (Math.cos(p.aim) < -0.15) p.face = -1;
 
@@ -523,7 +526,7 @@
       p.vx *= 0.90; p.vy *= 0.90;
     } else {
       var spdMul = p.buff > 0 ? 1.35 : 1;
-      var aimMul = p.aiming ? 0.62 : 1;
+      var aimMul = (p.aiming && !stickAiming) ? 0.62 : 1;
       p.x += mx * p.speed * spdMul * aimMul * dt;
       p.y += my * p.speed * spdMul * aimMul * dt;
     }
@@ -550,7 +553,7 @@
     }
     var fireNow = point.down || keys['j'] || firePressed;
     p.aiming = !!fireNow;
-    if (fireNow && (!wasFire || curW(p).auto)) shoot();
+    if (fireNow && (!wasFire || curW(p).auto || stickAiming)) shoot();
     wasFire = fireNow;
 
     // aliens
@@ -1130,6 +1133,14 @@
       var _obj = document.getElementById('objective');
       if (_obj) _obj.textContent = LIB.hudText();
     }
+    var gSub = document.getElementById('goalSub');
+    if (gSub) {
+      var libN = (window.SAVE && SAVE.get('liberatedCount', 0)) || 0;
+      if (libN !== updateHud._libN) {
+        updateHud._libN = libN;
+        gSub.textContent = 'مناطق آزاد: ' + fa(libN);
+      }
+    }
     var sig = p.cur + ':' + curA(p).mag + ':' + curA(p).reserve + ':' + (p.arsenal.shotgun.unlocked ? 1 : 0) + (p.arsenal.plasma.unlocked ? 1 : 0);
     if (sig !== updateHud._sig) { updateHud._sig = sig; updateWeaponHud(); }
     var abSig = p.def.key + ':' + (p.abCd > 0 ? Math.ceil(p.abCd) : 0);
@@ -1248,6 +1259,7 @@
 
   /* ---------------- loop ---------------- */
   var firePressed = false;
+  var aimStick = { active: false, dx: 0, dy: 0, len: 0, id: null };
   var last = 0;
   function loop(ts) {
     requestAnimationFrame(loop);
@@ -1271,8 +1283,45 @@
   if (muteBtn) muteBtn.addEventListener('click', function () { SFX.unlock(); SFX.toggle(); syncMute(); });
 
   document.getElementById('btnPause').addEventListener('click', togglePause);
-  document.getElementById('btnFire').addEventListener('pointerdown', function (e) { e.preventDefault(); firePressed = true; });
-  document.getElementById('btnFire').addEventListener('pointerup', function () { firePressed = false; });
+  /* ---------------- fire stick ----------------
+     Touch the fire button and drag: the survivor shoots exactly where you pull.
+     A straight tap keeps firing forward (and at the nearest alien). */
+  var fireBtnEl = document.getElementById('btnFire');
+  var fireKnob = fireBtnEl ? fireBtnEl.querySelector('b') : null;
+  function stickEnd(e) {
+    if (e && aimStick.id !== null && e.pointerId !== aimStick.id) return;
+    aimStick.active = false; aimStick.id = null; aimStick.len = 0;
+    aimStick.dx = aimStick.dy = 0;
+    firePressed = false;
+    if (fireBtnEl) fireBtnEl.classList.remove('aiming');
+    if (fireKnob) fireKnob.style.transform = 'translate(0,0)';
+  }
+  if (fireBtnEl) {
+    fireBtnEl.addEventListener('pointerdown', function (e) {
+      e.preventDefault(); SFX.unlock();
+      aimStick.active = true; aimStick.id = e.pointerId;
+      aimStick.dx = 0; aimStick.dy = 0; aimStick.len = 0;
+      firePressed = true;
+      fireBtnEl.classList.add('aiming');
+      if (fireKnob) fireKnob.style.transform = 'translate(0,0)';
+      try { fireBtnEl.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    fireBtnEl.addEventListener('pointermove', function (e) {
+      if (!aimStick.active || e.pointerId !== aimStick.id) return;
+      e.preventDefault();
+      var r = fireBtnEl.getBoundingClientRect();
+      var dx = e.clientX - (r.left + r.width / 2);
+      var dy = e.clientY - (r.top + r.height / 2);
+      var len = Math.hypot(dx, dy), max = r.width * 0.52, cl = Math.min(len, max);
+      aimStick.dx = dx; aimStick.dy = dy; aimStick.len = len;
+      if (fireKnob) {
+        fireKnob.style.transform = 'translate(' + (len ? dx / len * cl : 0) + 'px,' + (len ? dy / len * cl : 0) + 'px)';
+      }
+    });
+    fireBtnEl.addEventListener('pointerup', stickEnd);
+    fireBtnEl.addEventListener('pointercancel', stickEnd);
+    fireBtnEl.addEventListener('lostpointercapture', stickEnd);
+  }
   document.getElementById('btnDodge').addEventListener('pointerdown', function (e) { e.preventDefault(); keys['shift'] = true; setTimeout(function () { keys['shift'] = false; }, 90); });
   var abBtn = document.getElementById('btnAbility');
   if (abBtn) abBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); ability(); });
