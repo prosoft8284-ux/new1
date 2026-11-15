@@ -232,7 +232,9 @@
       enter.style.cssText = 'display:block;margin-top:10px;text-align:center;text-decoration:none';
       card.appendChild(enter);
     }
-    enter.textContent = 'ورود به این منطقه';
+    var lib = window.SAVE ? SAVE.get('lib:' + (poi.id || poi.type), null) : null;
+    enter.textContent = (lib && lib.liberated) ? 'ورود به منطقهٔ آزاد' : 'ورود به این منطقه';
+    enter.dataset.liberated = (lib && lib.liberated) ? '1' : '';
     enter.href = 'preview.html?poi=' + encodeURIComponent(poi.id || '') +
       '&type=' + encodeURIComponent(poi.type || '') +
       '&name=' + encodeURIComponent(poi.name || '');

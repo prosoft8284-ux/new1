@@ -15,6 +15,7 @@
     var type = q.get('type') || '';
     var name = q.get('name') || '';
     if (window.REGIONS) REGION = REGIONS.forType(type, name);
+    if (REGION) REGION.id = q.get('poi') || '';
     if (REGION && window.SCENE && SCENE.configure) SCENE.configure(REGION);
     if (REGION && REGION.name) document.title = 'BERMUDA SURVIVAL — ' + REGION.name;
   })();
@@ -128,7 +129,7 @@
 
   function spawnWave() {
     G.wave++;
-    var n = 3 + Math.floor(G.wave * 1.6);
+    var n = Math.round((3 + Math.floor(G.wave * 1.6)) * (window.LIB ? LIB.heatMul() : 1));
     var cx = 1205 * SCENE.S, cy = 425 * SCENE.S;
     var pool = ['parasite', 'runner', 'skitter'];
     if (G.wave >= 1 && REGION && REGION.aliens) {
@@ -281,6 +282,7 @@
       var a = p.aim + (Math.random() - 0.5) * w.spread * 2;
       if (w.pellets > 1) a += (i - (w.pellets - 1) / 2) * 0.05;
       var sp = w.speed * rand(0.94, 1.06);
+      if (window.LIB) LIB.noise(1.2);
       G.bullets.push({
         x: p.x + Math.cos(p.aim) * 18, y: p.y - 8 + Math.sin(p.aim) * 18,
         vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
@@ -381,6 +383,7 @@
   }
 
   function killAlien(idx) {
+    if (window.LIB) LIB.noise(6);
     var a = G.aliens[idx];
     if (!a) return;
     SFX.kill(a.x, a.y);
@@ -615,6 +618,12 @@
       var bl = G.bullets[b];
       bl.x += bl.vx * dt; bl.y += bl.vy * dt; bl.life -= dt;
       if (bl.life <= 0) { G.bullets.splice(b, 1); continue; }
+      if (window.LIB && LIB.hitTest(bl.x, bl.y)) {
+        LIB.hitNode(bl.dmg);
+        spawnParticles(bl.x, bl.y, 6, '#c37dff', 150, 0.3);
+        G.bullets.splice(b, 1);
+        continue;
+      }
       for (var q = 0; q < G.aliens.length; q++) {
         var tgt = G.aliens[q];
         if (bl.hit.indexOf(tgt) >= 0) continue;
@@ -668,9 +677,10 @@
       if (dd < 22 && dr.t > 0.25) { pickUp(dr); G.drops.splice(di, 1); }
     }
 
-    // waves
+    // waves — the liberation loop takes over while the relay is under siege
+    if (window.LIB) LIB.update(dt);
     G.nextWave -= dt;
-    if (G.nextWave <= 0 && G.aliens.length < 26) spawnWave();
+    if (!(window.LIB && LIB.controlsWaves()) && G.nextWave <= 0 && G.aliens.length < 26) spawnWave();
 
     // camera
     cam.x += (p.x - cam.x) * Math.min(1, dt * 6);
@@ -847,6 +857,7 @@
 
     // terrain
     ctx.drawImage(SCENE.bg, 0, 0);
+    if (window.LIB) LIB.draw(ctx);
 
     // animated foam
     var t = performance.now(), x;
@@ -1011,6 +1022,10 @@
     elSt.style.transform = 'scaleX(' + (1 - p.dodgeCd / 1.4) + ')';
     elWave.textContent = fa(G.wave);
     elKills.textContent = fa(G.kills);
+    if (window.LIB) {
+      var _obj = document.getElementById('objective');
+      if (_obj) _obj.textContent = LIB.hudText();
+    }
     var sig = p.cur + ':' + curA(p).mag + ':' + curA(p).reserve + ':' + (p.arsenal.shotgun.unlocked ? 1 : 0) + (p.arsenal.plasma.unlocked ? 1 : 0);
     if (sig !== updateHud._sig) { updateHud._sig = sig; updateWeaponHud(); }
     var abSig = p.def.key + ':' + (p.abCd > 0 ? Math.ceil(p.abCd) : 0);
@@ -1064,6 +1079,7 @@
 
   function die() {
     G.over = true; G.paused = true;
+    if (window.LIB) LIB.onDeath();
     SFX.death();
     var best = window.SAVE ? SAVE.recordRun(G.wave, G.kills) : null;
     var bestTxt = best
@@ -1214,6 +1230,14 @@
   resize();
   SCENE.bake();
   G.bgReady = true;
+
+  if (window.LIB) {
+    LIB.init({
+      spawn: function (type, x, y, elite) { addAlien(type, x, y, elite); },
+      toast: toast, particles: spawnParticles, sfx: SFX, region: REGION
+    });
+    LIB.start();
+  }
   G.spores = [];
   for (var si = 0; si < 90; si++) {
     G.spores.push({ x: Math.random() * SCENE.W, y: Math.random() * 800, p: Math.random() * 6.28 });
