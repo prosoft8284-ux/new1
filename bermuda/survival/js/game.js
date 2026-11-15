@@ -910,16 +910,35 @@
     ctx.globalAlpha = 1;
 
     // sorted world objects
+    // one y-sorted pass: props, aliens and the player interleave by their base
+    // line, so a canopy above the player really covers him
     var list = SCENE.props.slice();
     for (var i = 0; i < G.aliens.length; i++) list.push({ kind: '_alien', y: G.aliens[i].y, e: G.aliens[i] });
+    if (G.player) list.push({ kind: '_player', y: G.player.y, e: G.player });
     list.sort(function (a, b) { return a.y - b.y; });
     for (i = 0; i < list.length; i++) {
       var o = list[i];
       if (o.kind === '_alien') drawEntity(o.e, false);
+      else if (o.kind === '_player') drawEntity(o.e, true);
       else drawProp(o);
     }
-    // the player is always drawn on top so tree canopies never hide him
-    if (G.player) drawEntity(G.player, true);
+    // when the canopy swallows the player, leave a faint silhouette so he is
+    // never lost behind the leaves
+    if (G.player) {
+      var occluded = false;
+      for (i = 0; i < SCENE.props.length; i++) {
+        var pp = SCENE.props[i];
+        if (pp.kind !== 'tree' && pp.kind !== 'palm' && pp.kind !== 'bush') continue;
+        if (pp.y > G.player.y + 4 && pp.y - G.player.y < 96 && Math.abs(pp.x - G.player.x) < 42) {
+          occluded = true; break;
+        }
+      }
+      if (occluded) {
+        ctx.globalAlpha = 0.22;
+        drawEntity(G.player, true);
+        ctx.globalAlpha = 1;
+      }
+    }
 
     // loot
     for (i = 0; i < G.drops.length; i++) drawDrop(G.drops[i], t);
