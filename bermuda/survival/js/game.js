@@ -22,7 +22,8 @@
   var G = {
     running: false, paused: false, over: false, t: 0, last: 0,
     player: null, aliens: [], bullets: [], ebullets: [], parts: [], drops: [],
-    wave: 0, kills: 0, waveTimer: 0, nextWave: 2.5, shake: 0, flash: 0, bossSpawned: false
+    wave: 0, kills: 0, waveTimer: 0, nextWave: 2.5, shake: 0, flash: 0, bossSpawned: false,
+    hitStop: 0, nums: [], hurtAng: 0, hurtT: 0, touch: false
   };
   var keys = {}, point = { x: 0, y: 0, down: false, active: false };
   var joy = { active: false, dx: 0, dy: 0 };
@@ -124,7 +125,7 @@
     G.shake = Math.min(10, G.shake + 6);
     G.flash = Math.max(G.flash, 0.25);
     var p = G.player;
-    if (p && dist(a, p) < R) hurtPlayer(a.def.dmg);
+    if (p && dist(a, p) < R) hurtPlayer(a.def.dmg, a.x, a.y);
   }
 
   function spawnWave() {
@@ -138,6 +139,16 @@
     if (G.wave >= 2) pool.push('winged', 'runner', 'bomber');
     if (G.wave >= 3) pool.push('neural', 'warrior', 'brute');
     if (G.wave >= 4) pool.push('warlock', 'mutant', 'brute');
+    // role squads: a shield up front, a caster behind, a bomber to flush you out
+    if (G.wave >= 2 && n >= 3 && Math.random() < 0.55) {
+      var sa = Math.random() * 6.2832, sr = rand(110, 180) * SCENE.S;
+      var sqx = cx + Math.cos(sa) * sr * 1.2, sqy = cy + Math.sin(sa) * sr;
+      var squad = ['brute', 'neural', 'bomber'];
+      for (var si = 0; si < squad.length; si++) {
+        addAlien(squad[si], sqx + rand(-24, 24), sqy + rand(-20, 20), si === 0 && Math.random() < 0.25);
+      }
+      n -= 3;
+    }
     var eliteChance = Math.min(0.24, 0.05 + G.wave * 0.02);
     for (var i = 0; i < n; i++) {
       var a = Math.random() * 6.2832, rr = rand(70, 190) * SCENE.S;
@@ -384,6 +395,7 @@
 
   function killAlien(idx) {
     if (window.LIB) LIB.noise(6);
+    G.hitStop = Math.max(G.hitStop, 0.055);
     var a = G.aliens[idx];
     if (!a) return;
     SFX.kill(a.x, a.y);
@@ -426,11 +438,14 @@
     }
   }
 
-  function hurtPlayer(dmg) {
+  function hurtPlayer(dmg, sx, sy) {
     var p = G.player;
     if (!p || p.hurt > 0 || p.dodge > 0 || p.inv > 0) return;
     if (G.god) return;                       // ?god=1 — screenshot / demo mode
     p.hp -= dmg; p.hurt = 0.32; G.flash = 0.5; G.shake = 7;
+    if (sx != null && sy != null) { G.hurtAng = Math.atan2(sy - p.y, sx - p.x); G.hurtT = 0.95; }
+    G.nums.push({ x: p.x + rand(-4, 4), y: p.y - 30, txt: '-' + Math.round(dmg),
+      life: 0.7, max: 0.7, color: '#ff7b8b' });
     SFX.hurt();
     if (navigator.vibrate) { try { navigator.vibrate(35); } catch (e) {} }
     if (p.hp <= 0) { p.hp = 0; die(); }
@@ -441,6 +456,13 @@
   function update(dt) {
     var p = G.player;
     if (!p) return;
+    if (G.hitStop > 0) { G.hitStop = Math.max(0, G.hitStop - dt); dt *= 0.15; }
+    G.hurtT = Math.max(0, G.hurtT - dt);
+    for (var ni = G.nums.length - 1; ni >= 0; ni--) {
+      var nm = G.nums[ni];
+      nm.y -= 26 * dt; nm.life -= dt;
+      if (nm.life <= 0) G.nums.splice(ni, 1);
+    }
     G.t += dt;
     SFX.listener(p.x, p.y);
 
@@ -456,6 +478,17 @@
         if (d < 420 && d < bd) { bd = d; best = al; }
       }
       if (best) p.aim = Math.atan2(best.y - p.y, best.x - p.x);
+    }
+    if ((G.touch || joy.active) && G.aliens.length) {
+      var aBest = null, aDist = 1e9, aAng = 0;
+      for (var ai = 0; ai < G.aliens.length; ai++) {
+        var ao = G.aliens[ai], ad = dist(ao, p);
+        if (ad > 300 || ad > aDist) continue;
+        var a2 = Math.atan2(ao.y - p.y, ao.x - p.x);
+        var diff = Math.abs(((a2 - p.aim + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+        if (diff < 0.26) { aDist = ad; aBest = ao; aAng = a2; }
+      }
+      if (aBest) p.aim += (((aAng - p.aim + Math.PI * 3) % (Math.PI * 2)) - Math.PI) * 0.5;
     }
     if (Math.cos(p.aim) > 0.15) p.face = 1;
     else if (Math.cos(p.aim) < -0.15) p.face = -1;
@@ -585,7 +618,7 @@
         }
       } else if (a.cd <= 0) {
         a.cd = 0.9;
-        hurtPlayer(a.def.dmg);
+        hurtPlayer(a.def.dmg, a.x, a.y);
         if (a.type === 'brute' || a.type === 'mutant') { p.knockX += Math.cos(ang) * 190; p.knockY += Math.sin(ang) * 190; }
         spawnParticles(p.x, p.y, 6, '#ff5b6e', 120, 0.3);
       }
@@ -629,6 +662,8 @@
         if (bl.hit.indexOf(tgt) >= 0) continue;
         if (Math.hypot(tgt.x - bl.x, tgt.y - bl.y) < tgt.r + 4) {
           tgt.hp -= bl.dmg; tgt.hurt = 0.14;
+          G.nums.push({ x: tgt.x + rand(-5, 5), y: tgt.y - tgt.r - 6, txt: Math.round(bl.dmg),
+            life: 0.62, max: 0.62, color: tgt.elite ? '#ffd479' : '#ffeec2' });
           SFX.hit(bl.x, bl.y);
           spawnParticles(bl.x, bl.y, 5, bl.color || tgt.def.color, 130, 0.28);
           bl.hit.push(tgt);
@@ -647,7 +682,7 @@
       if (e.life <= 0) { G.ebullets.splice(eb, 1); continue; }
       if (Math.hypot(p.x - e.x, p.y - e.y) < 16) {
         SFX.hit(e.x, e.y);
-        hurtPlayer(e.dmg);
+        hurtPlayer(e.dmg, e.x, e.y);
         G.ebullets.splice(eb, 1);
       }
     }
@@ -922,6 +957,20 @@
     }
     ctx.globalAlpha = 1;
 
+    // damage numbers
+    for (i = 0; i < G.nums.length; i++) {
+      var nu = G.nums[i];
+      ctx.globalAlpha = Math.max(0, nu.life / nu.max);
+      ctx.font = 'bold 13px "Trebuchet MS", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = 'rgba(8,10,14,.75)';
+      ctx.fillText(nu.txt, nu.x + 1, nu.y + 1);
+      ctx.fillStyle = nu.color;
+      ctx.fillText(nu.txt, nu.x, nu.y);
+    }
+    ctx.globalAlpha = 1;
+    ctx.textAlign = 'left';
+
     // floating spores / motes
     for (i = 0; i < G.spores.length; i++) {
       var sp = G.spores[i];
@@ -943,6 +992,19 @@
     }
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (G.hurtT > 0) {
+      var cxs = vw / 2, cys = vh / 2, hrad = Math.min(vw, vh) * 0.34;
+      ctx.save();
+      ctx.translate(cxs, cys);
+      ctx.rotate(G.hurtAng);
+      ctx.globalAlpha = Math.min(1, G.hurtT);
+      ctx.fillStyle = 'rgba(255,74,92,.85)';
+      ctx.beginPath();
+      ctx.moveTo(hrad + 28, 0); ctx.lineTo(hrad, -13); ctx.lineTo(hrad, 13);
+      ctx.closePath(); ctx.fill();
+      ctx.restore();
+      ctx.globalAlpha = 1;
+    }
     if (G.flash > 0) {
       ctx.fillStyle = 'rgba(255,40,64,' + (G.flash * 0.35) + ')';
       ctx.fillRect(0, 0, vw, vh);
@@ -1103,6 +1165,7 @@
     G.over = false; G.paused = false; G.running = true;
     G.aliens = []; G.bullets = []; G.ebullets = []; G.parts = [];
     G.wave = 0; G.kills = 0; G.nextWave = 3; G.bossSpawned = false;
+    G.nums = []; G.hitStop = 0; G.hurtT = 0;
     G.shake = 0; G.flash = 0; wasFire = false;
     G.player = makePlayer(G.player.def);
     seedCrates();
@@ -1119,6 +1182,7 @@
     document.getElementById('start').classList.add('hidden');
     document.getElementById('hud').classList.remove('hidden');
     var touchy = qs.get('touch') || ('ontouchstart' in window) || (window.matchMedia && matchMedia('(pointer:coarse)').matches);
+    G.touch = !!touchy;
     if (touchy) {
       document.getElementById('joystick').classList.remove('hidden');
       document.getElementById('touchBtns').classList.remove('hidden');
@@ -1130,6 +1194,7 @@
     G.running = true; G.paused = false; G.over = false;
     G.aliens = []; G.bullets = []; G.ebullets = []; G.parts = [];
     G.wave = 0; G.kills = 0; G.nextWave = 3.5; G.bossSpawned = false;
+    G.nums = []; G.hitStop = 0; G.hurtT = 0;
     wasFire = false;
     seedCrates();
     buildSlots();
