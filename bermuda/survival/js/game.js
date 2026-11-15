@@ -747,6 +747,9 @@
       case 'crystal': PROPS.crystal(ctx, p, t); break;
       case 'spire': PROPS.spire(ctx, p, t); break;
       case 'nest': PROPS.nest(ctx, p, t); break;
+      default:
+        if (window.PROPS2 && PROPS2[p.kind]) PROPS2[p.kind](ctx, p, t);
+        break;
     }
   }
 

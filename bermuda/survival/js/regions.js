@@ -73,6 +73,17 @@ window.REGIONS = (function () {
     locked: 'ruins'
   };
 
+  var KIT = {
+    town: 'city', village: 'city', safehouse: 'city', shop: 'city', workbench: 'city',
+    outpost: 'military', fuel_depot: 'military', radio_tower: 'military', radar: 'military',
+    lookout: 'military', side: 'military', main: 'military', vehicle: 'military',
+    alien_camp: 'alien', alien_spire: 'alien', alien_crash: 'alien', alien: 'alien',
+    danger: 'alien',
+    airstrip: 'airport', airport: 'airport',
+    ruins: 'temple', locked: 'temple',
+    jungle: 'jungle', cache: 'jungle', cave: 'jungle', mine: 'jungle', waterfall: 'jungle'
+  };
+
   function copy(o) {
     var out = {}, k;
     for (k in DEFAULT) out[k] = DEFAULT[k];
@@ -84,6 +95,7 @@ window.REGIONS = (function () {
     forType: function (type, name) {
       var key = BY_TYPE[type] ? type : (ALIAS[type] || type);
       var p = copy(BY_TYPE[key] || {});
+      p.kit = KIT[key] || KIT[type] || 'beach';
       p.type = type || 'jungle';
       if (name) p.name = name;
       return p;

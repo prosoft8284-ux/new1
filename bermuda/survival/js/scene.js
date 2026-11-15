@@ -14,7 +14,7 @@ window.SCENE = (function () {
   // region profile (set by configure() before bake)
   var P = {
     name: '', jungle: 1, palms: 1, camp: true, crash: true,
-    shoreShift: 0, tint: null
+    shoreShift: 0, tint: null, kit: ''
   };
 
   function configure(profile) {
@@ -26,7 +26,8 @@ window.SCENE = (function () {
       camp: !!profile.camp,
       crash: !!profile.crash,
       shoreShift: profile.shoreShift || 0,
-      tint: profile.tint || null
+      tint: profile.tint || null,
+      kit: profile.kit || ''
     };
     return P;
   }
@@ -69,6 +70,15 @@ window.SCENE = (function () {
     cv.width = W; cv.height = H;
     var c = cv.getContext('2d');
     var x, y;
+
+    // region kits replace the beach entirely
+    if (window.KITS && window.KITS.has(P.kit)) {
+      window.KITS.paint(c, P.kit, W, H, S, rnd);
+      if (P.tint) { c.fillStyle = P.tint; c.fillRect(0, 0, W, H); }
+      bg = cv;
+      buildProps();
+      return cv;
+    }
 
     // sea
     var sg = c.createLinearGradient(0, 700 * S, 0, H);
@@ -245,9 +255,22 @@ window.SCENE = (function () {
   }
 
   /* ---------------- props ---------------- */
-  function addProp(o) { props.push(o); }
+  function addProp(o) {
+    // buildings are solid rectangles, not circles, so walls actually stop you
+    if (o.kind === 'bldg') {
+      var sc = o.s || 1, w2 = (o.w || 74) * sc, h2 = (o.h || 58) * sc * (o.tall || 1);
+      o.box = { x: o.x, y: o.y - h2 / 2, w: w2, h: h2 };
+      o.r = Math.max(w2, h2) * 0.5;
+    }
+    props.push(o);
+  }
 
   function buildProps() {
+    if (window.KITS && window.KITS.has(P.kit)) {
+      window.KITS.props(P.kit, addProp, W, H, S, rnd);
+      props.sort(function (a, b) { return a.y - b.y; });
+      return;
+    }
     var i, x, y, r;
     var campX = 300 * S, campY = 690 * S, nestX = 1205 * S, nestY = 425 * S;
 
@@ -349,6 +372,11 @@ window.SCENE = (function () {
     for (var i = 0; i < props.length; i++) {
       var p = props[i];
       if (p.kind === 'fire' || p.kind === 'crystal') continue;
+      if (p.box) {
+        if (x > p.box.x - p.box.w / 2 - 5 && x < p.box.x + p.box.w / 2 + 5 &&
+            y > p.box.y - p.box.h / 2 - 8 && y < p.box.y + p.box.h / 2 + 4) return true;
+        continue;
+      }
       if (Math.hypot(x - p.x, y - p.y) < (p.r || 10) * 0.8) return true;
     }
     return false;
