@@ -120,6 +120,19 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("mcp", help="اجرای سرور MCP روی stdio برای وصل‌شدن به دستیارها")
 
+    fet = sub.add_parser("fetch", help="جست‌وجو و دانلود کتاب از منابع مجاز (archive.org، گوتنبرگ، لینک مستقیم)")
+    fet.add_argument("--query", help="عبارت جست‌وجو")
+    fet.add_argument("--id", action="append", default=None, help="شناسه archive.org (تکرارپذیر)")
+    fet.add_argument("--url", action="append", default=None, help="لینک مستقیم فایل (تکرارپذیر)")
+    fet.add_argument("--lang", default=None, help="fa | ar | en")
+    fet.add_argument("--limit", type=int, default=5)
+    fet.add_argument("--out", default="books", help="پوشه مقصد")
+    fet.add_argument("--prefer", default="pdf", choices=["pdf", "epub", "txt"])
+    fet.add_argument("--all", action="store_true", help="همه نتایج (تا --limit) را دانلود کن")
+    fet.add_argument("--yes", action="store_true", help="بدون پرسش، بهترین نتیجه را دانلود کن")
+    fet.add_argument("--allow-unknown", action="store_true",
+                     help="اجازه دانلود موردهایی که وضعیت حقوقی‌شان مشخص نیست")
+
     sub.add_parser("status", help="وضعیت کتابخانه: پیشرفت، صف، کتاب‌های مشکوک")
 
     sub.add_parser("stats", help="آمار ایندکس")
@@ -195,6 +208,56 @@ def main(argv: list[str] | None = None) -> int:
         from .mcp import serve_mcp
 
         return serve_mcp(root=args.root)
+
+    if args.command == "fetch":
+        from . import fetch as bookfetch
+
+        out = Path(args.out)
+        results = []
+        if args.query:
+            results = bookfetch.search(args.query, lang=args.lang, limit=args.limit)
+            print(f"{'#':>2} {'score':>5} {'rights':<18} {'source':<10} title")
+            for i, cand in enumerate(results, 1):
+                print(f"{i:>2} {cand['score']:5.2f} {str(cand['rights'] or '-')[:18]:<18} "
+                      f"{cand['source']:<10} {str(cand['title'])[:60]}")
+            if not results:
+                print("نتیجه‌ای پیدا نشد.")
+
+        downloaded = []
+        for ident in args.id or []:
+            downloaded.append(bookfetch.download_archive(ident, out, prefer=args.prefer))
+        for url in args.url or []:
+            downloaded.append(bookfetch.download_url(url, out))
+
+        if results and not (args.yes or args.all):
+            print("\nبرای دانلود: `--yes` (بهترین نتیجه) یا `--all` (تا --limit)")
+        elif results:
+            wanted = args.limit if args.all else 1
+            taken = 0
+            for cand in results:
+                if taken >= wanted:
+                    break
+                if cand["source"] != "archive.org":
+                    print(f"  {cand['source']} #{cand['id']}: دستی از {cand['page']} بگیر "
+                          "(یا لینک فایل را با --url بده)")
+                    continue
+                rights = str(cand.get("rights") or "")
+                if rights not in ("NOT_IN_COPYRIGHT", "public domain") and not args.allow_unknown:
+                    print(f"  {cand['id']}: حقوق نامشخص ({rights or 'unknown'}) — رد شد؛ "
+                          "برای پذیرش مسئولیت: --allow-unknown")
+                    continue
+                try:
+                    downloaded.append(bookfetch.download_archive(cand["id"], out,
+                                                                 prefer=args.prefer))
+                    taken += 1
+                except SystemExit as exc:
+                    print(f"  {cand['id']}: {exc}")
+
+        for item in downloaded:
+            print(f"✓ {item['path']}  ({item['bytes'] / 1e6:.1f}MB)")
+        if downloaded:
+            print("\nمرحله بعد: python -m rag library --dir books")
+        return 0
 
     if args.command == "audit":
         from .library import audit_library
