@@ -19,7 +19,7 @@ import time
 from pathlib import Path
 
 from .ingest import run_ingest
-from .pdf import extract_many, write_jsonl
+from .pdf import extract_many, trust_score, write_jsonl
 
 
 def _slug(rel: str) -> str:
@@ -158,10 +158,80 @@ def _flush(batch: list[tuple[Path, str]], root: Path, embedder: str, progress: b
     return totals
 
 
+def _trust_for(pdf: Path, extracted: dict, root: Path, verify_pages: int,
+               extract_kwargs: dict) -> dict | None:
+    """Sample-OCR the book twice and report how stable the text is."""
+    if not extracted.get("ocr_pages"):
+        return None  # nothing was OCR'd: the text layer was already validated
+    try:
+        return trust_score(
+            pdf, pages=verify_pages, root=str(root),
+            dpi=extract_kwargs.get("dpi", "auto"), lang=extracted.get("lang") or "fas",
+            model=extract_kwargs.get("model", "fast"),
+            tesseract=extract_kwargs.get("tesseract"),
+            tessdata=extract_kwargs.get("tessdata"),
+        )
+    except Exception as exc:  # noqa: BLE001 - verification must never fail a book
+        return {"trust": None, "error": str(exc)[:200]}
+
+
+def _lang_from_jsonl(path) -> str | None:
+    target = Path(path or "")
+    if not target.exists():
+        return None
+    with target.open(encoding="utf-8") as fh:
+        for line in fh:
+            try:
+                return json.loads(line).get("lang")
+            except json.JSONDecodeError:
+                return None
+    return None
+
+
+def audit_library(root: str = "data", limit: int | None = None, fix: bool = False,
+                  verify_pages: int = 3, **extract_kwargs) -> dict:
+    """Re-check the trustworthiness of books that are already extracted.
+
+    Only a few sampled pages per book are OCR'd, twice, so a thousand books cost
+    minutes instead of a rerun. With `fix`, the manifest is updated so `status`
+    and the next run see the new verdict.
+    """
+    root_path = Path(root)
+    books = _load_manifest(root_path / "library.json")
+    done = [(key, rec) for key, rec in books.items() if rec.get("status") == "done"]
+    if limit:
+        done = done[:limit]
+    rows: list[dict] = []
+    flagged = 0
+    for key, record in done:
+        name = Path(record.get("jsonl") or "").stem
+        pdf = Path(key)
+        if not pdf.exists():
+            rows.append({"book": name, "error": "فایل PDF پیدا نشد"})
+            continue
+        lang = record.get("ocr_lang") or _lang_from_jsonl(record.get("jsonl")) or "fas"
+        trust = trust_score(pdf, pages=verify_pages, root=str(root_path), lang=lang,
+                            **extract_kwargs)
+        quality = [w for w in (record.get("quality") or [])
+                   if not str(w).startswith("low-trust")]
+        if trust["reliable"] is False:
+            quality.append(f"low-trust ({trust['trust']})")
+            flagged += 1
+        rows.append({"book": name, "trust": trust["trust"], "pages": trust["pages"],
+                     "warnings": quality})
+        if fix:
+            record["trust"] = trust["trust"]
+            record["quality"] = quality
+    if fix and done:
+        _save_manifest(root_path / "library.json", books)
+    return {"audited": len(rows), "flagged": flagged, "fixed": fix, "books": rows}
+
+
 def run_library(directory: str = "books", root: str = "data", index: bool = True,
                 limit: int | None = None, force: bool = False, batch_size: int = 25,
                 embedder: str = "auto", progress: bool = True,
                 include: list[str] | None = None, exclude: list[str] | None = None,
+                verify: bool = True, verify_pages: int = 3,
                 **extract_kwargs) -> dict:
     base = Path(directory)
     if not base.exists():
@@ -293,7 +363,10 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
         out = ext_dir / f"{_slug(rel)}.jsonl"
         write_jsonl(extracted, out)
 
+        trust = _trust_for(pdf, extracted, root_path, verify_pages, extract_kwargs) if verify else None
         warnings = list(extracted.get("warnings") or [])
+        if trust and trust.get("reliable") is False:
+            warnings.append(f"low-trust ({trust['trust']})")
         if warnings:
             suspects.append({"pdf": pdf.name, "warnings": warnings,
                              "failed_pages": extracted.get("failed_pages") or []})
@@ -304,10 +377,12 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
             "ocr_pages": extracted["ocr_pages"],
             "chars": extracted["chars"],
             "chars_per_page": extracted.get("chars_per_page"),
+            "trust": (trust or {}).get("trust"),
             "seconds": extracted["seconds"],
             "dpi": extracted["dpi"],
             "engine": extracted["engine"],
             "content_key": content_key,
+            "ocr_lang": extracted.get("lang"),
             "quality": warnings,
             "failed_pages": extracted.get("failed_pages") or [],
             "jsonl": str(out),

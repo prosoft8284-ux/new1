@@ -12,7 +12,8 @@ from pathlib import Path
 
 from rag.ingest import remove_documents, run_ingest
 from rag.library import (_content_key, _keep_pdf, _load_manifest, _save_manifest,
-                         library_status)
+                         _trust_for, library_status)
+from rag.pdf import _token_set, _word_overlap
 from rag.search import Retriever, build_context
 from rag.textutil import (chunk_text, detect_language, lam_alef_variants,
                           looks_garbled, normalize, query_terms)
@@ -151,6 +152,23 @@ class LibraryHelperTests(unittest.TestCase):
         self.assertFalse(_keep_pdf("a/draft.pdf", ["*تاریخ*"], None))
         self.assertTrue(_keep_pdf("a/تاریخ ایران.pdf", ["*تاریخ*"], None))
         self.assertFalse(_keep_pdf("a/draft.pdf", None, ["*draft*"]))
+
+
+class TrustTests(unittest.TestCase):
+    def test_token_set_drops_short_words(self):
+        tokens = _token_set("این یک کتاب است و آن را خواندم")
+        self.assertIn("کتاب", tokens)
+        self.assertNotIn("و", tokens)
+
+    def test_overlap_separates_stable_from_diverging_text(self):
+        stable = {"انقلاب", "مشروطه", "ایران", "قدرت"}
+        self.assertEqual(_word_overlap(stable, stable), 1.0)
+        self.assertLess(_word_overlap(stable, {"کشاورزی", "آب", "هوا", "باران"}), 0.1)
+        self.assertEqual(_word_overlap(stable, set()), 0.0)
+
+    def test_verification_is_skipped_when_nothing_was_ocred(self):
+        extracted = {"ocr_pages": 0, "lang": "fas"}
+        self.assertIsNone(_trust_for(Path("/nonexistent.pdf"), extracted, Path("/tmp"), 3, {}))
 
 
 class SearchTests(unittest.TestCase):

@@ -101,6 +101,13 @@ def main(argv: list[str] | None = None) -> int:
                      help="فقط کتاب‌های منطبق با این الگو (تکرارپذیر، مثل '*تاریخ*')")
     lib.add_argument("--exclude", action="append", default=None,
                      help="نادیده گرفتن کتاب‌های منطبق با این الگو (تکرارپذیر)")
+    lib.add_argument("--no-verify", action="store_true",
+                     help="بدون سنجش اعتماد OCR (سریع‌تر، بدون هشدار low-trust)")
+
+    aud = sub.add_parser("audit", help="سنجش اعتماد OCR کتاب‌های استخراج‌شده")
+    aud.add_argument("--limit", type=int, default=None)
+    aud.add_argument("--pages", type=int, default=3, help="چند صفحه نمونه بررسی شود")
+    aud.add_argument("--fix", action="store_true", help="مانیفست را با نتیجه به‌روز کن")
 
     rem = sub.add_parser("remove", help="حذف کامل یک سند/کتاب از پارکت، بردارها و کورپوس")
     rem.add_argument("--book", action="append", default=None,
@@ -166,7 +173,7 @@ def main(argv: list[str] | None = None) -> int:
             limit=args.limit, force=args.force, batch_size=args.batch_size,
             embedder=args.embedder, dpi=_dpi(args.dpi), lang=args.lang,
             model=args.model, psm=args.psm, workers=args.workers,
-            include=args.only, exclude=args.exclude,
+            include=args.only, exclude=args.exclude, verify=not args.no_verify,
         )
         print(json.dumps(summary, ensure_ascii=False, indent=2))
         return 0
@@ -188,6 +195,14 @@ def main(argv: list[str] | None = None) -> int:
         from .mcp import serve_mcp
 
         return serve_mcp(root=args.root)
+
+    if args.command == "audit":
+        from .library import audit_library
+
+        summary = audit_library(root=args.root, limit=args.limit, fix=args.fix,
+                                verify_pages=args.pages)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        return 0
 
     if args.command == "status":
         from .library import library_status
