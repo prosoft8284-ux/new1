@@ -62,6 +62,36 @@ class SearchSmokeTests(unittest.TestCase):
                          "bustan")
 
 
+class RobotsTests(unittest.TestCase):
+    ROBOTS = """# Search engines: full access, except file downloads
+User-agent: *
+Disallow: /library/download/
+Disallow: /*/library/download/
+Disallow: /file-access/
+Disallow: /*/file-access/
+Allow: /library/
+Crawl-delay: 2
+"""
+
+    def test_wildcard_disallow_is_honoured(self):
+        # The stdlib robotparser misses this: it has no `*` support.
+        from rag.fetch import path_allowed
+        self.assertFalse(path_allowed(self.ROBOTS, "/ar/library/download/6017591"))
+        self.assertFalse(path_allowed(self.ROBOTS, "/ar/file-access/55"))
+        self.assertFalse(path_allowed(self.ROBOTS, "/library/download/6017591"))
+
+    def test_longest_match_wins(self):
+        from rag.fetch import path_allowed
+        self.assertTrue(path_allowed(self.ROBOTS, "/library/index"))
+        self.assertTrue(path_allowed(self.ROBOTS, "/ar/book/123"))
+
+    def test_other_agent_groups_do_not_leak(self):
+        from rag.fetch import path_allowed
+        text = "User-agent: BadBot\nDisallow: /\n\nUser-agent: *\nDisallow: /private/\n"
+        self.assertFalse(path_allowed(text, "/private/x"))
+        self.assertTrue(path_allowed(text, "/book/1"))
+
+
 class FileTests(unittest.TestCase):
     def test_pick_file_prefers_largest_pdf(self):
         files = [

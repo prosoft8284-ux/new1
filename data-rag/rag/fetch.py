@@ -46,6 +46,65 @@ def _get_json(url: str, timeout: int = 60) -> dict:
     return json.loads(_get(url, timeout).decode("utf-8", "replace"))
 
 
+def _robots_groups(text: str) -> list[tuple[list[str], list[tuple[bool, str]]]]:
+    groups: list[tuple[list[str], list[tuple[bool, str]]]] = []
+    agents: list[str] = []
+    rules: list[tuple[bool, str]] = []
+    for raw in text.splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line or ":" not in line:
+            continue
+        key, value = (part.strip() for part in line.split(":", 1))
+        key = key.lower()
+        if key == "user-agent":
+            if rules:  # a new group begins
+                groups.append((agents, rules))
+                agents, rules = [], []
+            agents.append(value.lower())
+        elif key == "allow":
+            rules.append((True, value))
+        elif key == "disallow":
+            rules.append((False, value))
+    if agents or rules:
+        groups.append((agents, rules))
+    return groups
+
+
+def _rule_matches(pattern: str, path: str) -> bool:
+    """Robots patterns support `*` and a trailing `$`; robotparser does not.
+
+    This is the whole reason this function exists: ghaemiyeh.com forbids
+    `/*/library/download/`, which the stdlib parser silently treats as allowed.
+    """
+    if not pattern:
+        return False
+    anchored = pattern.endswith("$")
+    body = pattern[:-1] if anchored else pattern
+    regex = re.escape(body).replace(r"\*", ".*")
+    return re.match(regex + ("$" if anchored else ""), path) is not None
+
+
+def path_allowed(robots_text: str, path: str, agent: str = "*") -> bool:
+    """True when the longest matching rule for this path is an Allow."""
+    path = path or "/"
+    chosen: list[list[tuple[bool, str]]] = []
+    specific, wildcard = [], []
+    for agents, rules in _robots_groups(robots_text):
+        if agent.lower() in agents:
+            specific = rules
+        elif "*" in agents:
+            wildcard = rules
+    chosen.append(specific or wildcard)
+    rules = [rule for group in chosen for rule in group]
+    best_len, verdict = -1, True
+    for allow, pattern in rules:
+        if _rule_matches(pattern, path):
+            size = len(pattern)
+            if size > best_len or (size == best_len and allow):
+                best_len, verdict = size, allow
+    return verdict
+
+
 def robots_allows(url: str) -> tuple[bool, str]:
     """Ask the site itself whether this exact path may be fetched.
 
@@ -54,15 +113,16 @@ def robots_allows(url: str) -> tuple[bool, str]:
     """
     parts = urllib.parse.urlsplit(url)
     robots_url = f"{parts.scheme}://{parts.netloc}/robots.txt"
-    parser = urllib.robotparser.RobotFileParser()
-    parser.set_url(robots_url)
     try:
-        parser.read()
-        if not parser.default_entry and not parser.entries:
-            return True, f"{robots_url} (no rules)"
-        return parser.can_fetch("*", url), robots_url
+        text = _get(robots_url, timeout=30).decode("utf-8", "replace")
     except Exception as exc:  # noqa: BLE001 - unreadable robots is not a refusal
         return True, f"{robots_url} unreadable ({type(exc).__name__}); proceeding cautiously"
+    if not _robots_groups(text):
+        return True, f"{robots_url} (no rules)"
+    path = parts.path or "/"
+    if parts.query:
+        path += "?" + parts.query
+    return path_allowed(text, path), robots_url
 
 
 # -- ranking ---------------------------------------------------------------
@@ -438,9 +498,17 @@ def download_archive(identifier: str, out_dir: Path, prefer: str = "pdf") -> dic
 
 def download_url(url: str, out_dir: Path, title: str | None = None) -> dict:
     """Download a file link, or the file a book page points at."""
+    ok, note = robots_allows(url)
+    if not ok:
+        raise SystemExit(
+            f"خود سایت این مسیر را ممنوع کرده ({note}): {url}\n"
+            "این صفحه یا مسیر دانلود با robots.txt بسته شده است. ابزار دور نمی‌زند: "
+            "کتاب را دستی از همان سایت بگیر و در books/ بگذار؛ بقیه‌ی کار (OCR، ایندکس، "
+            "جست‌وجو) با `python -m rag library --dir books` انجام می‌شود."
+        )
     target = resolve_pdf(url)
     if not target:
-        raise SystemExit(f"{url}: صفحه‌ای که لینک فایل ندارد (یا robots اجازه نمی‌دهد)")
+        raise SystemExit(f"{url}: صفحه‌ای که لینک فایل ندارد (دانلود با جاوااسکریپت یا فرم)")
     allowed, note = robots_allows(target)
     if not allowed:
         raise SystemExit(
