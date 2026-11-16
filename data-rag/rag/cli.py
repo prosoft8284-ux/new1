@@ -125,6 +125,8 @@ def main(argv: list[str] | None = None) -> int:
     fet.add_argument("--id", action="append", default=None, help="شناسه archive.org (تکرارپذیر)")
     fet.add_argument("--url", action="append", default=None, help="لینک مستقیم فایل (تکرارپذیر)")
     fet.add_argument("--lang", default=None, help="fa | ar | en")
+    fet.add_argument("--source", default="all", choices=["all", "archive", "gutenberg", "web"],
+                     help="web = جست‌وجوی وب با agent-reach (Exa)")
     fet.add_argument("--limit", type=int, default=5)
     fet.add_argument("--out", default="books", help="پوشه مقصد")
     fet.add_argument("--prefer", default="pdf", choices=["pdf", "epub", "txt"])
@@ -215,7 +217,8 @@ def main(argv: list[str] | None = None) -> int:
         out = Path(args.out)
         results = []
         if args.query:
-            results = bookfetch.search(args.query, lang=args.lang, limit=args.limit)
+            results = bookfetch.search(args.query, lang=args.lang, limit=args.limit,
+                                       source=args.source)
             print(f"{'#':>2} {'score':>5} {'rights':<18} {'source':<10} title")
             for i, cand in enumerate(results, 1):
                 print(f"{i:>2} {cand['score']:5.2f} {str(cand['rights'] or '-')[:18]:<18} "
@@ -237,6 +240,18 @@ def main(argv: list[str] | None = None) -> int:
             for cand in results:
                 if taken >= wanted:
                     break
+                if cand["source"] == "web":
+                    if not args.allow_unknown:
+                        print(f"  {cand['url']}: لایسنس نامشخص — برای پذیرش مسئولیت: "
+                              "--allow-unknown")
+                        continue
+                    try:
+                        downloaded.append(bookfetch.download_url(cand["url"], out,
+                                                                 title=cand["title"]))
+                        taken += 1
+                    except SystemExit as exc:
+                        print(f"  {cand['url']}: {exc}")
+                    continue
                 if cand["source"] != "archive.org":
                     print(f"  {cand['source']} #{cand['id']}: دستی از {cand['page']} بگیر "
                           "(یا لینک فایل را با --url بده)")

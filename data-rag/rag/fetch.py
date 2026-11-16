@@ -20,10 +20,14 @@ from __future__ import annotations
 import json
 import math
 import re
+import shutil
+import subprocess
 import urllib.parse
 import urllib.request
 import urllib.robotparser
 from pathlib import Path
+
+from .textutil import looks_garbled
 
 UA = "bookfetch/0.3 (+https://archive.org; read-only research tool)"
 TEXT_TYPES = {"application/pdf": "pdf", "application/epub+zip": "epub", "text/plain": "txt"}
@@ -160,11 +164,81 @@ def search_gutenberg(query: str, lang: str | None = None, limit: int = 10) -> li
     return out
 
 
-def search(query: str, lang: str | None = None, limit: int = 10) -> list[dict]:
-    merged = search_archive(query, lang=lang, limit=limit) + search_gutenberg(query, lang=lang,
-                                                                           limit=limit)
-    merged.sort(key=lambda c: -c["score"])
-    return merged[:limit]
+def search(query: str, lang: str | None = None, limit: int = 10,
+           source: str = "all") -> list[dict]:
+    """`source`: archive | gutenberg | web | all.
+
+    `web` goes through the `agent-reach` CLI (Exa backend), which reaches books
+    archive.org does not index — Persian PDFs on library sites, Wikisource files.
+    """
+    found: list[dict] = []
+    if source in ("archive", "all"):
+        found += search_archive(query, lang=lang, limit=limit)
+    if source in ("gutenberg", "all"):
+        found += search_gutenberg(query, lang=lang, limit=limit)
+    if source in ("web", "all"):
+        found += search_web(query, lang=lang, limit=limit)
+    found.sort(key=lambda c: (-c["score"], -(c.get("downloads") or 0)))
+    return found[:limit]
+
+
+# -- open web via agent-reach ---------------------------------------------
+def _reach_binary() -> str | None:
+    found = shutil.which("agent-reach")
+    if found:
+        return found
+    fallback = Path.home() / ".local" / "bin" / "agent-reach"
+    return str(fallback) if fallback.exists() else None
+
+
+def _reach_json(*args: str, timeout: int = 180) -> dict | None:
+    """Run one agent-reach command and parse its single JSON object."""
+    binary = _reach_binary()
+    if not binary:
+        return None
+    try:
+        done = subprocess.run([binary, *args], capture_output=True, text=True, timeout=timeout,
+                              check=False)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    try:
+        return json.loads(done.stdout)
+    except json.JSONDecodeError:
+        return None
+
+
+def search_web(query: str, lang: str | None = None, limit: int = 10) -> list[dict]:
+    """Find book files on the open web; unreadable results just return nothing."""
+    suffix = " كتاب pdf" if lang == "ar" else " pdf"
+    payload = _reach_json("web", "search", f"{query}{suffix}", "--limit", str(max(3, limit)))
+    if not payload or not payload.get("ok"):
+        return []
+    out = []
+    for item in payload.get("items", []):
+        url = str(item.get("url") or "")
+        if not url.startswith("http"):
+            continue
+        lowered = url.lower()
+        is_file = lowered.endswith(".pdf") or lowered.endswith(".epub") \
+            or "/library-files/" in lowered
+        candidate = {
+            "source": "web",
+            "id": url,
+            "url": url,
+            "title": item.get("title"),
+            "creator": item.get("author"),
+            "year": None,
+            "language": lang,
+            "rights": "unknown (open web)",
+            "license": None,
+            "downloads": None,
+            "page": url,
+            "file": is_file,
+        }
+        candidate["score"] = score(query, candidate)
+        out.append(candidate)
+    # A real file always beats a page about the book, whatever the title match.
+    return sorted(out, key=lambda c: (not c["file"], -c["score"]))[:limit]
 
 
 # -- download --------------------------------------------------------------
@@ -191,18 +265,58 @@ def _pick_file(files: list[dict], prefer: str = "pdf") -> dict | None:
 
 
 def _verify(path: Path) -> str:
-    head = path.open("rb").read(8)
+    """Trust the bytes, not the extension.
+
+    A store page saved as `.pdf` is a common failure: the extension lies, so the
+    header decides. HTML is rejected outright — that is a paywall or an error
+    page, never a book.
+    """
+    with path.open("rb") as handle:
+        head = handle.read(512)
+    suffix = path.suffix.lower()
     if head.startswith(b"%PDF"):
-        return "pdf"
-    if head.startswith(b"PK\x03\x04") and path.suffix.lower() == ".epub":
-        return "epub"
-    if head.startswith(b"PK"):
+        return "pdf" if suffix in (".pdf", "") else "pdf"
+    if head.startswith(b"PK\x03\x04"):
+        if suffix == ".epub":
+            return "epub"
         raise SystemExit(f"{path.name}: ZIP, not an EPUB — probably an error page")
+    stripped = head.lstrip()
+    if stripped[:1] == b"<":
+        raise SystemExit(f"{path.name}: HTML, not a book — a paywall, a login page or a 404 "
+                         "(store pages cannot be fetched as files)")
+    if suffix == ".pdf":
+        raise SystemExit(f"{path.name}: named .pdf but the bytes are not a PDF")
     try:
         head.decode("utf-8")
         return "txt"
     except UnicodeDecodeError:
         raise SystemExit(f"{path.name}: not a PDF, EPUB or text file") from None
+
+
+def _text_layer_state(path: Path) -> str:
+    """Will the pipeline need OCR? Record the answer at download time.
+
+    Reading a book's embedded text layer is ~0.01s, while discovering it is
+    garbage after indexing costs a re-OCRed book, so we sample three pages now.
+    """
+    if path.suffix.lower() != ".pdf":
+        return "n/a"
+    try:
+        import pymupdf
+    except ImportError:  # pragma: no cover - pymupdf ships with the pipeline
+        return "unknown"
+    try:
+        doc = pymupdf.open(path)
+        if len(doc) == 0:
+            return "absent"
+        picks = {min(int(len(doc) * f), len(doc) - 1) for f in (0.25, 0.5, 0.75)}
+        text = "".join(doc[p].get_text() for p in sorted(picks))
+        doc.close()
+    except Exception:  # noqa: BLE001 - a broken PDF is reported, not fatal
+        return "unknown"
+    if len(text.strip()) < 40:
+        return "absent"
+    return "garbled" if looks_garbled(text) else "clean"
 
 
 def _record(out_dir: Path, entry: dict) -> None:
@@ -221,6 +335,7 @@ def _save(blob: bytes, out_dir: Path, name: str, entry: dict) -> Path:
     entry["file"] = name
     entry["bytes"] = len(blob)
     entry["format"] = _verify(target)
+    entry["text_layer"] = _text_layer_state(target)
     _record(out_dir, entry)
     return target
 

@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from rag.fetch import _pick_file, _safe_name, _verify, score
+from rag.fetch import _pick_file, _safe_name, _text_layer_state, _verify, score
 
 
 class RankingTests(unittest.TestCase):
@@ -45,14 +45,19 @@ class SearchSmokeTests(unittest.TestCase):
             return {"results": [{"id": 1, "title": "The Bustan of Sadi", "authors": [],
                                  "languages": ["en"], "download_count": 5}]}
 
-        original = fetch._get_json
-        fetch._get_json = fake_json
+        def fake_web(query, lang=None, limit=10):
+            return [{"source": "web", "id": "u", "url": "https://example.org/b.pdf",
+                     "title": "Bustan", "creator": None, "year": None, "language": lang,
+                     "rights": "unknown (open web)", "license": None, "downloads": None,
+                     "page": "https://example.org/b.pdf", "file": True, "score": 0.5}]
+
+        original_json, original_web = fetch._get_json, fetch.search_web
+        fetch._get_json, fetch.search_web = fake_json, fake_web
         try:
             results = fetch.search("بوستان سعدی", lang="fa", limit=3)
         finally:
-            fetch._get_json = original
-        sources = {r["source"] for r in results}
-        self.assertEqual(sources, {"archive.org", "gutenberg"})
+            fetch._get_json, fetch.search_web = original_json, original_web
+        self.assertEqual({r["source"] for r in results}, {"archive.org", "gutenberg", "web"})
         self.assertEqual(results[0]["identifier"] if "identifier" in results[0] else results[0]["id"],
                          "bustan")
 
@@ -91,6 +96,20 @@ class FileTests(unittest.TestCase):
             zipped.write_bytes(b"PK\x03\x04not-a-pdf")
             with self.assertRaises(SystemExit):
                 _verify(zipped)
+
+    def test_verify_rejects_html_saved_as_pdf(self):
+        """A store page (paywall) served with a .pdf name must not pass."""
+        with tempfile.TemporaryDirectory() as tmp:
+            page = Path(tmp) / "book.pdf"
+            page.write_bytes(b"<!DOCTYPE html><html><body>login</body></html>")
+            with self.assertRaises(SystemExit):
+                _verify(page)
+
+    def test_text_layer_state_for_non_pdf(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            txt = Path(tmp) / "a.txt"
+            txt.write_text("سلام", encoding="utf-8")
+            self.assertEqual(_text_layer_state(txt), "n/a")
 
 
 if __name__ == "__main__":
