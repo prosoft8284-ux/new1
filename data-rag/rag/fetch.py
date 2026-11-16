@@ -32,6 +32,7 @@ from .textutil import looks_garbled
 UA = "bookfetch/0.3 (+https://archive.org; read-only research tool)"
 TEXT_TYPES = {"application/pdf": "pdf", "application/epub+zip": "epub", "text/plain": "txt"}
 ARCHIVE_LANG = {"fa": "Persian", "ar": "Arabic", "en": "English"}
+MIN_SCORE = 0.30  # below this the title barely relates to the query
 
 
 # -- http ------------------------------------------------------------------
@@ -79,11 +80,15 @@ def score(query: str, candidate: dict) -> float:
         return 0.0
     title = _tokens(str(candidate.get("title") or ""))
     creator = _tokens(str(candidate.get("creator") or ""))
-    overlap = len(wanted & title) / len(wanted)
+    # Squared coverage, so one shared word out of three is worth little: an exact
+    # title match must beat a title that happens to contain "Protestant".
+    coverage = len(wanted & title) / len(wanted)
     extra = 0.15 * len(wanted & creator) / len(wanted)
     free = 0.10 if candidate.get("rights") == "NOT_IN_COPYRIGHT" else 0.0
-    popular = min(0.10, math.log10(1 + (candidate.get("downloads") or 0)) / 40)
-    return round(min(1.0, overlap + extra + free + popular), 4)
+    popular = 0.0
+    if coverage >= 2 / 3:  # popularity must not rescue a half-matching title
+        popular = min(0.10, math.log10(1 + (candidate.get("downloads") or 0)) / 40)
+    return round(min(1.0, coverage ** 2 + extra + free + popular), 4)
 
 
 # -- archive.org -----------------------------------------------------------
@@ -103,18 +108,31 @@ def search_archive(query: str, lang: str | None = None, limit: int = 10) -> list
     fields = ("&fl%5B%5D=identifier&fl%5B%5D=title&fl%5B%5D=creator&fl%5B%5D=year"
               "&fl%5B%5D=language&fl%5B%5D=downloads&fl%5B%5D=possible-copyright-status"
               "&fl%5B%5D=licenseurl")
-    rows = max(1, min(50, limit * 3))
+    rows = max(10, min(100, limit * 20))  # filtering happens after the fetch
     docs: list[dict] = []
+    seen: set[str] = set()
     attempts = ([" AND language:(" + ARCHIVE_LANG[lang] + ")"] if lang in ARCHIVE_LANG else [])
     for clause in variants:
         for suffix in attempts + [""]:
             q = "mediatype:texts AND " + clause + suffix
+            # Without an explicit sort, archive.org returns near-random order:
+            # "Protestant Ethic Weber" came back as Florida church journals.
             url = ("https://archive.org/advancedsearch.php?q=" + urllib.parse.quote(q)
-                   + fields + "&rows=" + str(rows) + "&output=json")
-            docs = _get_json(url).get("response", {}).get("docs", [])
-            if docs:
-                break
-        if docs:
+                   + fields + "&rows=" + str(rows) + "&sort%5B%5D=downloads+desc"
+                   + "&output=json")
+            page = _get_json(url).get("response", {}).get("docs", [])
+            for doc in page:
+                ident = str(doc.get("identifier"))
+                if ident not in seen:
+                    seen.add(ident)
+                    docs.append(doc)
+            if page:
+                break  # this clause works; a looser one would only add noise
+        # Stop once enough results actually answer the query.
+        if sum(1 for d in docs if score(base, {"title": d.get("title"),
+                                             "creator": d.get("creator"),
+                                             "rights": d.get("possible-copyright-status")}) >= 0.30
+               ) >= rows:
             break
     out = []
     for doc in docs:
@@ -131,6 +149,8 @@ def search_archive(query: str, lang: str | None = None, limit: int = 10) -> list
             "page": f"https://archive.org/details/{doc.get('identifier')}",
         }
         candidate["score"] = score(query, candidate)
+        if candidate["score"] < MIN_SCORE:
+            continue  # "Max Weber" must not return "Tap Titans 2"
         out.append(candidate)
     return sorted(out, key=lambda c: (-c["score"], -(c.get("downloads") or 0)))[:limit]
 
@@ -241,6 +261,47 @@ def search_web(query: str, lang: str | None = None, limit: int = 10) -> list[dic
     return sorted(out, key=lambda c: (not c["file"], -c["score"]))[:limit]
 
 
+# -- page -> file resolution -----------------------------------------------
+_PDF_HREF = re.compile(r'''["'(]([^"'()\s<>]+\.pdf)''', re.I)
+_WIKI_PREFIXES = ("ملف:", "File:", "فایل:", "Datei:")
+
+
+def _looks_like_file(url: str) -> bool:
+    return url.lower().split("?")[0].endswith((".pdf", ".epub"))
+
+
+def resolve_pdf(url: str) -> str | None:
+    """Turn a book page into the address of its actual file.
+
+    Search engines return pages; the file is one hop away. Two hops cover most
+    of it: a Wikisource `File:x.pdf` page maps to Special:Redirect, and any other
+    page is fetched once (robots permitting) and its first `.pdf` link taken.
+    """
+    parts = urllib.parse.urlsplit(url)
+    name = urllib.parse.unquote(parts.path)
+    # A Wikisource/Commons `File:...pdf` page also ends in .pdf, so this check has
+    # to come before the extension check — otherwise the HTML page is "the file".
+    if "/wiki/" in name:
+        tail = name.split("/wiki/", 1)[1]
+        if tail.startswith(_WIKI_PREFIXES):
+            for prefix in _WIKI_PREFIXES:
+                if tail.startswith(prefix):
+                    return (f"{parts.scheme}://{parts.netloc}/wiki/Special:Redirect/file/"
+                            + urllib.parse.quote(tail[len(prefix):]))
+    if _looks_like_file(url):
+        return url
+    allowed, _note = robots_allows(url)
+    if not allowed:
+        return None
+    try:
+        html = _get(url, timeout=60).decode("utf-8", "replace")
+    except Exception:  # noqa: BLE001 - an unreachable page is just unresolved
+        return None
+    for raw in _PDF_HREF.findall(html):
+        return urllib.parse.urljoin(url, raw)
+    return None
+
+
 # -- download --------------------------------------------------------------
 def _safe_name(text: str, fallback: str = "book") -> str:
     name = re.sub(r"[^\w\u0600-\u06FF.-]+", "_", (text or "").strip())[:80].strip("._")
@@ -331,11 +392,19 @@ def _record(out_dir: Path, entry: dict) -> None:
 def _save(blob: bytes, out_dir: Path, name: str, entry: dict) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     target = out_dir / name
-    target.write_bytes(blob)
+    # Write beside the target and rename only after the bytes check: a rejected
+    # download must not leave a fake .pdf behind for the library to pick up.
+    staging = target.with_name(f"{target.stem}.part{target.suffix}")
+    staging.write_bytes(blob)
+    try:
+        entry["format"] = _verify(staging)
+    except SystemExit:
+        staging.unlink(missing_ok=True)
+        raise
     entry["file"] = name
     entry["bytes"] = len(blob)
-    entry["format"] = _verify(target)
-    entry["text_layer"] = _text_layer_state(target)
+    entry["text_layer"] = _text_layer_state(staging)
+    staging.replace(target)
     _record(out_dir, entry)
     return target
 
@@ -368,17 +437,25 @@ def download_archive(identifier: str, out_dir: Path, prefer: str = "pdf") -> dic
 
 
 def download_url(url: str, out_dir: Path, title: str | None = None) -> dict:
-    allowed, note = robots_allows(url)
+    """Download a file link, or the file a book page points at."""
+    target = resolve_pdf(url)
+    if not target:
+        raise SystemExit(f"{url}: صفحه‌ای که لینک فایل ندارد (یا robots اجازه نمی‌دهد)")
+    allowed, note = robots_allows(target)
     if not allowed:
         raise SystemExit(
-            f"این مسیر را خود سایت ممنوع کرده ({note}): {url}\n"
+            f"این مسیر را خود سایت ممنوع کرده ({note}): {target}\n"
             "robots.txt اجازه نمی‌دهد؛ فایل را دستی دانلود کن و در books/ بگذار. "
             "مسیر مجاز: پایپ‌لاین از فایل‌های محلی استفاده می‌کند."
         )
-    blob = _get(url, timeout=600)
-    suffix = Path(urllib.parse.urlsplit(url).path).suffix or ".pdf"
-    name = _safe_name(title or Path(urllib.parse.urlsplit(url).path).stem) + suffix
-    entry = {"source": "direct-url", "source_url": url, "robots": note,
+    blob = _get(target, timeout=600)
+    suffix = Path(urllib.parse.urlsplit(target).path).suffix or ".pdf"
+    # Page titles look like "File:x.pdf - Wikimedia Commons"; keep the book name.
+    clean_title = (title or "").split(" - ")[0].split(" | ")[0].strip()
+    clean_title = re.sub(r"^(File:|ملف:|فایل:)", "", clean_title, flags=re.I)
+    clean_title = re.sub(r"\.(pdf|epub|djvu)$", "", clean_title, flags=re.I)
+    name = _safe_name(clean_title or Path(urllib.parse.urlsplit(target).path).stem) + suffix
+    entry = {"source": "direct-url", "page_url": url, "source_url": target, "robots": note,
              "title": title, "rights": "user-supplied; verify the licence yourself"}
     path = _save(blob, out_dir, name, entry)
-    return {"path": str(path), "bytes": len(blob), "robots": note}
+    return {"path": str(path), "bytes": len(blob), "robots": note, "file_url": target}

@@ -125,6 +125,8 @@ def main(argv: list[str] | None = None) -> int:
     fet.add_argument("--id", action="append", default=None, help="شناسه archive.org (تکرارپذیر)")
     fet.add_argument("--url", action="append", default=None, help="لینک مستقیم فایل (تکرارپذیر)")
     fet.add_argument("--lang", default=None, help="fa | ar | en")
+    fet.add_argument("--creator", default=None,
+                     help="فقط نتایجی که نام پدیدآور این واژه را دارد (مثل Weber)")
     fet.add_argument("--source", default="all", choices=["all", "archive", "gutenberg", "web"],
                      help="web = جست‌وجوی وب با agent-reach (Exa)")
     fet.add_argument("--limit", type=int, default=5)
@@ -219,10 +221,16 @@ def main(argv: list[str] | None = None) -> int:
         if args.query:
             results = bookfetch.search(args.query, lang=args.lang, limit=args.limit,
                                        source=args.source)
+            if args.creator:
+                needle = args.creator.lower()
+                results = [c for c in results
+                           if needle in str(c.get("creator") or "").lower()]
             print(f"{'#':>2} {'score':>5} {'rights':<18} {'source':<10} title")
             for i, cand in enumerate(results, 1):
                 print(f"{i:>2} {cand['score']:5.2f} {str(cand['rights'] or '-')[:18]:<18} "
                       f"{cand['source']:<10} {str(cand['title'])[:60]}")
+            if args.creator:
+                print(f"({len(results)} نتیجه با پدیدآور «{args.creator}»)")
             if not results:
                 print("نتیجه‌ای پیدا نشد.")
 

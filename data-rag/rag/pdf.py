@@ -51,7 +51,9 @@ _TESSDATA_FALLBACK = [
 # A document's language label (`fa`, `ar`, `mixed`) is not an OCR language
 # (`fas`, `ara`, `fas+ara`); mixing them crashed the audit path.
 _TESS_LANG = {"fa": "fas", "ar": "ara", "mixed": "fas+ara",
-              "persian": "fas", "arabic": "ara"}
+              "persian": "fas", "arabic": "ara",
+              # English books arrive through `rag fetch`; `en` is not a model name.
+              "en": "eng", "english": "eng"}
 
 
 def tess_lang(lang: str | None) -> str:
