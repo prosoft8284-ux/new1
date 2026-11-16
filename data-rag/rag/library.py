@@ -48,6 +48,65 @@ def _load_manifest(path: Path) -> dict:
     return data.get("books", {}) if isinstance(data, dict) else {}
 
 
+def _write_progress(root: Path, payload: dict) -> None:
+    """Publish machine-readable progress so a run can be inspected without the log."""
+    path = root / "library-progress.json"
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def _pid_alive(pid) -> bool:
+    if not pid:
+        return False
+    try:
+        os.kill(int(pid), 0)
+    except (OSError, ValueError):
+        return False
+    return True
+
+
+def library_status(root: str = "data") -> dict:
+    """What the library looks like right now, without touching the index.
+
+    Reads only the manifest and the progress file, so it is safe (and cheap) to
+    call while a run is in flight — the page cache is what it counts.
+    """
+    root_path = Path(root)
+    books = _load_manifest(root_path / "library.json")
+    counts: dict[str, int] = {}
+    pages = chars = failed_pages = 0
+    suspects = []
+    for record in books.values():
+        status = str(record.get("status") or "unknown")
+        counts[status] = counts.get(status, 0) + 1
+        if status == "done":
+            pages += int(record.get("pages") or 0)
+            chars += int(record.get("chars") or 0)
+            failed_pages += len(record.get("failed_pages") or [])
+            if record.get("quality"):
+                suspects.append({"book": Path(record.get("jsonl") or "").stem,
+                                 "warnings": record["quality"]})
+    progress_path = root_path / "library-progress.json"
+    progress = (json.loads(progress_path.read_text(encoding="utf-8"))
+                if progress_path.exists() else {})
+    cache_files = len(list((root_path / "ocr").glob("**/p*.txt"))) \
+        if (root_path / "ocr").exists() else 0
+    return {
+        "books": counts,
+        "done_books": counts.get("done", 0),
+        "pending": int(progress.get("remaining") or 0),
+        "running": _pid_alive(progress.get("pid")),
+        "progress": progress,
+        "pages": pages,
+        "chars": chars,
+        "chars_per_page": round(chars / pages, 1) if pages else 0.0,
+        "failed_pages": failed_pages,
+        "suspect_books": suspects[:20],
+        "cached_pages": cache_files,
+    }
+
+
 def _content_key(path: Path) -> str:
     """Fingerprint for duplicate detection: size plus a hash of the first 4 MiB.
 
@@ -184,6 +243,8 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
     batch: list[tuple[Path, str]] = list(to_index)
     ingested = {"documents": 0, "chunks": 0, "skipped_duplicates": 0}
     started = time.time()
+    pid_file = root_path / "library.pid"
+    pid_file.write_text(str(os.getpid()), encoding="utf-8")
 
     group_size = max(1, min(8, int(extract_kwargs.get("workers") or os.cpu_count() or 4)))
 
@@ -273,6 +334,19 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
             print(f"[library] تا اینجا {pages} صفحه، {rate:.1f} صفحه/ثانیه، "
                   f"ETA ~{eta_min:.0f} دقیقه", flush=True)
 
+        _write_progress(root_path, {
+            "pid": os.getpid(),
+            "updated": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "total": len(pending),
+            "processed": done,
+            "failed": failed,
+            "remaining": len(pending) - i,
+            "pages": pages,
+            "pages_per_sec": round(pages / max(1e-6, time.time() - started), 2),
+            "current": pdf.name,
+            "index": bool(index),
+        })
+
         if index and len(batch) >= batch_size:
             ingested = _flush(batch, root_path, embedder, progress, ingested, books, manifest_path)
             batch = []
@@ -281,6 +355,19 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
         ingested = _flush(batch, root_path, embedder, progress, ingested, books, manifest_path)
 
     elapsed = time.time() - started
+    _write_progress(root_path, {
+        "pid": None,
+        "updated": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "total": len(pending),
+        "processed": done,
+        "failed": failed,
+        "remaining": 0,
+        "pages": pages,
+        "pages_per_sec": round(pages / max(1e-6, elapsed), 2),
+        "current": None,
+        "index": bool(index),
+    })
+    pid_file.unlink(missing_ok=True)
     return {
         "pdfs": len(pdfs),
         "processed": done,

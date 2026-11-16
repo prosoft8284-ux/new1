@@ -11,7 +11,8 @@ import unittest
 from pathlib import Path
 
 from rag.ingest import remove_documents, run_ingest
-from rag.library import _content_key, _keep_pdf, _load_manifest, _save_manifest
+from rag.library import (_content_key, _keep_pdf, _load_manifest, _save_manifest,
+                         library_status)
 from rag.search import Retriever, build_context
 from rag.textutil import (chunk_text, detect_language, lam_alef_variants,
                           looks_garbled, normalize, query_terms)
@@ -120,6 +121,28 @@ class LibraryHelperTests(unittest.TestCase):
             original.write_bytes(b"x" * 5000)
             copy.write_bytes(b"x" * 5000)
             self.assertEqual(_content_key(original), _content_key(copy))
+
+    def test_status_reports_progress_without_an_index(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.assertEqual(library_status(str(root))["done_books"], 0)
+            _save_manifest(root / "library.json", {
+                "/a.pdf": {"status": "done", "pages": 10, "chars": 5000,
+                           "quality": ["thin-text"], "failed_pages": [3]},
+                "/b.pdf": {"status": "failed"},
+                "/c.pdf": {"status": "duplicate"},
+            })
+            (root / "library-progress.json").write_text(
+                json.dumps({"pid": 999999, "remaining": 4, "processed": 2}),
+                encoding="utf-8")
+            status = library_status(str(root))
+            self.assertEqual(status["done_books"], 1)
+            self.assertEqual(status["books"]["failed"], 1)
+            self.assertEqual(status["pages"], 10)
+            self.assertEqual(status["failed_pages"], 1)
+            self.assertEqual(status["pending"], 4)
+            self.assertFalse(status["running"], "stale pid must not look alive")
+            self.assertEqual(len(status["suspect_books"]), 1)
 
     def test_include_exclude_and_hidden_files(self):
         self.assertTrue(_keep_pdf("a/book.pdf", None, None))

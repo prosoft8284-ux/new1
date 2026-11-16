@@ -113,9 +113,17 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("mcp", help="اجرای سرور MCP روی stdio برای وصل‌شدن به دستیارها")
 
+    sub.add_parser("status", help="وضعیت کتابخانه: پیشرفت، صف، کتاب‌های مشکوک")
+
     sub.add_parser("stats", help="آمار ایندکس")
 
+    # `--root` is genuinely global, but everyone types it after the subcommand
+    # (`rag ingest --root …`), so accept both spellings.
+    for action in sub.choices.values():
+        action.add_argument("--root", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
+
     args = parser.parse_args(argv)
+    args.root = getattr(args, "root", "data")
 
     if args.command == "ingest":
         summary = run_ingest(
@@ -180,6 +188,12 @@ def main(argv: list[str] | None = None) -> int:
         from .mcp import serve_mcp
 
         return serve_mcp(root=args.root)
+
+    if args.command == "status":
+        from .library import library_status
+
+        print(json.dumps(library_status(root=args.root), ensure_ascii=False, indent=2))
+        return 0
 
     if args.command == "stats":
         print(json.dumps(Retriever(root=args.root).stats(), ensure_ascii=False, indent=2))
