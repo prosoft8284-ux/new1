@@ -91,3 +91,20 @@ mkdir -p .build/bt .build/plat && unzip -q bt.zip -d .build/bt && unzip -q platf
 - رندر نقشه فقط هنگام تغییر دوربین (بدون حلقه‌ی بی‌مورد)؛ لایه‌های سنگین پخت‌شده و کش‌شده.
 - جزئیات (درخت، ساختمان) با LOD و حذف خارج از دید.
 - DPR حداکثر ۲ و بافت‌های آماده برای موبایل.
+
+## iOS
+
+`ios/` یک اپ WKWebView آمادهٔ Xcode است (آفلاین، تمام‌صفحه، Landscape). ساخت روی مک:
+
+```bash
+brew install xcodegen && cd bermuda/survival/ios && ./sync-www.sh && xcodegen && open BermudaSurvival.xcodeproj
+```
+
+جزئیات در `bermuda/survival/ios/README.md`.
+
+## بازبینی بصری بدون مرورگر
+
+```bash
+node bermuda/tools/render/map.js out.png
+node bermuda/tools/render/scene.js town out.png
+```

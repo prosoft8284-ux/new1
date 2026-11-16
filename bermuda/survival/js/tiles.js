@@ -16,11 +16,11 @@
   }
 
   var C = {
-    deep: [5, 56, 94],
-    mid: [11, 104, 146],
-    shal: [27, 166, 190],
-    turq: [74, 224, 214],
-    lagoon: [152, 240, 226],
+    deep: [4, 42, 74],
+    mid: [9, 84, 122],
+    shal: [18, 112, 148],
+    turq: [34, 138, 152],
+    lagoon: [72, 166, 168],
     reef: [46, 196, 162],
     sandWet: [214, 195, 143],
     sand: [243, 228, 176],
@@ -58,8 +58,8 @@
       var raw = -m;
       var d = raw < 0.36 ? raw : 0.36 + (raw - 0.36) * 0.22;
       col = lerpColorStops([
-        [0.00, C.lagoon], [0.07, C.turq], [0.17, C.shal],
-        [0.29, C.mid], [0.42, C.deep]
+        [0.00, C.lagoon], [0.10, C.turq], [0.24, C.shal],
+        [0.40, C.mid], [0.62, C.deep]
       ], d);
       if (d < 0.24) {
         var reef = BS.noise.fbm(x * 0.011, y * 0.011, 3, 811);
@@ -79,7 +79,7 @@
       return col;
     }
     /* ------- beach ------- */
-    if (m < 0.095 + n2 * 0.02) {
+    if (m < 0.125 + n2 * 0.03) {
       col = mix(C.sandWet, C.sandHi, smoothNoise(n1, n2));
       return col;
     }
@@ -180,9 +180,9 @@
     /* --- soft shelf haze --- */
     ctx.save();
     ctx.globalCompositeOperation = 'screen';
-    ctx.globalAlpha = 0.055;
-    ctx.strokeStyle = '#5fe3ff';
-    ctx.lineWidth = 40;
+    ctx.globalAlpha = 0.012;
+    ctx.strokeStyle = '#6fc8d4';
+    ctx.lineWidth = 34;
     strokeLines(ctx, BS.contours.shallow, 0.6);
     ctx.restore();
 
@@ -229,19 +229,19 @@
     ctx.globalCompositeOperation = 'source-over';
 
     /* --- elevation contour hatching --- */
-    ctx.strokeStyle = 'rgba(28,48,30,0.26)';
-    ctx.lineWidth = 1.3;
+    ctx.strokeStyle = 'rgba(28,48,30,0.10)';
+    ctx.lineWidth = 1.0;
     strokeLines(ctx, BS.contours.elev1, 1);
-    ctx.strokeStyle = 'rgba(26,38,28,0.32)';
+    ctx.strokeStyle = 'rgba(26,38,28,0.17)';
     ctx.lineWidth = 1.5;
     strokeLines(ctx, BS.contours.elev2, 1);
-    ctx.strokeStyle = 'rgba(52,44,36,0.40)';
+    ctx.strokeStyle = 'rgba(52,44,36,0.28)';
     ctx.lineWidth = 1.8;
     strokeLines(ctx, BS.contours.elev3, 1);
-    ctx.strokeStyle = 'rgba(54,42,38,0.46)';
+    ctx.strokeStyle = 'rgba(54,42,38,0.32)';
     ctx.lineWidth = 2.0;
     strokeLines(ctx, BS.contours.elev4, 1);
-    ctx.strokeStyle = 'rgba(64,48,44,0.52)';
+    ctx.strokeStyle = 'rgba(64,48,44,0.36)';
     ctx.lineWidth = 2.3;
     strokeLines(ctx, BS.contours.elev5, 1);
 
@@ -263,6 +263,54 @@
       ctx.lineWidth = Math.max(1.2, r.w * 0.36);
       polyline(ctx, pts, false);
     }
+
+    /* --- baked forest canopy: the far view must read as woodland --- */
+    var tr = BS.world.trees || [];
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    for (var ti = 0; ti < tr.length; ti++) {
+      var tt = tr[ti];
+      var cr = tt.s * 2.1;
+      ctx.globalAlpha = 0.34;
+      ctx.fillStyle = 'rgba(8,24,14,1)';
+      ctx.beginPath(); ctx.ellipse(tt.x + cr * 0.55, tt.y + cr * 0.6, cr * 0.9, cr * 0.62, 0, 0, 6.2832); ctx.fill();
+      ctx.globalAlpha = 0.88;
+      ctx.fillStyle = tt.t === 'palm' ? '#3a7a3c' : (tt.t === 'jungle' ? '#1d4a26' : '#27592e');
+      ctx.beginPath(); ctx.arc(tt.x, tt.y, cr * 0.56, 0, 6.2832); ctx.fill();
+      ctx.globalAlpha = 0.42;
+      ctx.fillStyle = '#8fc47a';
+      ctx.beginPath(); ctx.arc(tt.x - cr * 0.16, tt.y - cr * 0.2, cr * 0.3, 0, 6.2832); ctx.fill();
+    }
+    ctx.restore();
+
+    /* --- sea sparkle + reef patches (only where there is water) --- */
+    ctx.save();
+    var tries = 9000, painted = 0;
+    for (var wi = 0; wi < tries && painted < 1500; wi++) {
+      var wx = Math.random() * W, wy = Math.random() * H;
+      if (BS.mask(wx, wy) > 0.01) continue;
+      painted++;
+      var near = BS.mask(wx, wy) > -0.06;
+      ctx.globalAlpha = near ? 0.22 : 0.10;
+      ctx.strokeStyle = near ? 'rgba(198,240,246,1)' : 'rgba(150,205,225,1)';
+      ctx.lineWidth = near ? 2.2 : 1.4;
+      ctx.beginPath();
+      ctx.moveTo(wx - 9, wy);
+      ctx.quadraticCurveTo(wx, wy - 3.5, wx + 9, wy);
+      ctx.stroke();
+    }
+    // reef / sandbank blooms just off the shore
+    for (var ri2 = 0; ri2 < 900; ri2++) {
+      var rx2 = Math.random() * W, ry2 = Math.random() * H;
+      var mm = BS.mask(rx2, ry2);
+      if (mm > -0.006 || mm < -0.085) continue;
+      var rg2 = ctx.createRadialGradient(rx2, ry2, 1, rx2, ry2, 40);
+      rg2.addColorStop(0, 'rgba(118,196,186,0.07)');
+      rg2.addColorStop(1, 'rgba(120,200,190,0)');
+      ctx.fillStyle = rg2;
+      ctx.beginPath(); ctx.arc(rx2, ry2, 40, 0, 6.2832); ctx.fill();
+    }
+    ctx.restore();
 
     BS.baseCanvas = cv;
     BS.baseCtx = ctx;

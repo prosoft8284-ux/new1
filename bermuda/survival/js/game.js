@@ -1524,7 +1524,7 @@
     var note = document.getElementById('pauseNote');
     if (note && window.LIB) {
       note.textContent = 'گرما: ' + Math.round(LIB.heat()) + ' — گرمای بیشتر یعنی موج سنگین‌تر و دفاع سخت‌تر. ' +
-        'قطعات: ' + (window.META ? META.salvage() : 0) + ' · نسخه ' + (window.APP_VERSION || '4.0');
+        'قطعات: ' + (window.META ? META.salvage() : 0) + ' · نسخه ' + (window.APP_VERSION || '4.1');
     }
   }
 
@@ -1734,7 +1734,7 @@
   }
 
   /* ---------------- boot ---------------- */
-  var APP_VERSION = '4.0';
+  var APP_VERSION = '4.1';
   window.APP_VERSION = APP_VERSION;
   resize();
   var loadEl = document.getElementById('loading');
