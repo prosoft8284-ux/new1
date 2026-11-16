@@ -137,6 +137,15 @@ def main(argv: list[str] | None = None) -> int:
     fet.add_argument("--allow-unknown", action="store_true",
                      help="اجازه دانلود موردهایی که وضعیت حقوقی‌شان مشخص نیست")
 
+    gan = sub.add_parser("ganjoor", help="درون‌ریزی شعر مالکیت‌عمومی از گنجور (API آزاد، بدون OCR)")
+    gan.add_argument("--poet", required=True, help="نام شاعر، مثل «حافظ» یا «فردوسی»")
+    gan.add_argument("--out", default=None, help="فایل JSONL (پیش‌فرض: data/ganjoor/<نام>.jsonl)")
+    gan.add_argument("--delay", type=float, default=2.0,
+                     help="فاصله بین درخواست‌ها؛ robots گنجور Crawl-delay: 2 می‌خواهد")
+    gan.add_argument("--limit", type=int, default=None, help="حداکثر تعداد شعر")
+    gan.add_argument("--index", action="store_true", help="بعد از ساخت JSONL، ایندکس کن")
+    gan.add_argument("--rebuild", action="store_true", help="ایندکس را از نو بساز")
+
     sub.add_parser("status", help="وضعیت کتابخانه: پیشرفت، صف، کتاب‌های مشکوک")
 
     sub.add_parser("stats", help="آمار ایندکس")
@@ -180,6 +189,19 @@ def main(argv: list[str] | None = None) -> int:
             ), ensure_ascii=False, indent=2))
         else:
             print(f"برای ایندکس: python -m rag ingest --input {out}")
+        return 0
+
+    if args.command == "ganjoor":
+        from .ganjoor import run as run_ganjoor
+
+        out = Path(args.out) if args.out else Path(args.root) / "ganjoor" / f"{args.poet}.jsonl"
+        summary = run_ganjoor(args.poet, out, delay=args.delay, limit=args.limit)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        if args.index:
+            print(json.dumps(run_ingest(input_path=summary["path"], root=args.root,
+                                        rebuild=args.rebuild), ensure_ascii=False, indent=2))
+        else:
+            print(f"برای ایندکس: python -m rag ingest --input {summary['path']}")
         return 0
 
     if args.command == "library":
