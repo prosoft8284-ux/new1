@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "persian-book-rag"
+version = "0.2.0"
+description = "Free OCR plus hybrid retrieval for scanned Persian/Arabic books"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "duckdb>=1.1",
+    "lancedb>=0.15",
+    "pyarrow>=16",
+    "numpy>=1.26",
+    "pymupdf>=1.24",
+]
+
+[project.optional-dependencies]
+# Real semantic embeddings. Without this the package still runs, on the offline
+# hash fallback, which is enough to test the pipeline but not for real search.
+embed = ["fastembed>=0.3"]
+# Helpers for building synthetic scanned test pages.
+sample = ["arabic-reshaper>=3.0", "python-bidi>=0.4"]
+
+[project.scripts]
+bookrag = "rag.cli:main"
+
+[tool.setuptools]
+packages = ["rag"]

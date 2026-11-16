@@ -28,7 +28,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .textutil import detect_language
+from .textutil import detect_language, looks_garbled
 
 _TESSERACT_HINTS = [
     Path.home() / "tools" / "squashfs-root" / "AppRun",
@@ -47,6 +47,20 @@ _TESSDATA_FALLBACK = [
     Path("/usr/share/tesseract-ocr/4.00/tessdata"),
     Path("/usr/share/tessdata"),
 ]
+
+# A document's language label (`fa`, `ar`, `mixed`) is not an OCR language
+# (`fas`, `ara`, `fas+ara`); mixing them crashed the audit path.
+_TESS_LANG = {"fa": "fas", "ar": "ara", "mixed": "fas+ara",
+              "persian": "fas", "arabic": "ara",
+              # English books arrive through `rag fetch`; `en` is not a model name.
+              "en": "eng", "english": "eng"}
+
+
+def tess_lang(lang: str | None) -> str:
+    """Accept either spelling and return what Tesseract expects."""
+    value = (lang or "fas").strip()
+    return _TESS_LANG.get(value.lower(), value or "fas")
+
 
 _CTRL = re.compile(r"[\u0000-\u0008\u000b\u000c\u000e-\u001f]")
 _PERSIAN_FIX = str.maketrans({"ي": "ی", "ك": "ک", "ﻻ": "لا", "\u0640": ""})
@@ -92,7 +106,7 @@ class OcrEngine:
     def __init__(self, lang: str = "fas", dpi: int = 300, model: str = "fast",
                  psm: int = 6, tesseract: str | None = None,
                  tessdata: str | None = None):
-        self.lang = lang
+        self.lang = tess_lang(lang)
         self.dpi = dpi
         self.model = model
         self.psm = psm
@@ -182,10 +196,15 @@ def _text_coverage(page) -> float:
 def _wants_ocr(page, force: bool, min_text_coverage: float) -> bool:
     if force:
         return True
-    if len(page.get_text("text").strip()) < 40:
+    text = page.get_text("text").strip()
+    if len(text) < 40:
         return True
     # Scanned pages often carry *some* text: a watermark, a running footer.
-    return _text_coverage(page) < min_text_coverage
+    if _text_coverage(page) < min_text_coverage:
+        return True
+    # A text layer that exists but is unusable is worse than no text layer:
+    # it is trusted, indexed, and never OCR'd.
+    return looks_garbled(text)
 
 
 def _native_dpi(page) -> float | None:
@@ -337,6 +356,7 @@ def _plan_book(pdf_path, root: str = "data", dpi: int | str = "auto", lang: str 
     pdf = Path(pdf_path)
     if not pdf.exists():
         raise SystemExit(f"فایل PDF پیدا نشد: {pdf}")
+    lang = tess_lang(lang)
     root_path = Path(root)
 
     doc = pymupdf.open(pdf)
@@ -383,12 +403,13 @@ def _plan_book(pdf_path, root: str = "data", dpi: int | str = "auto", lang: str 
 
 def _run_plans(plans: list[_BookPlan], *, model: str, psm: int, workers: int,
                tesseract: str | None, tessdata: str | None,
-               progress: bool = True) -> tuple[dict[int, dict[int, str]], dict[int, list[str]]]:
+               progress: bool = True) -> tuple[dict[int, dict[int, str]], dict[int, dict[int, str]]]:
     """Run every OCR page of every book on one pool: no per-book tail waste."""
     import pymupdf
 
     results: dict[int, dict[int, str]] = {i: {} for i in range(len(plans))}
-    failures: dict[int, list[str]] = {i: [] for i in range(len(plans))}
+    # Failures are keyed by page number so a later run can retry just those pages.
+    failures: dict[int, dict[int, str]] = {i: {} for i in range(len(plans))}
     engines: dict[tuple[str, int], OcrEngine] = {}
     handles: dict[int, _DocHandles] = {}
     remaining = {i: len(p.ocr_pages) for i, p in enumerate(plans)}
@@ -430,7 +451,7 @@ def _run_plans(plans: list[_BookPlan], *, model: str, psm: int, workers: int,
                 _idx, pno, text = future.result()
                 results[idx][pno] = text
             except Exception as exc:  # noqa: BLE001 - one bad page must not kill the batch
-                failures[idx].append(str(exc)[:200])
+                failures[idx][_page_no] = str(exc)[:200]
             done += 1
             remaining[idx] -= 1
             if remaining[idx] == 0:
@@ -446,8 +467,23 @@ def _run_plans(plans: list[_BookPlan], *, model: str, psm: int, workers: int,
     return results, failures
 
 
+def _quality_warnings(pages: int, chars: int, empty: int, failed: int) -> list[str]:
+    """Flags a book whose OCR probably went wrong, so a 1000-book run is auditable."""
+    if not pages:
+        return ["no-pages"]
+    warnings: list[str] = []
+    per_page = chars / pages
+    if per_page < 80:
+        warnings.append(f"thin-text ({per_page:.0f} chars/page)")
+    if empty > pages * 0.3:
+        warnings.append(f"many-empty-pages ({empty}/{pages})")
+    if failed:
+        warnings.append(f"failed-pages ({failed})")
+    return warnings
+
+
 def _finish_book(plan: _BookPlan, results: dict[int, str], started: float,
-                 failures: list[str] | None = None) -> dict:
+                 failures: dict[int, str] | None = None) -> dict:
     merged = dict(results)
     for pno, kind, payload in plan.plan:
         if kind in ("cached", "text"):
@@ -457,6 +493,9 @@ def _finish_book(plan: _BookPlan, results: dict[int, str], started: float,
     texts = [t for t in ordered if t.strip()]
     elapsed = time.time() - started
     ran = len(plan.ocr_pages)
+    failures = failures or {}
+    chars = sum(len(t) for t in texts)
+    failed_pages = sorted(pno + 1 for pno in failures)
     return {
         "pdf": str(plan.pdf),
         "pages": len(plan.wanted),
@@ -465,8 +504,13 @@ def _finish_book(plan: _BookPlan, results: dict[int, str], started: float,
         "text_pages": len(plan.wanted) - plan.ocr_planned,
         "cached_pages": plan.cached_hits,
         "empty_pages": len(ordered) - len(texts),
-        "errors": len(failures or []),
-        "chars": sum(len(t) for t in texts),
+        "errors": len(failures),
+        "failed_pages": failed_pages,
+        "error_messages": [failures[p] for p in sorted(failures)][:5],
+        "chars": chars,
+        "chars_per_page": round(chars / len(plan.wanted), 1) if plan.wanted else 0.0,
+        "warnings": _quality_warnings(len(plan.wanted), chars,
+                                      len(ordered) - len(texts), len(failures)),
         "seconds": round(elapsed, 1),
         "pages_per_sec": round(ran / elapsed, 2) if ran and elapsed else 0.0,
         "dpi": plan.dpi,
@@ -543,6 +587,55 @@ def extract_many(pdf_paths, root: str = "data", dpi: int | str = "auto", lang: s
     for i, plan in enumerate(plans):
         output.append(_finish_book(plan, results.get(i, {}), started, failures.get(i)))
     return output
+
+
+_WORD = re.compile(r"[\w\u0600-\u06FF]+")
+
+
+def _token_set(text: str) -> set[str]:
+    from .textutil import normalize
+
+    return {t for t in (normalize(w) for w in _WORD.findall(text)) if len(t) > 2}
+
+
+def _word_overlap(a: set[str], b: set[str]) -> float:
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
+def trust_score(pdf_path, pages: int = 3, *, root: str = "data", dpi="auto",
+                lang: str = "fas", model: str = "fast", min_trust: float = 0.6,
+                tesseract: str | None = None, tessdata: str | None = None) -> dict:
+    """How much two independent OCR passes agree on the same pages.
+
+    Word counts, character counts and function-word rates all looked healthy on
+    text that was pure noise, so none of them can gate quality. Stability can:
+    re-OCR a few pages with a different page-segmentation mode and compare the
+    words. A clean Persian print scores 0.93; the eleventh-century-style
+    nastaʿlīq lithographs score 0.32-0.38. Costs two OCR passes over `pages`
+    pages, a second or two per book.
+    """
+    import pymupdf
+
+    with pymupdf.open(pdf_path) as doc:
+        total = doc.page_count
+    # Sample the body, not the front matter: a title page or the scanner's
+    # English boilerplate says nothing about how the text itself will OCR.
+    if total <= pages + 10:
+        wanted = list(range(min(total, pages)))
+    else:
+        steps = [0.25 + 0.5 * i / max(1, pages - 1) for i in range(pages)]
+        wanted = sorted({min(total - 1, int(total * f)) for f in steps})
+    spec = ",".join(str(p + 1) for p in wanted)
+    texts: dict[int, str] = {}
+    for psm in (6, 4):
+        out = extract_pdf(pdf_path, root=root, dpi=dpi, lang=lang, model=model, psm=psm,
+                          pages=spec, progress=False, tesseract=tesseract, tessdata=tessdata)
+        texts[psm] = " ".join(out["page_texts"].values())
+    score = _word_overlap(_token_set(texts[6]), _token_set(texts[4]))
+    return {"trust": round(score, 3), "pages": [p + 1 for p in wanted],
+            "reliable": score >= min_trust}
 
 
 def write_jsonl(extracted: dict, out_path: str | Path, title: str | None = None,

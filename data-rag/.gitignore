@@ -5,5 +5,7 @@ sample/*.pdf
 sample/*.png
 sample/scan*.jsonl
 __pycache__/
+*.egg-info/
+build/
 *.duckdb
 *.duckdb.wal

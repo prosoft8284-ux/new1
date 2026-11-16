@@ -97,10 +97,66 @@ def main(argv: list[str] | None = None) -> int:
     lib.add_argument("--no-index", action="store_true", help="فقط استخراج، بدون ایندکس")
     lib.add_argument("--batch-size", type=int, default=25, help="هر چند کتاب یک‌بار ایندکس شود")
     lib.add_argument("--embedder", default="auto", choices=["auto", "fastembed", "hash"])
+    lib.add_argument("--only", action="append", default=None,
+                     help="فقط کتاب‌های منطبق با این الگو (تکرارپذیر، مثل '*تاریخ*')")
+    lib.add_argument("--exclude", action="append", default=None,
+                     help="نادیده گرفتن کتاب‌های منطبق با این الگو (تکرارپذیر)")
+    lib.add_argument("--no-verify", action="store_true",
+                     help="بدون سنجش اعتماد OCR (سریع‌تر، بدون هشدار low-trust)")
+
+    aud = sub.add_parser("audit", help="سنجش اعتماد OCR کتاب‌های استخراج‌شده")
+    aud.add_argument("--limit", type=int, default=None)
+    aud.add_argument("--pages", type=int, default=3, help="چند صفحه نمونه بررسی شود")
+    aud.add_argument("--fix", action="store_true", help="مانیفست را با نتیجه به‌روز کن")
+
+    rem = sub.add_parser("remove", help="حذف کامل یک سند/کتاب از پارکت، بردارها و کورپوس")
+    rem.add_argument("--book", action="append", default=None,
+                     help="نام فایل، شناسه سند یا الگو (تکرارپذیر)")
+    rem.add_argument("--dry-run", action="store_true", help="فقط نشان بده چه چیزی حذف می‌شود")
+
+    srv = sub.add_parser("serve", help="اجرای سرویس HTTP محلی برای جست‌وجو")
+    srv.add_argument("--host", default="127.0.0.1")
+    srv.add_argument("--port", type=int, default=8765)
+
+    sub.add_parser("mcp", help="اجرای سرور MCP روی stdio برای وصل‌شدن به دستیارها")
+
+    fet = sub.add_parser("fetch", help="جست‌وجو و دانلود کتاب از منابع مجاز (archive.org، گوتنبرگ، لینک مستقیم)")
+    fet.add_argument("--query", help="عبارت جست‌وجو")
+    fet.add_argument("--id", action="append", default=None, help="شناسه archive.org (تکرارپذیر)")
+    fet.add_argument("--url", action="append", default=None, help="لینک مستقیم فایل (تکرارپذیر)")
+    fet.add_argument("--lang", default=None, help="fa | ar | en")
+    fet.add_argument("--creator", default=None,
+                     help="فقط نتایجی که نام پدیدآور این واژه را دارد (مثل Weber)")
+    fet.add_argument("--source", default="all", choices=["all", "archive", "gutenberg", "web"],
+                     help="web = جست‌وجوی وب با agent-reach (Exa)")
+    fet.add_argument("--limit", type=int, default=5)
+    fet.add_argument("--out", default="books", help="پوشه مقصد")
+    fet.add_argument("--prefer", default="pdf", choices=["pdf", "epub", "txt"])
+    fet.add_argument("--all", action="store_true", help="همه نتایج (تا --limit) را دانلود کن")
+    fet.add_argument("--yes", action="store_true", help="بدون پرسش، بهترین نتیجه را دانلود کن")
+    fet.add_argument("--allow-unknown", action="store_true",
+                     help="اجازه دانلود موردهایی که وضعیت حقوقی‌شان مشخص نیست")
+
+    gan = sub.add_parser("ganjoor", help="درون‌ریزی شعر مالکیت‌عمومی از گنجور (API آزاد، بدون OCR)")
+    gan.add_argument("--poet", required=True, help="نام شاعر، مثل «حافظ» یا «فردوسی»")
+    gan.add_argument("--out", default=None, help="فایل JSONL (پیش‌فرض: data/ganjoor/<نام>.jsonl)")
+    gan.add_argument("--delay", type=float, default=2.0,
+                     help="فاصله بین درخواست‌ها؛ robots گنجور Crawl-delay: 2 می‌خواهد")
+    gan.add_argument("--limit", type=int, default=None, help="حداکثر تعداد شعر")
+    gan.add_argument("--index", action="store_true", help="بعد از ساخت JSONL، ایندکس کن")
+    gan.add_argument("--rebuild", action="store_true", help="ایندکس را از نو بساز")
+
+    sub.add_parser("status", help="وضعیت کتابخانه: پیشرفت، صف، کتاب‌های مشکوک")
 
     sub.add_parser("stats", help="آمار ایندکس")
 
+    # `--root` is genuinely global, but everyone types it after the subcommand
+    # (`rag ingest --root …`), so accept both spellings.
+    for action in sub.choices.values():
+        action.add_argument("--root", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
+
     args = parser.parse_args(argv)
+    args.root = getattr(args, "root", "data")
 
     if args.command == "ingest":
         summary = run_ingest(
@@ -135,6 +191,19 @@ def main(argv: list[str] | None = None) -> int:
             print(f"برای ایندکس: python -m rag ingest --input {out}")
         return 0
 
+    if args.command == "ganjoor":
+        from .ganjoor import run as run_ganjoor
+
+        out = Path(args.out) if args.out else Path(args.root) / "ganjoor" / f"{args.poet}.jsonl"
+        summary = run_ganjoor(args.poet, out, delay=args.delay, limit=args.limit)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        if args.index:
+            print(json.dumps(run_ingest(input_path=summary["path"], root=args.root,
+                                        rebuild=args.rebuild), ensure_ascii=False, indent=2))
+        else:
+            print(f"برای ایندکس: python -m rag ingest --input {summary['path']}")
+        return 0
+
     if args.command == "library":
         from .library import run_library
 
@@ -143,8 +212,110 @@ def main(argv: list[str] | None = None) -> int:
             limit=args.limit, force=args.force, batch_size=args.batch_size,
             embedder=args.embedder, dpi=_dpi(args.dpi), lang=args.lang,
             model=args.model, psm=args.psm, workers=args.workers,
+            include=args.only, exclude=args.exclude, verify=not args.no_verify,
         )
         print(json.dumps(summary, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.command == "remove":
+        from .ingest import remove_documents
+
+        summary = remove_documents(root=args.root, books=args.book, dry_run=args.dry_run)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.command == "serve":
+        from .serve import serve
+
+        serve(root=args.root, host=args.host, port=args.port)
+        return 0
+
+    if args.command == "mcp":
+        from .mcp import serve_mcp
+
+        return serve_mcp(root=args.root)
+
+    if args.command == "fetch":
+        from . import fetch as bookfetch
+
+        out = Path(args.out)
+        results = []
+        if args.query:
+            results = bookfetch.search(args.query, lang=args.lang, limit=args.limit,
+                                       source=args.source)
+            if args.creator:
+                needle = args.creator.lower()
+                results = [c for c in results
+                           if needle in str(c.get("creator") or "").lower()]
+            print(f"{'#':>2} {'score':>5} {'rights':<18} {'source':<10} title")
+            for i, cand in enumerate(results, 1):
+                print(f"{i:>2} {cand['score']:5.2f} {str(cand['rights'] or '-')[:18]:<18} "
+                      f"{cand['source']:<10} {str(cand['title'])[:60]}")
+            if args.creator:
+                print(f"({len(results)} نتیجه با پدیدآور «{args.creator}»)")
+            if not results:
+                print("نتیجه‌ای پیدا نشد.")
+
+        downloaded = []
+        for ident in args.id or []:
+            downloaded.append(bookfetch.download_archive(ident, out, prefer=args.prefer))
+        for url in args.url or []:
+            downloaded.append(bookfetch.download_url(url, out))
+
+        if results and not (args.yes or args.all):
+            print("\nبرای دانلود: `--yes` (بهترین نتیجه) یا `--all` (تا --limit)")
+        elif results:
+            wanted = args.limit if args.all else 1
+            taken = 0
+            for cand in results:
+                if taken >= wanted:
+                    break
+                if cand["source"] == "web":
+                    if not args.allow_unknown:
+                        print(f"  {cand['url']}: لایسنس نامشخص — برای پذیرش مسئولیت: "
+                              "--allow-unknown")
+                        continue
+                    try:
+                        downloaded.append(bookfetch.download_url(cand["url"], out,
+                                                                 title=cand["title"]))
+                        taken += 1
+                    except SystemExit as exc:
+                        print(f"  {cand['url']}: {exc}")
+                    continue
+                if cand["source"] != "archive.org":
+                    print(f"  {cand['source']} #{cand['id']}: دستی از {cand['page']} بگیر "
+                          "(یا لینک فایل را با --url بده)")
+                    continue
+                rights = str(cand.get("rights") or "")
+                if rights not in ("NOT_IN_COPYRIGHT", "public domain") and not args.allow_unknown:
+                    print(f"  {cand['id']}: حقوق نامشخص ({rights or 'unknown'}) — رد شد؛ "
+                          "برای پذیرش مسئولیت: --allow-unknown")
+                    continue
+                try:
+                    downloaded.append(bookfetch.download_archive(cand["id"], out,
+                                                                 prefer=args.prefer))
+                    taken += 1
+                except SystemExit as exc:
+                    print(f"  {cand['id']}: {exc}")
+
+        for item in downloaded:
+            print(f"✓ {item['path']}  ({item['bytes'] / 1e6:.1f}MB)")
+        if downloaded:
+            print("\nمرحله بعد: python -m rag library --dir books")
+        return 0
+
+    if args.command == "audit":
+        from .library import audit_library
+
+        summary = audit_library(root=args.root, limit=args.limit, fix=args.fix,
+                                verify_pages=args.pages)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.command == "status":
+        from .library import library_status
+
+        print(json.dumps(library_status(root=args.root), ensure_ascii=False, indent=2))
         return 0
 
     if args.command == "stats":
