@@ -97,6 +97,21 @@ def main(argv: list[str] | None = None) -> int:
     lib.add_argument("--no-index", action="store_true", help="فقط استخراج، بدون ایندکس")
     lib.add_argument("--batch-size", type=int, default=25, help="هر چند کتاب یک‌بار ایندکس شود")
     lib.add_argument("--embedder", default="auto", choices=["auto", "fastembed", "hash"])
+    lib.add_argument("--only", action="append", default=None,
+                     help="فقط کتاب‌های منطبق با این الگو (تکرارپذیر، مثل '*تاریخ*')")
+    lib.add_argument("--exclude", action="append", default=None,
+                     help="نادیده گرفتن کتاب‌های منطبق با این الگو (تکرارپذیر)")
+
+    rem = sub.add_parser("remove", help="حذف کامل یک سند/کتاب از پارکت، بردارها و کورپوس")
+    rem.add_argument("--book", action="append", default=None,
+                     help="نام فایل، شناسه سند یا الگو (تکرارپذیر)")
+    rem.add_argument("--dry-run", action="store_true", help="فقط نشان بده چه چیزی حذف می‌شود")
+
+    srv = sub.add_parser("serve", help="اجرای سرویس HTTP محلی برای جست‌وجو")
+    srv.add_argument("--host", default="127.0.0.1")
+    srv.add_argument("--port", type=int, default=8765)
+
+    sub.add_parser("mcp", help="اجرای سرور MCP روی stdio برای وصل‌شدن به دستیارها")
 
     sub.add_parser("stats", help="آمار ایندکس")
 
@@ -143,9 +158,28 @@ def main(argv: list[str] | None = None) -> int:
             limit=args.limit, force=args.force, batch_size=args.batch_size,
             embedder=args.embedder, dpi=_dpi(args.dpi), lang=args.lang,
             model=args.model, psm=args.psm, workers=args.workers,
+            include=args.only, exclude=args.exclude,
         )
         print(json.dumps(summary, ensure_ascii=False, indent=2))
         return 0
+
+    if args.command == "remove":
+        from .ingest import remove_documents
+
+        summary = remove_documents(root=args.root, books=args.book, dry_run=args.dry_run)
+        print(json.dumps(summary, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.command == "serve":
+        from .serve import serve
+
+        serve(root=args.root, host=args.host, port=args.port)
+        return 0
+
+    if args.command == "mcp":
+        from .mcp import serve_mcp
+
+        return serve_mcp(root=args.root)
 
     if args.command == "stats":
         print(json.dumps(Retriever(root=args.root).stats(), ensure_ascii=False, indent=2))

@@ -28,7 +28,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .textutil import detect_language
+from .textutil import detect_language, looks_garbled
 
 _TESSERACT_HINTS = [
     Path.home() / "tools" / "squashfs-root" / "AppRun",
@@ -182,10 +182,15 @@ def _text_coverage(page) -> float:
 def _wants_ocr(page, force: bool, min_text_coverage: float) -> bool:
     if force:
         return True
-    if len(page.get_text("text").strip()) < 40:
+    text = page.get_text("text").strip()
+    if len(text) < 40:
         return True
     # Scanned pages often carry *some* text: a watermark, a running footer.
-    return _text_coverage(page) < min_text_coverage
+    if _text_coverage(page) < min_text_coverage:
+        return True
+    # A text layer that exists but is unusable is worse than no text layer:
+    # it is trusted, indexed, and never OCR'd.
+    return looks_garbled(text)
 
 
 def _native_dpi(page) -> float | None:
@@ -383,12 +388,13 @@ def _plan_book(pdf_path, root: str = "data", dpi: int | str = "auto", lang: str 
 
 def _run_plans(plans: list[_BookPlan], *, model: str, psm: int, workers: int,
                tesseract: str | None, tessdata: str | None,
-               progress: bool = True) -> tuple[dict[int, dict[int, str]], dict[int, list[str]]]:
+               progress: bool = True) -> tuple[dict[int, dict[int, str]], dict[int, dict[int, str]]]:
     """Run every OCR page of every book on one pool: no per-book tail waste."""
     import pymupdf
 
     results: dict[int, dict[int, str]] = {i: {} for i in range(len(plans))}
-    failures: dict[int, list[str]] = {i: [] for i in range(len(plans))}
+    # Failures are keyed by page number so a later run can retry just those pages.
+    failures: dict[int, dict[int, str]] = {i: {} for i in range(len(plans))}
     engines: dict[tuple[str, int], OcrEngine] = {}
     handles: dict[int, _DocHandles] = {}
     remaining = {i: len(p.ocr_pages) for i, p in enumerate(plans)}
@@ -430,7 +436,7 @@ def _run_plans(plans: list[_BookPlan], *, model: str, psm: int, workers: int,
                 _idx, pno, text = future.result()
                 results[idx][pno] = text
             except Exception as exc:  # noqa: BLE001 - one bad page must not kill the batch
-                failures[idx].append(str(exc)[:200])
+                failures[idx][_page_no] = str(exc)[:200]
             done += 1
             remaining[idx] -= 1
             if remaining[idx] == 0:
@@ -446,8 +452,23 @@ def _run_plans(plans: list[_BookPlan], *, model: str, psm: int, workers: int,
     return results, failures
 
 
+def _quality_warnings(pages: int, chars: int, empty: int, failed: int) -> list[str]:
+    """Flags a book whose OCR probably went wrong, so a 1000-book run is auditable."""
+    if not pages:
+        return ["no-pages"]
+    warnings: list[str] = []
+    per_page = chars / pages
+    if per_page < 80:
+        warnings.append(f"thin-text ({per_page:.0f} chars/page)")
+    if empty > pages * 0.3:
+        warnings.append(f"many-empty-pages ({empty}/{pages})")
+    if failed:
+        warnings.append(f"failed-pages ({failed})")
+    return warnings
+
+
 def _finish_book(plan: _BookPlan, results: dict[int, str], started: float,
-                 failures: list[str] | None = None) -> dict:
+                 failures: dict[int, str] | None = None) -> dict:
     merged = dict(results)
     for pno, kind, payload in plan.plan:
         if kind in ("cached", "text"):
@@ -457,6 +478,9 @@ def _finish_book(plan: _BookPlan, results: dict[int, str], started: float,
     texts = [t for t in ordered if t.strip()]
     elapsed = time.time() - started
     ran = len(plan.ocr_pages)
+    failures = failures or {}
+    chars = sum(len(t) for t in texts)
+    failed_pages = sorted(pno + 1 for pno in failures)
     return {
         "pdf": str(plan.pdf),
         "pages": len(plan.wanted),
@@ -465,8 +489,13 @@ def _finish_book(plan: _BookPlan, results: dict[int, str], started: float,
         "text_pages": len(plan.wanted) - plan.ocr_planned,
         "cached_pages": plan.cached_hits,
         "empty_pages": len(ordered) - len(texts),
-        "errors": len(failures or []),
-        "chars": sum(len(t) for t in texts),
+        "errors": len(failures),
+        "failed_pages": failed_pages,
+        "error_messages": [failures[p] for p in sorted(failures)][:5],
+        "chars": chars,
+        "chars_per_page": round(chars / len(plan.wanted), 1) if plan.wanted else 0.0,
+        "warnings": _quality_warnings(len(plan.wanted), chars,
+                                      len(ordered) - len(texts), len(failures)),
         "seconds": round(elapsed, 1),
         "pages_per_sec": round(ran / elapsed, 2) if ran and elapsed else 0.0,
         "dpi": plan.dpi,

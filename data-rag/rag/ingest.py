@@ -133,18 +133,27 @@ def parquet_schema() -> pa.Schema:
 
 
 def _load_existing_doc_ids(root: Path) -> set[str]:
-    """Doc ids already in the corpus, so an incremental run stays idempotent."""
+    """Doc ids already in the corpus, so an incremental run stays idempotent.
+
+    Read from Parquet, not from `corpus.duckdb`: that file is a rebuildable cache,
+    so keying idempotency on it meant deleting the cache silently re-ingested the
+    whole library a second time.
+    """
     import duckdb
 
-    db_path = root / "corpus.duckdb"
-    if not db_path.exists():
+    raw = root / "raw"
+    if not raw.exists() or not any(raw.rglob("*.parquet")):
         return set()
     try:
-        con = duckdb.connect(str(db_path), read_only=True)
-        rows = con.execute("SELECT DISTINCT doc_id FROM chunks").fetchall()
+        con = duckdb.connect()  # in-memory: nothing to leave behind
+        rows = con.execute(
+            "SELECT DISTINCT doc_id FROM read_parquet(?, hive_partitioning=true)",
+            [str(raw / "**" / "*.parquet")],
+        ).fetchall()
         con.close()
         return {str(r[0]) for r in rows}
-    except Exception:  # noqa: BLE001 - a stale/corrupt cache must not block ingest
+    except Exception as exc:  # noqa: BLE001 - dedupe is a guard, not a hard dependency
+        print(f"[ingest] هشدار: خواندن شناسه‌های موجود ناموفق ({exc}); ممکن است تکراری شود")
         return set()
 
 
@@ -154,6 +163,96 @@ CORPUS_COLUMNS_SQL = (
     "id, doc_id, chunk_index, title, text, norm, title_norm, source, published, "
     "lang, tokens, category, TRY_CAST(year AS INTEGER) AS year"
 )
+
+
+def _doc_matches(doc_id: str, source: str, patterns: list[str]) -> bool:
+    """Does this document match any of the requested books (name, stem or glob)?"""
+    import fnmatch
+
+    stem = doc_id.rsplit("#", 1)[0]
+    names = {doc_id, stem, Path(stem).name}
+    for pattern in patterns:
+        p = str(pattern).strip()
+        if not p:
+            continue
+        if p in names or p in (source or ""):
+            return True
+        if any(fnmatch.fnmatch(name, p) for name in names):
+            return True
+    return False
+
+
+def remove_documents(root: str = "data", books: list[str] | None = None,
+                     dry_run: bool = False) -> dict:
+    """Remove whole documents from Parquet, the vector table and the corpus DB.
+
+    Parquet is the source of truth, so it is rewritten first and the rest follows;
+    the corpus table is then rebuilt from what is left. Nothing is re-embedded, so
+    removing one bad book costs seconds even when the corpus holds thousands.
+    """
+    patterns = [str(b) for b in (books or []) if str(b).strip()]
+    if not patterns:
+        raise SystemExit("حداقل یک --book بده (نام فایل، شناسه سند یا الگو)")
+
+    import pyarrow.parquet as pq
+
+    root_path = Path(root)
+    raw = root_path / "raw"
+    files = sorted(raw.rglob("*.parquet")) if raw.exists() else []
+    dropped_docs: set[str] = set()
+    dropped_rows = 0
+    rewritten = 0
+    for path in files:
+        table = pq.read_table(path)
+        if "doc_id" not in table.column_names:
+            continue
+        doc_ids = table.column("doc_id").to_pylist()
+        sources = (table.column("source").to_pylist() if "source" in table.column_names
+                   else [""] * len(doc_ids))
+        keep = [_doc_matches(d, s or "", patterns) is False for d, s in zip(doc_ids, sources)]
+        if all(keep):
+            continue
+        dropped_rows += len(keep) - sum(keep)
+        dropped_docs.update(d for d, k in zip(doc_ids, keep) if not k)
+        rewritten += 1
+        if dry_run:
+            continue
+        kept = table.filter(pa.array(keep))
+        if kept.num_rows:
+            tmp = path.with_suffix(".tmp.parquet")
+            pq.write_table(kept, tmp, compression=COMPRESSION)
+            tmp.replace(path)
+        else:
+            path.unlink()
+            # Clean up partition dirs left empty by the deletion.
+            for parent in (path.parent, path.parent.parent):
+                if parent != raw and parent.exists() and not any(parent.iterdir()):
+                    parent.rmdir()
+
+    vector_rows = 0
+    if dropped_docs and not dry_run:
+        import lancedb
+
+        db = lancedb.connect(str(root_path / "idx" / "lance"))
+        try:
+            names = set(db.table_names())
+        except Exception:  # noqa: BLE001 - older lancedb
+            names = set()
+        if "chunks" in names:
+            table = db.open_table("chunks")
+            listed = ", ".join("'" + d.replace("'", "''") + "'" for d in sorted(dropped_docs))
+            table.delete(f"doc_id IN ({listed})")
+            vector_rows = table.count_rows()
+        _update_corpus_db(raw, root_path, [], rebuild=True)
+
+    return {
+        "patterns": patterns,
+        "documents_removed": len(dropped_docs),
+        "chunks_removed": dropped_rows,
+        "parquet_files_rewritten": rewritten,
+        "vectors_left": None if dry_run else vector_rows,
+        "dry_run": dry_run,
+    }
 
 
 def _update_corpus_db(raw_dir: Path, root: Path, new_files: list[Path], rebuild: bool):

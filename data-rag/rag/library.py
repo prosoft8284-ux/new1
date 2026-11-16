@@ -10,6 +10,8 @@ dies at book 900 should not lose its index work.
 
 from __future__ import annotations
 
+import fnmatch
+import hashlib
 import json
 import os
 import re
@@ -22,6 +24,54 @@ from .pdf import extract_many, write_jsonl
 
 def _slug(rel: str) -> str:
     return re.sub(r"[^\w\u0600-\u06FF.-]+", "_", rel)[:120]
+
+
+def _save_manifest(path: Path, books: dict) -> None:
+    """Atomic write: a crash mid-save must never leave an unparsable manifest."""
+    payload = json.dumps({"books": books}, ensure_ascii=False, indent=1)
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(payload, encoding="utf-8")
+    os.replace(tmp, path)
+
+
+def _load_manifest(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001 - a truncated file should cost one warning, not a run
+        backup = path.with_name(path.name + ".corrupt")
+        path.replace(backup)
+        print(f"[library] مانیفست قابل خواندن نبود؛ به {backup.name} منتقل شد و از نو ساخته می‌شود",
+              flush=True)
+        return {}
+    return data.get("books", {}) if isinstance(data, dict) else {}
+
+
+def _content_key(path: Path) -> str:
+    """Fingerprint for duplicate detection: size plus a hash of the first 4 MiB.
+
+    Full-file hashing a 1000-book library costs more IO than it is worth; a book
+    copy differs in name only, so size plus the opening megabytes is enough.
+    """
+    digest = hashlib.sha1()
+    size = path.stat().st_size
+    with path.open("rb") as fh:
+        digest.update(fh.read(4 * 1024 * 1024))
+    return f"{size}:{digest.hexdigest()}"
+
+
+def _keep_pdf(rel: str, include: list[str] | None, exclude: list[str] | None) -> bool:
+    name = Path(rel).name
+    if name.startswith("._") or any(part.startswith(".") for part in Path(rel).parts):
+        return False
+    if include and not any(fnmatch.fnmatch(rel, pat) or fnmatch.fnmatch(name, pat)
+                           for pat in include):
+        return False
+    if exclude and any(fnmatch.fnmatch(rel, pat) or fnmatch.fnmatch(name, pat)
+                       for pat in exclude):
+        return False
+    return True
 
 
 def _ingest_batch(paths: list[Path], root: Path, embedder: str, progress: bool) -> dict:
@@ -45,18 +95,23 @@ def _flush(batch: list[tuple[Path, str]], root: Path, embedder: str, progress: b
     for _path, key in batch:
         if key in books:
             books[key]["indexed"] = True
-    manifest_path.write_text(json.dumps({"books": books}, ensure_ascii=False, indent=1),
-                             encoding="utf-8")
+    _save_manifest(manifest_path, books)
     return totals
 
 
 def run_library(directory: str = "books", root: str = "data", index: bool = True,
                 limit: int | None = None, force: bool = False, batch_size: int = 25,
-                embedder: str = "auto", progress: bool = True, **extract_kwargs) -> dict:
+                embedder: str = "auto", progress: bool = True,
+                include: list[str] | None = None, exclude: list[str] | None = None,
+                **extract_kwargs) -> dict:
     base = Path(directory)
     if not base.exists():
         raise SystemExit(f"پوشه پیدا نشد: {base} (PDFها را داخل آن بگذار)")
-    pdfs = sorted(p for p in base.rglob("*") if p.suffix.lower() == ".pdf")
+    pdfs = sorted(
+        p for p in base.rglob("*")
+        if p.suffix.lower() == ".pdf" and _keep_pdf(p.relative_to(base).as_posix(),
+                                                    include, exclude)
+    )
     if limit:
         pdfs = pdfs[:limit]
     if not pdfs:
@@ -66,10 +121,24 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
     ext_dir = root_path / "extracted"
     ext_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = root_path / "library.json"
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.exists() else {}
-    books: dict = manifest.setdefault("books", {})
+    books: dict = _load_manifest(manifest_path)
 
-    pending = []
+    # Older manifests predate content keys; backfill them so duplicate detection
+    # works on the very first run after upgrading, not only for new books.
+    for book_path, record in books.items():
+        if record.get("status") == "done" and not record.get("content_key"):
+            existing = Path(book_path)
+            if existing.exists():
+                record["content_key"] = _content_key(existing)
+
+    # A book copied under another name would otherwise be OCR'd and indexed twice.
+    by_hash: dict[str, str] = {
+        rec["content_key"]: path for path, rec in books.items()
+        if rec.get("content_key") and rec.get("status") == "done"
+    }
+    pending: list[tuple[Path, str, os.stat_result, str]] = []
+    duplicates: list[dict] = []
+    removed_skipped = 0
     for pdf in pdfs:
         key = str(pdf.resolve())
         stat = pdf.stat()
@@ -81,14 +150,26 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
         )
         if not force and unchanged:
             continue
-        pending.append((pdf, key, stat))
+        if not force and record.get("status") == "removed":
+            removed_skipped += 1
+            continue
+        content_key = _content_key(pdf)
+        twin = by_hash.get(content_key)
+        if twin and twin != key and not force:
+            books[key] = {"status": "duplicate", "of": twin, "size": stat.st_size,
+                          "mtime": int(stat.st_mtime), "content_key": content_key}
+            duplicates.append({"pdf": str(pdf), "of": twin})
+            print(f"[library] = {pdf.name} تکرارِ {Path(twin).name} است؛ رد شد", flush=True)
+            continue
+        by_hash.setdefault(content_key, key)
+        pending.append((pdf, key, stat, content_key))
 
     # Books extracted earlier (maybe with --no-index) still need indexing.
     to_index: list[tuple[Path, str]] = []
     if index:
         for key, record in books.items():
             if record.get("status") != "done" or record.get("indexed"):
-                continue
+                continue  # removed/duplicate books are intentionally not indexed
             path = Path(record.get("jsonl") or "")
             if path.exists():
                 to_index.append((path, key))
@@ -113,12 +194,12 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
             group = pending[offset:offset + group_size]
             started_group = time.time()
             try:
-                results = extract_many([pdf for pdf, _k, _s in group],
+                results = extract_many([pdf for pdf, _k, _s, _c in group],
                                        root=str(root_path), progress=progress,
                                        **extract_kwargs)
             except Exception as exc:  # noqa: BLE001 - report, never abort the queue
                 results = [{"pdf": str(pdf), "error": str(exc), "page_texts": {}}
-                           for pdf, _k, _s in group]
+                           for pdf, _k, _s, _c in group]
             group_seconds = time.time() - started_group
             proc_seconds += group_seconds
             # Pages are interleaved across the group, so split its wall time by
@@ -133,7 +214,9 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
             for item in group:
                 yield item, found.get(str(item[0]))
 
-    for i, ((pdf, key, stat), extracted) in enumerate(pending_with_results(), start=1):
+    suspects: list[dict] = []
+    for i, ((pdf, key, stat, content_key), extracted) in enumerate(pending_with_results(),
+                                                                  start=1):
         book_started = time.time()
         if not extracted or extracted.get("error") or not extracted.get("page_texts"):
             error = (extracted or {}).get("error", "متني استخراج نشد")
@@ -141,7 +224,7 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
             failed += 1
             books[key] = {"status": "failed", "error": str(error)[:300],
                           "size": stat.st_size, "mtime": int(st.st_mtime)}
-            manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+            _save_manifest(manifest_path, books)
             print(f"[library] ✗ {pdf.name}: {error}", flush=True)
             continue
 
@@ -149,20 +232,29 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
         out = ext_dir / f"{_slug(rel)}.jsonl"
         write_jsonl(extracted, out)
 
+        warnings = list(extracted.get("warnings") or [])
+        if warnings:
+            suspects.append({"pdf": pdf.name, "warnings": warnings,
+                             "failed_pages": extracted.get("failed_pages") or []})
+            print(f"[library] ! {pdf.name}: {', '.join(warnings)}", flush=True)
         books[key] = {
             "status": "done",
             "pages": extracted["pages"],
             "ocr_pages": extracted["ocr_pages"],
             "chars": extracted["chars"],
+            "chars_per_page": extracted.get("chars_per_page"),
             "seconds": extracted["seconds"],
             "dpi": extracted["dpi"],
             "engine": extracted["engine"],
+            "content_key": content_key,
+            "quality": warnings,
+            "failed_pages": extracted.get("failed_pages") or [],
             "jsonl": str(out),
             "size": stat.st_size,
             "mtime": int(stat.st_mtime),
             "updated": time.strftime("%Y-%m-%d %H:%M:%S"),
         }
-        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
+        _save_manifest(manifest_path, books)
         batch.append((out, key))
         proc_seconds += time.time() - book_started
         done += 1
@@ -193,7 +285,10 @@ def run_library(directory: str = "books", root: str = "data", index: bool = True
         "pdfs": len(pdfs),
         "processed": done,
         "failed": failed,
-        "skipped_done": len(pdfs) - len(pending),
+        "duplicates": len(duplicates),
+        "removed_skipped": removed_skipped,
+        "suspect_books": suspects,
+        "skipped_done": len(pdfs) - len(pending) - len(duplicates) - removed_skipped,
         "pages": pages,
         "chars": chars,
         "seconds": round(elapsed, 1),

@@ -87,6 +87,51 @@ def detect_language(text: str) -> str:
     return "fa"
 
 
+_ALL_FUNCTION_WORDS = _PERSIAN_WORDS | _ARABIC_WORDS
+_WORD = re.compile(r"[\w\u0600-\u06FF]+")
+
+
+def looks_garbled(text: str) -> bool:
+    """Cheap sanity check for a PDF text layer that exists but is unusable.
+
+    Old Persian/Arabic PDFs often ship a text layer whose glyphs are unmapped or
+    emitted in reverse. The page "has text", so nothing OCRs it, and the garbage
+    goes straight into the index. Two signals catch almost all of it: almost no
+    Arabic-script letters, or almost none of the handful of words that appear in
+    nearly every sentence of the language.
+    """
+    words = _WORD.findall(text or "")
+    if len(words) < 25:
+        return False  # too little text to judge; the length rules already cover it
+    letters = [ch for ch in text if ch.isalpha()]
+    if not letters:
+        return True
+    script = sum(1 for ch in letters if "\u0600" <= ch <= "\u06FF") / len(letters)
+    if script < 0.5:
+        return True
+    common = sum(1 for word in words if word in _ALL_FUNCTION_WORDS)
+    return common / len(words) < 0.01
+
+
+def _swap_pairs(term: str, src: str, dst: str) -> str:
+    """Replace every non-overlapping `src` with `dst` in one left-to-right pass.
+
+    A plain `str.replace` chain cannot do this: «استقلال» contains overlapping
+    «ال» and «لا», so replacing one pair destroys the other. Scanning once keeps
+    every match independent.
+    """
+    out: list[str] = []
+    i = 0
+    while i < len(term):
+        if term.startswith(src, i):
+            out.append(dst)
+            i += len(src)
+        else:
+            out.append(term[i])
+            i += 1
+    return "".join(out)
+
+
 def lam_alef_variants(term: str) -> list[str]:
     """Handles the `لا` ligature that many PDF text layers extract reversed.
 
@@ -97,12 +142,12 @@ def lam_alef_variants(term: str) -> list[str]:
     out = [term]
     if len(term) < 4:
         return out
-    # Swap the pair in both directions (mid-word only; the leading «ال» of the
-    # Arabic article is left alone).
-    if "ال" in term[1:]:
-        out.append(term.replace("لا", "\x00").replace("ال", "لا").replace("\x00", "لا"))
-    if "لا" in term[1:]:
-        out.append(term.replace("ال", "\x00").replace("لا", "ال").replace("\x00", "ال"))
+    # Mid-word only: the leading «ال» of the Arabic article is not a ligature.
+    for src, dst in (("لا", "ال"), ("ال", "لا")):
+        if src in term[1:]:
+            variant = _swap_pairs(term, src, dst)
+            if variant not in out:
+                out.append(variant)
     # «الله» often arrives as «اهلل»
     if term.startswith("اهلل"):
         out.append("الله" + term[4:])
