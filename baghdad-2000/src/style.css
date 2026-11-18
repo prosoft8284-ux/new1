@@ -1651,3 +1651,14 @@ body {
     width: min(230px, 62vw);
   }
 }
+
+/* a transformed ancestor becomes the containing block for fixed children,
+   which pinned the speedo inside the gauges — centre by flexbox instead */
+@media (orientation: landscape) {
+  #hud .hud-bottom {
+    left: 0;
+    right: 0;
+    transform: none;
+    justify-content: center;
+  }
+}
