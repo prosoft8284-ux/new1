@@ -31,6 +31,7 @@ function loadST() {
         on: !!(raw.notify && raw.notify.on),
         h: Number(raw.notify && raw.notify.h) >= 0 ? Number(raw.notify.h) : 20,
         m: Number(raw.notify && raw.notify.m) >= 0 ? Number(raw.notify.m) : 0,
+        confirmed: !!(raw.notify && raw.notify.confirmed),
       },
     };
   } catch (e) { ST = { start: null, q: {}, days: {}, pos: {}, cycle: { queue: [], seen: [], round: 1 }, notify: { on: false, h: 20, m: 0 } }; }
@@ -108,27 +109,16 @@ function itemOfId(id) {
 /* ---------- جبران روزهای عقب‌افتاده ----------
    سوال‌های پاسخ‌ندادهٔ روزهای گذشته را بین روزهای مطالعهٔ باقی‌مانده پخش می‌کند
    تا نه روی یک روز بار سنگین بیفتد و نه سوالی جا بماند. */
+function studyDayList() {
+  return PLAN.days
+    .filter((d) => d.kind === 'study')
+    .map((d) => ({ d: d.d, ids: idsOfRanges(rangesOfDay(d)) }));
+}
 function backlogPlan() {
   if (BACKLOG) return BACKLOG;
   const d = currentDay();
-  if (!d) return (BACKLOG = { total: 0, perDay: 0, byDay: {} });
-  const pending = [];
-  for (const day of PLAN.days) {
-    if (day.d >= d || day.kind !== 'study') continue;
-    for (const id of idsOfRanges(rangesOfDay(day))) if (!ST.q[id]) pending.push(id);
-  }
-  const byDay = {};
-  const upcoming = PLAN.days.filter((x) => x.d >= d && x.kind === 'study');
-  if (pending.length && upcoming.length) {
-    const base = Math.floor(pending.length / upcoming.length);
-    const rem = pending.length % upcoming.length;
-    let k = 0;
-    upcoming.forEach((day, i) => {
-      const n = base + (i < rem ? 1 : 0);
-      if (n > 0) { byDay[day.d] = pending.slice(k, k + n); k += n; }
-    });
-  }
-  BACKLOG = { total: pending.length, perDay: Math.ceil(pending.length / Math.max(1, upcoming.length)), byDay };
+  if (!d) return (BACKLOG = { total: 0, perDay: 0, byDay: {}, pending: [] });
+  BACKLOG = SBCore.planBacklog(studyDayList(), Object.keys(ST.q), d);
   return BACKLOG;
 }
 
@@ -141,34 +131,30 @@ async function startFree(n) {
 }
 
 function cyclePool() { return Object.keys(ST.q); }
-function syncCycle() {
-  const c = ST.cycle;
-  const known = new Set([...(c.queue || []), ...(c.seen || [])]);
-  const fresh = cyclePool().filter((id) => !known.has(id));
-  if (fresh.length) c.queue = [...(c.queue || []), ...shuffle(fresh)];
-  return c;
-}
 function cycleStats() {
-  const total = cyclePool().length;
-  const seen = (ST.cycle.seen || []).filter((id) => ST.q[id]).length;
-  return { total, seen, left: (ST.cycle.queue || []).length, round: ST.cycle.round || 1 };
+  return SBCore.cycleStats({
+    pool: cyclePool(),
+    queue: ST.cycle.queue || [],
+    seen: ST.cycle.seen || [],
+    round: ST.cycle.round || 1,
+  });
 }
 async function startCycle(n = 20) {
   if (!cyclePool().length) { toast('اول چند سوال از برنامه بزن تا دوره ساخته شود'); return; }
-  const c = syncCycle();
-  if (!c.queue.length) {
-    if (!c.seen.length) { toast('سوالی برای دوره نیست'); return; }
-    c.round = (c.round || 1) + 1;
-    c.seen = [];
-    c.queue = shuffle(cyclePool());
-    toast('دور ' + fa(c.round) + ' شروع شد');
-  }
   await allQuestions();
-  const take = c.queue.splice(0, Math.min(n, c.queue.length));
-  c.seen = [...(c.seen || []), ...take];
+  const step = SBCore.cycleStep({
+    pool: cyclePool(),
+    queue: ST.cycle.queue || [],
+    seen: ST.cycle.seen || [],
+    round: ST.cycle.round || 1,
+    n,
+  });
+  ST.cycle = { queue: step.queue, seen: step.seen, round: step.round };
   saveST();
-  const items = take.map(itemOfId).filter(Boolean);
-  await startStudy(items, `دورهٔ سوالات قبلی — دور ${fa(c.round)}`, { cycle: true });
+  if (!step.take.length) { toast('سوالی برای دوره نیست'); return; }
+  if (step.restarted) toast('دور ' + fa(step.round) + ' شروع شد');
+  const items = step.take.map(itemOfId).filter(Boolean);
+  await startStudy(items, `دورهٔ سوالات قبلی — دور ${fa(step.round)}`, { cycle: true });
 }
 
 /* ---------- وضعیت ---------- */
@@ -895,35 +881,26 @@ function finishStudy() {
 /* ---------- یادآوری (اعلان روزانه) ---------- */
 const REMINDER_ID = 4201;
 function notifyPlugin() {
+  // پلاگین از باندل vendor-notifications.js می‌آید؛ مسیر قدیمی هم به‌عنوان پشتیبان می‌ماند.
+  if (window.SB && window.SB.LocalNotifications) return window.SB.LocalNotifications;
   return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) || null;
 }
 function pad2(n) { return String(n).padStart(2, '0'); }
 async function applyReminder() {
-  const plugin = notifyPlugin();
-  if (!plugin) return 'unsupported';
-  try {
-    let perm = await plugin.checkPermissions();
-    if (perm.display !== 'granted') perm = await plugin.requestPermissions();
-    if (perm.display !== 'granted') return 'denied';
-    await plugin.cancel({ notifications: [{ id: REMINDER_ID }] }).catch(() => {});
-    if (!ST.notify.on) return 'off';
-    const base = {
-      id: REMINDER_ID,
-      title: 'برنامهٔ امروز',
-      body: 'سوال‌های امروز و جبران روزهای گذشته منتظرند؛ چند دقیقه وقت بگذار.',
-    };
-    try {
-      await plugin.schedule({
-        notifications: [{ ...base, schedule: { on: { hour: ST.notify.h, minute: ST.notify.m }, repeats: true, allowWhileIdle: true } }],
-      });
-    } catch (e) {
-      // اگر اجازهٔ اعلان دقیق (Android 12+) نبود، با زمان‌بندی معمولی ثبت می‌شود
-      await plugin.schedule({
-        notifications: [{ ...base, schedule: { on: { hour: ST.notify.h, minute: ST.notify.m }, repeats: true } }],
-      });
-    }
-    return 'on';
-  } catch (e) { return 'error'; }
+  const res = await SBCore.scheduleDaily(notifyPlugin(), {
+    on: ST.notify.on,
+    h: ST.notify.h,
+    m: ST.notify.m,
+    id: REMINDER_ID,
+    title: 'برنامهٔ امروز',
+    body: 'سوال‌های امروز و جبران روزهای گذشته منتظرند؛ چند دقیقه وقت بگذار.',
+  });
+  if (res.status === 'on') {
+    ST.notify.confirmed = res.pendingId === false ? false : true;
+    return res.pendingId === false ? 'unconfirmed' : 'on';
+  }
+  if (res.status === 'error') return 'error';
+  return res.status;
 }
 
 /* ---------- شیت تنظیمات ---------- */
@@ -949,10 +926,11 @@ function openSheet() {
       <button class="btn ghost" data-act="save-reminder">ذخیره ساعت</button>
     </div>
     <div class="row-between mt8">
-      <small>${ST.notify.on ? 'یادآوری روشن است' : 'یادآوری خاموش است'}</small>
+      <small>${ST.notify.on ? 'یادآوری روشن است' + (ST.notify.confirmed === false ? ' (زمان‌بندی تأیید نشد)' : '') : 'یادآوری خاموش است'}</small>
       <button class="btn ${ST.notify.on ? 'ghost' : 'primary'} small" data-act="toggle-notify">${ST.notify.on ? 'خاموش کن' : 'روشن کن'}</button>
     </div>
     ${!notifyPlugin() ? '<p class="tiny mt8">اعلان فقط در نسخهٔ اندروید (APK) فعال می‌شود.</p>' : ''}
+    ${notifyPlugin() && ST.notify.on && ST.notify.confirmed ? '<p class="tiny mt8">✓ زمان‌بندی در سیستم اعلان‌های گوشی ثبت شده است.</p>' : ''}
     <hr>
     <h3 style="font-size:13.5px">نصب روی اندروید</h3>
     <p class="tiny mt8">در کروم اندروید، منوی سه‌نقطه ← «افزودن به صفحه اصلی» (Add to Home screen). اپ مثل یک برنامه جدا باز می‌شود و سوال‌ها آفلاین هم کار می‌کنند.</p>
@@ -983,7 +961,8 @@ document.addEventListener('click', async (e) => {
     if (r === 'denied') { ST.notify.on = false; saveST(); toast('اجازهٔ اعلان داده نشد؛ از تنظیمات گوشی اجازه بده'); openSheet(); return; }
     if (r === 'error') { ST.notify.on = false; saveST(); toast('ثبت یادآوری ناموفق بود'); openSheet(); return; }
     saveST();
-    toast(ST.notify.on ? 'یادآوری روزانه روشن شد' : 'یادآوری خاموش شد');
+    if (r === 'unconfirmed') toast('یادآوری ثبت شد؛ اگر اعلان نیامد اجازهٔ اعلان گوشی را بررسی کن');
+    else toast(ST.notify.on ? 'یادآوری روزانه روشن شد' : 'یادآوری خاموش شد');
     openSheet();
     return;
   }

@@ -8,6 +8,7 @@
     "start": "node server.js",
     "check": "node tools/check.js && node tools/dups.js",
     "plan": "node tools/plan.js",
-    "audit": "node tools/exam-audit.js"
+    "audit": "node tools/exam-audit.js",
+    "test": "node tests/core.test.js"
   }
 }

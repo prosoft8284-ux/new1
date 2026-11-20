@@ -1,9 +1,11 @@
 /* درهم‌سازی و کش آفلاین اپ ۱۷۰ روزه */
-const V = 'sb-v5';
+const V = 'sb-v6';
 const SHELL = [
   '/',
   '/index.html',
   '/styles.css',
+  '/core.js',
+  '/vendor-notifications.js',
   '/app.js',
   '/manifest.webmanifest',
   '/icon-192.png',
