@@ -9,7 +9,8 @@ const shuffle = (a) => { const x = a.slice(); for (let i = x.length - 1; i > 0; 
 const KEY = 'sb:v3';
 let IDX = null, PLAN = null;
 const SUB = {}, SUBIDX = {};
-let ST = { start: null, q: {}, days: {}, pos: {} };
+let ST = { start: null, q: {}, days: {}, pos: {}, cycle: { queue: [], seen: [], round: 1 }, notify: { on: false, h: 20, m: 0 } };
+let BACKLOG = null;
 let S = null, ticker = null;
 
 /* ---------- ذخیره‌سازی ---------- */
@@ -21,10 +22,20 @@ function loadST() {
       q: raw.q && typeof raw.q === 'object' ? raw.q : {},
       days: raw.days && typeof raw.days === 'object' ? raw.days : {},
       pos: raw.pos && typeof raw.pos === 'object' ? raw.pos : {},
+      cycle: {
+        queue: Array.isArray(raw.cycle && raw.cycle.queue) ? raw.cycle.queue : [],
+        seen: Array.isArray(raw.cycle && raw.cycle.seen) ? raw.cycle.seen : [],
+        round: Number(raw.cycle && raw.cycle.round) > 0 ? Number(raw.cycle.round) : 1,
+      },
+      notify: {
+        on: !!(raw.notify && raw.notify.on),
+        h: Number(raw.notify && raw.notify.h) >= 0 ? Number(raw.notify.h) : 20,
+        m: Number(raw.notify && raw.notify.m) >= 0 ? Number(raw.notify.m) : 0,
+      },
     };
-  } catch (e) { ST = { start: null, q: {}, days: {}, pos: {} }; }
+  } catch (e) { ST = { start: null, q: {}, days: {}, pos: {}, cycle: { queue: [], seen: [], round: 1 }, notify: { on: false, h: 20, m: 0 } }; }
 }
-function saveST() { try { localStorage.setItem(KEY, JSON.stringify(ST)); } catch (e) {} }
+function saveST() { BACKLOG = null; try { localStorage.setItem(KEY, JSON.stringify(ST)); } catch (e) {} }
 
 /* ---------- تاریخ ---------- */
 function isoOf(d = new Date()) {
@@ -86,6 +97,78 @@ function idsOfRanges(rs) {
   const ids = [];
   for (const r of rs) for (let n = r.from; n <= r.to; n++) ids.push(`${r.subject}-${n}`);
   return ids;
+}
+function itemOfId(id) {
+  const cut = id.lastIndexOf('-');
+  const sid = id.slice(0, cut);
+  const q = SUBIDX[sid] && SUBIDX[sid].get(Number(id.slice(cut + 1)));
+  return q ? { sid, q, sec: '' } : null;
+}
+
+/* ---------- جبران روزهای عقب‌افتاده ----------
+   سوال‌های پاسخ‌ندادهٔ روزهای گذشته را بین روزهای مطالعهٔ باقی‌مانده پخش می‌کند
+   تا نه روی یک روز بار سنگین بیفتد و نه سوالی جا بماند. */
+function backlogPlan() {
+  if (BACKLOG) return BACKLOG;
+  const d = currentDay();
+  if (!d) return (BACKLOG = { total: 0, perDay: 0, byDay: {} });
+  const pending = [];
+  for (const day of PLAN.days) {
+    if (day.d >= d || day.kind !== 'study') continue;
+    for (const id of idsOfRanges(rangesOfDay(day))) if (!ST.q[id]) pending.push(id);
+  }
+  const byDay = {};
+  const upcoming = PLAN.days.filter((x) => x.d >= d && x.kind === 'study');
+  if (pending.length && upcoming.length) {
+    const base = Math.floor(pending.length / upcoming.length);
+    const rem = pending.length % upcoming.length;
+    let k = 0;
+    upcoming.forEach((day, i) => {
+      const n = base + (i < rem ? 1 : 0);
+      if (n > 0) { byDay[day.d] = pending.slice(k, k + n); k += n; }
+    });
+  }
+  BACKLOG = { total: pending.length, perDay: Math.ceil(pending.length / Math.max(1, upcoming.length)), byDay };
+  return BACKLOG;
+}
+
+/* ---------- تمرین آزاد و دورهٔ بدون تکرار ---------- */
+async function startFree(n) {
+  const all = await allQuestions();
+  const items = shuffle(all).slice(0, Math.min(n, all.length));
+  if (!items.length) { toast('سوالی برای تمرین نیست'); return; }
+  await startStudy(items, `تمرین آزاد — ${fa(items.length)} سوال تصادفی`, { free: true });
+}
+
+function cyclePool() { return Object.keys(ST.q); }
+function syncCycle() {
+  const c = ST.cycle;
+  const known = new Set([...(c.queue || []), ...(c.seen || [])]);
+  const fresh = cyclePool().filter((id) => !known.has(id));
+  if (fresh.length) c.queue = [...(c.queue || []), ...shuffle(fresh)];
+  return c;
+}
+function cycleStats() {
+  const total = cyclePool().length;
+  const seen = (ST.cycle.seen || []).filter((id) => ST.q[id]).length;
+  return { total, seen, left: (ST.cycle.queue || []).length, round: ST.cycle.round || 1 };
+}
+async function startCycle(n = 20) {
+  if (!cyclePool().length) { toast('اول چند سوال از برنامه بزن تا دوره ساخته شود'); return; }
+  const c = syncCycle();
+  if (!c.queue.length) {
+    if (!c.seen.length) { toast('سوالی برای دوره نیست'); return; }
+    c.round = (c.round || 1) + 1;
+    c.seen = [];
+    c.queue = shuffle(cyclePool());
+    toast('دور ' + fa(c.round) + ' شروع شد');
+  }
+  await allQuestions();
+  const take = c.queue.splice(0, Math.min(n, c.queue.length));
+  c.seen = [...(c.seen || []), ...take];
+  saveST();
+  const items = take.map(itemOfId).filter(Boolean);
+  await startStudy(items, `دورهٔ سوالات قبلی — دور ${fa(c.round)}`, { cycle: true });
 }
 
 /* ---------- وضعیت ---------- */
@@ -219,6 +302,22 @@ function dayCardHTML(day, isToday) {
       </div>`;
     });
 
+    const carry = (backlogPlan().byDay[day.d] || []);
+    if (carry.length) {
+      body += `
+      <div class="task carry">
+        <div class="task-h">
+          <span class="chip gold">جبران</span>
+          <span class="tiny">${fa(carry.length)} سوال از روزهای گذشته</span>
+          <span class="pill">${fa(backlogPlan().total)} سوال کل</span>
+        </div>
+        <div class="task-t">سوال‌های پاسخ‌ندادهٔ روزهای قبل که بین روزهای باقی‌مانده پخش شده‌اند.</div>
+        <div class="task-f">
+          <button class="btn primary" data-act="start-carry" data-day="${day.d}">شروع جبران</button>
+        </div>
+      </div>`;
+    }
+
     body += `
     <button class="btn ghost block mt8" data-act="study-day" data-day="${day.d}">همه ${fa(ids.length)} سوال این روز در یک جلسه</button>
     <button class="btn ${rec.done ? 'ghost' : 'primary'} block mt8" data-act="toggle-day" data-day="${day.d}">
@@ -289,9 +388,28 @@ function renderToday() {
   const v = $('#view-today');
   if (!ST.start) { v.innerHTML = setupHTML(); return; }
   const d = currentDay();
-  v.innerHTML = dayCardHTML(dayByNum(d), true);
+  const b = backlogPlan();
+  const banner = b.total
+    ? `<div class="card tight notice">
+        <b>${fa(b.total)} سوال از روزهای گذشته مانده</b>
+        <p class="tiny mt8">این سوال‌ها را بین روزهای مطالعهٔ بعدی پخش کردم (حدود ${fa(b.perDay)} سوال در روز) تا هیچ روزی سنگین نشود و چیزی هم جا نماند.</p>
+      </div>`
+    : '';
+  v.innerHTML = banner + dayCardHTML(dayByNum(d), true) + freePracticeHTML();
   const left = PLAN.totalDays - d;
   $('#hdr-sub').textContent = `روز ${fa(d)} از ۱۷۰` + (left > 0 ? ` • ${fa(left)} روز مانده` : ' • پایان');
+}
+
+function freePracticeHTML() {
+  return `<div class="card">
+    <h3>بیشتر می‌خواهی بخوانی؟</h3>
+    <p class="tiny mt8">سهمیهٔ امروز که تمام شد، اینجا هر تعداد سوال تصادفی از کل ۴۰۰۰ سوال — با پاسخ و تحلیل — بزن.</p>
+    <div class="practice-row mt12">
+      <button class="btn ghost" data-act="free" data-n="10">۱۰ سوال</button>
+      <button class="btn" data-act="free" data-n="25">۲۵ سوال</button>
+      <button class="btn primary" data-act="free" data-n="50">۵۰ سوال</button>
+    </div>
+  </div>`;
 }
 
 /* ---------- برنامه ---------- */
@@ -339,6 +457,28 @@ async function renderReview() {
     <div class="row-between mt12">
       <div><b>${fa(ids.length)}</b><small> سوال نادرست</small></div>
       <button class="btn ${ids.length ? 'primary' : 'ghost'}" data-act="review-wrong" ${ids.length ? '' : 'disabled'}>مرور ۲۰ سوال</button>
+    </div>
+  </div>`;
+
+  const cy = cycleStats();
+  html += `
+  <div class="card">
+    <div class="row-between"><h3>دورهٔ سوالات قبلی</h3><span class="pill">دور ${fa(cy.round)}</span></div>
+    <p class="tiny mt8">سوال‌هایی که قبلاً زده‌ای، تصادفی و بدون تکرار تا وقتی همه یک دور کامل شوند.</p>
+    <div class="bar mt8"><i style="width:${cy.total ? Math.round((cy.seen / cy.total) * 100) : 0}%"></i></div>
+    <div class="statline mt8"><small>${fa(cy.seen)} از ${fa(cy.total)} سوال این دور</small><small>${cy.left ? fa(cy.left) + ' سوال مانده' : 'آمادهٔ دور جدید'}</small></div>
+    <button class="btn ${cy.total ? 'primary' : 'ghost'} block mt8" data-act="cycle" ${cy.total ? '' : 'disabled'}>
+      ${cy.left ? '۲۰ سوال بعدی' : cy.seen ? 'شروع دور ' + fa(cy.round + 1) : 'هنوز سوالی زده نشده'}
+    </button>
+  </div>
+
+  <div class="card">
+    <h3>تمرین آزاد</h3>
+    <p class="tiny mt8">وقتی سهمیهٔ روزت تمام شد و باز هم حوصله داری: سوال تصادفی از کل بانک، با جواب و تحلیل.</p>
+    <div class="practice-row mt12">
+      <button class="btn ghost" data-act="free" data-n="10">۱۰ سوال</button>
+      <button class="btn" data-act="free" data-n="25">۲۵ سوال</button>
+      <button class="btn primary" data-act="free" data-n="50">۵۰ سوال</button>
     </div>
   </div>`;
 
@@ -447,6 +587,20 @@ function renderHelp() {
   </div>
 
   <div class="card">
+    <h3>سهمیهٔ امروز تمام شد؟</h3>
+    <ul class="help-list">
+      <li><b>تمرین آزاد</b> — از تب «مرور» یا پایین صفحهٔ «امروز»: ۱۰، ۲۵ یا ۵۰ سوال تصادفی از کل ۴۰۰۰ سوال، با پاسخ و تحلیل. هر بار ترکیب تازه است و به برنامهٔ روز دست نمی‌زند.</li>
+      <li><b>دورهٔ سوالات قبلی</b> — همان‌جا در تب «مرور»: فقط سوال‌هایی که قبلاً زده‌ای، تصادفی و <b>بدون تکرار</b> تا وقتی همهٔ آن‌ها یک دور کامل شوند؛ بعد خودش دور تازه را شروع می‌کند. نوار پیشرفت، تعداد مرورشده و باقی‌ماندهٔ همان دور را نشان می‌دهد.</li>
+      <li><b>یادآوری روزانه</b> — در تنظیمات، ساعت دلخواه را بگذار و روشن کن؛ هر روز همان ساعت یک اعلان می‌آید. (فقط در نسخهٔ اندروید)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>اگر چند روز عقب بیفتی</h3>
+    <p class="help-lead mt8">سوال‌های پاسخ‌ندادهٔ روزهای گذشته حذف نمی‌شوند: اپ آن‌ها را جمع می‌کند و بین روزهای مطالعهٔ باقی‌مانده پخش می‌کند. بالای صفحهٔ «امروز» می‌بینی چند سوال مانده و هر روز حدوداً چند تا به آن اضافه شده؛ در کارت همان روز هم یک بلوک «جبران» با دکمهٔ شروع می‌آید. هر چه زودتر جبران کنی، سهم روزهای بعد سبک‌تر می‌شود و هیچ سوالی جا نمی‌ماند.</p>
+  </div>
+
+  <div class="card">
     <h3>سه قاعدهٔ کوتاه</h3>
     <ul class="help-list">
       <li>تحلیل را نخوانده رد نکن؛ ارزش هر سوال در همان چند خط است.</li>
@@ -514,6 +668,15 @@ async function startTask(dayNum, ti) {
   toast('بارگذاری…');
   const items = await questionsOfRanges(t.ranges.map((r) => ({ subject: t.subject, section: t.section, from: r.from, to: r.to })));
   await startStudy(items, subShort(t.subject) + (t.section ? ' — ' + t.section : ''), { day: dayNum, taskKey: dayNum + ':' + ti });
+}
+
+async function startCarry(dayNum) {
+  const ids = backlogPlan().byDay[dayNum] || [];
+  if (!ids.length) { toast('برای این روز جبرانی نیست'); return; }
+  await allQuestions();
+  const items = ids.map(itemOfId).filter(Boolean);
+  if (!items.length) { toast('سوالی برای جبران پیدا نشد'); return; }
+  await startStudy(shuffle(items), `جبران عقب‌افتادگی — روز ${fa(dayNum)}`, { day: dayNum });
 }
 
 async function startDayStudy(dayNum) {
@@ -729,6 +892,40 @@ function finishStudy() {
   showResult({ title, total, correct, rows: rows.map((x) => ({ it: { sid: x.sid, q: x.q } })), mode: 'study' });
 }
 
+/* ---------- یادآوری (اعلان روزانه) ---------- */
+const REMINDER_ID = 4201;
+function notifyPlugin() {
+  return (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) || null;
+}
+function pad2(n) { return String(n).padStart(2, '0'); }
+async function applyReminder() {
+  const plugin = notifyPlugin();
+  if (!plugin) return 'unsupported';
+  try {
+    let perm = await plugin.checkPermissions();
+    if (perm.display !== 'granted') perm = await plugin.requestPermissions();
+    if (perm.display !== 'granted') return 'denied';
+    await plugin.cancel({ notifications: [{ id: REMINDER_ID }] }).catch(() => {});
+    if (!ST.notify.on) return 'off';
+    const base = {
+      id: REMINDER_ID,
+      title: 'برنامهٔ امروز',
+      body: 'سوال‌های امروز و جبران روزهای گذشته منتظرند؛ چند دقیقه وقت بگذار.',
+    };
+    try {
+      await plugin.schedule({
+        notifications: [{ ...base, schedule: { on: { hour: ST.notify.h, minute: ST.notify.m }, repeats: true, allowWhileIdle: true } }],
+      });
+    } catch (e) {
+      // اگر اجازهٔ اعلان دقیق (Android 12+) نبود، با زمان‌بندی معمولی ثبت می‌شود
+      await plugin.schedule({
+        notifications: [{ ...base, schedule: { on: { hour: ST.notify.h, minute: ST.notify.m }, repeats: true } }],
+      });
+    }
+    return 'on';
+  } catch (e) { return 'error'; }
+}
+
 /* ---------- شیت تنظیمات ---------- */
 function openSheet() {
   const d = currentDay();
@@ -744,6 +941,18 @@ function openSheet() {
     <hr>
     <button class="btn danger block" data-act="reset">پاک کردن همه پیشرفت</button>
     <p class="tiny mt8">این کار پاسخ‌ها، روزهای تمام‌شده و تاریخ شروع را حذف می‌کند.</p>
+    <hr>
+    <h3 style="font-size:13.5px">یادآوری روزانه</h3>
+    <p class="tiny mt8">هر روز سر ساعت انتخابی، یک اعلان یادت می‌اندازد که برنامهٔ امروز و سوال‌های عقب‌افتاده را ببینی.</p>
+    <div class="row-between mt8" style="gap:8px">
+      <input type="time" id="notify-time" value="${pad2(ST.notify.h)}:${pad2(ST.notify.m)}" style="flex:1;padding:9px;border:1px solid var(--line-2);border-radius:11px;font-family:inherit">
+      <button class="btn ghost" data-act="save-reminder">ذخیره ساعت</button>
+    </div>
+    <div class="row-between mt8">
+      <small>${ST.notify.on ? 'یادآوری روشن است' : 'یادآوری خاموش است'}</small>
+      <button class="btn ${ST.notify.on ? 'ghost' : 'primary'} small" data-act="toggle-notify">${ST.notify.on ? 'خاموش کن' : 'روشن کن'}</button>
+    </div>
+    ${!notifyPlugin() ? '<p class="tiny mt8">اعلان فقط در نسخهٔ اندروید (APK) فعال می‌شود.</p>' : ''}
     <hr>
     <h3 style="font-size:13.5px">نصب روی اندروید</h3>
     <p class="tiny mt8">در کروم اندروید، منوی سه‌نقطه ← «افزودن به صفحه اصلی» (Add to Home screen). اپ مثل یک برنامه جدا باز می‌شود و سوال‌ها آفلاین هم کار می‌کنند.</p>
@@ -767,6 +976,28 @@ document.addEventListener('click', async (e) => {
     return;
   }
   if (act === 'settings') { openSheet(); return; }
+  if (act === 'toggle-notify') {
+    ST.notify.on = !ST.notify.on;
+    const r = await applyReminder();
+    if (r === 'unsupported') { ST.notify.on = false; saveST(); toast('اعلان فقط در نسخهٔ اندروید کار می‌کند'); openSheet(); return; }
+    if (r === 'denied') { ST.notify.on = false; saveST(); toast('اجازهٔ اعلان داده نشد؛ از تنظیمات گوشی اجازه بده'); openSheet(); return; }
+    if (r === 'error') { ST.notify.on = false; saveST(); toast('ثبت یادآوری ناموفق بود'); openSheet(); return; }
+    saveST();
+    toast(ST.notify.on ? 'یادآوری روزانه روشن شد' : 'یادآوری خاموش شد');
+    openSheet();
+    return;
+  }
+  if (act === 'save-reminder') {
+    const val = ($('#notify-time') || {}).value || '20:00';
+    const parts = val.split(':').map(Number);
+    ST.notify.h = Number.isFinite(parts[0]) ? parts[0] : 20;
+    ST.notify.m = Number.isFinite(parts[1]) ? parts[1] : 0;
+    if (ST.notify.on) await applyReminder();
+    saveST();
+    toast('ساعت یادآوری ذخیره شد');
+    openSheet();
+    return;
+  }
   if (act === 'close-sheet') { $('#sheet').classList.add('hidden'); return; }
 
   if (act === 'save-start') {
@@ -783,12 +1014,15 @@ document.addEventListener('click', async (e) => {
   }
   if (act === 'reset') {
     if (!confirm('همه پیشرفت پاک شود؟')) return;
-    ST = { start: null, q: {}, days: {} }; saveST();
+    ST = { start: null, q: {}, days: {}, pos: {}, cycle: { queue: [], seen: [], round: 1 }, notify: ST.notify }; saveST();
     $('#sheet').classList.add('hidden');
     renderToday(); go('today');
     return;
   }
 
+  if (act === 'free') { await startFree(Number(t.dataset.n) || 25); return; }
+  if (act === 'cycle') { await startCycle(20); return; }
+  if (act === 'start-carry') { await startCarry(Number(t.dataset.day)); return; }
   if (act === 'go-day') { const d = Number(t.dataset.day); $('#view-day').innerHTML = dayCardHTML(dayByNum(d), false); go('day'); return; }
   if (act === 'start-task') { await startTask(Number(t.dataset.day), Number(t.dataset.task)); return; }
   if (act === 'study-day') { await startDayStudy(Number(t.dataset.day)); return; }
@@ -895,5 +1129,6 @@ async function reviewWrong(dayNum) {
   }
   renderToday();
   go('today');
+  if (ST.notify.on) applyReminder();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 })();

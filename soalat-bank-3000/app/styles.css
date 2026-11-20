@@ -355,6 +355,18 @@ button { font-family: inherit; }
 /* خط‌چین جداکننده‌ی معنادار: مرز بین بخش‌های روز */
 .rule { border: 0; border-top: 1px dashed var(--line-2); margin: 14px 0; }
 
+/* ---------- تمرین آزاد، دوره و جبران ---------- */
+.practice-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.practice-row .btn { padding: 10px 6px; font-size: 12.5px; }
+.notice { background: #fbf3e2; border-color: #ecdcb9; }
+.notice b { color: #6d4c10; }
+.task.carry { border-color: #ecdcb9; background: #fdf8ee; }
+.chip.gold { background: #fbf0d6; color: #7a5410; border-color: #e9d6a8; }
+.sheet-card input[type="time"] {
+  padding: 9px; border: 1px solid var(--line-2); border-radius: 11px;
+  font-family: inherit; font-size: 14px; background: #fbfbfc; color: var(--ink);
+}
+
 /* ---------- راهنما ---------- */
 .help-lead { font-size: 13.5px; color: var(--ink-2); line-height: 1.95; }
 .help-list { margin: 8px 0 0; padding-inline-start: 18px; font-size: 13px; line-height: 2; color: var(--ink-2); }
