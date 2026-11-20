@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">۳۰۰۰ سوال</string>
+    <string name="title_activity_main">۳۰۰۰ سوال</string>
+    <string name="package_name">ir.soalat.bank3000</string>
+    <string name="custom_url_scheme">ir.soalat.bank3000</string>
+</resources>

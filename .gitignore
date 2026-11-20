@@ -16,3 +16,10 @@ bermuda/game/android/local.properties
 bermuda/game/android/app/src/main/assets/public/
 bermuda/survival/android/assets/
 bermuda/survival/.build/
+
+# soalat-bank-3000 — خروجی‌های بازتولیدشدنی
+soalat-bank-3000/mobile/android/build/
+soalat-bank-3000/mobile/android/app/build/
+soalat-bank-3000/mobile/android/local.properties
+soalat-bank-3000/mobile/www/
+soalat-bank-3000/mobile/android/app/src/main/assets/public/
