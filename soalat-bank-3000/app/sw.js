@@ -1,5 +1,5 @@
 /* درهم‌سازی و کش آفلاین اپ ۱۷۰ روزه */
-const V = 'sb-v3';
+const V = 'sb-v4';
 const SHELL = [
   '/',
   '/index.html',

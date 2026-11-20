@@ -3967,3 +3967,1219 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: سواد علمی، ارزیابی روش و زمینه را شامل می‌شود.
 
+— بخش بیست‌وششم: واژگان آکادمیک و هم‌آیندها —
+۴۹۱) معنای واژهٔ «coherent» در متن آکادمیک کدام است؟
+   ۱. منسجم و پیوسته
+   ۲. متناقض
+   ۳. سطحی
+   ۴. تصادفی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: coherent یعنی اجزا منطقاً به هم پیوسته‌اند؛ در نقد مقاله می‌گویند استدلال باید منسجم باشد، نه فقط بندهای جدا.
+
+۴۹۲) «empirical evidence» به چه معناست؟
+   ۱. شواهد تجربی و مبتنی بر مشاهده
+   ۲. شواهد نظری محض
+   ۳. نظر شخصی
+   ۴. متن قانون
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: empirical به داده و مشاهده اشاره دارد؛ در برابر آن، conceptual یا theoretical قرار می‌گیرد.
+
+۴۹۳) معنای «to substantiate a claim» چیست؟
+   ۱. ادعا را با شواهد پشتیبانی کردن
+   ۲. ادعا را رد کردن
+   ۳. ادعا را تکرار کردن
+   ۴. ادعا را نادیده گرفتن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: substantiate یعنی پشتوانهٔ مستند آوردن؛ پژوهشگر باید ادعای خود را با داده یا استدلال معتبر مستند کند.
+
+۴۹۴) «confounding variable» چه معنایی دارد؟
+   ۱. متغیر مخدوش‌کننده که رابطهٔ ظاهری می‌سازد
+   ۲. متغیر وابسته
+   ۳. متغیر اسمی
+   ۴. متغیر ثابت
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این متغیر هم بر مستقل و هم بر وابسته اثر می‌گذارد و می‌تواند رابطه را جعلی نشان دهد؛ کنترل آن در طراحی پژوهش مهم است.
+
+۴۹۵) معنای «prevalent» کدام است؟
+   ۱. رایج و گسترده
+   ۲. نادر
+   ۳. موقت
+   ۴. خطرناک
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: prevalent بر شیوع و گستردگی دلالت دارد؛ در متن‌های سلامت با prevalence (شیوع) هم‌خانواده است.
+
+۴۹۶) «to infer» یعنی…
+   ۱. نتیجه‌گیری کردن از شواهد
+   ۲. نقل قول کردن
+   ۳. ترجمه کردن
+   ۴. خلاصه کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: inference استنباط از داده است؛ با imply (دلالت کردن) اشتباه نشود، زیرا جهت استدلال متفاوت است.
+
+۴۹۷) «robust findings» چه یافته‌هایی هستند؟
+   ۱. یافته‌های مقاوم و پایدار در برابر تغییر شرایط تحلیل
+   ۲. یافته‌های ضعیف
+   ۳. یافته‌های توصیفی
+   ۴. یافته‌های تأییدنشده
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: robustness با تحلیل حساسیت سنجیده می‌شود؛ یافتهٔ مقاوم با تغییر مدل یا نمونه به‌هم نمی‌ریزد.
+
+۴۹۸) معنای «to attribute» در جملهٔ پژوهشی چیست؟
+   ۱. نسبت دادن
+   ۲. اندازه‌گیری
+   ۳. حذف کردن
+   ۴. تکرار کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: attribution یعنی نسبت‌دادن یک اثر یا ویژگی به عامل مشخص؛ در استنباط علّی باید با احتیاط انجام شود.
+
+۴۹۹) «underlying assumption» به چه معناست؟
+   ۱. فرض بنیادین و نهفته
+   ۲. نتیجهٔ نهایی
+   ۳. داده خام
+   ۴. نمونهٔ آماری
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: فرض‌های زیربنایی اغلب بیان نمی‌شوند اما اعتبار نتیجه به آن‌ها وابسته است؛ نقد خوب، همین فرض‌ها را آشکار می‌کند.
+
+۵۰۰) معنای «to undermine» کدام است؟
+   ۱. تضعیف کردن
+   ۲. تقویت کردن
+   ۳. اثبات کردن
+   ۴. خلاصه کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: undermine یعنی سست‌کردن پایهٔ یک استدلال یا اعتبار؛ شواهد ناهمسو می‌تواند ادعایی را تضعیف کند.
+
+۵۰۱) «plausible explanation» چه توضیحی است؟
+   ۱. توضیحی باورپذیر و سازگار با شواهد
+   ۲. توضیح اثبات‌شده
+   ۳. توضیح ناممکن
+   ۴. توضیح رسمی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: plausible بر پذیرفتنی بودن دلالت دارد نه اثبات؛ در نوشتار علمی برای بیان احتمال معقول به کار می‌رود.
+
+۵۰۲) «to operationalize a concept» یعنی…
+   ۱. مفهوم را به شاخص‌های قابل اندازه‌گیری تبدیل کردن
+   ۲. مفهوم را حذف کردن
+   ۳. مفهوم را ترجمه کردن
+   ۴. مفهوم را نقل کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: عملیاتی‌سازی، پل میان نظریه و داده است؛ بدون آن، سنجش مفهوم مبهم می‌ماند.
+
+۵۰۳) معنای «heterogeneous» کدام است؟
+   ۱. ناهمگون
+   ۲. همگن
+   ۳. یکسان
+   ۴. محدود
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: heterogeneous بر تنوع و ناهمسانی دلالت دارد؛ نمونهٔ ناهمگون واریانس بیشتر و نیاز به حجم بزرگ‌تری دارد.
+
+۵۰۴) «to corroborate» یعنی…
+   ۱. تأیید و تقویت با شواهد مستقل
+   ۲. رد کردن
+   ۳. تغییر دادن
+   ۴. پنهان کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: corroboration یعنی یافته با منبع یا روش دیگری تأیید شود؛ همین منطق پشت مثلث‌سازی است.
+
+۵۰۵) «a confounding effect» در نقد روش‌شناختی چه معنایی دارد؟
+   ۱. اثر مخدوش‌کنندهٔ یک عامل ناخواسته
+   ۲. اثر اصلی متغیر مستقل
+   ۳. خطای محاسبه
+   ۴. اثر تصادفی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: وقتی اثر مشاهده‌شده با عامل سوم آمیخته شود، نسبت‌دادن آن به متغیر اصلی نادرست است.
+
+۵۰۶) معنای «to generalize findings» چیست؟
+   ۱. تعمیم یافته‌ها به جامعه یا موقعیت‌های دیگر
+   ۲. خلاصه کردن مقاله
+   ۳. تکرار آزمایش
+   ۴. تغییر نمونه
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: تعمیم‌پذیری به طراحی نمونه و زمینه وابسته است؛ یافتهٔ یک مطالعهٔ موردی را نمی‌توان بی‌قید به کل جامعه نسبت داد.
+
+۵۰۷) «literature review» چه بخشی از پژوهش است؟
+   ۱. مرور نظام‌مند پژوهش‌های پیشین برای تعیین شکاف دانش
+   ۲. فهرست منابع
+   ۳. نتیجه‌گیری
+   ۴. روش گردآوری داده
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: مرور ادبیات جایگاه پژوهش را مشخص می‌کند و از تکرار بی‌فایده جلوگیری می‌سازد؛ مرور ضعیف، پرسش پژوهش را بی‌جهت می‌کند.
+
+۵۰۸) «to be consistent with» یعنی…
+   ۱. سازگار بودن با
+   ۲. مخالف بودن با
+   ۳. مستقل بودن از
+   ۴. جایگزین بودن برای
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: سازگاری با یافته‌های پیشین یکی از معیارهای ارزیابی نتیجه است؛ اما سازگاری، اثبات درستی نیست.
+
+۵۰۹) معنای «scarce resources» کدام است؟
+   ۱. منابع کمیاب
+   ۲. منابع فراوان
+   ۳. منابع انسانی
+   ۴. منابع مالی دولتی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: scarcity پایهٔ تحلیل اقتصادی و انتخاب است؛ کمیابی نسبی به نیاز و فناوری وابسته است.
+
+۵۱۰) «to mitigate» یعنی…
+   ۱. کاهش دادن شدت یا اثر
+   ۲. افزایش دادن
+   ۳. اندازه‌گیری کردن
+   ۴. نادیده گرفتن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: mitigation در سیاست اقلیم و مدیریت خطر به کاهش اثر اشاره دارد؛ با adaptation (سازگاری) متفاوت است.
+
+۵۱۱) «a rigorous method» چه روشی است؟
+   ۱. روش دقیق و سخت‌گیرانه
+   ۲. روش ساده
+   ۳. روش سریع
+   ۴. روش کیفی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: rigor به دقت در طراحی، اجرا و گزارش اشاره دارد؛ روش سخت‌گیرانه خطاها و سوگیری‌ها را کم می‌کند.
+
+۵۱۲) معنای «to yield results» چیست؟
+   ۱. به نتایج رسیدن و تولید کردن
+   ۲. نتایج را رد کردن
+   ۳. داده جمع کردن
+   ۴. مقاله نوشتن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: yield در نوشتار علمی به تولید یافته یا خروجی اشاره دارد؛ تحلیل جدید می‌تواند نتایج متفاوتی به دست دهد.
+
+۵۱۳) «sampling bias» چه معنایی دارد؟
+   ۱. سوگیری در انتخاب نمونه که نتیجه را مخدوش می‌کند
+   ۲. خطای محاسبه
+   ۳. حجم نمونهٔ کم
+   ۴. خطای ورود داده
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: اگر انتخاب نمونه نظام‌مند باشد، برآورد به سمت گروه‌های نمایندگی‌شده می‌رود؛ حجم زیاد هم این سوگیری را جبران نمی‌کند.
+
+۵۱۴) معنای «to account for» در متن علمی چیست؟
+   ۱. توضیح دادن یا در نظر گرفتن
+   ۲. شمارش کردن
+   ۳. حذف کردن
+   ۴. مقایسه کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت در مدل‌سازی یعنی کنترل یا تبیین یک عامل؛ «accounting for age» یعنی اثر سن را در نظر گرفتن.
+
+۵۱۵) «a striking pattern» چه الگویی است؟
+   ۱. الگویی چشمگیر و برجسته
+   ۲. الگویی ضعیف
+   ۳. الگویی تصادفی
+   ۴. الگویی معمول
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: striking بر برجستگی یافته دلالت دارد؛ در نگارش علمی بهتر است با داده و اندازهٔ اثر پشتیبانی شود.
+
+۵۱۶) «to replicate a study» یعنی…
+   ۱. تکرار مطالعه با همان یا روش مشابه
+   ۲. نقد مطالعه
+   ۳. خلاصهٔ مطالعه
+   ۴. ترجمهٔ مطالعه
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: تکرار برای اعتبارسنجی یافته ضروری است؛ replication crisis اشاره به شکست تکرار بسیاری از نتایج دارد.
+
+۵۱۷) معنای «in the long run» کدام است؟
+   ۱. در بلندمدت
+   ۲. در کوتاه‌مدت
+   ۳. به‌طور ناگهانی
+   ۴. در گذشته
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت برای تمایز پیامدهای کوتاه و بلند به کار می‌رود؛ سیاستی که در کوتاه‌مدت سود دارد می‌تواند در بلندمدت هزینه بسازد.
+
+۵۱۸) «to be prone to bias» یعنی…
+   ۱. مستعد سوگیری بودن
+   ۲. مصون از سوگیری بودن
+   ۳. بی‌طرف بودن
+   ۴. دقیق بودن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: prone to به احتمال بالای وقوع اشاره دارد؛ پرسش‌های حساس و نمونه‌های خودگزین مستعد سوگیری‌اند.
+
+۵۱۹) «a trade-off» چه معنایی دارد؟
+   ۱. موازنه و بده‌بستان میان دو گزینه
+   ۲. توافق کامل
+   ۳. معاملهٔ تجاری
+   ۴. تغییر ناگهانی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: trade-off یعنی بهبود یک بُعد به قیمت بدترشدن بُعد دیگر؛ مثلاً دقت بیشتر در برابر هزینهٔ بالاتر.
+
+۵۲۰) معنای «to underpin» چیست؟
+   ۱. زیربنای چیزی بودن و پشتیبانی کردن
+   ۲. تخریب کردن
+   ۳. اندازه‌گیری کردن
+   ۴. جایگزین کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: underpin بر پایه و بنیاد دلالت دارد؛ نظریه می‌تواند زیربنای فرضیه‌های تجربی باشد.
+
+۵۲۱) «a nuanced argument» چه استدلالی است؟
+   ۱. استدلالی با ظرافت و توجه به جزئیات و تفاوت‌ها
+   ۲. استدلالی ساده و یک‌خطی
+   ۳. استدلالی متناقض
+   ۴. استدلالی احساسی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: nuance به تفاوت‌های ظریف اشاره دارد؛ استدلال ظریف از تعمیم‌های خام پرهیز می‌کند و شرط‌ها را می‌بیند.
+
+۵۲۲) «to be subject to change» یعنی…
+   ۱. در معرض تغییر بودن
+   ۲. تغییرناپذیر بودن
+   ۳. تغییر دادن
+   ۴. مقاومت کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: subject to به وابستگی و امکان‌پذیری اشاره دارد؛ سیاست‌ها و برآوردها در معرض تغییر شرایط‌اند.
+
+۵۲۳) معنای «a substantial difference» کدام است؟
+   ۱. تفاوتی چشمگیر و قابل توجه
+   ۲. تفاوتی ناچیز
+   ۳. تفاوتی کیفی
+   ۴. تفاوتی تصادفی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: substantial بر اهمیت و بزرگی دلالت دارد؛ در تفسیر یافته باید از معناداری آماری جدا شود.
+
+۵۲۴) «to draw a distinction» یعنی…
+   ۱. تمایز قائل شدن
+   ۲. نتیجه‌گیری کردن
+   ۳. مقایسه کردن
+   ۴. حذف کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت در نگارش تحلیلی برای جداکردن دو مفهوم به کار می‌رود، مانند تمایز جنس و جنسیت.
+
+۵۲۵) «findings are inconclusive» چه معنایی دارد؟
+   ۱. یافته‌ها قطعی نیستند و نتیجه‌گیری روشن نمی‌دهند
+   ۲. یافته‌ها قطعی‌اند
+   ۳. یافته‌ها منتشر شده‌اند
+   ۴. یافته‌ها تکرار شده‌اند
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: inconclusive نشان‌دهندهٔ نبود شواهد کافی یا نتایج متناقض است؛ گزارش صادقانهٔ آن بهتر از نتیجه‌گیری اغراق‌آمیز است.
+
+۵۲۶) «a causal mechanism» چه چیزی است؟
+   ۱. سازوکاری که توضیح می‌دهد چگونه علت به معلول می‌رسد
+   ۲. همبستگی دو متغیر
+   ۳. خطای اندازه‌گیری
+   ۴. نمونهٔ آماری
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: شناخت سازوکار از همبستگی فراتر می‌رود؛ پژوهش کیفی و نظریه در آشکارکردن آن نقش دارند.
+
+۵۲۷) معنای «to be embedded in» چیست؟
+   ۱. نهفته و جای‌گرفته در بستری بزرگ‌تر
+   ۲. جدا از بستر
+   ۳. حذف‌شده از متن
+   ۴. جایگزین بستر
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت بر زمینه‌مندی دلالت دارد؛ کنش اقتصادی در نهادها و روابط اجتماعی نهفته است.
+
+۵۲۸) «a counterintuitive result» چه نتیجه‌ای است؟
+   ۱. نتیجه‌ای خلاف انتظار شهودی
+   ۲. نتیجه‌ای مورد انتظار
+   ۳. نتیجه‌ای تکراری
+   ۴. نتیجه‌ای آماری
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: نتیجهٔ خلاف انتظار می‌تواند ارزش نظری داشته باشد اما نیازمند بررسی خطا و تکرار است.
+
+۵۲۹) «to narrow down the sample» یعنی…
+   ۱. محدود و کوچک‌تر کردن نمونه بر پایهٔ معیارها
+   ۲. گسترش نمونه
+   ۳. حذف پرسشنامه
+   ۴. تغییر روش تحلیل
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: محدودکردن نمونه با معیارهای ورود و خروج انجام می‌شود تا همگنی و تناسب با پرسش تأمین شود؛ محدودیت بیش از حد، تعمیم‌پذیری را کم می‌کند.
+
+۵۳۰) جمع‌بندی واژگان آکادمیک کدام است؟
+   ۱. واژگان تخصصی باید در بافت جمله و همراه با هم‌آیندهای رایج آموخته شوند
+   ۲. حفظ فهرست واژه کافی است
+   ۳. ترجمهٔ تک‌واژه‌ای کافی است
+   ۴. واژگان در آزمون اهمیت ندارند
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: یادگیری در بافت، معنا و کاربرد را هم‌زمان می‌سازد؛ همین روش برای درک مطلب و ترجمهٔ دقیق ضروری است.
+— بخش بیست‌وهفتم: دستور زبان؛ زمان‌ها، وجه و ساختارها —
+۵۳۱) کدام جمله برای بیان یک واقعیت علمی ثابت درست است؟
+   ۱. Water boils at 100°C.
+   ۲. Water is boiling at 100°C.
+   ۳. Water boiled at 100°C every day.
+   ۴. Water has boiled at 100°C tomorrow.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: حال ساده برای حقایق کلی و قوانین علمی به کار می‌رود؛ حال استمراری به وضعیت موقت اشاره دارد.
+
+۵۳۲) جملهٔ «The study ___ in 2019.» با کدام گزینه کامل می‌شود؟
+   ۱. was published
+   ۲. has been published
+   ۳. is published
+   ۴. publishes
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: زمان مشخص گذشته با مجهول ماضی ساده می‌آید؛ حال کامل با زمانِ نامشخص یا اثر تا حال مناسب است.
+
+۵۳۳) «By the time the survey ended, most respondents ___ the questionnaire.»
+   ۱. had completed
+   ۲. completed
+   ۳. have completed
+   ۴. complete
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: گذشته کامل برای رخدادی به کار می‌رود که پیش از رخداد گذشتهٔ دیگری کامل شده است؛ نشانهٔ آن «by the time» است.
+
+۵۳۴) تفاوت «will» و «be going to» در بیان آینده چیست؟
+   ۱. will برای تصمیم لحظه‌ای و پیش‌بینی و be going to برای قصد پیشین و شواهد حاضر
+   ۲. هیچ تفاوتی ندارند
+   ۳. will فقط برای گذشته است
+   ۴. be going to برای عادت به کار می‌رود
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این تمایز در آزمون‌ها رایج است: «Look at those clouds; it is going to rain» شاهد حاضر و «I will help you» تصمیم آنی است.
+
+۵۳۵) کدام جمله مجهول درست است؟
+   ۱. The data were analyzed using SPSS.
+   ۲. The data analyzed using SPSS.
+   ۳. The data was analyzing SPSS.
+   ۴. The data analyze by SPSS.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: در نوشتار علمی مجهول رایج است زیرا کنندهٔ کار اهمیت کمتری دارد؛ ساختار درست مجهول ماضی «were analyzed by» است.
+
+۵۳۶) گزارش گفتار در جملهٔ «He said, 'I am busy.'» کدام است؟
+   ۱. He said he was busy.
+   ۲. He said he is busy.
+   ۳. He says he was busy.
+   ۴. He said I am busy.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: در نقل قول غیرمستقیم با فعل گذشته، زمان یک پله عقب می‌رود؛ ضمیر نیز با گوینده هماهنگ می‌شود.
+
+۵۳۷) «If it ___ tomorrow, we will postpone the fieldwork.»
+   ۱. rains
+   ۲. will rain
+   ۳. rained
+   ۴. would rain
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: در شرطی نوع اول، جملهٔ if حال ساده و جملهٔ اصلی آینده است؛ will در بند شرط نمی‌آید.
+
+۵۳۸) «If I had more time, I ___ more interviews.»
+   ۱. would conduct
+   ۲. will conduct
+   ۳. conducted
+   ۴. have conducted
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: شرطی نوع دوم وضعیت خلاف واقع حاضر را با گذشتهٔ ساده در بند شرط و would در بند اصلی بیان می‌کند.
+
+۵۳۹) «If they had coded the data carefully, the error ___ .»
+   ۱. would not have occurred
+   ۲. would not occur
+   ۳. will not occur
+   ۴. did not occur
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: شرطی نوع سوم برای گذشتهٔ خلاف واقع است: had + p.p. در بند شرط و would have + p.p. در بند اصلی.
+
+۵۴۰) کدام جمله الزام اخلاقی پژوهشگر را بیان می‌کند؟
+   ۱. Researchers must obtain informed consent.
+   ۲. Researchers might obtain informed consent.
+   ۳. Researchers could obtain informed consent.
+   ۴. Researchers may have obtained informed consent.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: must الزام قوی است؛ might و could احتمال و may have done احتمال گذشته را بیان می‌کنند.
+
+۵۴۱) «The results ___ be due to sampling error, but further analysis is needed.»
+   ۱. may
+   ۲. must
+   ۳. should
+   ۴. will
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: may احتمال را بیان می‌کند و با احتیاط علمی هم‌خوان است؛ must قطعیت و should توصیه را می‌رساند.
+
+۵۴۲) کدام جملهٔ موصولی غیرتوصیفی (non-defining) درست است؟
+   ۱. Weber, who wrote about bureaucracy, influenced organization studies.
+   ۲. Weber who wrote about bureaucracy influenced organization studies.
+   ۳. Weber, that wrote about bureaucracy, influenced organization studies.
+   ۴. Weber which wrote about bureaucracy influenced organization studies.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: بند غیرتوصیفی با کاما و who می‌آید و اطلاع اضافی می‌دهد؛ that در بند غیرتوصیفی به کار نمی‌رود.
+
+۵۴۳) «The theory ___ by Durkheim remains influential.»
+   ۱. developed
+   ۲. developing
+   ۳. develops
+   ۴. develop
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: عبارت وصفی کوتاه‌شده «developed by» معادل «which was developed by» است؛ ساختار کاهش‌یافته در نوشتار آکادمیک رایج است.
+
+۵۴۴) کدام گزینه درست است؟ «The researchers decided ___ the sample.»
+   ۱. to expand
+   ۲. expanding
+   ۳. expand
+   ۴. expanded
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: decide با مصدر to می‌آید؛ افعالی چون suggest و avoid با gerund و افعالی چون want با to همراه‌اند.
+
+۵۴۵) «She is interested ___ social mobility.»
+   ۱. in
+   ۲. on
+   ۳. at
+   ۴. for
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: interested in ترکیب ثابت است؛ حرف اضافه پس از صفت را باید همراه واژه آموخت، نه با قاعدهٔ کلی.
+
+۵۴۶) «The findings depend ___ the quality of the data.»
+   ۱. on
+   ۲. of
+   ۳. to
+   ۴. with
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: depend on ترکیب ثابت است؛ همین هم‌آیند در نوشتار آکادمیک بسیار پرکاربرد است.
+
+۵۴۷) کدام جمله کاربرد حرف تعریف درست دارد؟
+   ۱. The study examined the effects of inequality.
+   ۲. Study examined effects of the inequality.
+   ۳. A study examined effects of an inequality.
+   ۴. The study examined a effects of inequality.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: اشاره به مطالعهٔ مشخص با the و اشاره به مفهوم کلی با the یا بدون حرف تعریف جمع می‌آید؛ «a effects» نادرست است.
+
+۵۴۸) تطابق فاعل و فعل در کدام جمله درست است؟
+   ۱. The number of respondents was small.
+   ۲. The number of respondents were small.
+   ۳. A number of respondents was small.
+   ۴. The numbers of respondent was small.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: فاعل «the number» مفرد است؛ در «a number of» فاعل جمع شمرده می‌شود. این تمایز در آزمون‌ها مکرر است.
+
+۵۴۹) کدام اسم غیرقابل شمارش است؟
+   ۱. information
+   ۲. interview
+   ۳. respondent
+   ۴. variable
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: information غیرقابل شمارش است و «informations» نادرست است؛ برای شمارش از piece of information استفاده می‌شود.
+
+۵۵۰) شکل صحیح تفضیلی کدام است؟
+   ۱. more significant
+   ۲. significanter
+   ۳. most significant
+   ۴. significant more
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: صفت‌های چندبخشی با more تفضیل می‌سازند؛ most برای عالی است و پسوند -er برای صفت‌های کوتاه.
+
+۵۵۱) جای قید تکرار در جملهٔ درست کجاست؟
+   ۱. The results usually support the hypothesis.
+   ۲. Usually the results support usually the hypothesis.
+   ۳. The results support usually the hypothesis.
+   ۴. The usually results support the hypothesis.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: قید تکرار پیش از فعل اصلی و پس از فعل to be می‌آید؛ جای نادرست آن جمله را غیرطبیعی می‌کند.
+
+۵۵۲) کدام جمله وارونگی (inversion) درست دارد؟
+   ۱. Rarely have researchers faced such a challenge.
+   ۲. Rarely researchers have faced such a challenge.
+   ۳. Rarely faced researchers have such a challenge.
+   ۴. Researchers rarely have faced such challenge.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: با قید منفی در آغاز جمله، فعل کمکی پیش از فاعل می‌آید؛ همین ساختار در نوشتار رسمی برای تأکید به کار می‌رود.
+
+۵۵۳) ساختار «It was Weber who...» چه نوع تأکیدی است؟
+   ۱. جملهٔ شکافته (cleft) برای برجسته‌کردن یک عنصر
+   ۲. جملهٔ پرسشی
+   ۳. جملهٔ شرطی
+   ۴. جملهٔ مجهول
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: cleft sentence بخشی از جمله را برجسته می‌کند؛ نمونهٔ دیگر «What matters is...» است.
+
+۵۵۴) کدام جمله وجه التزامی (subjunctive) درست دارد؟
+   ۱. The committee recommended that the study be replicated.
+   ۲. The committee recommended that the study is replicated.
+   ۳. The committee recommended that the study was replicated.
+   ۴. The committee recommended that the study will replicated.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پس از افعالی چون recommend و suggest، شکل پایهٔ فعل (be) در بند that می‌آید؛ همین ساختار در انگلیسی رسمی آمریکایی رایج است.
+
+۵۵۵) «I wish I ___ more time for the analysis.»
+   ۱. had
+   ۲. have
+   ۳. will have
+   ۴. am having
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: wish با گذشتهٔ ساده، خلاف واقع حاضر را بیان می‌کند؛ با past perfect به گذشتهٔ خلاف واقع اشاره می‌شود.
+
+۵۵۶) تفاوت «used to» و «be used to» چیست؟
+   ۱. اولی عادت گذشته و دومی عادت‌کردن به چیزی در حال
+   ۲. یکی هستند
+   ۳. اولی آینده و دومی گذشته
+   ۴. دومی فقط برای اشیا است
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: «used to do» عادت گذشته و «be used to doing» خوگرفتن است؛ اشتباه این دو در آزمون‌ها رایج است.
+
+۵۵۷) «The project has been running ___ 2020.»
+   ۱. since
+   ۲. for
+   ۳. from
+   ۴. during
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: since با نقطهٔ آغاز و for با مدت به کار می‌رود؛ «for 2020» نادرست است.
+
+۵۵۸) کدام جمله تضاد را درست بیان می‌کند؟
+   ۱. Despite the small sample, the results were significant.
+   ۲. Despite of the small sample, the results were significant.
+   ۳. Although the small sample, the results were significant.
+   ۴. Despite the sample was small, the results were significant.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: despite با اسم و although با جمله می‌آید؛ «despite of» نادرست است و از خطاهای رایج نگارش است.
+
+۵۵۹) کدام جمله علت را درست بیان می‌کند؟
+   ۱. The survey was shortened because the response rate was low.
+   ۲. The survey was shortened because of the response rate was low.
+   ۳. The survey was shortened because of low.
+   ۴. Because the response rate low, the survey shortened.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: because + جمله و because of + اسم می‌آید؛ انتخاب نادرست، ساختار جمله را می‌شکند.
+
+۵۶۰) «Neither the students nor the teacher ___ aware of the change.»
+   ۱. was
+   ۲. were
+   ۳. have been
+   ۴. are
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: با neither...nor فعل با نزدیک‌ترین فاعل هماهنگ می‌شود؛ اینجا teacher مفرد است.
+
+۵۶۱) «She hardly ever misses a deadline, ___?»
+   ۱. does she
+   ۲. doesn't she
+   ۳. is she
+   ۴. isn't she
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: hardly قید منفی است و پرسش پیوسته مثبت می‌گیرد؛ همین قاعده برای never و rarely هم برقرار است.
+
+۵۶۲) معنای فعل عبارتی «to carry out» در متن پژوهشی چیست؟
+   ۱. انجام دادن
+   ۲. حمل کردن
+   ۳. لغو کردن
+   ۴. ثبت کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: carry out a study یعنی اجرای پژوهش؛ این فعل عبارتی در چکیدهٔ مقالات بسیار پرکاربرد است.
+
+۵۶۳) «nominalization» در نگارش آکادمیک چه کاری می‌کند؟
+   ۱. فعل یا صفت را به اسم تبدیل می‌کند تا سبک رسمی‌تر شود
+   ۲. جمله را کوتاه می‌کند
+   ۳. فعل را حذف می‌کند
+   ۴. جمله را پرسشی می‌کند
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: مثلاً «we analyzed» به «the analysis of» تبدیل می‌شود؛ افراط در آن متن را مبهم و سنگین می‌کند، بنابراین باید متعادل باشد.
+
+۵۶۴) کدام جمله ساختار موازی درست دارد؟
+   ۱. The program aims to reduce poverty, improve education, and strengthen local institutions.
+   ۲. The program aims to reduce poverty, improving education, and strength of institutions.
+   ۳. The program aims reducing poverty, to improve education, and institutions.
+   ۴. The program aims to reduce poverty, improve education, and strengthening institutions.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: اجزای فهرست باید شکل دستوری یکسان داشته باشند؛ شکستن موازی‌سازی، خوانایی و دقت را کاهش می‌دهد.
+
+۵۶۵) «Having collected the data, the researcher began the analysis.» چه ساختاری است؟
+   ۱. عبارت وصفی مشارکتی با فاعل مشترک
+   ۲. جملهٔ مجهول
+   ۳. جملهٔ شرطی
+   ۴. نقل قول
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: فاعل هر دو بخش یکی است؛ اگر فاعل‌ها متفاوت باشند، «dangling modifier» رخ می‌دهد و جمله بی‌معنا می‌شود.
+
+۵۶۶) کدام جمله خطای «comma splice» دارد؟
+   ۱. The sample was small, the results were tentative.
+   ۲. The sample was small; the results were tentative.
+   ۳. The sample was small, so the results were tentative.
+   ۴. Because the sample was small, the results were tentative.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پیوند دو جملهٔ کامل تنها با کاما نادرست است؛ نقطه‌ویرگول، حرف ربط یا تقسیم به دو جمله لازم است.
+
+۵۶۷) کاربرد آپاستروف در کدام گزینه درست است؟
+   ۱. The respondents' answers were anonymous.
+   ۲. The respondents answers were anonymous.
+   ۳. The respondent's answers were anonymous for all.
+   ۴. The respondents's answers were anonymous.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: مالکیت جمع باقاعده با آپاستروف پس از s ساخته می‌شود؛ «respondents's» نادرست است.
+
+۵۶۸) کدام عبارت برای نگارش آکادمیک مناسب‌تر است؟
+   ۱. The findings suggest that...
+   ۲. I guess that...
+   ۳. It's kinda clear that...
+   ۴. Everybody knows that...
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: نوشتار علمی از بیان محتاط و مستند استفاده می‌کند؛ عبارات محاوره‌ای و تعمیم‌های مطلق اعتبار متن را کم می‌کنند.
+
+۵۶۹) نقش «however» در متن چیست؟
+   ۱. پیوند تضاد میان دو ایده
+   ۲. بیان علت
+   ۳. بیان مثال
+   ۴. بیان نتیجه
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: however تضاد می‌سازد و با while و nevertheless هم‌خانواده است؛ استفادهٔ نادرست آن از خطاهای رایج پیوندی است.
+
+۵۷۰) جمع‌بندی دستور زبان کدام است؟
+   ۱. دقت در زمان، تطابق و پیوند جمله‌ها، پایهٔ نگارش آکادمیک است
+   ۲. حفظ قاعده بدون تمرین کافی است
+   ۳. ترجمهٔ واژه‌به‌واژه کافی است
+   ۴. دستور در آزمون اهمیت ندارد
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: خطاهای دستوری معنای جمله را تغییر می‌دهند؛ تمرین در بافت متن، یادگیری قاعده را پایدار می‌کند.
+— بخش بیست‌وهشتم: درک مطلب؛ متن‌های جامعه‌شناسی —
+
+Passage 1: Sociologists have long debated whether work shapes identity or merely reflects it. For Durkheim, occupational roles were a source of moral integration; for Marx, they were a site of alienation. Contemporary research suggests that both claims capture part of the picture: jobs provide meaning when they allow autonomy and recognition, but they can also erode self-worth when workers are treated as interchangeable units.
+
+۵۷۱) What is the main topic of the passage?
+   ۱. The relationship between work and identity
+   ۲. The history of factories
+   ۳. Wage inequality in Europe
+   ۴. The decline of religion
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پاراگراف میان دو دیدگاه دربارهٔ نسبت کار و هویت جمع‌بندی می‌کند؛ سایر گزینه‌ها موضوع اصلی نیستند.
+
+۵۷۲) According to the passage, Durkheim viewed occupational roles as…
+   ۱. a source of moral integration
+   ۲. a cause of alienation
+   ۳. irrelevant to identity
+   ۴. a purely economic arrangement
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن صریحاً می‌گوید از نظر دورکیم نقش‌های شغلی منبع انسجام اخلاقی بودند.
+
+۵۷۳) The word "erode" in the passage is closest in meaning to…
+   ۱. weaken
+   ۲. strengthen
+   ۳. measure
+   ۴. replace
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: erode به فرسایش و تضعیف تدریجی اشاره دارد؛ در جمله، تضعیف عزت نفس کارگران مقصود است.
+
+۵۷۴) What does contemporary research suggest?
+   ۱. Both earlier views capture part of the picture
+   ۲. Durkheim was entirely wrong
+   ۳. Work never affects identity
+   ۴. Alienation has disappeared
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن می‌گوید پژوهش معاصر نشان می‌دهد هر دو ادعا بخشی از تصویر را می‌گیرند.
+
+۵۷۵) According to the passage, work provides meaning when it offers…
+   ۱. autonomy and recognition
+   ۲. high wages only
+   ۳. long hours
+   ۴. job security only
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن استقلال و به‌رسمیت شناخته‌شدن را شرط معناداری کار می‌داند، نه دستمزد را به‌تنهایی.
+
+۵۷۶) The passage implies that treating workers as interchangeable units…
+   ۱. damages self-worth
+   ۲. increases autonomy
+   ۳. improves recognition
+   ۴. has no social effect
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ آخر می‌گوید چنین رفتاری می‌تواند عزت نفس را فرسوده کند؛ همین استنباط از متن قابل دفاع است.
+
+۵۷۷) Which word best describes the author's tone?
+   ۱. Balanced
+   ۲. Sarcastic
+   ۳. Angry
+   ۴. Indifferent
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: نویسنده دو دیدگاه را کنار هم می‌گذارد و جمع‌بندی میانی ارائه می‌کند؛ لحن متعادل است.
+
+۵۷۸) The phrase "capture part of the picture" means…
+   ۱. explain only one aspect of the phenomenon
+   ۲. take a photograph
+   ۳. completely prove a theory
+   ۴. reject all previous research
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت استعاری یعنی بخشی از واقعیت را نشان دادن، نه تبیین کامل.
+
+Passage 2: Cities grow through migration, but migration alone does not explain urban inequality. Housing markets, transport systems, and zoning rules determine who can live near jobs and services. Where these institutions exclude low-income groups, cities become spatially divided, and the disadvantages of one neighborhood are reinforced by the advantages of another.
+
+۵۷۹) What is the central argument of the passage?
+   ۱. Urban inequality depends on institutions as well as migration
+   ۲. Migration is the only cause of urban growth
+   ۳. Zoning rules are irrelevant
+   ۴. Cities are becoming more equal
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن می‌گوید مهاجرت به‌تنهایی نابرابری را توضیح نمی‌دهد و نهادها نقش تعیین‌کننده دارند.
+
+۵۸۰) According to the passage, which factors shape access to jobs and services?
+   ۱. Housing markets, transport, and zoning
+   ۲. Climate and geography only
+   ۳. Family size
+   ۴. Language only
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: سه عامل صریحاً در متن ذکر شده‌اند.
+
+۵۸۱) The word "exclude" is closest in meaning to…
+   ۱. keep out
+   ۲. include
+   ۳. support
+   ۴. measure
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: exclude یعنی بیرون گذاشتن و محروم کردن؛ در متن به گروه‌های کم‌درآمد اشاره دارد.
+
+۵۸۲) What happens when institutions exclude low-income groups?
+   ۱. Cities become spatially divided
+   ۲. Housing becomes cheaper everywhere
+   ۳. Migration stops
+   ۴. Transport improves automatically
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن نتیجه می‌گیرد که شهر از نظر فضایی تقسیم می‌شود.
+
+۵۸۳) The passage suggests that advantages and disadvantages are…
+   ۱. mutually reinforcing across neighborhoods
+   ۲. unrelated to space
+   ۳. equally distributed
+   ۴. temporary and random
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ آخر بر تقویت متقابل مزیت و محرومیت در محله‌های مختلف تأکید دارد.
+
+۵۸۴) Which of the following is NOT mentioned in the passage?
+   ۱. School curricula
+   ۲. Transport systems
+   ۳. Housing markets
+   ۴. Zoning rules
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: برنامهٔ درسی در متن نیامده است؛ سه مورد دیگر صریحاً ذکر شده‌اند.
+
+۵۸۵) The author's purpose is to…
+   ۱. explain the institutional roots of urban inequality
+   ۲. describe rural life
+   ۳. criticize migration
+   ۴. promote a specific city
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن ریشهٔ نهادی نابرابری شهری را توضیح می‌دهد و از توصیهٔ سیاستی مشخص پرهیز می‌کند.
+
+۵۸۶) The word "reinforced" implies that the two processes…
+   ۱. strengthen each other
+   ۲. cancel each other
+   ۳. are unrelated
+   ۴. are temporary
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: reinforce یعنی تقویت کردن؛ متن از تقویت متقابل مزیت و محرومیت سخن می‌گوید.
+
+Passage 3: Randomized experiments are often described as the gold standard for causal inference. Yet their strength depends on implementation: if participants do not comply, if attrition is selective, or if the treatment is delivered differently than planned, the estimate may be biased. For this reason, good evaluations combine experimental designs with careful process data.
+
+۵۸۷) Why are randomized experiments highly valued?
+   ۱. They support causal inference
+   ۲. They are cheap
+   ۳. They need no data
+   ۴. They avoid all bias
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن randomized experiments را استاندارد طلایی استنباط علّی می‌نامد.
+
+۵۸۸) According to the passage, which problem can bias estimates?
+   ۱. Selective attrition
+   ۲. Large samples
+   ۳. Careful measurement
+   ۴. Process data
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن سه مشکل را نام می‌برد: عدم پایبندی، ریزش گزینشی و اجرای متفاوت مداخله.
+
+۵۸۹) The word "comply" is closest in meaning to…
+   ۱. follow instructions
+   ۲. refuse
+   ۳. measure
+   ۴. randomize
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: comply یعنی پیروی کردن از دستور یا شرایط مداخله.
+
+۵۹۰) What do good evaluations combine, according to the author?
+   ۱. Experimental designs and process data
+   ۲. Surveys and interviews only
+   ۳. Theory and no data
+   ۴. Administrative records only
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ آخر صریح است: طرح آزمایشی همراه با دادهٔ فرایندی دقیق.
+
+۵۹۱) The phrase "gold standard" is used to indicate…
+   ۱. a highly respected benchmark
+   ۲. a currency system
+   ۳. an outdated method
+   ۴. a type of sample
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این اصطلاح استعاری به معیار برتر و پراعتبار اشاره دارد.
+
+۵۹۲) The author's attitude toward experiments can be described as…
+   ۱. supportive but cautious
+   ۲. completely dismissive
+   ۳. enthusiastic and uncritical
+   ۴. neutral and uninterested
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: نویسنده ارزش آزمایش را می‌پذیرد اما محدودیت‌های اجرایی آن را برجسته می‌کند.
+
+۵۹۳) Which statement would the author most likely agree with?
+   ۱. Design alone does not guarantee a valid estimate
+   ۲. Randomization solves every problem
+   ۳. Process data are unnecessary
+   ۴. Attrition is irrelevant
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پیام اصلی متن این است که کیفیت اجرا به‌اندازهٔ طراحی اهمیت دارد.
+
+Passage 4: Although women's educational attainment has risen sharply in many countries, their representation in senior management has not kept pace. Researchers point to several mechanisms: the unequal division of domestic labor, informal networks that exclude outsiders, and evaluation practices that reward self-promotion more than competence.
+
+۵۹۴) What contrast does the passage highlight?
+   ۱. Rising education versus slow progress in management
+   ۲. Falling education versus rising employment
+   ۳. Equal pay versus unequal schooling
+   ۴. Urban versus rural education
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ اول همین تضاد را بیان می‌کند.
+
+۵۹۵) Which mechanism is NOT mentioned?
+   ۱. Differences in cognitive ability
+   ۲. Unequal domestic labor
+   ۳. Exclusionary networks
+   ۴. Evaluation practices
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن سه سازوکار را نام می‌برد و تفاوت توانایی شناختی در آن نیست.
+
+۵۹۶) The phrase "kept pace" means…
+   ۱. advanced at the same rate
+   ۲. stopped completely
+   ۳. become faster
+   ۴. declined sharply
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: keep pace یعنی هم‌گام پیش رفتن؛ متن می‌گوید حضور managerial هم‌گام با آموزش بالا نرفته است.
+
+۵۹۷) According to the passage, evaluation practices may…
+   ۱. reward self-promotion over competence
+   ۲. ignore performance entirely
+   ۳. favor outsiders
+   ۴. reduce domestic labor
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ آخر همین نکته را می‌گوید.
+
+۵۹۸) The author's main purpose is to…
+   ۱. explain persistent inequality despite educational gains
+   ۲. criticize women's education
+   ۳. describe family law
+   ۴. compare countries' GDP
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن سازوکارهای تداوم نابرابری را با وجود پیشرفت آموزشی توضیح می‌دهد.
+
+Passage 5: Environmental policies are often justified by future benefits, yet their costs are paid today. This temporal mismatch makes political support fragile: voters notice higher prices immediately, while the avoided damage remains statistical and distant. Consequently, compensation measures and clear communication are as important as the policy instrument itself.
+
+۵۹۹) What problem does the passage describe?
+   ۱. Costs are immediate while benefits are distant
+   ۲. Environmental damage is always visible
+   ۳. Policies have no costs
+   ۴. Voters ignore prices
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن از ناهم‌زمانی هزینهٔ امروز و منفعت آینده سخن می‌گوید.
+
+۶۰۰) Why is political support fragile?
+   ۱. Because costs are felt now and benefits are statistical
+   ۲. Because policies are too cheap
+   ۳. Because damage is immediate
+   ۴. Because voters read too much data
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ دوم همین توضیح را می‌دهد.
+
+۶۰۱) The word "temporal" refers to…
+   ۱. time
+   ۲. space
+   ۳. money
+   ۴. law
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: temporal از زمان می‌آید؛ temporal mismatch یعنی ناهم‌زمانی.
+
+۶۰۲) What does the author recommend?
+   ۱. Compensation and clear communication
+   ۲. Abolishing environmental policy
+   ۳. Hiding costs from voters
+   ۴. Waiting for future generations
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ آخر جبران خسارت و ارتباط شفاف را هم‌ارز ابزار سیاستی می‌داند.
+
+۶۰۳) The phrase "avoided damage" refers to…
+   ۱. harm that does not occur because of the policy
+   ۲. damage that is ignored
+   ۳. cost of administration
+   ۴. statistical error
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: منفعت سیاست، آسیب پیشگیری‌شده است که ماهیتی آماری و دور دارد.
+
+۶۰۴) The passage implies that policy design must consider…
+   ۱. perceived fairness and timing of costs
+   ۲. only technical efficiency
+   ۳. only future benefits
+   ۴. international law only
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: متن نشان می‌دهد پذیرش سیاسی به احساس هزینه و انصاف وابسته است، نه فقط کارایی فنی.
+
+۶۰۵) جمع‌بندی درک مطلب کدام است؟
+   ۱. پاسخ‌ها را باید با ارجاع به جملهٔ متن و نه دانش پیشین تأیید کرد
+   ۲. حدس سریع کافی است
+   ۳. همهٔ گزینه‌ها معمولاً درست‌اند
+   ۴. متن را نباید کامل خواند
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: درک مطلب آزمونی، شواهد را از خود متن می‌گیرد؛ مرجع‌یابی جمله، دقت پاسخ را بالا می‌برد.
+— بخش بیست‌ونهم: ترجمه، کلوز و اصطلاحات آزمونی —
+
+Cloze A: Sociological research often begins with a puzzle. Researchers observe a pattern, (1) ___ a question, and then design a study. The quality of the answer depends heavily on the (2) ___ of the question. A vague question produces vague data, (3) ___ a precise one allows comparison. For this reason, many textbooks advise students to spend time on (4) ___ before collecting data. Careful planning rarely guarantees success, (5) ___ it makes failure easier to explain.
+
+۶۰۶) جای خالی (۱):
+   ۱. formulate
+   ۲. formulating
+   ۳. formulates
+   ۴. formulated
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: ساختار موازی «observe, formulate, design» شکل پایهٔ فعل می‌خواهد؛ گزینه‌های دیگر صورت‌های صرف‌شده‌اند و با زمان جمله هم‌خوان نیستند.
+
+۶۰۷) جای خالی (۲):
+   ۱. clarity
+   ۲. clear
+   ۳. clearly
+   ۴. clarify
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پس از حرف تعریف the و حرف اضافهٔ of به اسم نیاز است؛ clarity اسم است و بقیه صفت، قید و فعل‌اند.
+
+۶۰۸) جای خالی (۳):
+   ۱. whereas
+   ۲. because
+   ۳. therefore
+   ۴. unless
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جمله تضاد میان پرسش مبهم و دقیق را بیان می‌کند؛ whereas پیوند تضاد است.
+
+۶۰۹) جای خالی (۴):
+   ۱. formulation
+   ۲. formulating
+   ۳. to formulate
+   ۴. formulated
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پس از حرف اضافهٔ on به اسم یا gerund نیاز است؛ در اینجا formulation با معنای «صورت‌بندی پرسش» مناسب است.
+
+۶۱۰) جای خالی (۵):
+   ۱. but
+   ۲. so
+   ۳. because
+   ۴. or
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: جملهٔ دوم استثنا بر جملهٔ اول است؛ but این تضاد را بیان می‌کند.
+
+Cloze B: Surveys remain the most common tool in social research, yet they are easy to misuse. A poorly worded item can (1) ___ respondents toward a particular answer. Low response rates may introduce (2) ___, especially when certain groups are less likely to participate. Researchers therefore (3) ___ their instruments and report limitations honestly. When these steps are taken, survey data can still provide a (4) ___ picture of social life, (5) ___ they are interpreted with care.
+
+۶۱۱) جای خالی (۶):
+   ۱. bias
+   ۲. biased
+   ۳. biasing
+   ۴. biases
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پس از can به شکل پایهٔ فعل نیاز است؛ bias در اینجا فعل است و ساختار «bias somebody toward» درست است.
+
+۶۱۲) جای خالی (۷):
+   ۱. bias
+   ۲. biased
+   ۳. biases
+   ۴. biasing
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: پس از introduce به مفعول اسمی نیاز است؛ bias اسم غیرقابل شمارش در این معناست.
+
+۶۱۳) جای خالی (۸):
+   ۱. pilot
+   ۲. pilots
+   ۳. piloting
+   ۴. piloted
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: فاعل جمع researchers و ساختار حال ساده، شکل پایهٔ فعل می‌خواهد: pilot به معنای پیش‌آزمون گرفتن.
+
+۶۱۴) جای خالی (۹):
+   ۱. reliable
+   ۲. reliably
+   ۳. reliability
+   ۴. rely
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: صفت پیش از اسم picture می‌آید؛ reliability اسم و reliably قید است.
+
+۶۱۵) جای خالی (۱۰):
+   ۱. provided that
+   ۲. even though
+   ۳. in order to
+   ۴. as a result
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: عبارت «provided that» شرط می‌سازد: به شرط آنکه با احتیاط تفسیر شوند.
+
+۶۱۶) ترجمهٔ درست «The findings are consistent with previous research.» کدام است؟
+   ۱. یافته‌ها با پژوهش‌های پیشین سازگارند.
+   ۲. یافته‌ها پژوهش‌های پیشین را رد می‌کنند.
+   ۳. یافته‌ها بر پژوهش پیشین مقدم‌اند.
+   ۴. یافته‌ها از پژوهش پیشین گرفته شده‌اند.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: consistent with یعنی سازگار با؛ گزینه‌های دیگر معنای متن را تغییر می‌دهند.
+
+۶۱۷) ترجمهٔ «Sampling error decreases as the sample size grows.» کدام است؟
+   ۱. با افزایش حجم نمونه، خطای نمونه‌گیری کاهش می‌یابد.
+   ۲. با کاهش حجم نمونه، خطای نمونه‌گیری کاهش می‌یابد.
+   ۳. خطای نمونه‌گیری به حجم نمونه بستگی ندارد.
+   ۴. حجم نمونه با خطا افزایش می‌یابد.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: as به معنای «هم‌زمان با» و grows یعنی افزایش می‌یابد؛ رابطهٔ معکوس خطا و حجم نمونه حفظ می‌شود.
+
+۶۱۸) ترجمهٔ «Social structures constrain but do not determine action.» کدام است؟
+   ۱. ساختارهای اجتماعی کنش را محدود می‌کنند اما آن را تعیین نمی‌کنند.
+   ۲. ساختارهای اجتماعی کنش را کاملاً تعیین می‌کنند.
+   ۳. ساختارهای اجتماعی هیچ اثری بر کنش ندارند.
+   ۴. کنش ساختار اجتماعی را از میان می‌برد.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: constrain یعنی محدود کردن و determine یعنی تعیین کردن؛ جمله همان تمایز مشهور ساختار و عاملیت را بیان می‌کند.
+
+۶۱۹) ترجمهٔ «The policy was implemented despite widespread opposition.» کدام است؟
+   ۱. سیاست با وجود مخالفت گسترده اجرا شد.
+   ۲. سیاست به دلیل مخالفت گسترده اجرا شد.
+   ۳. سیاست پیش از مخالفت اجرا شد.
+   ۴. سیاست هرگز اجرا نشد.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: despite یعنی با وجود؛ implemented یعنی اجرا شد. این دو واژه معنای نهایی را تعیین می‌کنند.
+
+۶۲۰) ترجمهٔ «Respondents were asked to rate their satisfaction on a five-point scale.» کدام است؟
+   ۱. از پاسخ‌دهندگان خواسته شد رضایت خود را در مقیاسی پنج‌درجه‌ای بسنجند.
+   ۲. پاسخ‌دهندگان رضایت خود را پنج بار اعلام کردند.
+   ۳. رضایت پاسخ‌دهندگان اندازه‌گیری نشد.
+   ۴. مقیاس رضایت پنج پاسخ‌دهنده داشت.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: rate یعنی نمره دادن/سنجیدن و five-point scale یعنی مقیاس پنج‌درجه‌ای.
+
+۶۲۱) ترجمهٔ «Correlation does not imply causation.» کدام است؟
+   ۱. همبستگی به معنای علیت نیست.
+   ۲. همبستگی علیت را اثبات می‌کند.
+   ۳. علیت همبستگی را رد می‌کند.
+   ۴. همبستگی و علیت یکی هستند.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: imply یعنی دلالت داشتن؛ این جمله قاعدهٔ بنیادی تفسیر داده است.
+
+۶۲۲) ترجمهٔ «The sample was drawn from three provinces.» کدام است؟
+   ۱. نمونه از سه استان گرفته شد.
+   ۲. نمونه به سه استان فرستاده شد.
+   ۳. سه استان نمونه را رد کردند.
+   ۴. نمونه در سه استان تقسیم شد.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: draw a sample یعنی نمونه گرفتن؛ در اینجا مجهول ماضی است.
+
+۶۲۳) ترجمهٔ «Ethical approval was obtained before data collection.» کدام است؟
+   ۱. پیش از گردآوری داده، تأیید اخلاقی گرفته شد.
+   ۲. پس از گردآوری داده، تأیید اخلاقی گرفته شد.
+   ۳. تأیید اخلاقی لازم نبود.
+   ۴. داده‌ها پیش از تأیید منتشر شدند.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: before یعنی پیش از؛ ethical approval تأیید کمیتهٔ اخلاق است.
+
+۶۲۴) کدام جمله انگلیسی معادل «این یافته قابل تعمیم نیست» است؟
+   ۱. This finding cannot be generalized.
+   ۲. This finding can be generalized.
+   ۳. This finding is significant.
+   ۴. This finding is expected.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: cannot be generalized معادل «قابل تعمیم نیست» است؛ generalize از general به معنای تعمیم دادن می‌آید.
+
+۶۲۵) کدام جمله انگلیسی معادل «داده‌ها ناقص بودند» است؟
+   ۱. The data were incomplete.
+   ۲. The data were complete.
+   ۳. The data are irrelevant.
+   ۴. The data were collected.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: incomplete یعنی ناقص؛ توجه کنید data در نوشتار رسمی جمع است و were می‌گیرد.
+
+۶۲۶) کدام گزینه معادل «محدودیت‌های پژوهش» است؟
+   ۱. the limitations of the study
+   ۲. the advantages of the study
+   ۳. the results of the study
+   ۴. the design of the study
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: limitation معادل محدودیت است؛ این بخش در مقالهٔ علمی جای مشخصی دارد.
+
+۶۲۷) کدام عبارت برای بیان «احتمال دارد» در نوشتار علمی مناسب است؟
+   ۱. It is likely that...
+   ۲. It is certain that...
+   ۳. Everybody knows that...
+   ۴. It is impossible that...
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: likely بیان احتمال معقول است؛ certain قطعیت می‌رساند و در استنباط تجربی معمولاً نادرست است.
+
+۶۲۸) «to date» در جملهٔ «To date, few studies have examined this issue.» چه معنایی دارد؟
+   ۱. تا امروز
+   ۲. در گذشتهٔ دور
+   ۳. در آینده
+   ۴. در تاریخ مشخصی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: to date یعنی تاکنون؛ با حال کامل به کار می‌رود و شکاف پژوهشی را نشان می‌دهد.
+
+۶۲۹) «by and large» چه معنایی دارد؟
+   ۱. به‌طور کلی
+   ۲. به‌ندرت
+   ۳. دقیقاً
+   ۴. به‌زودی
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت اصطلاحی به معنای «در مجموع» است و در نگارش تحلیلی برای تعمیم محتاطانه به کار می‌رود.
+
+۶۳۰) «in terms of» در جملهٔ «The groups differed in terms of income.» چه معنایی دارد؟
+   ۱. از نظر
+   ۲. به‌جای
+   ۳. در برابر
+   ۴. به‌رغم
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: in terms of یعنی از حیث یا از نظر؛ برای مقایسهٔ ابعاد مختلف به کار می‌رود.
+
+۶۳۱) «a handful of studies» چه معنایی دارد؟
+   ۱. تعداد کمی مطالعه
+   ۲. مطالعات بسیار
+   ۳. مطالعات قدیمی
+   ۴. مطالعات بی‌ربط
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: a handful of یعنی شمار اندک؛ همین عبارت در بیان شکاف پژوهشی رایج است.
+
+۶۳۲) «to shed light on» یعنی…
+   ۱. روشن کردن و توضیح دادن
+   ۲. پنهان کردن
+   ۳. اندازه‌گیری کردن
+   ۴. تکرار کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این اصطلاح استعاری به روشن‌سازی یک مسئله اشاره دارد و در چکیدهٔ مقالات فراوان است.
+
+۶۳۳) «at odds with» چه معنایی دارد؟
+   ۱. در تضاد با
+   ۲. همسو با
+   ۳. وابسته به
+   ۴. مستقل از
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: at odds with یعنی ناسازگار؛ کاربرد آن در بیان تناقض یافته‌ها با ادبیات رایج است.
+
+۶۳۴) «to take into account» یعنی…
+   ۱. در نظر گرفتن
+   ۲. نادیده گرفتن
+   ۳. شمارش کردن
+   ۴. حذف کردن
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت در روش و تفسیر به معنای لحاظ کردن یک عامل است؛ مترادف آن account for است.
+
+۶۳۵) «a growing body of literature» چه معنایی دارد؟
+   ۱. مجموعهٔ رو به رشد پژوهش‌ها
+   ۲. کتاب‌های قدیمی
+   ۳. فهرست منابع
+   ۴. پژوهش‌های نادر
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: body of literature یعنی مجموعهٔ ادبیات پژوهشی؛ growing بر افزایش آن دلالت دارد.
+
+۶۳۶) کدام جمله برای نتیجه‌گیری محتاطانه مناسب است؟
+   ۱. The evidence suggests that the program may be effective.
+   ۲. The program is proven to work everywhere.
+   ۳. The program definitely solves all problems.
+   ۴. There is no need for further research.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: suggests و may سطح ادعا را متناسب با شواهد نگه می‌دارند؛ تعمیم مطلق در پژوهش اجتماعی معمولاً نادرست است.
+
+۶۳۷) کدام گزینه برای بیان محدودیت نمونه مناسب است؟
+   ۱. The sample was limited to urban households.
+   ۲. The sample covered the whole population.
+   ۳. The sample had no limits.
+   ۴. The sample was random and complete.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: limited to دامنهٔ نمونه را بیان می‌کند؛ گزارش صریح آن به خواننده در داوری تعمیم کمک می‌کند.
+
+۶۳۸) کدام عبارت برای اشاره به پژوهش آینده مناسب است؟
+   ۱. Future research should examine...
+   ۲. Past research examined...
+   ۳. No research is needed...
+   ۴. This research is final...
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: این عبارت در پایان مقاله برای پیشنهاد مسیر پژوهش به کار می‌رود و بخشی از ساختار استاندارد است.
+
+۶۳۹) کدام ترجمه برای «The questionnaire was administered in person.» درست است؟
+   ۱. پرسشنامه به‌صورت حضوری اجرا شد.
+   ۲. پرسشنامه به‌صورت تلفنی اجرا شد.
+   ۳. پرسشنامه ترجمه شد.
+   ۴. پرسشنامه چاپ نشد.
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: administer a questionnaire یعنی اجرا کردن آن و in person یعنی حضوری؛ این ترکیب در روش تحقیق پرکاربرد است.
+
+۶۴۰) جمع‌بندی بخش زبان کدام است؟
+   ۱. ترکیب واژگان آکادمیک، دقت دستوری و تمرین درک مطلب، بهترین آمادگی است
+   ۲. حفظ لغت بدون بافت کافی است
+   ۳. گرامر در آزمون اهمیت ندارد
+   ۴. ترجمهٔ واژه‌به‌واژه کافی است
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: آزمون زبان عمومی و تخصصی هر سه مهارت را می‌سنجد؛ تمرین منظم با متن واقعی، هر سه را هم‌زمان تقویت می‌کند.

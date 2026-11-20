@@ -219,12 +219,12 @@ function build() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>برنامه ۱۷۰ روزه | بانک ۳۰۰۰ سوالی</title>
+<title>برنامه ۱۷۰ روزه | بانک ۴۰۰۰ سوالی</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page">
 <header class="topbar">
-  <a class="brand" href="index.html"><span class="logo">۳۰۰۰</span> بانک سوال جامعه‌شناسی</a>
+  <a class="brand" href="index.html"><span class="logo">۴۰۰۰</span> بانک سوال جامعه‌شناسی</a>
   <nav><a href="index.html">تمرین و آزمون</a><a class="active" href="plan.html">برنامه ۱۷۰ روزه</a></nav>
 </header>
 <main class="plan">${body}</main>

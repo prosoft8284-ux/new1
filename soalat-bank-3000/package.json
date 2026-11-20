@@ -1,8 +1,8 @@
 {
-  "name": "soalat-bank-3000",
+  "name": "soalat-bank-4000",
   "version": "1.0.0",
   "private": true,
-  "description": "بانک ۳۰۰۰ سوالی کارشناسی ارشد جامعه‌شناسی + برنامه ۱۷۰ روزه + اپلیکیشن تمرین و آزمون",
+  "description": "بانک ۴۰۰۰ سوالی کارشناسی ارشد جامعه‌شناسی + برنامه ۱۷۰ روزه + اپلیکیشن تمرین و آزمون",
   "scripts": {
     "build": "node tools/build-data.js && node tools/build-plan.js",
     "start": "node server.js",

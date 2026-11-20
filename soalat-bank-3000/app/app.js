@@ -1,4 +1,4 @@
-/* اپ ۱۷۰ روزه — بانک ۳۰۰۰ سوالی جامعه‌شناسی */
+/* اپ ۱۷۰ روزه — بانک ۴۰۰۰ سوالی جامعه‌شناسی */
 const $ = (s, r = document) => r.querySelector(s);
 const FA = '۰۱۲۳۴۵۶۷۸۹';
 const fa = (n) => String(n).replace(/\d/g, (d) => FA[+d]);
@@ -9,15 +9,20 @@ const shuffle = (a) => { const x = a.slice(); for (let i = x.length - 1; i > 0; 
 const KEY = 'sb:v3';
 let IDX = null, PLAN = null;
 const SUB = {}, SUBIDX = {};
-let ST = { start: null, q: {}, days: {} };
+let ST = { start: null, q: {}, days: {}, pos: {} };
 let S = null, ticker = null;
 
 /* ---------- ذخیره‌سازی ---------- */
 function loadST() {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) || '{}');
-    ST = { start: raw.start || null, q: raw.q || {}, days: raw.days || {} };
-  } catch (e) { ST = { start: null, q: {}, days: {} }; }
+    ST = {
+      start: raw.start || null,
+      q: raw.q && typeof raw.q === 'object' ? raw.q : {},
+      days: raw.days && typeof raw.days === 'object' ? raw.days : {},
+      pos: raw.pos && typeof raw.pos === 'object' ? raw.pos : {},
+    };
+  } catch (e) { ST = { start: null, q: {}, days: {}, pos: {} }; }
 }
 function saveST() { try { localStorage.setItem(KEY, JSON.stringify(ST)); } catch (e) {} }
 
@@ -99,14 +104,14 @@ function correctCount() { return Object.values(ST.q).filter((v) => v.ok === 1).l
 
 /* ---------- ناوبری ---------- */
 function go(name) {
-  ['today', 'plan', 'review', 'progress', 'day', 'study', 'exam', 'result'].forEach((v) => {
+  ['today', 'plan', 'review', 'progress', 'help', 'day', 'study', 'exam', 'result'].forEach((v) => {
     const el = $('#view-' + v);
     if (el) el.classList.toggle('hidden', v !== name);
   });
-  const tabOf = { today: 'today', plan: 'plan', review: 'review', progress: 'progress', day: 'plan' }[name];
+  const tabOf = { today: 'today', plan: 'plan', review: 'review', progress: 'progress', help: 'help', day: 'plan' }[name];
   document.querySelectorAll('#tabbar button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tabOf));
   document.body.classList.toggle('focus', ['study', 'exam'].includes(name));
-  const subOf = { plan: 'برنامه ۱۷۰ روزه', review: 'مرور سوال‌های نادرست', progress: 'پیشرفت من', day: 'جزئیات روز', study: 'حالت مطالعه', exam: 'آزمون', result: 'کارنامه' };
+  const subOf = { plan: 'برنامه ۱۷۰ روزه', review: 'مرور سوال‌های نادرست', progress: 'پیشرفت من', help: 'راهنما و توضیح برنامه', day: 'جزئیات روز', study: 'حالت مطالعه', exam: 'آزمون', result: 'کارنامه' };
   if (name !== 'today' && subOf[name]) $('#hdr-sub').textContent = subOf[name];
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 }
@@ -122,7 +127,7 @@ function setupHTML() {
   </div>
   <div class="card">
     <h3>برنامه شامل چیست؟</h3>
-    <p class="tiny mt8">۱۰۰ روز مطالعه (۳۰ سوال در روز)، ۲۰ آزمون مبحثی هفتگی، ۲۰ روز استراحت فعال، ۲۱ روز مرور جمع‌بندی، ۲ آزمون جامع و ۲ شبیه‌ساز، و روز کنکور. همه ۳۰۰۰ سوال دقیقاً یک بار در دور اول می‌آیند.</p>
+    <p class="tiny mt8">۱۰۰ روز مطالعه (۴۰ سوال در روز)، ۲۰ آزمون مبحثی هفتگی، ۲۰ روز استراحت فعال، ۲۵ روز مرور و تحلیل، ۲ آزمون جامع و ۲ شبیه‌ساز، و روز کنکور. همه ۴۰۰۰ سوال دقیقاً یک بار در دور اول می‌آیند.</p>
   </div>`;
 }
 
@@ -137,7 +142,7 @@ function kindLabel(kind) {
   }[kind] || 'روز مطالعه';
 }
 
-/* چوب‌خط: هر بلوک ۵ سوال — ۳۰ سوال روز = ۶ بلوک */
+/* چوب‌خط: هر بلوک ۵ سوال — ۴۰ سوال روز = ۸ بلوک */
 function tallyHTML(count, done) {
   if (count > 40) {
     const pct = count ? Math.round((done / count) * 100) : 0;
@@ -232,7 +237,7 @@ function dayCardHTML(day, isToday) {
     <div class="card mt12">
       <div class="row-between"><h2>${/شبیه/.test(day.text) ? 'آزمون شبیه‌ساز' : 'آزمون جامع'}</h2><span class="pill">${fa(200)} سوال</span></div>
       <p class="tiny mt8">${esc(day.text)}</p>
-      <p class="tiny mt8">۲۰۰ سوال تصادفی از کل ۳۰۰۰ سوال، در شرایط زمانی واقعی. این آزمون در کارنامه و آمار خطاهای تو ثبت می‌شود.</p>
+      <p class="tiny mt8">۲۰۰ سوال تصادفی از کل ۴۰۰۰ سوال، در شرایط زمانی واقعی. این آزمون در کارنامه و آمار خطاهای تو ثبت می‌شود.</p>
       <button class="btn primary block mt12" data-act="start-exam" data-mode="all" data-day="${day.d}">شروع آزمون جامع</button>
     </div>`;
   } else if (day.kind === 'review' || day.kind === 'analysis') {
@@ -385,6 +390,72 @@ function renderProgress() {
   v.innerHTML = html;
 }
 
+/* ---------- راهنما ---------- */
+function renderHelp() {
+  const v = $('#view-help');
+  const total = IDX ? fag(IDX.total) : '۴٬۰۰۰';
+  const subj = IDX ? IDX.subjects.map((s) => `${esc(s.short)} ${fag(s.total)}`).join(' • ') : '';
+
+  const rows = [
+    ['۱', '<b>چهار هزار سوال، دقیقاً یک بار.</b> بانک از پنج درس تشکیل شده است: ' + subj + '. هر سوال چهار گزینه، یک کلید و یک تحلیل کوتاه دارد. در دور اول هر سوال فقط یک بار در برنامه می‌آید.'],
+    ['۲', '<b>۱۷۰ روز، ۱۰۰ روز مطالعه.</b> هر روز مطالعه ۴۰ سوال است: ۸ بلوک ۵ سوالی. کنار آن ۲۰ آزمون مبحثی هفتگی، ۲۰ روز استراحت فعال، ۲۵ روز مرور و تحلیل، ۲ آزمون جامع، ۲ شبیه‌ساز و روز کنکور قرار دارد.'],
+    ['۳', '<b>ترتیب درس‌ها ثابت است.</b> هر روز به این ترتیب پیش می‌رود: نظریات، جامعه‌شناسی‌ها، روش، آمار، زبان. درون هر درس، سوال‌ها از بخش نخست کتاب به بخش‌های پیشرفته‌تر جلو می‌روند تا مبحث تازه روی پایهٔ قبلی سوار شود.'],
+    ['۴', '<b>درون هر جلسه، آسان به سخت.</b> اپ سوال‌های همان درس را بر پایهٔ طول صورت سوال، محاسبه‌ای بودن و تلفیقی بودن مرتب می‌کند؛ جلسه با سوال سبک‌تر گرم می‌شود و سنگین‌ترها آخر می‌آیند. ترتیب درس‌ها و بلوک‌های روز دست‌نخورده می‌ماند.'],
+    ['۵', '<b>حالت مطالعه.</b> گزینه را می‌زنی، پاسخ درست و تحلیل باز می‌شود، بعد «سوال بعد». اگر نمی‌دانی، «نمایش پاسخ» را بزن و صادقانه «می‌دانستم / نمی‌دانستم» را انتخاب کن؛ همین پاسخ، آمار مرور را می‌سازد.'],
+    ['۶', '<b>حالت آزمون.</b> آزمون مبحثی هفته ۲۵ سوال و ۲۵ دقیقه است؛ آزمون جامع و شبیه‌ساز ۲۰۰ سوال و ۲۰۰ دقیقه. در آزمون بازخوردی بین سوال‌ها نمی‌بینی، می‌توانی با پاسخنامه بین سوال‌ها جابه‌جا شوی و در پایان کارنامه و فهرست خطاها را می‌گیری.'],
+    ['۷', '<b>مرور.</b> هر پاسخ نادرست در «مرور» می‌ماند؛ از همان‌جا ۲۰ سوال تصادفی از خطاها را دوباره می‌زنی. روزهای مرور برنامه هم به همین بخش وصل‌اند.'],
+    ['۸', '<b>پیشرفت.</b> تعداد پاسخ‌های ثبت‌شده، درصد درست، روزهای تمام‌شده و دقت هر درس جداگانه نشان داده می‌شود تا نقطهٔ ضعف مشخص باشد.'],
+  ];
+
+  v.innerHTML = `
+  <div class="card">
+    <h2>راهنمای کامل برنامه</h2>
+    <p class="help-lead mt8">این اپ یک بانک ${total} سوالی جامعه‌شناسی است که با یک برنامهٔ ۱۷۰ روزه گره خورده: هر روز می‌دانی چه سوال‌هایی، از کدام بخش و به چه ترتیبی باید بزنی. هدف این است که هیچ سوالی جا نیفتد و هیچ روزی بار نامتعارف نداشته باشد.</p>
+    <div class="help-note">همهٔ محاسبهٔ برنامه از قبل انجام شده است؛ اپ فقط روزِ تو را نشان می‌دهد. پس نیازی به اینترنت برای برنامه و سوال‌ها نداری.</div>
+  </div>
+
+  <div class="card">
+    <h3>برنامه چطور ساخته شده</h3>
+    ${rows.map(([n, t]) => `<div class="help-row"><span class="n">${n}</span><span class="t">${t}</span></div>`).join('')}
+  </div>
+
+  <div class="card">
+    <h3>یک روز مطالعه، قدم به قدم</h3>
+    <ul class="help-list">
+      <li>تب «امروز» را باز کن؛ روزِ جاری برنامه با فاز و تعداد سوال‌های انجام‌شده می‌آید.</li>
+      <li>هر بلوک ۵ سوالی: ۱۲ دقیقه حل، ۱۰ دقیقه خواندن تحلیل، ۵ دقیقه نوشتن «چرا این گزینه».</li>
+      <li>بیش از ۲ دقیقه روی یک سوال نمان؛ علامت بزن و برو. بعداً در «مرور» برمی‌گردی.</li>
+      <li>هر پاسخ نادرست را در دفتر خطا با سه چیز ثبت کن: علت خطا، نکتهٔ درست، «دفعهٔ بعد چه می‌کنم».</li>
+      <li>آخر روز «این روز را تمام کردم» را بزن تا روز در برنامه و پیشرفت سبز شود.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>چه چیزی و کجا ذخیره می‌شود</h3>
+    <ul class="help-list">
+      <li><b>تاریخ شروع</b> (روز ۱) تا اپ بداند امروز کدام روز برنامه است.</li>
+      <li><b>هر پاسخ</b>: درست یا نادرست، تعداد تلاش و زمان آخرین پاسخ؛ همین داده درصد دقت و فهرست خطاها را می‌سازد.</li>
+      <li><b>روزهای تمام‌شده</b> و <b>محل ادامهٔ هر بلوک</b>؛ اگر وسط یک بلوک بیرون بیایی، دفعهٔ بعد از همان سوال ادامه می‌دهی.</li>
+      <li>همهٔ این‌ها فقط روی حافظهٔ همین دستگاه (localStorage) ذخیره می‌شود و جایی ارسال نمی‌شود. برای پاک‌کردن، در تنظیمات «پاک کردن همه پیشرفت» را بزن.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>آفلاین و نصب روی اندروید</h3>
+    <p class="help-lead mt8">سوال‌ها و برنامه داخل خود اپ هستند و بدون اینترنت باز می‌شوند. نسخهٔ اندروید (APK) جدا نصب می‌شود؛ در نسخهٔ وب هم در کروم، منوی سه‌نقطه ← «افزودن به صفحهٔ اصلی» اپ را مثل یک برنامهٔ مستقل باز می‌کند.</p>
+    <div class="help-note">اگر بعد از به‌روزرسانی اپ، داده‌های قبلی را نمی‌بینی، یک بار اپ را کامل ببند و باز کن؛ پیشرفت با کلید ثابت ذخیره می‌شود و پاک نمی‌شود.</div>
+  </div>
+
+  <div class="card">
+    <h3>سه قاعدهٔ کوتاه</h3>
+    <ul class="help-list">
+      <li>تحلیل را نخوانده رد نکن؛ ارزش هر سوال در همان چند خط است.</li>
+      <li>آزمون را با زمان واقعی بزن؛ بی‌زمان، آزمون فقط تمرین است.</li>
+      <li>عقب‌افتادگی را در روز استراحت جبران کن، نه با سوار کردن دو روز روی هم.</li>
+    </ul>
+  </div>`;
+}
+
 /* ---------- سطح تخمینی و چینش گرم‌کردنی ----------
    سطح ۱ تا ۳ از روی نشانه‌های متنی تخمین زده می‌شود (طول صورت سوال، محاسبه‌ای بودن،
    تلفیقی/مقایسه‌ای بودن، کوتاهی تحلیل). هدف فقط این است که جلسه با سوال سبک‌تر شروع شود. */
@@ -430,7 +501,9 @@ function warmupSort(items) {
 async function startStudy(items, title, meta = {}) {
   if (!items.length) { toast('سوالی برای این بخش پیدا نشد'); return; }
   items = warmupSort(items);
-  S = { mode: 'study', items, i: 0, ans: null, revealed: false, title, log: [], ...meta };
+  let start = 0;
+  if (meta.taskKey && ST.pos[meta.taskKey] > 0) start = Math.min(ST.pos[meta.taskKey], items.length - 1);
+  S = { mode: 'study', items, i: start, ans: null, revealed: false, title, log: [], ...meta };
   go('study');
   renderStudy();
 }
@@ -440,7 +513,7 @@ async function startTask(dayNum, ti) {
   const t = day.tasks[ti];
   toast('بارگذاری…');
   const items = await questionsOfRanges(t.ranges.map((r) => ({ subject: t.subject, section: t.section, from: r.from, to: r.to })));
-  await startStudy(items, subShort(t.subject) + (t.section ? ' — ' + t.section : ''), { day: dayNum });
+  await startStudy(items, subShort(t.subject) + (t.section ? ' — ' + t.section : ''), { day: dayNum, taskKey: dayNum + ':' + ti });
 }
 
 async function startDayStudy(dayNum) {
@@ -640,7 +713,14 @@ function showResult({ title, total, correct, rows, mode, day }) {
   go('result');
 }
 
+function savePos(nextIndex) {
+  if (!S || !S.taskKey) return;
+  ST.pos[S.taskKey] = nextIndex;
+  saveST();
+}
+
 function finishStudy() {
+  if (S && S.taskKey) { delete ST.pos[S.taskKey]; saveST(); }
   const log = S.log || [];
   const correct = log.filter((x) => x.ok).length;
   const title = S.title;
@@ -682,6 +762,7 @@ document.addEventListener('click', async (e) => {
     if (tb === 'plan') renderPlan();
     if (tb === 'review') renderReview();
     if (tb === 'progress') renderProgress();
+    if (tb === 'help') renderHelp();
     go(tb);
     return;
   }
@@ -743,12 +824,12 @@ document.addEventListener('click', async (e) => {
     S.log.push({ sid: it.sid, q: it.q, ok });
     S.revealed = false;
     if (S.i + 1 >= S.items.length) finishStudy();
-    else { S.i += 1; S.ans = null; renderStudy(); }
+    else { S.i += 1; savePos(S.i); S.ans = null; renderStudy(); }
     return;
   }
   if (act === 's-next') {
     if (S.i + 1 >= S.items.length) finishStudy();
-    else { S.i += 1; S.ans = null; S.revealed = false; renderStudy(); }
+    else { S.i += 1; savePos(S.i); S.ans = null; S.revealed = false; renderStudy(); }
     return;
   }
   if (act === 's-exit') {
