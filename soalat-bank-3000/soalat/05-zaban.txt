@@ -1823,7 +1823,7 @@
    ۳. becomes illegal
    ۴. spreads and increases rapidly
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «proliferate» تکثیر و گسترش سریع است.
+   ✎ تحلیل: «proliferate» یعنی تکثیر و گسترش سریع یافتن؛ مترادف spread rapidly. کم‌شدن، ثابت‌ماندن و غیرقانونی‌شدن هیچ‌کدام معنای این فعل نیستند.
 
 ۲۲۶) A «ubiquitous» technology is one that is:
    ۱. present almost everywhere
@@ -2320,7 +2320,7 @@
    ۳. has finalize
    ۴. finalizing
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: زمان گذشته ساده با «began» هماهنگ است.
+   ✎ تحلیل: جمله زمان گذشته «began» دارد، پس گذشته ساده «finalized» درست است. «finalize» حال ساده است و «finalizing» بدون فعل کمکی نمی‌آید.
 
 ۲۸۷) By next year, the panel ___ five waves of data.
    ۱. completes
@@ -2328,7 +2328,7 @@
    ۳. completed
    ۴. is completing
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «by + زمان آینده» با آینده کامل می‌آید.
+   ✎ تحلیل: «by + زمان آینده» به آینده کامل نیاز دارد: will have completed. گذشته ساده و حال ساده با این قید زمانی هم‌خوان نیستند.
 
 ۲۸۸) «Robustness» of a finding refers to its:
    ۱. statistical significance
@@ -2376,7 +2376,7 @@
    ۳. standard error
    ۴. size
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: بزرگی اثر مستقل از معناداری آماری است.
+   ✎ تحلیل: magnitude یعنی اندازه و بزرگی اثر، مستقل از معناداری آماری و جهت آن. سطح معناداری و خطای استاندارد مفاهیم دیگری‌اند.
 
 ۲۹۴) «Prevalence» refers to:
    ۱. the proportion of existing cases at a point in time
@@ -2450,7 +2450,7 @@
    ۳. coding mistakes
    ۴. change in questionnaire
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: ریزش نمونه، تهدید اصلی داده طولی است.
+   ✎ تحلیل: attrition در پیمایش طولی یعنی ریزش پاسخگویان در طول زمان؛ همین کاهش نمونه تهدید اصلی داده طولی است.
 
 ۳۰۳) Which threat is NOT mentioned?
    ۱. Repeated measurement
@@ -2483,7 +2483,7 @@
    ۳. cost of data collection
    ۴. theoretical relevance
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: پایایی به تکرارپذیری و ثبات اشاره دارد.
+   ✎ تحلیل: reliability یعنی ثبات و تکرارپذیری اندازه‌گیری: ابزار در تکرار، همان نتیجه را بدهد. حجم نمونه و هزینه به این مفهوم مربوط نیستند.
 
 ۳۰۷) Validity concerns whether an indicator:
    ۱. is inexpensive
@@ -2491,7 +2491,7 @@
    ۳. is easy to administer
    ۴. has many items
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: روایی، تناسب سنجه با مفهوم است.
+   ✎ تحلیل: validity یعنی سنجه همان مفهوم مورد نظر را بسنجد. ارزانی و آسانی اجرا معیارهای عملی‌اند، نه روایی.
 
 ۳۰۸) The passage suggests that researchers often face:
    ۱. no constraints
@@ -2499,7 +2499,7 @@
    ۳. trade-offs among reliability, validity and feasibility
    ۴. no need for indicators
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «trade-off» واژه کلیدی پاراگراف است.
+   ✎ تحلیل: کلیدواژه پاراگراف «trade-off» است: پژوهشگر ناچار است بین پایایی، روایی و امکان‌پذیری توازن برقرار کند.
 
 ۳۰۹) The most precise measure may be rejected because it is:
    ۱. too short
@@ -2523,7 +2523,7 @@
    ۳. اثرها بدون توجه به خطا گزارش شوند.
    ۴. اندازه‌گیری خطا را افزایش می‌دهد.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «in light of» یعنی با در نظر گرفتن.
+   ✎ تحلیل: «in light of» یعنی «با در نظر گرفتن»؛ پس اثرهای گزارش‌شده باید با توجه به خطای اندازه‌گیری تفسیر شوند، نه اینکه خطا حذف یا نادیده گرفته شود.
 
 ۳۱۲) ترجمه درست: «The study controlled for household size and income.»
    ۱. پژوهش اندازه خانوار را حذف کرد.
@@ -2547,7 +2547,7 @@
    ۳. جامعه مطالعه قابل توصیف نیست.
    ۴. یافته‌ها بی‌ارزش‌اند.
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «beyond» مرز تعمیم را نشان می‌دهد.
+   ✎ تحلیل: «beyond» مرز تعمیم را می‌کشد: یافته‌ها را نباید فراتر از جامعه مطالعه تعمیم داد. گزینه‌های دیگر تعمیم مطلق یا بی‌ارزش دانستن یافته‌اند.
 
 ۳۱۵) ترجمه درست: «The authors report a modest but consistent effect.»
    ۱. نویسندگان اثر بزرگ و ناپایدار گزارش می‌کنند.
@@ -2668,7 +2668,7 @@
    ۳. reliable
    ۴. the more reliable
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: ساختار موازی مقایسه‌ای با صفت چندبخشی.
+   ✎ تحلیل: ساختار «the more… the more…» با صفت چندبخشی: the more carefully… the more reliable the measurement. حذف «the» در نیمه دوم ساختار را می‌شکند.
 
 ۳۳۰) It was the interviewer ___ recorded the responses.
    ۱. who
@@ -2756,7 +2756,7 @@
    ۳. that
    ۴. which
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «evidence that» بند اسمی خبری می‌سازد.
+   ✎ تحلیل: «evidence that + بند» ساختار استاندارد است؛ «whether» معنی تردید می‌دهد و با «little evidence» هم‌خوان نیست.
 
 ۳۴۱) The proportion of women in the sample ___ risen steadily.
    ۱. have
@@ -2764,7 +2764,7 @@
    ۳. were
    ۴. has
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «the proportion of» فاعل مفرد است.
+   ✎ تحلیل: هسته فاعل «the proportion of women» مفرد است، پس has. عبارت of-اضافه تعداد فاعل را تغییر نمی‌دهد.
 
 ۳۴۲) Had the data been available, the analysis ___ different.
    ۱. would have been
@@ -2780,7 +2780,7 @@
    ۳. for
    ۴. with
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «coded as» ساختار استاندارد است.
+   ✎ تحلیل: «coded as» ترکیب استاندارد تعریف کد متغیر است: coded as 1 for yes.
 
 ۳۴۴) Comparatively ___ studies examine this group.
    ۱. little
@@ -2796,7 +2796,7 @@
    ۳. asked
    ۴. asking
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «avoid» با gerund می‌آید.
+   ✎ تحلیل: «avoid» فعل بعدی را gerund می‌گیرد: avoided asking. افعالی مثل avoid و consider و enjoy با ing می‌آیند.
 
 ۳۴۶) Neither the interviews nor the survey ___ the full picture.
    ۱. captures
@@ -2812,7 +2812,7 @@
    ۳. of
    ۴. for
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «consistent with» ترکیب ثابت است.
+   ✎ تحلیل: «consistent with» ترکیب ثابت است: findings are consistent with earlier work. حرف اضافه‌های دیگر با consistent نمی‌آیند.
 
 ۳۴۸) Such a claim ___ substantial evidence.
    ۱. require
@@ -2820,7 +2820,7 @@
    ۳. requires
    ۴. is required
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «such a claim» فاعل مفرد است.
+   ✎ تحلیل: «Such a claim» فاعل مفرد است، پس requires؛ وجود «a» نشانه مفرد بودن است.
 
 ۳۴۹) The theory has been criticized ___ ignoring power.
    ۱. to
@@ -2828,7 +2828,7 @@
    ۳. with
    ۴. for
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «criticized for» ساختار درست است.
+   ✎ تحلیل: «criticized for + gerund» ساختار درست است: criticized for ignoring power. ترکیب «criticize of» غلط است.
 
 ۳۵۰) Little ___ known about this population.
    ۱. is
@@ -2844,7 +2844,7 @@
    ۳. who
    ۴. what
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «which» به کل بند پیشین اشاره می‌کند.
+   ✎ تحلیل: «which» بند غیرتوصیفی می‌سازد و به کل جمله پیشین اشاره می‌کند؛ «that» بعد از ویرگول در بند غیرتوصیفی نمی‌آید.
 
 ۳۵۲) It is not the method ___ matters, but the question.
    ۱. which one
@@ -2860,7 +2860,7 @@
    ۳. much
    ۴. the more
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: ساختار موازی «the more… the more».
+   ✎ تحلیل: ساختار موازی «the more… the more…»: the more stratified… the more precise. شکل صفت باید مقایسه‌ای بماند.
 
 ۳۵۴) Researchers must be careful not ___ overgeneralize.
    ۱. to
@@ -2868,7 +2868,7 @@
    ۳. of
    ۴. with
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «be careful not to do» ساختار ثابت است.
+   ✎ تحلیل: «be careful not to do» ساختار ثابت است: careful not to overgeneralize.
 
 ۳۵۵) The proportion ___ households headed by women has risen.
    ۱. in
@@ -2876,7 +2876,7 @@
    ۳. for
    ۴. at
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «proportion of» ترکیب استاندارد است.
+   ✎ تحلیل: «proportion of» ترکیب استاندارد است: the proportion of households. حرف اضافه دیگر در این معنا نمی‌آید.
 
 ۳۵۶) The findings were robust ___ alternative specifications.
    ۱. for
@@ -2884,7 +2884,7 @@
    ۳. to
    ۴. at
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «robust to» در نگارش علمی رایج است.
+   ✎ تحلیل: «robust to» در نگارش علمی یعنی نتیجه در برابر تغییر مفروضات و مشخصه‌ها مقاوم می‌ماند.
 
 ۳۵۷) A growing body of research ___ that stigma deters help-seeking.
    ۱. show
@@ -2892,7 +2892,7 @@
    ۳. have shown
    ۴. shows
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «a body of» فاعل مفرد است.
+   ✎ تحلیل: هسته فاعل «a growing body of research» مفرد است، پس shows؛ «body» واژه اصلی و مفرد است.
 
 ۳۵۸) This holds true ___ both urban and rural settings.
    ۱. in
@@ -2900,7 +2900,7 @@
    ۳. at
    ۴. to
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «hold true in» ساختار درست است.
+   ✎ تحلیل: «hold true in + محیط» ساختار درست است: holds true in both urban and rural settings.
 
 ۳۵۹) The authors ___ the limitations of their design.
    ۱. acknowledges
@@ -2908,7 +2908,7 @@
    ۳. is acknowledging
    ۴. has acknowledged
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: فاعل جمع «authors» فعل جمع می‌گیرد.
+   ✎ تحلیل: فاعل جمع «the authors» فعل جمع می‌گیرد: acknowledge. شکل s‌دار برای فاعل مفرد است.
 
 — بخش بیستم: واژگان تخصصی تکمیلی —
 ۳۶۰) «Triangulation» in research means:
@@ -2949,7 +2949,7 @@
    ۳. test whether results hold under alternative assumptions
    ۴. compute p-values
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: استواری نتیجه، شرط اعتماد به یافته است.
+   ✎ تحلیل: robustness checks آزمون‌های حساسیت‌اند: آیا نتیجه با مفروضات و مشخصه‌های بدیل هم برقرار می‌ماند؟
 
 ۳۶۵) A «spurious» relationship is one that:
    ۱. is statistically significant
@@ -2989,7 +2989,7 @@
    ۳. a confounding factor
    ۴. a variable that changes the direction or strength of a relation
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: اثر تعاملی، صورت آماری تعدیل است.
+   ✎ تحلیل: moderation یعنی متغیری جهت یا شدت رابطه را تغییر می‌دهد و صورت آماری آن اثر تعاملی است؛ mediation اثر را منتقل می‌کند.
 
 ۳۷۰) «Oversampling» is used to:
    ۱. ensure enough cases from small subgroups
@@ -3142,7 +3142,7 @@
    ۳. almost
    ۴. the most
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «almost» قید تقریب برای صفت/قید است.
+   ✎ تحلیل: «almost» قید تقریب است و مستقیماً صفت یا قید را می‌آورد: almost verbatim. «most» در این جایگاه نادرست است.
 
 ۳۸۹) It is the quality of the questions, not their number, ___ matters.
    ۱. which one
@@ -3150,7 +3150,7 @@
    ۳. who
    ۴. that
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: ساختار شکاف‌دار با «that» برای تأکید.
+   ✎ تحلیل: ساختار شکاف‌دار تأکیدی: It is X, not Y, that matters؛ «that» بند تأکیدی می‌سازد.
 
 ۳۹۰) The researcher, together with two assistants, ___ the coding scheme.
    ۱. developed
@@ -3158,7 +3158,7 @@
    ۳. have developed
    ۴. develop
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «together with» فاعل را جمع نمی‌کند.
+   ✎ تحلیل: «together with» فاعل را جمع نمی‌کند؛ هسته فاعل «the researcher» مفرد است، پس developed.
 
 ۳۹۱) Not until the data were cleaned ___ apparent.
    ۱. the pattern did become
@@ -3190,7 +3190,7 @@
    ۳. seeking
    ۴. is seek
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: فاعل مفرد «study» فعل مفرد می‌گیرد.
+   ✎ تحلیل: فاعل مفرد «the study» فعل مفرد می‌گیرد: seeks. «seek» شکل جمع است.
 
 ۳۹۵) Given ___ the response rate was low, the authors weighted the data.
    ۱. which
@@ -3198,7 +3198,7 @@
    ۳. whether
    ۴. what
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «given that» بند علّی می‌سازد.
+   ✎ تحلیل: «given that + بند» یعنی «با توجه به اینکه»؛ گزینه‌های دیگر بند علّی نمی‌سازند.
 
 ۳۹۶) The findings challenge the assumption ___ institutions are stable.
    ۱. what
@@ -3230,7 +3230,7 @@
    ۳. that
    ۴. then
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «scarcely… when» ترکیب ثابت است.
+   ✎ تحلیل: ترکیب ثابت «scarcely… when»: scarcely had the survey closed when…. «than» در این ساختار نمی‌آید.
 
 ۴۰۰) The more detailed the coding frame, ___ the risk of inconsistency.
    ۱. great
@@ -3238,7 +3238,7 @@
    ۳. the greater
    ۴. greater
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ساختار موازی مقایسه‌ای.
+   ✎ تحلیل: موازی‌سازی مقایسه‌ای: the more detailed the coding frame, the greater the risk of inconsistency.
 
 ۴۰۱) The authors note that the effect ___ larger among younger cohorts.
    ۱. have been
@@ -3246,7 +3246,7 @@
    ۳. were
    ۴. was
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «effect» مفرد است و فعل مفرد می‌گیرد.
+   ✎ تحلیل: «the effect» مفرد است، پس was؛ عبارت «among younger cohorts» فاعل را جمع نمی‌کند.
 
 ۴۰۲) Without proper controls, any conclusion ___ premature.
    ۱. is
@@ -3254,7 +3254,7 @@
    ۳. have been
    ۴. were
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «any conclusion» مفرد است.
+   ✎ تحلیل: «any conclusion» مفرد است: any conclusion is premature.
 
 ۴۰۳) The interview guide was revised ___ several pilot sessions.
    ۱. since
@@ -3278,7 +3278,7 @@
    ۳. high
    ۴. the higher
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: موازی‌سازی مقایسه‌ای با صفت مقایسه‌ای.
+   ✎ تحلیل: موازی‌سازی مقایسه‌ای: the greater the number of tests, the higher the chance of a false positive.
 
 ۴۰۶) ___ being incomplete, the archive remains valuable.
    ۱. Despite
@@ -3286,7 +3286,7 @@
    ۳. Because
    ۴. However
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «Despite» با عبارت اسمی/gerund می‌آید.
+   ✎ تحلیل: «Despite + عبارت اسمی/gerund»: Despite being incomplete. «Although» به بند کامل نیاز دارد.
 
 ۴۰۷) The panel was designed ___ the same households over time.
    ۱. following
@@ -3294,7 +3294,7 @@
    ۳. follow
    ۴. followed
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: مصدر هدف پس از «designed».
+   ✎ تحلیل: «be designed to + مصدر» هدف را بیان می‌کند: was designed to follow the same households.
 
 ۴۰۸) Neither the theory nor the data ___ the claim.
    ۱. support
@@ -3318,7 +3318,7 @@
    ۳. what
    ۴. that
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «whether» بند تردید/احتمال می‌سازد.
+   ✎ تحلیل: «discuss whether + بند» یعنی بحث درباره اینکه آیا…؛ «that» در این جایگاه خبر قطعی می‌سازد.
 
 ۴۱۱) A stratified sample ___ greater precision for subgroup estimates.
    ۱. offer
@@ -3326,7 +3326,7 @@
    ۳. offering
    ۴. is offer
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: فاعل مفرد «a stratified sample».
+   ✎ تحلیل: فاعل مفرد «a stratified sample» فعل مفرد می‌گیرد: offers.
 
 ۴۱۲) The proportion of missing cases ___ small in this wave.
    ۱. were
@@ -3334,7 +3334,7 @@
    ۳. was
    ۴. are
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «the proportion of» فاعل مفرد است.
+   ✎ تحلیل: هسته فاعل «the proportion of missing cases» مفرد است: was.
 
 ۴۱۳) ___ the coding completed, the team moved to analysis.
    ۱. Although
@@ -3350,7 +3350,7 @@
    ۳. of
    ۴. to
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «in line with» ترکیب ثابت است.
+   ✎ تحلیل: «in line with» ترکیب ثابت است: in line with previous research.
 
 ۴۱۵) It is important that the report ___ all limitations.
    ۱. stated
@@ -3382,7 +3382,7 @@
    ۳. was
    ۴. been
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: ساختار مطلق با «being» و فاعل مستقل.
+   ✎ تحلیل: ساختار مطلق: The sampling frame being out of date, the estimates are biased؛ فعل کامل در این ساختار نمی‌آید.
 
 ۴۱۹) The effect was small ___ statistically significant.
    ۱. thus
@@ -3390,7 +3390,7 @@
    ۳. hence
    ۴. so
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «yet» تقابل را بیان می‌کند؛ سایر گزینه‌ها نتیجه را.
+   ✎ تحلیل: «other + اسم جمع» ساختار درست است: other studies. «others» ضمیر است و اسم بعد از آن نمی‌آید.
 
 ۴۲۰) By contrast, ___ studies report the opposite pattern.
    ۱. another
@@ -3398,7 +3398,7 @@
    ۳. other
    ۴. the other
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «other + اسم جمع» ترکیب درست است.
+   ✎ تحلیل: «other + اسم جمع»: other studies report the opposite pattern؛ «another» فقط با اسم مفرد می‌آید.
 
 — بخش بیست‌ودوم: واژگان و اصطلاحات تکمیلی —
 ۴۲۱) A «sampling frame» is:
@@ -3407,7 +3407,7 @@
    ۳. the final sample
    ۴. the list from which a sample is drawn
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: نقص فهرست، منبع اصلی خطای پوشش است.
+   ✎ تحلیل: sampling frame فهرستی است که نمونه از آن انتخاب می‌شود؛ نقص این فهرست خطای پوشش می‌سازد.
 
 ۴۲۲) «Coverage error» arises when:
    ۱. some members of the population cannot be selected
@@ -3439,7 +3439,7 @@
    ۳. is hypothetical
    ۴. suggests the expected answer
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: پرسش جهت‌دار، سوگیری پاسخ ایجاد می‌کند.
+   ✎ تحلیل: leading question پاسخ مورد انتظار را القا می‌کند و سوگیری پاسخ می‌آورد؛ پرسش دووجهی (double-barrelled) دو موضوع را با هم می‌پرسد.
 
 ۴۲۶) A «double-barrelled question» asks about:
    ۱. two issues at once
@@ -3447,7 +3447,7 @@
    ۳. two waves
    ۴. two languages
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: پاسخ به آن قابل تفسیر نیست.
+   ✎ تحلیل: پرسش دووجهی دو موضوع را هم‌زمان می‌پرسد، پس پاسخ‌دهنده نمی‌داند به کدام بخش پاسخ داده و تفسیر پاسخ ممکن نیست.
 
 ۴۲۷) «Informed consent» requires:
    ۱. institutional approval only
@@ -3455,7 +3455,7 @@
    ۳. signature only
    ۴. payment
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: رضایت باید مستمر و قابل بازگشت باشد.
+   ✎ تحلیل: رضایت آگاهانه سه شرط دارد: اطلاعات کافی، اختیاری بودن و اهلیت؛ امضا به‌تنهایی ضامن رضایت نیست.
 
 ۴۲۸) «Debriefing» means:
    ۱. coding the data
@@ -3479,7 +3479,7 @@
    ۳. budget constraints
    ۴. coding rules
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: کورسازی، مهار این اثر است.
+   ✎ تحلیل: demand characteristics نشانه‌هایی‌اند که آزمودنی از آن‌ها پاسخ مورد انتظار را حدس می‌زند؛ کورسازی این اثر را مهار می‌کند.
 
 ۴۳۱) A «pilot study» is conducted to:
    ۱. test the main hypothesis
@@ -3511,7 +3511,7 @@
    ۳. coding failed
    ۴. one item was skipped
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: تفاوت آن با عدم پاسخ گویه‌ای مهم است.
+   ✎ تحلیل: unit non-response یعنی کل پرسشنامه برنگشته است؛ با item non-response که فقط یک گویه بی‌پاسخ مانده فرق دارد.
 
 ۴۳۵) «Weighting» adjusts for:
    ۱. confounding
@@ -3551,7 +3551,7 @@
    ۳. qualitative studies
    ۴. replication studies
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: نمودار قیفی به تشخیص آن کمک می‌کند.
+   ✎ تحلیل: سوگیری انتشار یعنی مطالعات با یافته معنادار بیشتر منتشر می‌شوند؛ نمودار قیفی ابزار تشخیص آن است.
 
 ۴۴۰) «Preregistration» improves:
    ۱. response rate
@@ -3625,7 +3625,7 @@
    ۳. gradual and cumulative
    ۴. sudden and one-off
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: انباشت تدریجی، ویژگی حلقهٔ بازخورد است.
+   ✎ تحلیل: «over time» بر تدریجی و انباشتی بودن فرایند دلالت دارد، نه بر ناگهانی و یک‌باره بودن آن.
 
 ۴۴۹) Which is NOT stated in the passage?
    ۱. Critics call the process a feedback loop
@@ -3633,7 +3633,7 @@
    ۳. Users' clicks shape future recommendations
    ۴. Recommender systems were designed by governments
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: متن به طراحی دولتی اشاره‌ای ندارد.
+   ✎ تحلیل: متن به طراحی سیستم‌های توصیه‌گر توسط دولت‌ها اشاره‌ای ندارد؛ سه گزینه دیگر در متن آمده‌اند.
 
 ۴۵۰) The overall tone of the passage is:
    ۱. analytical and balanced
@@ -3650,7 +3650,7 @@
    ۳. increase prison sentences
    ۴. speed up trials
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: گفت‌وگو و ترمیم، هستهٔ این رویکرد است.
+   ✎ تحلیل: عدالت ترمیمی هدفش ترمیم آسیب از راه گفت‌وگو است، نه تشدید مجازات یا حذف قربانی از فرایند.
 
 ۴۵۲) Advocates claim that punishment alone:
    ۱. satisfies victims
@@ -3666,7 +3666,7 @@
    ۳. be excluded from data
    ۴. feel pressure to forgive
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: فشار به بخشش، نقد اصلی بر این رویه است.
+   ✎ تحلیل: نقد اصلی این است که قربانی ممکن است تحت فشار برای بخشش قرار بگیرد؛ همین نکته به‌عنوان نگرانی منتقدان آمده است.
 
 ۴۵۴) Evidence on reoffending is described as:
    ۱. modest and dependent on implementation
@@ -3690,7 +3690,7 @@
    ۳. a neutral person guiding the conversation
    ۴. a journalist
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: نقش او مدیریت فرایند گفت‌وگوست.
+   ✎ تحلیل: facilitator شخص بی‌طرفی است که گفت‌وگو را تسهیل می‌کند، نه پلیس، قاضی یا خبرنگار.
 
 ۴۵۷) «Deepens exclusion» means:
    ۱. improves reintegration
@@ -3714,7 +3714,7 @@
    ۳. Punishment changes behaviour reliably
    ۴. Restorative justice eliminates reoffending
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: متن اثر را به کیفیت اجرا مشروط می‌کند.
+   ✎ تحلیل: متن اثر برنامه‌ها را به کیفیت اجرا مشروط می‌کند؛ گزینه‌های مطلق مانند «همیشه» و «هرگز» با متن نمی‌خوانند.
 
 ۴۶۰) The word «modest» in the last sentence means:
    ۱. negative
@@ -3781,7 +3781,7 @@
    ۳. a statistical measure
    ۴. a coding rule
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: برچسب، فرصت‌ها و تعامل را محدود می‌کند.
+   ✎ تحلیل: stigma ویژگی یا برچسبی است که فرد را اجتماعی بی‌اعتبار می‌کند و فرصت‌ها و تعامل‌های او را محدود می‌سازد.
 
 ۴۶۸) «Resilience» in social research means:
    ۱. statistical power
@@ -3821,7 +3821,7 @@
    ۳. خطای نمونه‌گیری با بزرگ‌شدن نمونه کاهش می‌یابد.
    ۴. نمونه بر خطا اثر ندارد.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: رابطهٔ معکوس خطای استاندارد با جذر n.
+   ✎ تحلیل: خطای نمونه‌گیری با بزرگ‌شدن نمونه کاهش می‌یابد، چون خطای استاندارد با جذر n نسبت معکوس دارد.
 
 ۴۷۳) ترجمه درست: «The interview was conducted in a private room.»
    ۱. مصاحبه لغو شد.
@@ -3829,7 +3829,7 @@
    ۳. اتاق خصوصی بسته شد.
    ۴. مصاحبه در اتاقی خصوصی انجام شد.
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «conducted» یعنی اجرا شد.
+   ✎ تحلیل: «was conducted» یعنی انجام شد؛ ترجمه: مصاحبه در اتاقی خصوصی انجام شد.
 
 ۴۷۴) ترجمه درست: «Ethical approval was obtained before data collection.»
    ۱. پیش از گردآوری داده، تأییدیهٔ اخلاقی گرفته شد.
@@ -3845,7 +3845,7 @@
    ۳. نویسنده محدودیت‌ها را حذف کرد.
    ۴. نویسنده محدودیت‌ها را انکار می‌کند.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «acknowledge» پذیرش و اذعان است.
+   ✎ تحلیل: acknowledge یعنی اذعان و پذیرش؛ نویسنده چند محدودیت را می‌پذیرد، نه اینکه آن‌ها را انکار یا حذف کند.
 
 ۴۷۶) ترجمه درست: «Coding decisions were documented in a memo.»
    ۱. کدگذاری انجام نشد.
@@ -3853,7 +3853,7 @@
    ۳. تصمیم‌های کدگذاری در یادداشتی مستند شد.
    ۴. یادداشت‌ها حذف شدند.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: مستندسازی، شرط بازبینی‌پذیری تحلیل است.
+   ✎ تحلیل: documented in a memo یعنی در یادداشتی مستند شد؛ مستندسازی شرط بازبینی‌پذیری تحلیل است.
 
 ۴۷۷) ترجمه درست: «The effect was statistically significant but small.»
    ۱. اثر بزرگ و معنادار بود.
@@ -3861,7 +3861,7 @@
    ۳. اثر معنادار نبود.
    ۴. اثر از نظر آماری معنادار اما کوچک بود.
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: تفکیک معناداری از اندازهٔ اثر.
+   ✎ تحلیل: «statistically significant but small» یعنی از نظر آماری معنادار اما کوچک؛ معناداری آماری با اندازه اثر یکی نیست.
 
 ۴۷۸) ترجمه درست: «Respondents were selected at random.»
    ۱. پاسخگویان به‌طور تصادفی انتخاب شدند.
@@ -3869,7 +3869,7 @@
    ۳. پاسخگویان به‌ترتیب انتخاب شدند.
    ۴. پاسخگویان داوطلب بودند.
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «at random» یعنی تصادفی.
+   ✎ تحلیل: «at random» یعنی به‌طور تصادفی؛ بنابراین پاسخگویان به‌طور تصادفی انتخاب شدند.
 
 ۴۷۹) ترجمه درست: «The report calls for further research.»
    ۱. گزارش منتشر نشد.
@@ -3877,7 +3877,7 @@
    ۳. گزارش پژوهشی ندارد.
    ۴. گزارش پژوهش را متوقف می‌کند.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «call for» یعنی مطالبه/نیاز به.
+   ✎ تحلیل: «call for» یعنی خواستار شدن؛ گزارش خواستار پژوهش بیشتر است، نه متوقف‌کردن آن.
 
 ۴۸۰) ترجمه درست: «Access to the archive was restricted.»
    ۱. آرشیو عمومی شد.
@@ -3885,7 +3885,7 @@
    ۳. دسترسی به آرشیو محدود بود.
    ۴. آرشیو از بین رفت.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «restricted» محدودشده است.
+   ✎ تحلیل: «restricted» یعنی محدود شد؛ دسترسی به آرشیو محدود بود، نه آزاد یا عمومی.
 
 ۴۸۱) ترجمه درست: «Triangulation strengthens the credibility of conclusions.»
    ۱. مثلث‌سازی اعتبار را کاهش می‌دهد.
@@ -3901,7 +3901,7 @@
    ۳. نمونه تصادفی بود.
    ۴. نمونه بزرگ‌تر از جامعه بود.
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: نمایندگی، شرط تعمیم است.
+   ✎ تحلیل: representative یعنی نماینده؛ نمونه نماینده جامعه نبود، پس تعمیم نتایج به جامعه مجاز نیست.
 
 ۴۸۳) The study ___ three waves of data between 2015 and 2020.
    ۱. collecting
@@ -3933,7 +3933,7 @@
    ۳. have been
    ۴. were
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: فاعل مفرد «the paper» فعل مفرد می‌گیرد.
+   ✎ تحلیل: فاعل مفرد «the paper» فعل مفرد می‌گیرد: was published.
 
 ۴۸۷) Researchers rarely ___ their data publicly.
    ۱. sharing
@@ -3941,7 +3941,7 @@
    ۳. shares
    ۴. is sharing
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: فاعل جمع با فعل جمع می‌آید.
+   ✎ تحلیل: فاعل جمع «researchers» فعل جمع می‌گیرد: rarely share؛ شکل shares برای سوم‌شخص مفرد است.
 
 ۴۸۸) The greater the transparency, ___ the trust in findings.
    ۱. highest
@@ -3949,7 +3949,7 @@
    ۳. the higher
    ۴. high
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ساختار موازی مقایسه‌ای.
+   ✎ تحلیل: موازی‌سازی مقایسه‌ای: the greater the transparency, the higher the trust in findings.
 
 ۴۸۹) ___ the limitations, the study offers a useful starting point.
    ۱. Although
@@ -3957,7 +3957,7 @@
    ۳. However
    ۴. Despite
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «Despite» با عبارت اسمی می‌آید.
+   ✎ تحلیل: «Despite + عبارت اسمی»: Despite the limitations. «Although» به بند کامل نیاز دارد.
 
 ۴۹۰) کدام جمع‌بندی درست است؟
    ۱. خواندن دقیق متن علمی نیازمند توجه به روش، محدودیت و بافت است
