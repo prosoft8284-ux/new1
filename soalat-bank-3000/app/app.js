@@ -6,7 +6,7 @@ const fag = (n) => fa(String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '٬'));
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const shuffle = (a) => { const x = a.slice(); for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; };
 
-const KEY = 'sb:v3';
+const KEY = 'sb:v4';
 let IDX = null, PLAN = null;
 const SUB = {}, SUBIDX = {};
 let ST = { start: null, q: {}, days: {}, pos: {}, cycle: { queue: [], seen: [], round: 1 }, notify: { on: false, h: 20, m: 0 } };
