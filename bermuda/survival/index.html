@@ -14,14 +14,8 @@
 <!-- ================= HUD ================= -->
 <div id="hud" class="hidden">
   <div class="hud-top">
-    <div class="chip wave-chip">
-      <small>مناطق آزاد</small><b id="waveNum">۰/۱۵</b>
-    </div>
     <div class="chip kill-chip">
       <small>کشته</small><b id="killNum">۰</b>
-    </div>
-    <div class="chip scan-chip">
-      <small>اسکن</small><b id="scanNum">۳</b>
     </div>
     <div class="chip phase-chip">
       <small>هوا</small><b id="phaseTxt">روز</b>
@@ -41,11 +35,6 @@
   <div id="compass" class="compass"><div id="compassRow"></div></div>
   <div id="dmgDir" class="dmg-dir hidden"><i>▲</i></div>
   <div id="benchHint" class="bench-hint hidden">E · میز کار بِیکن</div>
-
-  <div id="bossWrap" class="boss hidden">
-    <b id="bossName">موجود مادر</b>
-    <div class="boss-bar"><i id="bossFill"></i></div>
-  </div>
 
   <div id="banner" class="banner"><b id="bannerTitle"></b><span id="bannerSub"></span></div>
 
@@ -76,9 +65,7 @@
   </div>
 
   <div id="combo" class="combo"><b id="comboNum">×۲</b><small>زنجیرهٔ کشتار</small></div>
-  <div id="dirMark" class="dir-mark hidden"><i>▲</i><small>نزدیک‌ترین منطقه</small></div>
-
-  <div id="tip">WASD حرکت · کلیک ضربهٔ شمشیر · F ضربهٔ سنگین · R تعویض شمشیر · Q اسکن · E میز کار · Shift دویدن · Esc توقف</div>
+  <div id="tip">WASD حرکت · کلیک ضربهٔ شمشیر · F ضربهٔ سنگین · R تعویض شمشیر · E میز کار · Shift دویدن · Esc توقف</div>
 </div>
 
 <div id="flash"></div>
@@ -92,12 +79,7 @@
     <div class="trow">
       <button id="tBench" class="tbtn sm" type="button" aria-label="میز کار">⚒</button>
       <button id="tMelee" class="tbtn sm" type="button" aria-label="ضربهٔ سنگین">⚔</button>
-      <button id="tScan" class="tbtn md scan-btn" type="button" aria-label="اسکن زیستی">◈</button>
-    </div>
-    <div class="trow">
-      <button id="tJump" class="tbtn sm" type="button" aria-label="پرش">⇧</button>
       <button id="tReload" class="tbtn sm" type="button" aria-label="تعویض شمشیر">⇄</button>
-      <button id="tAim" class="tbtn md" type="button" aria-label="نشانه‌گیری">◎</button>
     </div>
     <div class="trow fire-row">
       <button id="tFire" class="tbtn lg" type="button" aria-label="ضربهٔ شمشیر"><i></i><b>ضربه</b></button>
@@ -121,16 +103,16 @@
       <b>BERMUDA SIEGE</b>
       <span>۳ بعدی · اول‌شخص · شمشیر و شکار</span>
     </div>
-    <h1>هر دور یک نفر را برای کشتن انتخاب می‌کند. شمشیرت را بگیر و شکارش کن.</h1>
+    <h1>هر دور یک نفر را برای کشتن انتخاب می‌کند — بات یا تو. شمشیرت را بگیر و شکارش کن.</h1>
     <div class="mission">
       <b>هدف: قراردادهای شکار را یکی‌یکی انجام بده، هر کسی را سر راهت کشتی غارت کن، و با شمشیر شکسته برنگرد.</b>
       <div class="msteps">
         <span><i>۱</i> بازی شمشیر است: کلیک یا دکمهٔ «ضربه» یک ضربهٔ کمانی می‌زند و F ضربهٔ سنگین است. هر ضربه «نفس» می‌خواهد و نفس بین ضربه‌ها برمی‌گردد.</span>
-        <span><i>۲</i> هر دور جزیره یک هدف تصادفی را با هالهٔ طلایی علامت می‌زند؛ همان شکارچی هم به سراغ تو می‌آید. او را بینداز تا قرارداد بسته شود و تیغهٔ بعدی از او بیفتد.</span>
-        <span><i>۳</i> هر کسی را کشتی، جسدش غارت‌کردنی است: روی نفس، جان و قطعه‌ها راه برو تا برداشته شوند. قطعه در میز کار بِیکن خرج می‌شود.</span>
-        <span><i>۴</i> اگر بیفتی بازی تمام نمی‌شود: ده ثانیه بعد از آسمان سقوط می‌کنی — با کمترین شمشیر، همان شمشیر شکسته.</span>
-        <span><i>۵</i> شمشیر آهنی، نقره و کهربا در جعبهٔ مناطق و پاداش قراردادها هستند. با ۱ تا ۴ یا R عوضشان کن.</span>
-        <span><i>۶</i> هر ۲۰ ثانیه ذخیره می‌شود؛ بستن اپ مأموریت، قطعه‌ها و شمشیرهای پیدا‌شده را نمی‌سوزاند.</span>
+        <span><i>۲</i> هر دور جزیره یک پاون زنده را قرعه می‌کشد و با هالهٔ طلایی علامت می‌زند. تو هم دقیقاً یک سهم در این قرعه داری — نه کمتر، نه بیشتر.</span>
+        <span><i>۳</i> بات‌ها هم شکارچی دارند: چند رقیب به سراغ هدف می‌روند و هر کسی او را بیندازد پول را برمی‌دارد و تیغهٔ بهتری می‌خرد. اگر خودت هدف شدی، هر کسی نزدیک باشد دنبالت می‌کند — ۷۲ ثانیه دوام بیار تا سهمت را بگیری.</span>
+        <span><i>۴</i> هر کسی را کشتی، جسدش غارت‌کردنی است: روی نفس، جان و قطعه‌ها راه برو تا برداشته شوند. قطعه در میز کار بِیکن خرج می‌شود.</span>
+        <span><i>۵</i> اگر بیفتی بازی تمام نمی‌شود: ده ثانیه بعد از آسمان سقوط می‌کنی — با شمشیر شکسته. کسی که تو را انداخت، قرارداد را برداشت.</span>
+        <span><i>۶</i> شمشیر آهنی، نقره و کهربا پاداش قراردادها هستند و هر ۲۰ ثانیه ذخیره می‌شود؛ بستن اپ مأموریت، قطعه‌ها و شمشیرهای پیدا‌شده را نمی‌سوزاند.</span>
       </div>
       <small>مرگ پایان کار نیست، ولی هر سقوط تو را با شمشیر شکسته برمی‌گرداند.</small>
     </div>
@@ -150,8 +132,6 @@
       <span><kbd>R</kbd> تعویض شمشیر</span>
       <span><kbd>۱ ۲ ۳ ۴</kbd> شمشیرها</span>
       <span><kbd>Shift</kbd> دویدن</span>
-      <span><kbd>Space</kbd> پرش</span>
-      <span><kbd>Q</kbd> اسکن زیستی</span>
       <span><kbd>E</kbd> میز کار</span>
     </div>
 
@@ -177,7 +157,7 @@
       <button class="go ghost" type="button" data-buy="heal">درمان کامل<em>۲ قطعه</em></button>
       <button class="go" type="button" data-buy="close">بستن و بازگشت</button>
     </div>
-    <p class="pause-note">قطعه از قراردادهای شکار، غارت بدن‌ها و جعبهٔ مناطق می‌آید.</p>
+    <p class="pause-note">قطعه از قراردادهای شکار و غارت بدن‌ها می‌آید.</p>
   </div>
 </div>
 

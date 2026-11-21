@@ -16,3 +16,6 @@ bermuda/game/android/local.properties
 bermuda/game/android/app/src/main/assets/public/
 bermuda/survival/android/assets/
 bermuda/survival/.build/
+
+bermuda/survival/bermuda-siege.apk
+.android-build/

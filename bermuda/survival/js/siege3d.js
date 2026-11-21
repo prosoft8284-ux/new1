@@ -135,8 +135,7 @@
     neural: { hp: 62, spd: 2.5, dmg: 10, r: 0.66, h: 1.85, color: 0x6fd8ff, glow: 0x1d6a92, ranged: true, name: 'عصب‌زن' },
     bomber: { hp: 46, spd: 3.6, dmg: 30, r: 0.66, h: 1.5, color: 0xffc46a, glow: 0x8a4a10, explode: true, name: 'بمب‌گذار انتحاری' },
     brute: { hp: 190, spd: 2.3, dmg: 22, r: 1.0, h: 2.6, color: 0xa87cff, glow: 0x46228a, charge: true, name: 'غول زره‌پوش' },
-    stalker: { hp: 74, spd: 3.4, dmg: 24, r: 0.55, h: 2.0, color: 0x241a38, glow: 0x0c0618, invis: true, name: 'شکارچی نامرئی' },
-    mother: { hp: 1100, spd: 2.0, dmg: 26, r: 1.7, h: 4.0, color: 0xff7bdc, glow: 0x8a1a6a, ranged: true, boss: true, name: 'موجود مادر' }
+    stalker: { hp: 82, spd: 3.6, dmg: 24, r: 0.55, h: 2.0, color: 0x3b2c56, glow: 0x1a0e30, name: 'شکارچی شب' }
   };
 
   var WAVES = 6;
@@ -150,8 +149,7 @@
     widx: 0, reloading: 0, reloadTime: 0, firing: false, aim: false,
     combo: 0, comboT: 0, comboBest: 0, dmgMul: 1, wlvl: 1,
     squadT: 0.6, squadId: 0, squadN: 0, arrowT: 0, arrowA: 0, emptyT: -9,
-    zones: 0, dirD: 9999, dirA: 0, dirLabel: '',
-    scans: 3, scanT: 0, scanRings: [],
+    feudT: 0.9, nearest: 9999, nearestName: '',
     /* approved expansion: economy, upgrades, hazards, sky cycle, save */
     parts: 0, upg: { dmg: 0, mag: 0, reload: 0 }, diff: 'soldier', dmgTaken: 1,
     props: [],
@@ -182,7 +180,6 @@
   var keys = {};
   var pointer = { down: false, right: false };
   var joyVec = { x: 0, y: 0 };
-  var jumpReq = false;
   var colliders = [];   // {x,z,r} — blocks the player's feet
   /* Solid silhouettes that stop bullets: rocks, trunks, pillars, crates and
      the relay base. {x,z,r,y0,y1} is a vertical cylinder, which is all the
@@ -1474,7 +1471,9 @@
     e.flash = 1;
     e.hitT = 0.12;
     if (e.group.userData.view && e.group.userData.view.flinch) e.group.userData.view.flinch();
-    if (!e.aggro) aggroEnemy(e);   /* being shot is a good reason to fight back */
+    /* cut by the player is a good reason to fight back; a bot cutting a bot is
+       their own quarrel, and must not drag the whole camp onto the player */
+    if (!by && !e.aggro) aggroEnemy(e);
     /* heavy hits shove the target back and interrupt a wind-up */
     if (!e.def.boss) e.stagger = Math.max(e.stagger, Math.min(0.42, dmg / 150));
     if (e.state === 'wind') { e.state = 'walk'; e.cd = 0.7; }
@@ -1675,8 +1674,6 @@
     if (e.code === 'Digit2') switchWeapon(1);
     if (e.code === 'Digit3') switchWeapon(2);
     if (e.code === 'Digit4') switchWeapon(3);
-    if (e.code === 'Space' && !G.paused) jumpReq = true;
-    if (e.code === 'KeyQ') useScan();
     if (e.code === 'KeyF') tryMelee();
     if (e.code === 'KeyE') { if (G.benchOpen) closeBench(); else openBench(); }
     if (e.code === 'Escape') { if (G.running && !G.paused) pauseGame(); }
@@ -1791,16 +1788,7 @@
     fire.addEventListener('pointerup', function (e) { e.stopPropagation(); });
     fire.addEventListener('pointercancel', function (e) { e.stopPropagation(); });
     fire.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-    var aimBtn = $('tAim');
-    aimBtn.addEventListener('pointerdown', function (e) {
-      e.preventDefault(); e.stopPropagation();
-      G.aim = !G.aim;
-      aimBtn.classList.toggle('on', G.aim);
-    });
     $('tReload').addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); startReload(); });
-    $('tJump').addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); jumpReq = true; });
-    var scanBtn = $('tScan');
-    if (scanBtn) scanBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); useScan(); });
     var meleeBtn = $('tMelee');
     if (meleeBtn) meleeBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); tryMelee(); });
     var benchBtn = $('tBench');
@@ -2265,7 +2253,7 @@
     for (var i = 0; i < G.enemies.length; i++) {
       var o = G.enemies[i];
       if (o.dead || o.def.boss) continue;
-      if (Math.hypot(o.pos.x - P.pos.x, o.pos.z - P.pos.z) < 70) aggroEnemy(o);
+      if (Math.hypot(o.pos.x - P.pos.x, o.pos.z - P.pos.z) < 58) { o.hunter = true; aggroEnemy(o); }
     }
     showBanner('قرارداد №' + fa(G.bounty.no) + ' — تو هدفی',
       'هر شکارچی نزدیک پولِ کشتن تو را می‌خواهد · ' + fa(72) + ' ثانیه دوام بیار', 3400);
@@ -2295,7 +2283,7 @@
         var rx = target.pos.x + Math.cos(ra) * rr, rz = target.pos.z + Math.sin(ra) * rr;
         if (heightAt(rx, rz) < 1.3) continue;
         var riv = spawnEnemy(kinds[r], rx, rz, false, false);
-        if (riv) { riv.zone = null; riv.aggro = true; riv.aggroT = 999; list.push({ e: riv, d: rr }); }
+        if (riv) { riv.zone = null; riv.hunter = true; list.push({ e: riv, d: rr }); }
       }
     }
     for (var k = 0; k < list.length && k < 4; k++) {
@@ -2382,7 +2370,7 @@
     var pool = [];
     for (var i = 0; i < G.enemies.length; i++) {
       var o = G.enemies[i];
-      if (o.dead || o.bounty || o.def.boss) continue;   /* a mother is a raid, not a contract */
+      if (o.dead || o.bounty || o.def.boss) continue;
       var od = Math.hypot(o.pos.x - P.pos.x, o.pos.z - P.pos.z);
       if (od < 14 || od > 150) continue;
       pool.push(o);
@@ -2397,6 +2385,14 @@
       }
     }
     if (!pool.length) { G.bountyDelay = 2.5; return; }
+    /* the draw is local: the nearest handful of pawns, so the player's single
+       slot is a real one in nine rather than one in forty */
+    if (pool.length > 10) {
+      pool.sort(function (a, b) {
+        return Math.hypot(a.pos.x - P.pos.x, a.pos.z - P.pos.z) - Math.hypot(b.pos.x - P.pos.x, b.pos.z - P.pos.z);
+      });
+      pool.length = 10;
+    }
     var meIn = G.hp > 0 && !G.down && !G.falling;
     var roll = (Math.random() * (pool.length + (meIn ? 1 : 0))) | 0;
     if (meIn && roll === 0) { pickPlayerBounty(); return; }
@@ -2408,8 +2404,10 @@
     e.bounty = true;
     e.maxHp = Math.round(e.maxHp * 1.7);
     e.hp = e.maxHp;
-    e.aggro = true;
-    e.aggroT = 999;
+    /* the named pawn is the prey, not a missile aimed at the player: it keeps
+       its post and defends itself against whoever comes for the money */
+    e.aggro = false;
+    e.aggroT = 0;
     e.noticeT = 0;
     e.home = { x: e.pos.x, z: e.pos.z };
     if (!e.bountyMark) e.bountyMark = makeMark(e.group, e.def.h + 1.05, 0xffd166);
@@ -2443,7 +2441,6 @@
     G.parts += parts;
     G.stam = G.stamMax;
     G.hp = Math.min(G.maxHp, G.hp + 22);
-    G.scans = Math.min(5, G.scans + 1);
     G.shake = Math.max(G.shake, 0.75);
     G.bounty = null;
     G.bountyDelay = 3.5;
@@ -2508,9 +2505,7 @@
     var e = b.e;
     b.dist = Math.hypot(e.pos.x - P.pos.x, e.pos.z - P.pos.z);
     b.hp = clamp(e.hp / e.maxHp, 0, 1);
-    /* a contract never loses interest: the hunter keeps coming */
-    e.aggroT = Math.max(e.aggroT, 6);
-    /* and rivals hunt it too: the bounty is not a private duel */
+    /* rivals hunt it too: the bounty is not a private duel */
     G.hunterTick -= dt;
     if (G.hunterTick <= 0) { G.hunterTick = 1.5; assignHunters(e); }
     if (e.bountyMark) {
@@ -2547,7 +2542,6 @@
     G.firing = false;
     G.aim = false;
     G.swingT = 9;
-    if ($('tAim')) $('tAim').classList.remove('on');
     document.body.classList.add('down');
     var box = $('downBox');
     if (box) box.classList.remove('hidden');
@@ -2657,14 +2651,11 @@
     updateSlots();
   }
 
-  /* ------------------------------------------------------------------- waves */
-  /* --------------------------------------------------------------------- zones
-     The island is not a shooting gallery. Five occupied zones exist from the
-     first second, each held by a small garrison that stays around its camp:
-     they patrol, they notice you only when you walk into their sight line, and
-     if you break contact they go back to their post instead of hunting you
-     across the island. Clearing a zone opens its supply cache - that is where
-     the scarce ammo, the medkits and the three better weapons come from. */
+  /* -------------------------------------------------------------------- camps
+     The island is a field of pawns, not a checklist of zones. Every camp is a
+     handful of bots holding ground: they patrol it, they quarrel with whoever
+     is standing nearby, and they only turn on the player when he is the named
+     contract, when he cuts one of them, or when he walks into their face. */
   var ZONES = [
     { id: 'camp', name: 'اردوگاه ساحلی', x: 72, z: 62, r: 30, tier: 1, lead: 'runner',
       mix: ['runner', 'skitter', 'runner'], loot: ['rifle', 'ammo'] },
@@ -2678,8 +2669,8 @@
       mix: ['warrior', 'runner', 'bomber', 'neural', 'stalker'], loot: ['ammo', 'med'] },
     { id: 'ridge', name: 'یال شمالی', x: 34, z: -108, r: 30, tier: 4, lead: 'brute',
       mix: ['warrior', 'neural', 'brute', 'runner', 'skitter', 'stalker'], loot: ['ammo', 'med'] },
-    { id: 'nest', name: 'لانهٔ مادر', x: -72, z: -88, r: 34, tier: 5, lead: 'warrior',
-      mix: ['mother', 'brute', 'neural', 'warrior', 'runner', 'stalker'], loot: ['plasma', 'ammo', 'med'] },
+    { id: 'nest', name: 'لانهٔ شمالی', x: -72, z: -88, r: 34, tier: 5, lead: 'warrior',
+      mix: ['brute', 'neural', 'warrior', 'runner', 'stalker'], loot: ['amber', 'ammo', 'med'] },
     /* the crater sits on the empty south-east shoulder: far from the coastal
        camp (88 m), off the spawn (171 m) and clear of the quarry, so the
        tier-4 garrison never overlaps the starter fight */
@@ -2694,7 +2685,7 @@
     { id: 'gate', name: 'دروازهٔ سنگی', x: 181, z: -96, r: 32, tier: 4, lead: 'brute',
       mix: ['warrior', 'brute', 'neural', 'runner'], loot: ['ammo', 'med', 'ammo'] },
     { id: 'trench', name: 'خاکریز شمالی', x: 34, z: -192, r: 34, tier: 5, lead: 'brute',
-      mix: ['mother', 'brute', 'warrior', 'neural', 'stalker'], loot: ['plasma', 'ammo', 'med'] },
+      mix: ['brute', 'warrior', 'neural', 'runner', 'stalker'], loot: ['amber', 'ammo', 'med'] },
     { id: 'harbor', name: 'بندر گمشده', x: -140, z: -160, r: 32, tier: 4, lead: 'warrior',
       mix: ['warrior', 'neural', 'bomber', 'runner', 'stalker'], loot: ['shotgun', 'ammo'] },
     { id: 'sink', name: 'چالهٔ غربی', x: -199, z: 14, r: 32, tier: 4, lead: 'brute',
@@ -2715,29 +2706,6 @@
       return { x: x, z: zz };
     }
     return { x: z.x, z: z.z };
-  }
-
-  /* A tall, faint light column: the only map you get. Walk toward it. */
-  function zoneMarker(z) {
-    var g = new T.Group();
-    var col = z.tier >= 4 ? 0xff7bdc : 0xffb43a;
-    var beam = new T.Mesh(
-      new T.CylinderGeometry(0.45, 1.05, 24, 10, 1, true),
-      new T.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.12, side: T.DoubleSide, depthWrite: false, blending: T.AdditiveBlending })
-    );
-    beam.position.y = 12;
-    beam.frustumCulled = false;
-    g.add(beam);
-    var ring = new T.Mesh(
-      new T.RingGeometry(3.4, 4.1, 30),
-      new T.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.45, side: T.DoubleSide, depthWrite: false })
-    );
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.y = 0.06;
-    g.add(ring);
-    g.position.set(z.cx, heightAt(z.cx, z.cz), z.cz);
-    scene.add(g);
-    z.mark = g;
   }
 
   /* field stashes: a handful of supply cases left in the wild, far from the
@@ -2993,9 +2961,6 @@
   }
 
   function seedZones() {
-    G.zones = 0;
-    G.dirD = 9999;
-    G.dirLabel = '';
     /* camp props are instanced: restart their counters so a resume rebuild
        does not leave stale tents standing */
     ensureCampMeshes();
@@ -3008,12 +2973,9 @@
     G.traps.length = 0;
     for (var zi = 0; zi < ZONES.length; zi++) {
       var z = ZONES[zi];
-      z.cleared = false;
-      z.alive = 0;
       z.leader = null;
       var spot = zoneSpot(z, 0.22);
       z.cx = spot.x; z.cz = spot.z;
-      zoneMarker(z);
       var mix = z.mix.slice();
       if (G.diffExtra > 0) mix.push(z.mix[z.mix.length - 1]);
       else if (G.diffExtra < 0) mix.pop();
@@ -3100,60 +3062,6 @@
     }
   }
 
-  function paintCleared(z) {
-    if (!z.mark) return;
-    z.mark.children[0].material.color.setHex(0x7dffb0);
-    z.mark.children[0].material.opacity = 0.06;
-    z.mark.children[1].material.color.setHex(0x7dffb0);
-    z.mark.children[1].material.opacity = 0.3;
-  }
-
-  function clearZone(z) {
-    z.cleared = true;
-    G.zones++;
-    G.scans = Math.min(5, G.scans + 1);   /* every liberated zone charges the scanner */
-    G.parts += 2;
-    G.shake = Math.max(G.shake, 0.7);
-    SFX3D.play('wave');
-    paintCleared(z);
-    var loot = z.loot || ['ammo'];
-    for (var i = 0; i < loot.length; i++) {
-      var ang = i * (Math.PI * 2 / loot.length) + 0.4;
-      spawnPickup(loot[i], z.cx + Math.cos(ang) * 3.4, z.cz + Math.sin(ang) * 3.4);
-    }
-    showBanner('منطقه آزاد شد · ' + z.name, 'جعبهٔ تدارکات باز شد · قطعه +۲ · اسکنر +۱ شارژ', 2600);
-    saveRun();
-    if (G.zones >= ZONES.length) {
-      setTimeout(function () { if (!G.over && G.running) winGame(); }, 2200);
-    }
-  }
-
-  function updateZones(dt) {
-    var nearest = null, nd = 1e9;
-    for (var zi = 0; zi < ZONES.length; zi++) {
-      var z = ZONES[zi];
-      if (z.mark) {
-        var bm = z.mark.children[0].material;
-        bm.opacity = z.cleared ? 0.05 : 0.10 + Math.sin(G.t * 1.6) * 0.035;
-      }
-      if (z.cleared) continue;
-      var alive = 0;
-      for (var k = 0; k < G.enemies.length; k++) {
-        var e = G.enemies[k];
-        if (!e.dead && e.zone === z) alive++;
-      }
-      z.alive = alive;
-      if (alive === 0) { clearZone(z); continue; }
-      var d = Math.hypot(P.pos.x - z.cx, P.pos.z - z.cz);
-      if (d < nd) { nd = d; nearest = z; }
-    }
-    G.dirD = nearest ? nd : 9999;
-    G.dirA = nearest ? Math.atan2(nearest.cx - P.pos.x, nearest.cz - P.pos.z) : 0;
-    G.dirLabel = nearest
-      ? (fa(Math.round(nd)) + ' متر · ' + nearest.name)
-      : 'جزیره پاک شد';
-  }
-
   /* --------------------------------------------------------------- bio scan
      New for the bigger island: three charges of a biological ping that paints
      every living thing and every cache near you straight through rock for
@@ -3185,53 +3093,6 @@
     return s;
   }
 
-  function useScan() {
-    if (!G.running || G.paused || G.over) return;
-    if (G.scans <= 0) { toast('اسکنر خالی است — آزادکردن هر منطقه یک شارژ می‌دهد'); return; }
-    G.scans--;
-    G.scanT = 7;
-    SFX3D.play('scan');
-    var ring = new T.Mesh(
-      new T.RingGeometry(0.92, 1, 48),
-      new T.MeshBasicMaterial({ color: 0x8ff0ff, transparent: true, opacity: 0.62, side: T.DoubleSide, depthWrite: false, depthTest: false, blending: T.AdditiveBlending })
-    );
-    ring.rotation.x = -Math.PI / 2;
-    ring.position.set(P.pos.x, P.pos.y + 0.14, P.pos.z);
-    ring.scale.setScalar(0.6);
-    ring.renderOrder = 996;
-    scene.add(ring);
-    G.scanRings.push({ mesh: ring, t: 0 });
-    showBanner('اسکن زیستی', 'هر چیزی نزدیک تو ۷ ثانیه علامت خورد', 1300);
-    updateHUD(true);
-  }
-
-  function updateScan(dt) {
-    for (var i = G.scanRings.length - 1; i >= 0; i--) {
-      var r = G.scanRings[i];
-      r.t += dt;
-      var k = r.t / 1.1;
-      r.mesh.scale.setScalar(0.6 + k * 64);
-      r.mesh.material.opacity = Math.max(0, 0.62 * (1 - k));
-      if (k >= 1) {
-        scene.remove(r.mesh);
-        r.mesh.geometry.dispose();
-        r.mesh.material.dispose();
-        G.scanRings.splice(i, 1);
-      }
-    }
-    if (G.scanT > 0) G.scanT -= dt;
-    var live = G.scanT > 0;
-    for (var e = 0; e < G.enemies.length; e++) {
-      var en = G.enemies[e];
-      if (!live || en.dead) { if (en.mark) en.mark.visible = false; continue; }
-      var d = Math.hypot(en.pos.x - P.pos.x, en.pos.z - P.pos.z);
-      if (d > 72) { if (en.mark) en.mark.visible = false; continue; }
-      if (!en.mark) en.mark = makeMark(en.group, en.def.h + 0.8, en.def.boss ? 0xff7bdc : 0xff4b6b);
-      en.mark.visible = true;
-      en.mark.material.opacity = clamp(1.2 - d / 72, 0.35, 1);
-    }
-  }
-
   /* ----------------------------------------------------------------- enemies */
   function aggroEnemy(e) {
     if (e.aggro || e.dead) return;
@@ -3253,6 +3114,48 @@
         n++;
       }
     }
+  }
+
+  /* A swing is a swing: the same cut lands on a bot or on the player, and the
+     only difference is who gets paid for it. */
+  function hitPawn(e, foe, amount) {
+    if (foe && !foe.dead) damageEnemy(foe, amount, null, false, e);
+    else hurtPlayer(amount, e.pos, e);
+  }
+
+  /* ------------------------------------------------------------ bot quarrels
+     The island does not revolve around the player. Every few seconds two pawns
+     close enough to each other get a reason to hate one another, and that
+     fight resolves whether or not anyone is watching. A bot that wins takes
+     the contract pay like anybody else, because a pawn is a pawn. */
+  function updateFeuds(dt) {
+    G.feudT -= dt;
+    if (G.feudT > 0) return;
+    G.feudT = rand(2.4, 5.0);
+    var pool = [], duels = 0;
+    for (var i = 0; i < G.enemies.length; i++) {
+      var e = G.enemies[i];
+      if (e.dead) continue;
+      if (e.foe) { duels++; continue; }
+      if (e.hunter || e.bounty || e.def.boss || e.age < 0.6) continue;
+      if (Math.hypot(e.pos.x - P.pos.x, e.pos.z - P.pos.z) > 110) continue;
+      pool.push(e);
+    }
+    if (pool.length < 2 || duels > 7) return;
+    var a = pool[(Math.random() * pool.length) | 0];
+    var best = null, bd = 26;
+    for (var k = 0; k < pool.length; k++) {
+      var o = pool[k];
+      if (o === a) continue;
+      var d = Math.hypot(o.pos.x - a.pos.x, o.pos.z - a.pos.z);
+      if (d < bd) { bd = d; best = o; }
+    }
+    if (!best) return;
+    var t = rand(10, 18);
+    a.foe = best; a.foeT = t;
+    best.foe = a; best.foeT = t;
+    /* a growl across the sand is the only announcement a feud gets */
+    if (Math.hypot(a.pos.x - P.pos.x, a.pos.z - P.pos.z) < 40) SFX3D.play('growl', a.pos);
   }
 
   function calmEnemy(e) {
@@ -3315,15 +3218,6 @@
       }
       if (!e.group.visible) e.group.visible = true;
       var nx = dx / dist, nz = dz / dist;
-      /* the stalker is only a shape in the dust until you scan or it is on you */
-      if (e.invis) {
-        var sawIt = G.scanT > 0 || dist < 8 || e.flash > 0.25;
-        e.group.visible = sawIt;
-        if (!sawIt && dist < 36 && Math.random() < dt * 5) {
-          emit(e.pos.x + rand(-0.45, 0.45), e.pos.y + rand(0.15, 1.5), e.pos.z + rand(-0.45, 0.45), 1, 0x9a8fbc, 0.7, 0.55, 3);
-        }
-        if (ud.bar) ud.bar.visible = false;
-      }
       var spd = e.def.spd * (e.elite ? 1.07 : 1) * (e.leader ? 1.08 : 1) * (1 + 0.1 * (G.nightK || 0));
       if (e.routed > 0) { e.routed -= dt; spd *= 0.4; e.cd = Math.max(e.cd, 1.1); }
       if (e.stagger > 0) { e.stagger -= dt; spd *= 0.12; }
@@ -3333,8 +3227,11 @@
       if (e.flankT > 0) e.flankT -= dt;
       else { e.flank = rand(-1, 1); e.flankT = rand(1.8, 4.2); }
 
-      /* --- awareness: garrisons hold ground, they never home in on you --- */
-      var los = false;
+      /* --- awareness. No garrison homes in on the player just for seeing
+         him: the island's business is its own. A bot turns on you only when
+         the contract names you, when you cut it first, or when you walk into
+         its face - everyone else fights whoever it was already fighting. --- */
+      var losP = false;
       if (dist < 60) {
         var eyeY = e.pos.y + e.def.h * 0.8;
         tmpA.set(p.x - e.pos.x, (p.y + 1.15) - eyeY, p.z - e.pos.z);
@@ -3342,33 +3239,37 @@
         if (span > 0.3) {
           tmpA.divideScalar(span);
           tmpB.set(e.pos.x, eyeY, e.pos.z);
-          los = clearLine(tmpB, tmpA, span);
+          losP = clearLine(tmpB, tmpA, span);
         }
       }
       var sense = (e.def.boss ? 58 : (e.def.ranged ? 46 : 30)) * (1 + 0.3 * (G.nightK || 0) - (G.storm > 0 ? 0.22 : 0));
       if (sense < 13) sense = 13;
       if (!e.aggro) {
-        if (los && dist < sense) {
+        if (G.bounty && G.bounty.you && !G.down && dist < 62) {
+          aggroEnemy(e);                         /* the island named the player */
+        } else if (losP && dist < 8) {
           e.noticeT += dt;
-          if (e.noticeT > (e.def.boss ? 0.25 : 0.6)) aggroEnemy(e);
-        } else e.noticeT = Math.max(0, e.noticeT - dt * 1.4);
+          if (e.noticeT > 0.45) aggroEnemy(e);   /* walked into its face */
+        } else {
+          e.noticeT = Math.max(0, e.noticeT - dt * 1.4);
+        }
       } else {
-        if (los && dist < sense * 1.5) e.aggroT = 5.2;
+        if (losP && dist < sense * 1.5) e.aggroT = 5.2;
         e.aggroT -= dt;
-        /* a contract target never calms down: it keeps hunting you */
-        if (!e.bounty && (dist > 50 || (e.aggroT <= 0 && !los))) calmEnemy(e);
+        /* the contract keeps its hunters; everyone else lets the player go */
+        if (!e.bounty && !(G.bounty && G.bounty.you) && (dist > 34 || (e.aggroT <= 0 && !losP))) calmEnemy(e);
       }
 
       var reach = e.def.r + 1.1;
       var faceA = Math.atan2(dx, dz);
 
-      /* --- bots fight each other. A hunter goes for the named pawn; the pawn
-         turns on whoever cut it. Same branch, same rules as the player. --- */
+      /* --- bots fight each other. A hunter goes for the named pawn, a
+         duellist keeps its grudge, and the player is one more pawn. --- */
       var foe = null;
       if (e.foe) {
         e.foeT -= dt;
-        if (e.foe.dead || e.foeT <= 0 || G.enemies.indexOf(e.foe) < 0) e.foe = null;
-        else if (Math.hypot(e.foe.pos.x - e.pos.x, e.foe.pos.z - e.pos.z) < 26) foe = e.foe;
+        if (e.foe.dead || e.foe === e || e.foeT <= 0 || G.enemies.indexOf(e.foe) < 0) e.foe = null;
+        else foe = e.foe;
       }
       if (!foe && e.hunter && G.bounty && G.bounty.e && !G.bounty.you && !G.bounty.e.dead && G.bounty.e !== e) {
         foe = G.bounty.e;
@@ -3380,7 +3281,20 @@
         nx = dx / dist;
         nz = dz / dist;
         faceA = Math.atan2(dx, dz);
-        e.aggro = true;
+      }
+
+      /* line of sight to whoever this pawn is actually fighting */
+      var los = false;
+      if (dist < 60) {
+        var tx2 = foe ? foe.pos.x : p.x, tz2 = foe ? foe.pos.z : p.z;
+        var ty2 = foe ? foe.pos.y + foe.def.h * 0.75 : p.y + 1.15;
+        tmpA.set(tx2 - e.pos.x, ty2 - (e.pos.y + e.def.h * 0.8), tz2 - e.pos.z);
+        var span2 = tmpA.length();
+        if (span2 > 0.3) {
+          tmpA.divideScalar(span2);
+          tmpB.set(e.pos.x, e.pos.y + e.def.h * 0.8, e.pos.z);
+          los = clearLine(tmpB, tmpA, span2);
+        }
       }
 
       if (foe) {
@@ -3416,7 +3330,7 @@
           var fan = 1 + (e.zone ? e.zone.tier : 1);
           for (var s = 0; s < fan; s++) {
             var ang = Math.atan2(nx, nz) + (s - (fan - 1) / 2) * 0.18;
-            fireEnemyBolt(e, Math.sin(ang), Math.cos(ang), 12, 13, 0.5);
+            fireEnemyBolt(e, Math.sin(ang), Math.cos(ang), 12, 13, 0.5, foe);
           }
         }
       } else if (e.def.ranged) {
@@ -3430,7 +3344,7 @@
           if (e.burstT <= 0) {
             e.burst--;
             e.burstT = 0.2;
-            if (los) fireEnemyBolt(e, nx, nz, 9, 21, 0.8);
+            if (los) fireEnemyBolt(e, nx, nz, 9, 21, 0.8, foe);
             if (ud.view) ud.view.attack();
           }
         } else if (e.cd <= 0 && dist < 30 && los) {
@@ -3458,7 +3372,7 @@
           e.pos.z += e.cz * 12 * dt;
           e.stateT -= dt;
           if (dist < e.def.r + 1.2) {
-            hurtPlayer(e.def.dmg * (e.dmgMul || 1), e.pos, e);
+            hitPawn(e, foe, e.def.dmg * (e.dmgMul || 1));
             e.state = 'walk';
             e.stateT = 0;
             e.cd = 3.6;
@@ -3481,7 +3395,7 @@
           e.cd -= dt;
           if (dist < 11 && e.cd <= 0) { e.state = 'wind'; e.stateT = 0.55; if (ud.view) ud.view.wind(); }
           if (dist < e.def.r + 1.0 && e.cd <= 0) {
-            hurtPlayer(e.def.dmg * 0.6 * (e.dmgMul || 1), e.pos, e);
+            hitPawn(e, foe, e.def.dmg * 0.6 * (e.dmgMul || 1));
             e.cd = 1.9;
           }
         }
@@ -3496,7 +3410,7 @@
             e.cd = rand(1.5, 2.1);
             e.backoff = rand(1.6, 2.6);
             if (dist < reach * 1.6) {
-              hurtPlayer(e.def.dmg * (e.dmgMul || 1), e.pos, e);
+              hitPawn(e, foe, e.def.dmg * (e.dmgMul || 1));
               if (ud.view) ud.view.attack();
               e.bladeT = 0;
             }
@@ -3600,25 +3514,30 @@
     }
   }
 
-  function fireEnemyBolt(e, nx, nz, dmg, speed, lead) {
+  function fireEnemyBolt(e, nx, nz, dmg, speed, lead, foe) {
     var mesh = new T.Mesh(eboltGeo, eboltMat);
     var y = e.pos.y + e.def.h * 0.62;
     mesh.position.set(e.pos.x, y, e.pos.z);
     scene.add(mesh);
-    /* lead the player's movement — the tougher the zone, the better the aim */
+    /* a bolt flies at whoever the shooter is fighting: the player or another
+       bot. Leading the target only applies to the player, who is the only one
+       whose velocity the island bothers to read. */
     var tier = e.zone ? e.zone.tier : 1;
-    var tFly = Math.hypot(P.pos.x - e.pos.x, P.pos.z - e.pos.z) / Math.max(1, speed);
-    var k = (lead || 0) * (0.45 + tier * 0.12);
-    var tx = P.pos.x + P.vel.x * tFly * k;
-    var tz = P.pos.z + P.vel.z * tFly * k;
+    var px = foe ? foe.pos.x : P.pos.x;
+    var pz = foe ? foe.pos.z : P.pos.z;
+    var py = foe ? foe.pos.y + foe.def.h * 0.6 : P.pos.y + 1.1;
+    var tFly = Math.hypot(px - e.pos.x, pz - e.pos.z) / Math.max(1, speed);
+    var k = foe ? 0 : (lead || 0) * (0.45 + tier * 0.12);
+    var tx = px + (foe ? 0 : P.vel.x * tFly * k);
+    var tz = pz + (foe ? 0 : P.vel.z * tFly * k);
     var err = Math.max(0.35, 1.9 - tier * 0.28) + (e.elite ? 0 : 0.4);
     tx += rand(-err, err);
     tz += rand(-err, err);
-    var target = new T.Vector3(tx, P.pos.y + 1.1, tz);
+    var target = new T.Vector3(tx, py, tz);
     var dir = target.sub(new T.Vector3(e.pos.x, y, e.pos.z)).normalize();
     G.ebolts.push({
       mesh: mesh, pos: new T.Vector3(e.pos.x, y, e.pos.z),
-      dir: dir, speed: speed, dmg: dmg, life: 4
+      dir: dir, speed: speed, dmg: dmg, life: 4, foe: foe || null, by: e
     });
     SFX3D.play('eShot', e.pos);
   }
@@ -3630,7 +3549,11 @@
     SFX3D.play('explode', e.pos);
     G.shake = Math.min(1.5, G.shake + 1.1);
     if (Math.hypot(P.pos.x - e.pos.x, P.pos.z - e.pos.z) < radius) {
-      hurtPlayer(e.def.dmg, e.pos);
+      hurtPlayer(e.def.dmg, e.pos, e);
+    }
+    /* the blast does not care whose side it is on */
+    if (e.foe && !e.foe.dead && Math.hypot(e.foe.pos.x - e.pos.x, e.foe.pos.z - e.pos.z) < radius) {
+      damageEnemy(e.foe, e.def.dmg, null, false, e);
     }
     e.dead = true;
     e.dying = 0.12;
@@ -3677,8 +3600,23 @@
       eb.life -= dt;
       eb.pos.addScaledVector(eb.dir, eb.speed * dt);
       eb.mesh.position.copy(eb.pos);
+      if (eb.foe) {
+        if (eb.foe.dead || G.enemies.indexOf(eb.foe) < 0) {
+          scene.remove(eb.mesh);
+          G.ebolts.splice(i, 1);
+          continue;
+        }
+        var fd = Math.hypot(eb.foe.pos.x - eb.pos.x, eb.foe.pos.z - eb.pos.z);
+        if (fd < eb.foe.def.r + 0.45 && Math.abs(eb.pos.y - (eb.foe.pos.y + eb.foe.def.h * 0.55)) < eb.foe.def.h * 0.8) {
+          damageEnemy(eb.foe, eb.dmg, eb.pos, false, eb.by);
+          emit(eb.pos.x, eb.pos.y, eb.pos.z, 8, 0xff5b8a, 5, 0.35, 5);
+          scene.remove(eb.mesh);
+          G.ebolts.splice(i, 1);
+          continue;
+        }
+      }
       var pd = Math.hypot(P.pos.x - eb.pos.x, P.pos.z - eb.pos.z);
-      if (pd < 0.85 && Math.abs(eb.pos.y - (P.pos.y + 1.0)) < 1.3) {
+      if (!eb.foe && pd < 0.85 && Math.abs(eb.pos.y - (P.pos.y + 1.0)) < 1.3) {
         hurtPlayer(eb.dmg, eb.pos);
         emit(eb.pos.x, eb.pos.y, eb.pos.z, 8, 0xff5b8a, 5, 0.35, 5);
         scene.remove(eb.mesh);
@@ -3751,10 +3689,6 @@
     P.vel.x += (wishX * speed - P.vel.x) * k;
     P.vel.z += (wishZ * speed - P.vel.z) * k;
 
-    if (jumpReq) {
-      jumpReq = false;
-      if (P.onGround) { P.vel.y = 6.4; P.onGround = false; }
-    }
     P.vel.y -= 17 * dt;
 
     var nx = P.pos.x + P.vel.x * dt;
@@ -4032,53 +3966,28 @@
     if (G.hp / G.maxHp < 0.3) bar.classList.add('low');
     else bar.classList.remove('low');
 
-    setText($('waveNum'), fa(G.zones) + '/' + fa(ZONES.length));
     setText($('killNum'), fa(G.kills));
     /* the red edge of the screen while the island wants the player dead */
     document.body.classList.toggle('hunted', !!(G.bounty && G.bounty.you) && !G.over && !G.down);
 
-    /* the boss bar only appears once you are actually in its fight */
-    var boss = null;
+    /* closest living pawn: the only distance readout the HUD still needs */
+    var near = 1e9, nearName = '';
     for (var i = 0; i < G.enemies.length; i++) {
       var be = G.enemies[i];
       if (be.dead) continue;
       var bd = Math.hypot(be.pos.x - P.pos.x, be.pos.z - P.pos.z);
-      if (be.def.boss) {
-        if (be.aggro || bd < 45) { boss = be; break; }
-      } else if (be.leader && !boss && (be.aggro || bd < 26) && bd < 58) {
-        boss = be;
-      }
+      if (bd < near) { near = bd; nearName = be.name || be.def.name; }
     }
-    var bw = $('bossWrap');
-    if (boss) {
-      bw.classList.remove('hidden');
-      setText($('bossName'), (boss.def.boss ? 'موجود مادر' : boss.name) + ' — ' + Math.max(0, Math.round(boss.hp)) + ' جان');
-      $('bossFill').style.width = clamp(boss.hp / boss.maxHp * 100, 0, 100) + '%';
-    } else {
-      bw.classList.add('hidden');
-    }
-
-    setText($('threatTxt'), G.dirLabel || 'جزیره پاک شد');
+    G.nearest = near;
+    G.nearestName = nearName;
+    setText($('threatTxt'), nearName ? ('نزدیک‌ترین: ' + fa(Math.round(near)) + ' م') : 'جزیره آرام');
     setText($('wLvlTxt'), fa(G.wlvl || 1));
-    setText($('scanNum'), fa(G.scans));
 
     var combo = $('combo');
     if (combo) {
       if (G.combo > 1) { combo.classList.add('on'); setText($('comboNum'), '×' + fa(G.combo)); }
       else combo.classList.remove('on');
     }
-    var dm = $('dirMark');
-    if (dm) {
-      /* the contract marker already owns the compass: two arrows pointing at
-         different things only collide at the top of the screen */
-      if (G.dirD < 900 && G.running && !bountyAlive()) {
-        dm.classList.remove('hidden');
-        var rel = G.dirA - (P.yaw + Math.PI);
-        dm.querySelector('i').style.transform = 'rotate(' + (rel * 180 / Math.PI).toFixed(0) + 'deg)';
-        setText(dm.querySelector('small'), 'نزدیک‌ترین منطقه');
-      } else dm.classList.add('hidden');
-    }
-
     /* contract tracker: who the island wants dead, how far, how hurt */
     var bc = $('bountyCard');
     if (bc) {
@@ -4104,12 +4013,6 @@
       var row = $('compassRow');
       if (row) {
         var html = '';
-        /* while a contract is open the compass only points at the prey: two
-           chips fit on one phone row, three used to push into the banner */
-        if (G.dirD < 9000 && G.running && !bountyAlive()) {
-          var r1 = (G.dirA - (P.yaw + Math.PI)) * 180 / Math.PI;
-          html += '<span><i style="transform:rotate(' + r1.toFixed(0) + 'deg)">▲</i><em>' + (G.dirLabel || '') + '</em></span>';
-        }
         if (G.bounty && G.bounty.e && !G.bounty.e.dead) {
           var qx = G.bounty.e.pos.x - P.pos.x, qz = G.bounty.e.pos.z - P.pos.z;
           var rq = (Math.atan2(qx, qz) - (P.yaw + Math.PI)) * 180 / Math.PI;
@@ -4148,8 +4051,6 @@
   }
 
   /* ------------------------------------------------------------------ waves UI */
-  function winGame() { gameOver(true); }
-
   function gameOver(won) {
     if (G.over) return;
     G.over = true;
@@ -4158,22 +4059,21 @@
     try { SAVE.set('run', null); } catch (e) {}
     G.firing = false;
     G.aim = false;
-    if ($('tAim')) $('tAim').classList.remove('on');
     if (document.exitPointerLock) { try { document.exitPointerLock(); } catch (e) {} }
     SFX3D.play(won ? 'victory' : 'death');
-    var lvl = G.zones;
+    var contracts = G.bountyKills;
     var best = null;
-    try { best = SAVE.recordRun(lvl, G.kills); } catch (e) {}
+    try { best = SAVE.recordRun(contracts, G.kills); } catch (e) {}
 
-    $('modalTitle').textContent = won ? 'جزیره آزاد شد' : 'در جزیره جا ماندی';
+    $('modalTitle').textContent = won ? 'قراردادها بسته شد' : 'در جزیره جا ماندی';
     $('modalTxt').textContent = won
-      ? 'هر ' + fa(ZONES.length) + ' منطقه پاک شد و توانستی زنده بیرون بیایی.'
-      : 'با ' + fa(G.kills) + ' کشته و ' + fa(lvl) + ' منطقهٔ آزادشده از پا افتادی. دفعهٔ بعد اول تدارکات را بردار.';
+      ? 'قرارداد آخر هم بسته شد و توانستی زنده بیرون بیایی.'
+      : 'با ' + fa(G.kills) + ' کشته و ' + fa(contracts) + ' قرارداد از پا افتادی.';
     $('modalStats').innerHTML =
       '<span>کشته <b>' + fa(G.kills) + '</b></span>' +
-      '<span>مناطق آزاد <b>' + fa(lvl) + '/' + fa(ZONES.length) + '</b></span>' +
+      '<span>قرارداد <b>' + fa(contracts) + '</b></span>' +
       '<span>زمان <b>' + fa(Math.floor(G.t)) + ' ثانیه</b></span>' +
-      (best ? '<span>بهترین رکورد <b>' + fa(best.wave) + ' منطقه</b></span>' : '');
+      (best ? '<span>بهترین رکورد <b>' + fa(best.wave) + ' قرارداد</b></span>' : '');
     $('modal').classList.remove('hidden');
     $('hud').classList.add('hidden');
     $('touch').classList.add('hidden');
@@ -4186,7 +4086,6 @@
     G.paused = true;
     G.firing = false;
     G.aim = false;
-    if ($('tAim')) $('tAim').classList.remove('on');
     $('pause').classList.remove('hidden');
     if (document.exitPointerLock) { try { document.exitPointerLock(); } catch (e) {} }
   }
@@ -4237,10 +4136,10 @@
   function saveRun() {
     if (!G.running || G.over || G.started === false) return;
     var o = {
-      v: 1, t: G.t, hp: G.hp, kills: G.kills, scans: G.scans, parts: G.parts,
+      v: 1, t: G.t, hp: G.hp, kills: G.kills, parts: G.parts,
       widx: G.widx, diff: G.diff, upg: G.upg, cycle: G.cycle,
       stam: G.stam, stamMax: G.stamMax, dth: G.deaths, ct: G.bountyNo, lk: G.looted,
-      cleared: [], px: P.pos.x, pz: P.pos.z, yaw: P.yaw,
+      px: P.pos.x, pz: P.pos.z, yaw: P.yaw,
       /* crates still on the ground survive a resume; without this, closing
          the tab before picking up a zone's rifle lost it for good */
       picks: G.pickups.map(function (p) { return { k: p.kind, x: +p.x.toFixed(2), z: +p.z.toFixed(2) }; }),
@@ -4248,7 +4147,6 @@
         return { k: w.key, owned: w.owned };
       })
     };
-    for (var i = 0; i < ZONES.length; i++) if (ZONES[i].cleared) o.cleared.push(ZONES[i].id);
     try { SAVE.set('run', o); } catch (e) {}
   }
 
@@ -4272,7 +4170,6 @@
     G.maxHp = 100;
     G.hp = clamp(o.hp || 100, 1, G.maxHp);
     G.kills = o.kills || 0;
-    G.scans = o.scans == null ? 3 : o.scans;
     G.parts = o.parts || 0;
     G.upg = o.upg || { dmg: 0, mag: 0, reload: 0 };
     G.cycle = o.cycle || 0.12;
@@ -4282,22 +4179,6 @@
     G.bountyNo = o.ct || 0;
     G.looted = o.lk || 0;
     G.bountyDelay = 1.5;
-    var cleared = o.cleared || [];
-    for (var i = 0; i < ZONES.length; i++) {
-      var z = ZONES[i];
-      if (cleared.indexOf(z.id) < 0) continue;
-      z.cleared = true;
-      z.alive = 0;
-      z.leader = null;
-      G.zones++;
-      paintCleared(z);
-      for (var k = G.enemies.length - 1; k >= 0; k--) {
-        var e = G.enemies[k];
-        if (e.zone !== z) continue;
-        removeEnemy(e);
-        G.enemies.splice(k, 1);
-      }
-    }
     if (o.px && heightAt(o.px, o.pz) > 0.5 && Math.hypot(o.px, o.pz) < ISLE_R * 0.94) {
       var px = o.px, pz = o.pz;
       /* never resume inside the relay's collision cylinder */
@@ -4322,9 +4203,7 @@
     }
     camera.position.set(P.pos.x, P.pos.y + EYE, P.pos.z);
     camera.rotation.y = P.yaw;
-    showBanner('ادامهٔ مأموریت', fa(G.zones) + ' منطقه آزاد شده · ' + fa(G.parts) + ' قطعه', 3000);
-    /* a run saved in the two seconds after the last camp fell still wins */
-    if (G.zones >= ZONES.length) setTimeout(function () { if (!G.over && G.running) winGame(); }, 1400);
+    showBanner('ادامهٔ مأموریت', fa(G.parts) + ' قطعه · ' + fa(G.kills) + ' کشته', 3000);
   }
 
   function startGame(resume) {
@@ -4341,11 +4220,8 @@
     G.t = 0;
     G.hp = G.maxHp;
     G.kills = 0;
-    G.scans = 3;
-    G.scanT = 0;
     G.parts = 0;
     G.upg = { dmg: 0, reach: 0, speed: 0 };
-    G.zones = 0;
     G.down = false;
     G.falling = false;
     G.deaths = 0;
@@ -4449,7 +4325,7 @@
     var arse = $('arse');
     WEAPONS.forEach(function (w, i) {
       var d = document.createElement('div');
-      d.innerHTML = '<b>' + w.name + '</b><small>' + (w.owned ? 'همراه · تیغهٔ ' + fa(w.tier) : 'در جعبهٔ مناطق یا قرارداد شکار') + '</small><i>' + fa(i + 1) + '</i>';
+      d.innerHTML = '<b>' + w.name + '</b><small>' + (w.owned ? 'همراه · تیغهٔ ' + fa(w.tier) : 'پاداش قرارداد شکار') + '</small><i>' + fa(i + 1) + '</i>';
       arse.appendChild(d);
     });
     /* weapon slots */
@@ -4484,7 +4360,7 @@
       var rr = readRun();
       if (rr) {
         rb.classList.remove('hidden');
-        rb.textContent = 'ادامهٔ مأموریت · ' + fa((rr.cleared || []).length) + '/' + fa(ZONES.length) + ' منطقه';
+        rb.textContent = 'ادامهٔ مأموریت · ' + fa(rr.parts || 0) + ' قطعه · ' + fa(rr.kills || 0) + ' کشته';
         rb.addEventListener('click', function () { startGame(true); });
       }
     }
@@ -4627,8 +4503,7 @@
     updateBolts(dt);
     updatePickups(dt);
     updateParticles(dt);
-    updateZones(dt);
-    updateScan(dt);
+    updateFeuds(dt);
     updateHazards(dt);
     atmosphere(dt);
     if (G.meleeT > 0) G.meleeT -= dt;
@@ -4741,12 +4616,12 @@
   window.SIEGE = {
     state: G, player: P, weapons: WEAPONS, enemies: ENEMY,
     start: startGame, pause: pauseGame, resume: resumeGame,
-    heightAt: heightAt, spawn: spawnEnemy, fire: tryFire, scan: useScan,
+    heightAt: heightAt, spawn: spawnEnemy, fire: tryFire,
     traceT: traceT, blockers: blockers, zones: ZONES,
     melee: tryMelee, bench: openBench, closeBench: closeBench, buy: benchBuy,
     difficulty: setDifficulty, saveRun: saveRun, readRun: readRun,
     explode: explodeBarrel, hazards: { barrels: G.barrels, traps: G.traps },
-    hurt: hurtPlayer, step: update, hud: updateHUD, props: G.props,
+    hurt: hurtPlayer, damage: damageEnemy, kill: killEnemy, step: update, hud: updateHUD, props: G.props,
     camera: camera, scene: scene, renderer: renderer
   };
 
