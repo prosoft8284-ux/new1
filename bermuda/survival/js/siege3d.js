@@ -205,7 +205,7 @@
   renderer.shadowMap.type = T.PCFSoftShadowMap;
 
   var scene = new T.Scene();
-  scene.fog = new T.Fog(0x151029, 60, 520);
+  scene.fog = new T.Fog(0x8fa9a4, 70, 620);
   var camera = new T.PerspectiveCamera(74, window.innerWidth / window.innerHeight, 0.08, 1900);
   camera.rotation.order = 'YXZ';
   scene.add(camera);
@@ -276,7 +276,7 @@
     var VS = 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }';
 
     var brightMat = new T.ShaderMaterial({
-      uniforms: { tDiffuse: { value: null }, threshold: { value: 0.86 }, knee: { value: 0.22 } },
+      uniforms: { tDiffuse: { value: null }, threshold: { value: 0.94 }, knee: { value: 0.16 } },
       vertexShader: VS,
       fragmentShader: 'uniform sampler2D tDiffuse; uniform float threshold; uniform float knee; varying vec2 vUv;' +
         'void main(){ vec3 c = texture2D(tDiffuse, vUv).rgb;' +
@@ -353,10 +353,10 @@
   })();
 
   /* ------------------------------------------------------------------ lights */
-  var hemi = new T.HemisphereLight(0xa9b6ff, 0x351a58, 0.78);
+  var hemi = new T.HemisphereLight(0xc3d8e2, 0x6a4a2e, 0.78);
   scene.add(hemi);
 
-  var moon = new T.DirectionalLight(0xe4ddff, 1.95);
+  var moon = new T.DirectionalLight(0xffe9c6, 2.0);
   moon.position.set(-70, 95, 55);
   moon.castShadow = true;
   moon.shadow.mapSize.width = 1536;
@@ -372,7 +372,7 @@
   scene.add(moon);
   scene.add(moon.target);
 
-  var rim = new T.DirectionalLight(0x7a4bff, 0.8);
+  var rim = new T.DirectionalLight(0x7fb6b0, 0.45);
   rim.position.set(60, 30, -80);
   scene.add(rim);
 
@@ -393,7 +393,7 @@
     moon.castShadow = !QUAL.low;
     if (moon.shadow.map) { moon.shadow.map.dispose(); moon.shadow.map = null; }
     moon.shadow.mapSize.set(QUAL.low ? 512 : 1024, QUAL.low ? 512 : 1024);
-    post.bloom.value = QUAL.low ? 0.5 : 0.68;
+    post.bloom.value = QUAL.low ? 0.34 : 0.48;
     G.maxAlive = QUAL.low ? 7 : 13;
     var q = $('pQuality');
     if (q) q.textContent = 'کیفیت: ' + (QUAL.low ? 'سبک' : 'بالا');
@@ -407,9 +407,9 @@
       side: T.BackSide,
       depthWrite: false,
       uniforms: {
-        cTop: { value: new T.Color(0x05030f) },
-        cMid: { value: new T.Color(0x160f33) },
-        cBot: { value: new T.Color(0x301a55) }
+        cTop: { value: new T.Color(0x0b2338) },
+        cMid: { value: new T.Color(0x7fa8b8) },
+        cBot: { value: new T.Color(0xd8c49a) }
       },
       vertexShader: 'varying vec3 vP; void main(){ vP = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
       fragmentShader: 'uniform vec3 cTop; uniform vec3 cMid; uniform vec3 cBot; varying vec3 vP;' +
@@ -715,8 +715,8 @@
     /* alien crystals ---------------------------------------------------- */
     var crysGeo = new T.OctahedronGeometry(1, 0);
     var crysMat = new T.MeshStandardMaterial({
-      color: 0xa46bff, emissive: 0x7a2bff, emissiveIntensity: 2.1,
-      roughness: 0.3, metalness: 0.1, flatShading: true
+      color: 0xbfd6cc, emissive: 0x2a5a4a, emissiveIntensity: 0.7,
+      roughness: 0.35, metalness: 0.1, flatShading: true
     });
     var crys = new T.InstancedMesh(crysGeo, crysMat, 54);
     var ci = 0;
@@ -771,7 +771,7 @@
     scene.add(crates);
 
     /* broken basalt pillars -------------------------------------------- */
-    var ruinMat = new T.MeshStandardMaterial({ color: 0x5b5766, roughness: 0.96, flatShading: true });
+    var ruinMat = new T.MeshStandardMaterial({ color: 0x6d6559, roughness: 0.96, flatShading: true });
     var pillarGeo = new T.CylinderGeometry(0.62, 0.88, 1, 7, 1);
     pillarGeo.translate(0, 0.5, 0);
     var pillars = new T.InstancedMesh(pillarGeo, ruinMat, N_PILLAR);
@@ -823,7 +823,7 @@
     scene.add(deads);
 
     /* alien spore pods: glowing markers of the infestation -------------- */
-    var podMat = new T.MeshStandardMaterial({ color: 0x8a5cff, emissive: 0x5a1fd6, emissiveIntensity: 1.5, roughness: 0.35, flatShading: true });
+    var podMat = new T.MeshStandardMaterial({ color: 0xc9c39a, emissive: 0x6a5a22, emissiveIntensity: 0.55, roughness: 0.55, flatShading: true });
     var podGeo = new T.SphereGeometry(1, 7, 6);
     var pods = new T.InstancedMesh(podGeo, podMat, N_POD);
     var poi = 0;
@@ -1061,123 +1061,247 @@
      straight tiers, a winged wind blade, a jagged ice edge, a war hammer and
      two glowing endgame pieces. Colour, thickness and ornaments carry the
      identity; the stats carry the feel. */
+  /* every blade in the game is forged from the same four pieces — a lofted
+     diamond-section blade, a guard, a wrapped grip and a pommel — and then
+     dressed by its look. A gloved hand and a forearm cuff hold it, because a
+     floating sword is the single loudest "this is a prototype" tell. */
   function buildSword(kind) {
     var w = null;
     for (var i = 0; i < WEAPONS.length; i++) if (WEAPONS[i].key === kind) w = WEAPONS[i];
     var tier = w ? w.tier : 1;
     var look = (w && w.look) || 'iron';
-    var g = new T.Group();
 
-    var steelCol = 0xc9d2df, glowCol = 0x000000, glowK = 0, guardCol = 0xf0b94a;
-    if (look === 'broken') { steelCol = 0x8f959e; guardCol = 0x6b6047; }
-    else if (look === 'gale') { steelCol = 0xd8fff4; guardCol = 0x6ac9b0; glowCol = 0x2affc4; glowK = 0.4; }
-    else if (look === 'frost') { steelCol = 0xcaf6ff; guardCol = 0x7ab8d8; glowCol = 0x2ad4ff; glowK = 0.55; }
-    else if (look === 'ember') { steelCol = 0xffd0a0; guardCol = 0xffa040; glowCol = 0xff6a10; glowK = 0.8; }
-    else if (look === 'blood') { steelCol = 0xe0b0b8; guardCol = 0x8a2030; glowCol = 0xff1a3a; glowK = 0.6; }
-    else if (look === 'sun') { steelCol = 0xfff0c0; guardCol = 0xffd166; glowCol = 0xffa000; glowK = 0.95; }
-    else if (look === 'legend') { steelCol = 0xe8eeff; guardCol = 0xffe9a8; glowCol = 0xfff6d8; glowK = 0.45; }
-    else if (look === 'silver') { steelCol = 0xe8f2ff; guardCol = 0xd8c79a; glowCol = 0x4a7ac0; glowK = 0.4; }
-    else if (look === 'iron') { steelCol = 0xbfc9d6; guardCol = 0x8a7a5a; glowCol = 0x2a4a6a; glowK = 0.12; }
-    else if (look === 'hammer') { steelCol = 0xaab6c6; guardCol = 0xc9914a; glowCol = 0xffa040; glowK = 0.22; }
+    var steelCol = 0xb9c3ce, guardCol = 0xa8874a, glowCol = 0x000000, glowK = 0, gripCol = 0x2a1c14;
+    if (look === 'broken') { steelCol = 0x8a8f96; guardCol = 0x6b5a3c; }
+    else if (look === 'gale') { steelCol = 0xd6e6e2; guardCol = 0x6f8f84; glowK = 0.10; glowCol = 0x7fe0c4; }
+    else if (look === 'frost') { steelCol = 0xc8dce6; guardCol = 0x7d94a2; glowK = 0.22; glowCol = 0x6fc8e0; }
+    else if (look === 'ember') { steelCol = 0xd8c0a0; guardCol = 0x8a6a3a; glowK = 0.26; glowCol = 0xff7a30; }
+    else if (look === 'blood') { steelCol = 0xb0a8ac; guardCol = 0x6a2a26; glowK = 0.12; glowCol = 0xb02232; }
+    else if (look === 'sun') { steelCol = 0xded2b4; guardCol = 0xc9a05a; glowK = 0.28; glowCol = 0xffb64a; }
+    else if (look === 'legend') { steelCol = 0xd8dee8; guardCol = 0xd8c48a; glowK = 0.18; glowCol = 0xfff0c8; }
+    else if (look === 'silver') { steelCol = 0xd2dce6; guardCol = 0x9a8f74; glowK = 0.08; glowCol = 0x6f8fc0; }
+    else if (look === 'iron') { steelCol = 0xaab4c0; guardCol = 0x7a6a4e; }
+    else if (look === 'hammer') { steelCol = 0x9aa4b0; guardCol = 0x9a7a4a; glowK = 0.06; glowCol = 0xffa040; }
 
-    var steel = new T.MeshStandardMaterial({ color: steelCol, metalness: 0.6, roughness: look === 'broken' ? 0.62 : 0.26, envMapIntensity: 1.35 });
+    /* there is no environment map in this scene, and a 0.9-metal material
+       without one renders as a black stick: steel reads by its diffuse
+       colour and a tight highlight instead */
+    var steel = new T.MeshStandardMaterial({
+      color: steelCol, metalness: 0.38, roughness: 0.28,
+      flatShading: true, envMapIntensity: 1.25
+    });
     if (glowK) { steel.emissive = new T.Color(glowCol); steel.emissiveIntensity = glowK; }
-    var brass = new T.MeshStandardMaterial({ color: guardCol, metalness: 0.55, roughness: 0.42, emissive: new T.Color(glowCol), emissiveIntensity: glowK * 0.45 });
-    var leather = new T.MeshStandardMaterial({ color: 0x2a1e18, roughness: 0.95 });
+    else { steel.emissive = new T.Color(0x243040); steel.emissiveIntensity = 0.35; }
+    var brass = new T.MeshStandardMaterial({
+      color: guardCol, metalness: 0.75, roughness: 0.38, flatShading: true, envMapIntensity: 1.1
+    });
+    var leather = new T.MeshStandardMaterial({ color: gripCol, roughness: 0.95, metalness: 0.05, flatShading: true });
+    var glove = new T.MeshStandardMaterial({ color: 0x3a2a1e, roughness: 0.92, metalness: 0.05, flatShading: true });
+    var bronze = new T.MeshStandardMaterial({ color: 0x8a6a3a, metalness: 0.7, roughness: 0.45, flatShading: true });
 
+    var g = new T.Group();
+    var forge = (window.RAIDERS3D && RAIDERS3D.bladeGeo) || function (len, wide, thick, tip) {
+      var geo = new T.BoxGeometry(wide, len, thick);
+      geo.translate(0, len * 0.5, 0);
+      return geo;
+    };
+
+    /* ---------------------------------------------------------- war hammer */
     if (look === 'hammer') {
-      var haft = new T.Mesh(new T.CylinderGeometry(0.03, 0.036, 0.96, 8), leather);
-      haft.position.y = 0.36;
+      var haft = new T.Mesh(new T.CylinderGeometry(0.021, 0.026, 0.78, 8), leather);
+      haft.position.y = 0.33;
       g.add(haft);
-      var head = new T.Mesh(new T.BoxGeometry(0.3, 0.22, 0.24), steel);
-      head.position.y = 0.88;
+      for (var hr = 0; hr < 7; hr++) {
+        var ring = new T.Mesh(new T.TorusGeometry(0.024, 0.004, 4, 10), bronze);
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = 0.06 + hr * 0.085;
+        g.add(ring);
+      }
+      var head = new T.Mesh(new T.BoxGeometry(0.22, 0.15, 0.16), steel);
+      head.position.y = 0.8;
       g.add(head);
-      [-0.085, 0.085].forEach(function (x) {
-        var band = new T.Mesh(new T.BoxGeometry(0.045, 0.245, 0.26), brass);
-        band.position.set(x, 0.88, 0);
-        g.add(band);
-      });
-      var spike = new T.Mesh(new T.ConeGeometry(0.075, 0.24, 4), steel);
-      spike.position.y = 1.1;
-      g.add(spike);
-      var cap = new T.Mesh(new T.SphereGeometry(0.045, 8, 6), brass);
-      cap.position.y = -0.16;
-      g.add(cap);
-      var hammerTip = new T.Object3D();
-      hammerTip.position.y = 1.1;
-      g.add(hammerTip);
-      g.userData.muzzle = hammerTip;
+      var face1 = new T.Mesh(new T.BoxGeometry(0.03, 0.17, 0.18), brass);
+      face1.position.set(0.115, 0.8, 0);
+      g.add(face1);
+      var face2 = face1.clone();
+      face2.position.x = -0.115;
+      g.add(face2);
+      var crow = new T.Mesh(new T.ConeGeometry(0.055, 0.2, 4), steel);
+      crow.position.y = 0.97;
+      g.add(crow);
+      var langet = new T.Mesh(new T.BoxGeometry(0.05, 0.12, 0.05), brass);
+      langet.position.y = 0.7;
+      g.add(langet);
+      var htip = new T.Object3D();
+      htip.position.y = 1.0;
+      g.add(htip);
+      g.userData.muzzle = htip;
       g.userData.glows = [];
       g.userData.tier = tier;
       g.traverse(function (o) { if (o.isMesh) { o.castShadow = false; o.frustumCulled = false; } });
       return g;
     }
 
-    var len = look === 'gale' ? 0.74 : look === 'legend' ? 0.8 : look === 'frost' ? 0.68 : (look === 'sun' ? 0.78 : (look === 'silver' ? 0.72 : (look === 'ember' ? 0.74 : 0.6 + tier * 0.04)));
-    var wide = look === 'gale' ? 0.048 : (look === 'sun' || look === 'legend') ? 0.088 : 0.072;
-    var blade = new T.Mesh(new T.BoxGeometry(wide, len, 0.018), steel);
-    blade.position.y = len * 0.5 + 0.1;
+    /* -------------------------------------------------------------- blade */
+    var len = { broken: 0.5, iron: 0.62, silver: 0.7, gale: 0.74, frost: 0.66, ember: 0.72, blood: 0.68, sun: 0.78, legend: 0.84 }[look] || 0.62;
+    var wide = { broken: 0.048, iron: 0.054, silver: 0.05, gale: 0.04, frost: 0.052, ember: 0.056, blood: 0.048, sun: 0.06, legend: 0.056 }[look] || 0.054;
+    var blade = new T.Mesh(forge(len, wide, wide * 0.36, len * 0.13), steel);
+    blade.position.y = 0.14;
     g.add(blade);
-    var tip = new T.Mesh(new T.ConeGeometry(wide * 0.64, 0.2, 4), steel);
-    tip.position.y = len + 0.19;
-    tip.rotation.y = Math.PI / 4;
-    g.add(tip);
-    var fuller = new T.Mesh(new T.BoxGeometry(0.012, len * 0.8, 0.02), new T.MeshStandardMaterial({ color: look === 'blood' ? 0x4a0810 : 0x6f7a8a, metalness: 0.7, roughness: 0.5 }));
-    fuller.position.y = len * 0.5 + 0.08;
+
+    /* a darker fuller sits in the ridge on both faces */
+    var fullerMat = new T.MeshStandardMaterial({ color: look === 'blood' ? 0x5a1a20 : 0x9aa9b6, metalness: 0.55, roughness: 0.44, flatShading: true });
+    var fuller = new T.Mesh(new T.BoxGeometry(wide * 0.2, len * 0.7, wide * 0.3), fullerMat);
+    fuller.position.y = 0.14 + len * 0.42;
     g.add(fuller);
-    var edge = new T.Mesh(
-      new T.BoxGeometry(0.016, len * 0.98, 0.012),
-      new T.MeshStandardMaterial({ color: 0xffffff, metalness: 0.95, roughness: 0.1, emissive: new T.Color(glowK ? glowCol : 0x9fb6cc), emissiveIntensity: glowK ? glowK * 0.9 : 0.15 })
-    );
-    edge.position.set(wide * 0.4, len * 0.5 + 0.1, 0);
+
+    /* a honed edge: the one bright line that makes a blade read as sharp */
+    var edgeGlow = new T.MeshStandardMaterial({
+      color: 0xf4f8ff, metalness: 0.55, roughness: 0.12,
+      emissive: new T.Color(glowK ? glowCol : 0xbfd0e0), emissiveIntensity: glowK ? glowK * 0.8 : 0.06
+    });
+    var edge = new T.Mesh(new T.BoxGeometry(0.006, len * 0.94, wide * 0.2), edgeGlow);
+    edge.position.set(wide * 0.44, 0.14 + len * 0.49, 0);
     g.add(edge);
 
-    if (look === 'broken') {
-      var chip = new T.Mesh(new T.BoxGeometry(0.056, 0.035, 0.018), new T.MeshStandardMaterial({ color: 0x2a2a2e, roughness: 1 }));
-      chip.position.set(0, len * 0.62, 0);
-      g.add(chip);
-    }
-    if (look === 'frost') {
-      for (var f = 0; f < 4; f++) {
-        var icicle = new T.Mesh(new T.ConeGeometry(0.026, 0.14 - f * 0.02, 5), new T.MeshStandardMaterial({ color: 0x9be8ff, emissive: 0x2ad4ff, emissiveIntensity: 1.2, roughness: 0.2 }));
-        icicle.position.set(-wide * 0.6, len * (0.25 + f * 0.16), 0);
-        icicle.rotation.z = 1.1;
-        g.add(icicle);
-      }
+    /* the ricasso: a flat block where the blade leaves the guard */
+    var ric = new T.Mesh(new T.BoxGeometry(wide * 0.9, 0.045, wide * 0.5), steel);
+    ric.position.y = 0.135;
+    g.add(ric);
+
+    /* -------------------------------------------------------------- guard */
+    var guardW = { legend: 0.26, sun: 0.24, silver: 0.23, gale: 0.24, iron: 0.18, broken: 0.15, hammer: 0.2 }[look] || 0.21;
+    var guard = new T.Mesh(new T.BoxGeometry(guardW, 0.026, 0.05), brass);
+    guard.position.y = 0.108;
+    g.add(guard);
+    [-1, 1].forEach(function (s) {
+      var quillon = new T.Mesh(new T.ConeGeometry(0.016, 0.06, 4), brass);
+      quillon.position.set(s * guardW * 0.5, 0.108, 0);
+      quillon.rotation.z = s * -Math.PI / 2;
+      g.add(quillon);
+    });
+    /* a shallow cup on the fancier blades */
+    if (tier >= 3) {
+      var cup = new T.Mesh(new T.CylinderGeometry(guardW * 0.52, guardW * 0.30, 0.03, 10, 1, true), brass);
+      cup.position.y = 0.132;
+      g.add(cup);
     }
     if (look === 'gale') {
       [-1, 1].forEach(function (s) {
-        var wing = new T.Mesh(new T.BoxGeometry(0.11, 0.02, 0.06), brass);
-        wing.position.set(s * 0.12, 0.1, 0);
-        wing.rotation.z = s * 0.5;
+        var wing = new T.Mesh(new T.BoxGeometry(0.075, 0.012, 0.03), brass);
+        wing.position.set(s * 0.1, 0.125, 0);
+        wing.rotation.z = s * 0.42;
         g.add(wing);
       });
     }
-    if (look === 'sun' || look === 'legend') {
-      for (var r = 0; r < 3; r++) {
-        var rune = new T.Mesh(new T.BoxGeometry(0.03, 0.016, 0.021), new T.MeshBasicMaterial({ color: glowCol }));
-        rune.position.set(0, len * (0.3 + r * 0.2), 0.011);
+
+    /* --------------------------------------------------------------- grip */
+    var grip = new T.Mesh(new T.CylinderGeometry(0.019, 0.021, 0.15, 8), leather);
+    grip.position.y = 0.028;
+    g.add(grip);
+    for (var gr = 0; gr < 6; gr++) {
+      var wrap = new T.Mesh(new T.TorusGeometry(0.021, 0.0035, 4, 10), new T.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.9, flatShading: true }));
+      wrap.rotation.x = Math.PI / 2;
+      wrap.position.y = -0.03 + gr * 0.024;
+      g.add(wrap);
+    }
+    var pommel = new T.Mesh(new T.SphereGeometry(0.03, 8, 6), brass);
+    pommel.position.y = -0.058;
+    pommel.scale.y = 0.8;
+    g.add(pommel);
+    var pommelPin = new T.Mesh(new T.ConeGeometry(0.014, 0.035, 5), brass);
+    pommelPin.position.y = -0.082;
+    pommelPin.rotation.x = Math.PI;
+    g.add(pommelPin);
+
+    /* ---------------------------------------------------- per-blade dressing */
+    if (look === 'broken') {
+      /* a snapped point: one clean diagonal shear and a chip out of the edge */
+      var shear = new T.Mesh(new T.BoxGeometry(wide * 1.5, 0.022, wide * 0.34), new T.MeshStandardMaterial({ color: 0x9aa6b0, metalness: 0.5, roughness: 0.55, flatShading: true }));
+      shear.position.set(wide * 0.16, 0.14 + len - 0.01, 0);
+      shear.rotation.z = 0.62;
+      g.add(shear);
+      var chip = new T.Mesh(new T.BoxGeometry(0.02, 0.026, wide * 0.3), new T.MeshStandardMaterial({ color: 0x3a3d42, roughness: 0.95 }));
+      chip.position.set(-wide * 0.42, 0.14 + len * 0.72, 0);
+      g.add(chip);
+    }
+    if (look === 'frost') {
+      [-1, 1].forEach(function (s) {
+        for (var f = 0; f < 3; f++) {
+          var ice = new T.Mesh(new T.ConeGeometry(0.009, 0.05 - f * 0.008, 5), new T.MeshStandardMaterial({
+            color: 0xa8dcea, roughness: 0.25, metalness: 0.1, emissive: new T.Color(0x2a7f96), emissiveIntensity: 0.35, flatShading: true
+          }));
+          ice.position.set(s * wide * 0.5, 0.24 + f * 0.13, 0);
+          ice.rotation.z = s * 0.9;
+          g.add(ice);
+        }
+      });
+    }
+    if (look === 'ember' || look === 'sun') {
+      for (var ru = 0; ru < 3; ru++) {
+        var rune = new T.Mesh(new T.BoxGeometry(wide * 0.34, 0.012, 0.006), new T.MeshBasicMaterial({ color: glowCol }));
+        rune.position.set(0, 0.2 + ru * len * 0.22, wide * 0.15);
         g.add(rune);
       }
-      var crown = new T.Mesh(new T.SphereGeometry(0.035, 8, 6), new T.MeshBasicMaterial({ color: glowCol }));
-      crown.position.y = len + 0.3;
-      g.add(crown);
+      var emberGem = new T.Mesh(new T.OctahedronGeometry(0.02, 0), new T.MeshBasicMaterial({ color: glowCol }));
+      emberGem.position.set(0, 0.112, 0.03);
+      g.add(emberGem);
     }
-    var guardW = look === 'legend' ? 0.34 : look === 'gale' ? 0.3 : 0.22 + tier * 0.012;
-    var guard = new T.Mesh(new T.BoxGeometry(guardW, 0.038, 0.055), brass);
-    guard.position.y = 0.095;
-    g.add(guard);
-    var grip = new T.Mesh(new T.CylinderGeometry(0.024, 0.028, 0.18, 8), leather);
-    grip.position.y = -0.005;
-    g.add(grip);
-    var pommel = new T.Mesh(new T.SphereGeometry(0.036, 8, 6), brass);
-    pommel.position.y = -0.105;
-    g.add(pommel);
-    var gem = new T.Mesh(new T.IcosahedronGeometry(0.028, 0), new T.MeshBasicMaterial({ color: glowK ? glowCol : 0x9be8ff }));
-    gem.position.set(0, 0.095, 0.04);
-    g.add(gem);
+    if (look === 'blood') {
+      var bloodGem = new T.Mesh(new T.OctahedronGeometry(0.023, 0), new T.MeshStandardMaterial({
+        color: 0x8a1a24, emissive: new T.Color(0x5a0a12), emissiveIntensity: 0.6, metalness: 0.3, roughness: 0.25, flatShading: true
+      }));
+      bloodGem.position.set(0, 0.112, 0.032);
+      g.add(bloodGem);
+      var drop = new T.Mesh(new T.ConeGeometry(0.012, 0.03, 5), brass);
+      drop.position.y = 0.16;
+      g.add(drop);
+    }
+    if (look === 'legend') {
+      var crown = new T.Mesh(new T.OctahedronGeometry(0.03, 0), new T.MeshBasicMaterial({ color: glowCol }));
+      crown.position.y = 0.14 + len + 0.04;
+      g.add(crown);
+      var collar = new T.Mesh(new T.CylinderGeometry(0.026, 0.03, 0.02, 8), brass);
+      collar.position.y = 0.14 + len * 0.12;
+      g.add(collar);
+    }
+
+    /* ------------------------------------------------------------- the hand
+       a gloved fist on the grip and a forearm that leaves the frame: the eye
+       accepts a sword much faster when something is holding it */
+    var hand = new T.Group();
+    hand.position.set(0.006, 0.026, 0.002);
+    hand.rotation.set(-0.12, 0.1, 0.06);
+    var palm = new T.Mesh(new T.BoxGeometry(0.052, 0.072, 0.05), glove);
+    palm.position.set(0, 0, 0.004);
+    hand.add(palm);
+    for (var fi = 0; fi < 4; fi++) {
+      var finger = new T.Mesh(new T.BoxGeometry(0.014, 0.017, 0.05), glove);
+      finger.position.set(-0.018 + fi * 0.0125, 0.024 - fi * 0.001, 0.018);
+      finger.rotation.x = 0.35;
+      hand.add(finger);
+    }
+    var thumb = new T.Mesh(new T.BoxGeometry(0.018, 0.03, 0.026), glove);
+    thumb.position.set(0.028, 0.012, 0.018);
+    thumb.rotation.z = -0.5;
+    hand.add(thumb);
+    var cuff = new T.Mesh(new T.CylinderGeometry(0.033, 0.042, 0.075, 8), leather);
+    cuff.position.set(0, -0.062, 0.006);
+    cuff.rotation.x = 0.35;
+    hand.add(cuff);
+    var cuffBand = new T.Mesh(new T.TorusGeometry(0.037, 0.005, 4, 10), bronze);
+    cuffBand.rotation.x = Math.PI / 2 + 0.35;
+    cuffBand.position.set(0, -0.03, 0.006);
+    hand.add(cuffBand);
+    /* the forearm keeps going, so the hand is attached to someone */
+    var fore = new T.Mesh(new T.CylinderGeometry(0.038, 0.05, 0.34, 8), glove);
+    fore.position.set(0, -0.2, 0.05);
+    fore.rotation.x = 0.28;
+    hand.add(fore);
+    g.add(hand);
+
     var tipNode = new T.Object3D();
-    tipNode.position.y = len + 0.26;
+    tipNode.position.y = 0.14 + len + len * 0.13;
     g.add(tipNode);
     g.userData.muzzle = tipNode;
     g.userData.glows = [];
@@ -1188,26 +1312,26 @@
 
   var guns = WEAPONS.map(function (w) { return buildSword(w.key); });
   guns.forEach(function (g, i) {
-    g.position.set(IS_TOUCH ? 0.05 : 0.24, IS_TOUCH ? -0.52 : -0.5, IS_TOUCH ? -0.52 : -0.62);
-    g.scale.setScalar(IS_TOUCH ? 0.36 : 0.44);
-    g.rotation.set(-0.06, IS_TOUCH ? 0.9 : 0.3, IS_TOUCH ? 0.24 : 0.42);
+    g.position.set(IS_TOUCH ? 0.02 : 0.24, IS_TOUCH ? -0.37 : -0.44, IS_TOUCH ? -0.52 : -0.62);
+    g.scale.setScalar(IS_TOUCH ? 0.62 : 0.6);
+    g.rotation.set(-0.06, IS_TOUCH ? 0.55 : 0.3, IS_TOUCH ? 0.2 : 0.42);
     g.visible = i === 0;
     camera.add(g);
   });
   /* held poses: idle low-left, guard (right-click / aim) raised, sprint tucked */
   /* on a phone the right third is the button pad, so the blade waits in the
      gap between the thumbstick and the trigger, low enough to stay clear */
-  var SWORD_HIP = IS_TOUCH ? new T.Vector3(0.05, -0.52, -0.52) : new T.Vector3(0.24, -0.5, -0.62);
-  var SWORD_GUARD = IS_TOUCH ? new T.Vector3(0.02, -0.38, -0.46) : new T.Vector3(0.08, -0.34, -0.5);
-  var SWORD_SPRINT = IS_TOUCH ? new T.Vector3(0.14, -0.58, -0.5) : new T.Vector3(0.34, -0.56, -0.54);
+  var SWORD_HIP = IS_TOUCH ? new T.Vector3(0.02, -0.37, -0.52) : new T.Vector3(0.24, -0.46, -0.62);
+  var SWORD_GUARD = IS_TOUCH ? new T.Vector3(0.0, -0.32, -0.5) : new T.Vector3(0.08, -0.34, -0.5);
+  var SWORD_SPRINT = IS_TOUCH ? new T.Vector3(0.12, -0.54, -0.52) : new T.Vector3(0.34, -0.56, -0.54);
   var SWORD_RZ = IS_TOUCH ? 0.28 : 0.42;
   var SWORD_RZ_AIM = IS_TOUCH ? 0.02 : 0.2;
 
   /* lamps on the viewmodel so the blackened metal still shows its engraving */
-  var viewLight = new T.PointLight(0xdccaff, 0.7, 2.6, 2);
+  var viewLight = new T.PointLight(0xfff0dd, 1.25, 3.4, 2);
   viewLight.position.set(0.36, 0.24, -0.62);
   camera.add(viewLight);
-  var viewFill = new T.PointLight(0xa06bff, 0.18, 2.4, 2);
+  var viewFill = new T.PointLight(0xffc890, 0.16, 2.4, 2);
   viewFill.position.set(-0.26, 0.1, -0.55);
   camera.add(viewFill);
 
@@ -1353,10 +1477,10 @@
      health bar and the elite aura the simulation expects */
   function buildAlien(kind, elite, d) {
     /* real rigged GLB actors when the model pack has finished loading */
-    var view = (window.MODELS3D && MODELS3D.ready(kind)) ? MODELS3D.view(kind) : null;
-    if (view) return buildAlienModel(view, elite, d);
-
-    var built = (window.ALIEN3D && ALIEN3D.build) ? ALIEN3D.build(kind, elite, d) : null;
+    /* a raider first: a human silhouette with cloth, leather and iron reads
+       as part of the island, which no tinted stock robot ever did */
+    var built = (window.RAIDERS3D && RAIDERS3D.build) ? RAIDERS3D.build(kind, elite, d) : null;
+    if (!built && window.ALIEN3D && ALIEN3D.build) built = ALIEN3D.build(kind, elite, d);
     if (!built) return buildAlienLegacy(kind, elite, d);
 
     var group = built.group;
@@ -3893,6 +4017,22 @@
           ud.head.rotation.x = sp * 0.12;
           ud.head.rotation.z = Math.sin(e.t * 1.7) * 0.06;
         }
+        /* the same wind-up and cut the rigged actors get from their clips,
+           played on the hand-built shoulders instead */
+        if (ud.armR) {
+          if (e.state === 'wind') {
+            var wk = 1 - clamp(e.stateT / (e.pro ? 0.3 : 0.45), 0, 1);
+            ud.armR.rotation.x = lerp(ud.armR.rotation.x, -1.35, wk * 0.45);
+            ud.armR.rotation.z = lerp(ud.armR.rotation.z, -0.55, wk * 0.5);
+            if (ud.torso) ud.torso.rotation.y = lerp(ud.torso.rotation.y, -0.28, wk * 0.5);
+          } else if (e.lunge > 0) {
+            var lk = clamp(1 - e.lunge / 0.5, 0, 1);
+            var sw = Math.sin(lk * Math.PI);
+            ud.armR.rotation.x = lerp(ud.armR.rotation.x, 1.45, sw);
+            ud.armR.rotation.z = lerp(ud.armR.rotation.z, 0.3, sw);
+            if (ud.torso) ud.torso.rotation.y = lerp(ud.torso.rotation.y, 0.34, sw);
+          }
+        }
       }
       e.px = e.pos.x;
       e.pz = e.pos.z;
@@ -5029,22 +5169,24 @@
     hemi.intensity = 0.92 - k * 0.56 - stormK * 0.08;
     moon.intensity = 2.0 - k * 1.1;
     rim.intensity = 0.95 + stormK * 0.4;
-    renderer.toneMappingExposure = 1.06 - k * 0.2;
+    renderer.toneMappingExposure = 1.02 - k * 0.18;
     /* the island used to sit under a night sky at high noon: the dome, the
        stars and the sun now actually follow the cycle */
     var day = 1 - k * 0.94;
     if (skyMat) {
-      skyMat.uniforms.cTop.value.setRGB(0.05 + day * 0.12, 0.03 + day * 0.34, 0.09 + day * 0.52);
-      skyMat.uniforms.cMid.value.setRGB(0.09 + day * 0.42, 0.06 + day * 0.58, 0.20 + day * 0.55);
-      skyMat.uniforms.cBot.value.setRGB(0.19 + day * 0.62, 0.10 + day * 0.58, 0.33 + day * 0.32);
+      /* daylight is sea blue at the top and warm haze at the horizon; the old
+         violet gradient was the loudest "generated" tell in the whole scene */
+      skyMat.uniforms.cTop.value.setRGB(0.03 + day * 0.13, 0.06 + day * 0.34, 0.12 + day * 0.48);
+      skyMat.uniforms.cMid.value.setRGB(0.10 + day * 0.46, 0.14 + day * 0.56, 0.20 + day * 0.56);
+      skyMat.uniforms.cBot.value.setRGB(0.20 + day * 0.68, 0.17 + day * 0.62, 0.14 + day * 0.44);
     }
     if (starField) starField.material.opacity = clamp(k * 0.95, 0, 0.9);
     if (moonSprite) moonSprite.material.opacity = clamp(0.35 + k * 0.65, 0, 1);
-    moon.color.setRGB(0.9 + day * 0.1, 0.86 + day * 0.12, 0.99 - day * 0.13);
-    hemi.color.setRGB(0.66 + day * 0.14, 0.71 + day * 0.1, 0.99 - day * 0.16);
-    /* purple ground bounce used to dye every trunk and rock magenta at noon */
-    hemi.groundColor.setRGB(0.2 + day * 0.16, 0.11 + day * 0.19, 0.3 - day * 0.12);
-    scene.fog.color.setRGB(0.10 + day * 0.52 + stormK * 0.05, 0.07 + day * 0.58, 0.18 + day * 0.52);
+    moon.color.setRGB(0.86 + day * 0.14, 0.78 + day * 0.16, 0.66 + day * 0.16);
+    hemi.color.setRGB(0.60 + day * 0.18, 0.68 + day * 0.16, 0.80 + day * 0.12);
+    /* warm sand bounces up into the trunks instead of dyeing them magenta */
+    hemi.groundColor.setRGB(0.16 + day * 0.26, 0.12 + day * 0.20, 0.08 + day * 0.12);
+    scene.fog.color.setRGB(0.12 + day * 0.50 + stormK * 0.06, 0.16 + day * 0.52, 0.18 + day * 0.44);
     scene.fog.near = 78 - stormK * 30;
     scene.fog.far = Math.max(80, 620 - k * 280 - stormK * 340);
     torch.intensity = k * 2.4 + stormK * 0.5;
