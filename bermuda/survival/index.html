@@ -3,120 +3,230 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#050b14">
-<title>BERMUDA SURVIVAL — نقشه‌ی جزیره</title>
-<link rel="stylesheet" href="css/style.css">
+<meta name="theme-color" content="#04080f">
+<title>BERMUDA SIEGE 3D — شمشیر و قرارداد شکار</title>
+<link rel="stylesheet" href="css/siege3d.css">
 </head>
 <body>
 
-<canvas id="map" aria-label="نقشه جزیره"></canvas>
-<canvas id="fx"></canvas>
+<canvas id="view" aria-label="میدان نبرد سه‌بعدی"></canvas>
 
-<!-- ============ LOADING ============ -->
+<!-- ================= HUD ================= -->
+<div id="hud" class="hidden">
+  <div class="hud-top">
+    <div class="chip wave-chip">
+      <small>مناطق آزاد</small><b id="waveNum">۰/۱۵</b>
+    </div>
+    <div class="chip kill-chip">
+      <small>کشته</small><b id="killNum">۰</b>
+    </div>
+    <div class="chip scan-chip">
+      <small>اسکن</small><b id="scanNum">۳</b>
+    </div>
+    <div class="chip phase-chip">
+      <small>هوا</small><b id="phaseTxt">روز</b>
+    </div>
+    <div class="chip lvl-chip">
+      <small>تیغه</small><b id="wLvlTxt">۱</b>
+    </div>
+    <div class="chip threat-chip">
+      <span class="dot"></span><em id="threatTxt">تهدید فعال</em>
+    </div>
+    <div class="top-right">
+      <button id="btnMute" class="mini" type="button" aria-label="صدا">♪</button>
+      <button id="btnPause" class="mini" type="button" aria-label="توقف">II</button>
+    </div>
+  </div>
+
+  <div id="compass" class="compass"><div id="compassRow"></div></div>
+  <div id="dmgDir" class="dmg-dir hidden"><i>▲</i></div>
+  <div id="benchHint" class="bench-hint hidden">E · میز کار بِیکن</div>
+
+  <div id="bossWrap" class="boss hidden">
+    <b id="bossName">موجود مادر</b>
+    <div class="boss-bar"><i id="bossFill"></i></div>
+  </div>
+
+  <div id="banner" class="banner"><b id="bannerTitle"></b><span id="bannerSub"></span></div>
+
+  <div id="bountyCard" class="bounty-card hidden">
+    <div class="bc-top"><span id="bountyNo">№ ۱</span><em>قرارداد شکار</em></div>
+    <b id="bountyName">شکارچی</b>
+    <div class="bc-bar"><i id="bountyFill"></i></div>
+    <div class="bc-meta">
+      <span id="bountyDist">۰ متر</span>
+      <span>جان <b id="bountyHp">۰</b></span>
+      <span>غارت <b id="lootNum">۰</b></span>
+    </div>
+  </div>
+
+  <div id="cross"><i class="ct"></i><i class="cb"></i><i class="cl"></i><i class="cr"></i><em></em></div>
+  <div id="hitmark">✕</div>
+
+  <div class="hud-bottom">
+    <div class="vitals">
+      <div class="hpbar"><i id="hpFill"></i><b id="hpTxt">۱۰۰</b></div>
+      <div class="wslots" id="wslots"></div>
+    </div>
+    <div class="ammo">
+      <span id="wName">شمشیر شکسته</span>
+      <div><b id="ammoTxt">۵</b><small>/ <span id="ammoRes">۵</span> نفس</small></div>
+      <em id="reloadTxt"></em>
+    </div>
+  </div>
+
+  <div id="combo" class="combo"><b id="comboNum">×۲</b><small>زنجیرهٔ کشتار</small></div>
+  <div id="dirMark" class="dir-mark hidden"><i>▲</i><small>نزدیک‌ترین منطقه</small></div>
+
+  <div id="tip">WASD حرکت · کلیک ضربهٔ شمشیر · F ضربهٔ سنگین · R تعویض شمشیر · Q اسکن · E میز کار · Shift دویدن · Esc توقف</div>
+</div>
+
+<div id="flash"></div>
+<div id="dmg"></div>
+
+<!-- ================= TOUCH — CODM-style, kept minimal ================= -->
+<div id="touch" class="hidden">
+  <div id="joy"><i></i></div>
+  <button id="tSprint" class="tbtn sm" type="button" aria-label="دویدن">»</button>
+  <div id="tPad">
+    <div class="trow">
+      <button id="tBench" class="tbtn sm" type="button" aria-label="میز کار">⚒</button>
+      <button id="tMelee" class="tbtn sm" type="button" aria-label="ضربهٔ سنگین">⚔</button>
+      <button id="tScan" class="tbtn md scan-btn" type="button" aria-label="اسکن زیستی">◈</button>
+    </div>
+    <div class="trow">
+      <button id="tJump" class="tbtn sm" type="button" aria-label="پرش">⇧</button>
+      <button id="tReload" class="tbtn sm" type="button" aria-label="تعویض شمشیر">⇄</button>
+      <button id="tAim" class="tbtn md" type="button" aria-label="نشانه‌گیری">◎</button>
+    </div>
+    <div class="trow fire-row">
+      <button id="tFire" class="tbtn lg" type="button" aria-label="ضربهٔ شمشیر"><i></i><b>ضربه</b></button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= LOADING ================= -->
 <div id="loading">
   <div class="load-box">
-    <div class="load-logo">BERMUDA<span>SURVIVAL</span></div>
+    <div class="load-logo">BERMUDA<span>SIEGE 3D</span></div>
     <div class="load-bar"><i id="loadFill"></i></div>
     <div class="load-txt" id="loadTxt">در حال ساخت جزیره…</div>
   </div>
 </div>
 
-<!-- ============ TOP BAR ============ -->
-<header id="topbar">
-  <div class="brand">
-    <div class="brand-mark"></div>
-    <div class="brand-txt">
-      <b>BERMUDA SURVIVAL</b>
-      <small>جزیره‌ی برمودا · نقشه‌ی تاکتیکی زنده</small>
+<!-- ================= START ================= -->
+<div id="start" class="screen">
+  <div class="start-inner">
+    <div class="logo">
+      <b>BERMUDA SIEGE</b>
+      <span>۳ بعدی · اول‌شخص · شمشیر و شکار</span>
+    </div>
+    <h1>هر دور یک نفر را برای کشتن انتخاب می‌کند. شمشیرت را بگیر و شکارش کن.</h1>
+    <div class="mission">
+      <b>هدف: قراردادهای شکار را یکی‌یکی انجام بده، هر کسی را سر راهت کشتی غارت کن، و با شمشیر شکسته برنگرد.</b>
+      <div class="msteps">
+        <span><i>۱</i> بازی شمشیر است: کلیک یا دکمهٔ «ضربه» یک ضربهٔ کمانی می‌زند و F ضربهٔ سنگین است. هر ضربه «نفس» می‌خواهد و نفس بین ضربه‌ها برمی‌گردد.</span>
+        <span><i>۲</i> هر دور جزیره یک هدف تصادفی را با هالهٔ طلایی علامت می‌زند؛ همان شکارچی هم به سراغ تو می‌آید. او را بینداز تا قرارداد بسته شود و تیغهٔ بعدی از او بیفتد.</span>
+        <span><i>۳</i> هر کسی را کشتی، جسدش غارت‌کردنی است: روی نفس، جان و قطعه‌ها راه برو تا برداشته شوند. قطعه در میز کار بِیکن خرج می‌شود.</span>
+        <span><i>۴</i> اگر بیفتی بازی تمام نمی‌شود: ده ثانیه بعد از آسمان سقوط می‌کنی — با کمترین شمشیر، همان شمشیر شکسته.</span>
+        <span><i>۵</i> شمشیر آهنی، نقره و کهربا در جعبهٔ مناطق و پاداش قراردادها هستند. با ۱ تا ۴ یا R عوضشان کن.</span>
+        <span><i>۶</i> هر ۲۰ ثانیه ذخیره می‌شود؛ بستن اپ مأموریت، قطعه‌ها و شمشیرهای پیدا‌شده را نمی‌سوزاند.</span>
+      </div>
+      <small>مرگ پایان کار نیست، ولی هر سقوط تو را با شمشیر شکسته برمی‌گرداند.</small>
+    </div>
+
+    <div class="diff-row" id="diffRow">
+      <button type="button" data-d="explorer">کاوشگر</button>
+      <button type="button" data-d="soldier" class="on">سرباز</button>
+      <button type="button" data-d="hell">جهنمی</button>
+    </div>
+
+    <div class="keys">
+      <span><kbd>W A S D</kbd> حرکت</span>
+      <span><kbd>ماوس</kbd> چرخش دید</span>
+      <span><kbd>کلیک</kbd> ضربهٔ شمشیر</span>
+      <span><kbd>راست‌کلیک</kbd> حالت آماده</span>
+      <span><kbd>F</kbd> ضربهٔ سنگین</span>
+      <span><kbd>R</kbd> تعویض شمشیر</span>
+      <span><kbd>۱ ۲ ۳ ۴</kbd> شمشیرها</span>
+      <span><kbd>Shift</kbd> دویدن</span>
+      <span><kbd>Space</kbd> پرش</span>
+      <span><kbd>Q</kbd> اسکن زیستی</span>
+      <span><kbd>E</kbd> میز کار</span>
+    </div>
+
+    <div class="arse" id="arse"></div>
+
+    <div class="start-foot">
+      <div class="bestline" id="bestline"></div>
+      <button id="btnResume" class="go ghost hidden" type="button">ادامهٔ مأموریت</button>
+      <button id="btnStart" class="go" type="button">شروع عملیات</button>
     </div>
   </div>
-  <div class="threat">
-    <span class="dot"></span>
-    <span id="threatTxt">تهدید فضایی: بحرانی</span>
-  </div>
-  <div class="progress" id="progressChip">آزاد: ۰</div>
-</header>
-
-<!-- ============ LEGEND ============ -->
-<aside id="legend" class="panel">
-  <button id="legendToggle" class="panel-head" type="button">
-    <span class="ph-icon"></span>
-    <span>راهنمای نقشه</span>
-    <svg class="chev" viewBox="0 0 24 24"><path d="M8 10l4 4 4-4"/></svg>
-  </button>
-  <div class="panel-body" id="legendBody"></div>
-</aside>
-
-<!-- ============ COMPASS ============ -->
-<div id="compass" aria-hidden="true">
-  <svg viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="40" class="cring"/>
-    <circle cx="50" cy="50" r="30" class="cring2"/>
-    <path d="M50 12 L58 50 L50 88 L42 50 Z" class="cneedle"/>
-    <path d="M50 12 L58 50 L42 50 Z" class="cnorth"/>
-    <circle cx="50" cy="50" r="3.4" class="cpin"/>
-    <text x="50" y="8" class="clab">N</text>
-    <text x="50" y="97" class="clab">S</text>
-    <text x="95" y="53" class="clab">E</text>
-    <text x="5" y="53" class="clab">W</text>
-  </svg>
 </div>
 
-<!-- ============ RIGHT TOOLS (zoom) ============ -->
-<div id="tools">
-  <button class="tbtn" id="zin" title="بزرگ‌نمایی" aria-label="بزرگ‌نمایی">
-    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-  </button>
-  <button class="tbtn" id="zout" title="کوچک‌نمایی" aria-label="کوچک‌نمایی">
-    <svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
-  </button>
-  <button class="tbtn" id="zfit" title="نمای کامل جزیره" aria-label="نمای کامل جزیره">
-    <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
-  </button>
-  <a class="tbtn" href="preview.html" title="پیش‌نمایش صحنه‌ی بازی" aria-label="پیش‌نمایش صحنه‌ی بازی">
-    <svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></svg>
-  </a>
-</div>
-
-<!-- ============ BOTTOM LEFT: SCALE + TOGGLES ============ -->
-<div id="hud">
-  <div class="scale">
-    <div class="scale-bar"><i></i><span id="scaleTxt">۱ کیلومتر</span></div>
-    <div class="coords" id="coords">—</div>
-  </div>
-  <div class="toggles">
-    <button class="tg on" data-tg="markers">نشانگرها</button>
-    <button class="tg on" data-tg="labels">برچسب‌ها</button>
-    <button class="tg" data-tg="grid">شبکه</button>
+<!-- ================= BENCH ================= -->
+<div id="bench" class="screen hidden">
+  <div class="modal-box bench-box">
+    <h2>میز کار بِیکن</h2>
+    <p class="muted">قطعات فنی: <b id="partNum">۰</b> · جان: <b id="benchHp">۱۰۰ / ۱۰۰</b></p>
+    <div class="bench-rows">
+      <button class="go ghost" type="button" data-buy="dmg">تیزی همهٔ شمشیرها +۱۴٪<em>۳ قطعه</em></button>
+      <button class="go ghost" type="button" data-buy="reach">برد ضربه +۱۲ سانتی‌متر<em>۳ قطعه</em></button>
+      <button class="go ghost" type="button" data-buy="speed">ضربه‌های سریع‌تر<em>۲ قطعه</em></button>
+      <button class="go ghost" type="button" data-buy="heal">درمان کامل<em>۲ قطعه</em></button>
+      <button class="go" type="button" data-buy="close">بستن و بازگشت</button>
+    </div>
+    <p class="pause-note">قطعه از قراردادهای شکار، غارت بدن‌ها و جعبهٔ مناطق می‌آید.</p>
   </div>
 </div>
 
-<!-- ============ POI CARD ============ -->
-<div id="card" class="panel hidden">
-  <button class="card-x" id="cardX" aria-label="بستن">✕</button>
-  <div class="card-top">
-    <span class="card-icon" id="cardIcon"></span>
-    <div>
-      <h2 id="cardTitle">—</h2>
-      <div class="card-sub" id="cardSub">—</div>
+<!-- ================= PAUSE ================= -->
+<div id="pause" class="screen hidden">
+  <div class="modal-box">
+    <h2>توقف</h2>
+    <p class="muted">بازی متوقف است — بیگانه‌ها هم منتظرند.</p>
+    <div class="pause-rows">
+      <button id="pResume" class="go" type="button">ادامه</button>
+      <button id="pSound" class="go ghost" type="button">صدا: روشن</button>
+      <button id="pQuality" class="go ghost" type="button">کیفیت: بالا</button>
+      <button id="pRestart" class="go ghost" type="button">شروع دوباره</button>
+    </div>
+    <p class="pause-note" id="pauseNote"></p>
+  </div>
+</div>
+
+<!-- ================= END ================= -->
+<div id="modal" class="screen hidden">
+  <div class="modal-box">
+    <h2 id="modalTitle">پایان</h2>
+    <p id="modalTxt"></p>
+    <div class="modal-stats" id="modalStats"></div>
+    <div class="modal-btns">
+      <button id="modalMain" class="go" type="button">شروع دوباره</button>
     </div>
   </div>
-  <p id="cardDesc"></p>
-  <div class="card-rows" id="cardRows"></div>
-  <div class="card-foot">
-    <span class="risk" id="cardRisk">—</span>
-    <button class="card-go" id="cardGo">مسیریابی</button>
+</div>
+
+<div id="downBox" class="down-box hidden">
+  <div class="down-inner">
+    <b>از پا افتادی</b>
+    <span id="downTxt">۱۰</span>
+    <small>ده ثانیه بعد از آسمان برمی‌گردی — با شمشیر شکسته</small>
   </div>
 </div>
 
 <div id="toast"></div>
-<span id="mapVer" class="mapver"></span>
 
-<script src="js/core.js"></script>
-<script src="js/tiles.js"></script>
-<script src="js/map.js"></script>
+<script src="js/vendor/three.min.js"></script>
+<script src="js/vendor/GLTFLoader.js"></script>
+<script src="js/vendor/SkeletonUtils.js"></script>
+<script src="js/models3d.js"></script>
+<script src="js/hands3d.js"></script>
+<script src="js/sfx3d.js"></script>
+<script src="js/relics3d.js"></script>
+<script src="js/aliens3d.js"></script>
 <script src="js/save.js"></script>
-<script src="js/meta.js"></script>
-<script src="js/app.js"></script>
+<script src="js/siege3d.js"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@ DST="$HERE/www"
 
 rm -rf "$DST"
 mkdir -p "$DST"
-cp "$SRC/index.html" "$SRC/preview.html" "$DST/" 2>/dev/null || cp "$SRC/index.html" "$DST/"
+cp "$SRC/index.html" "$DST/"
 cp -r "$SRC/css" "$SRC/js" "$DST/"
 
 # sanity: the game must have its entry point and scripts

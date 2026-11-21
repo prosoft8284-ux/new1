@@ -19,7 +19,7 @@ rm -rf "$WORK"; mkdir -p "$WORK/classes" "$OUT"
 
 echo "== assets"
 rm -rf "$ROOT/android/assets"; mkdir -p "$ROOT/android/assets"
-cp "$ROOT/index.html" "$ROOT/preview.html" "$ROOT/README.md" "$ROOT/android/assets/"
+cp "$ROOT/index.html" "$ROOT/README.md" "$ROOT/android/assets/"
 cp -r "$ROOT/css" "$ROOT/js" "$ROOT/android/assets/"
 
 echo "== resources"

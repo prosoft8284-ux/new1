@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "props": [
+    {
+      "name": "wreck_mech",
+      "file": "models/props/wreck_mech.glb",
+      "height": 3.2,
+      "radius": 1.6,
+      "size": [
+        3.2,
+        1.3,
+        2.16
+      ],
+      "tint": "#6d7178",
+      "tris": 3240,
+      "cover": true,
+      "spots": [
+        "quarry",
+        "ridge",
+        "crater"
+      ]
+    },
+    {
+      "name": "wreck_alien",
+      "file": "models/props/wreck_alien.glb",
+      "height": 3.0,
+      "radius": 1.5,
+      "size": [
+        3.0,
+        0.72,
+        2.98
+      ],
+      "tint": "#5f4a78",
+      "tris": 3999,
+      "cover": true,
+      "spots": [
+        "wreck",
+        "dock",
+        "nest"
+      ]
+    }
+  ]
+}
