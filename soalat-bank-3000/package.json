@@ -9,6 +9,8 @@
     "check": "node tools/check.js && node tools/dups.js",
     "plan": "node tools/plan.js",
     "audit": "node tools/exam-audit.js",
+    "audit:quality": "node tools/audit-quality.js",
+    "curate": "node tools/curate.js",
     "test": "node tests/core.test.js"
   }
 }

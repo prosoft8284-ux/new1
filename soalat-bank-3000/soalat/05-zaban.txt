@@ -1634,15 +1634,15 @@
    ۴. واژگان در آزمون اهمیت ندارند
    ✔ کلید: گزینه ۱
    ✎ تحلیل: یادگیری در بافت، معنا و کاربرد را هم‌زمان می‌سازد؛ همین روش برای درک مطلب و ترجمهٔ دقیق ضروری است.
-— بخش ۱۰: دستور زبان (Grammar) —
-۲۰۴) «Neither the students nor the teacher ___ aware of the new deadline.»
-   ۱. was
-   ۲. were
-   ۳. have been
-   ۴. are
-   ✔ کلید: گزینه ۱
-   ✎ تحلیل: در ساختار neither … nor فعل با نزدیک‌ترین فاعل (the teacher) هماهنگ می‌شود؛ بنابراین was درست است.
+۲۰۴) Researchers must ___ a clear distinction between correlation and causation.
+   ۱. do
+   ۲. take
+   ۳. draw
+   ۴. put
+   ✔ کلید: گزینه ۳
+   ✎ تحلیل: هم‌آیند درست در انگلیسی آکادمیک draw a distinction است؛ فعل‌های do، take و put با distinction در این معنا ترکیب نمی‌شوند و متن را غیرطبیعی می‌کنند.
 
+— بخش ۱۰: دستور زبان (Grammar) —
 ۲۰۵) «Each of the participants ___ a consent form before the interview.»
    ۱. sign
    ۲. signed
@@ -2197,8 +2197,16 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «due to» پیش از عبارت اسمی می‌آید؛ «because» و «since» به بند نیاز دارند و «owing» به «to» نیاز دارد.
 
+۲۷۴) The study used ___ sample of 400 respondents drawn from ___ urban population.
+   ۱. a – the
+   ۲. the – a
+   ۳. a – a
+   ۴. the – the
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: «a sample» نخستین اشاره به نمونه‌ای نامعین است، اما «the urban population» به جمعیتی معین و شناخته‌شده در بافت پژوهش اشاره می‌کند؛ بنابراین حرف تعریف نامعین و سپس معین لازم است.
+
 — بخش ۱۳: دستور و واژگان (تکمیلی) —
-۲۷۴) Neither of the studies ___ conclusive on its own.
+۲۷۵) Neither of the studies ___ conclusive on its own.
    ۱. were
    ۲. have been
    ۳. are
@@ -2206,7 +2214,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «Neither of + اسم جمع» در انگلیسی رسمی با فعل مفرد می‌آید.
 
-۲۷۵) The data ___ collected over six months of fieldwork.
+۲۷۶) The data ___ collected over six months of fieldwork.
    ۱. were
    ۲. was
    ۳. has been
@@ -2214,7 +2222,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «data» جمع «datum» است و در نگارش علمی با فعل جمع به کار می‌رود.
 
-۲۷۶) ___ the interviews, she began coding the transcripts.
+۲۷۷) ___ the interviews, she began coding the transcripts.
    ۱. Complete
    ۲. Having completed
    ۳. To complete
@@ -2222,7 +2230,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: عبارت فعلی مقدم «Having + p.p.» ترتیب زمانی دو عمل را بیان می‌کند.
 
-۲۷۷) The more carefully you code the data, ___ reliable the findings will be.
+۲۷۸) The more carefully you code the data, ___ reliable the findings will be.
    ۱. more
    ۲. the most
    ۳. the more
@@ -2230,7 +2238,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: ساختار «the more… the more…» دو افزایش هم‌بسته را نشان می‌دهد.
 
-۲۷۸) It is essential that every participant ___ informed of the purpose.
+۲۷۹) It is essential that every participant ___ informed of the purpose.
    ۱. will be
    ۲. is
    ۳. was
@@ -2238,7 +2246,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: پس از «It is essential that» شکل پایه فعل (subjunctive) به کار می‌رود.
 
-۲۷۹) She is the only researcher in the team ___ has access to the archive.
+۲۸۰) She is the only researcher in the team ___ has access to the archive.
    ۱. who
    ۲. which
    ۳. whom
@@ -2246,7 +2254,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «who» برای شخص در نقش فاعل بند موصولی به کار می‌رود.
 
-۲۸۰) He denied ___ the raw data before the audit.
+۲۸۱) He denied ___ the raw data before the audit.
    ۱. alter
    ۲. altering
    ۳. to alter
@@ -2254,7 +2262,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «deny» با gerund می‌آید؛ «deny to do» در این معنا نادرست است.
 
-۲۸۱) The results, ___ were unexpected, forced the team to revise the model.
+۲۸۲) The results, ___ were unexpected, forced the team to revise the model.
    ۱. that
    ۲. who
    ۳. which
@@ -2262,7 +2270,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: در بند موصولی غیرمحدودکننده (پس از ویرگول) «that» به کار نمی‌رود و «which» لازم است.
 
-۲۸۲) Scarcely ___ started when the fire alarm rang.
+۲۸۳) Scarcely ___ started when the fire alarm rang.
    ۱. she had
    ۲. did she
    ۳. she did
@@ -2270,7 +2278,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: قید منفی در آغاز جمله باعث وارونگی فعل کمکی می‌شود: «Scarcely had she started… when».
 
-۲۸۳) The revised instrument was ___ reliable than the pilot version.
+۲۸۴) The revised instrument was ___ reliable than the pilot version.
    ۱. more
    ۲. most
    ۳. much
@@ -2278,7 +2286,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: صفت چندبخشی «reliable» با «more» مقایسه می‌شود و «than» مقایسه را کامل می‌کند.
 
-۲۸۴) To «replicate» a study is to:
+۲۸۵) To «replicate» a study is to:
    ۱. reject its findings
    ۲. repeat it to see whether the results hold
    ۳. summarize it briefly
@@ -2286,7 +2294,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: تکرار پژوهش، هسته ارزیابی تکرارپذیری است؛ تکرار با داده و پژوهشگر مستقل ارزش بیشتری دارد.
 
-۲۸۵) To «infer» something is to:
+۲۸۶) To «infer» something is to:
    ۱. measure it precisely
    ۲. deny it
    ۳. conclude it from evidence rather than state it directly
@@ -2294,7 +2302,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: استنباط، گذار از داده به گزاره فراتر از داده است و به همین دلیل به احتیاط روش‌شناختی نیاز دارد.
 
-۲۸۶) To «mitigate» a risk is to:
+۲۸۷) To «mitigate» a risk is to:
    ۱. ignore it
    ۲. increase it
    ۳. measure it
@@ -2302,7 +2310,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: کاهش خطر با مداخله یا بازطراحی رویه انجام می‌شود، نه با انکار آن.
 
-۲۸۷) To «adhere to» a protocol is to:
+۲۸۸) To «adhere to» a protocol is to:
    ۱. follow it
    ۲. revise it
    ۳. abandon it
@@ -2310,7 +2318,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: پایبندی به پروتکل، شرط مقایسه‌پذیری و اعتبار اجراست.
 
-۲۸۸) A «heterogeneous» sample is one that is:
+۲۸۹) A «heterogeneous» sample is one that is:
    ۱. uniform in composition
    ۲. diverse in composition
    ۳. very small
@@ -2318,7 +2326,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: ناهمگنی، تنوع ویژگی‌ها را نشان می‌دهد؛ همین، تعمیم‌پذیری را بالا و همسانی درون گروه را کم می‌کند.
 
-۲۸۹) A «consensus» is:
+۲۹۰) A «consensus» is:
    ۱. a statistical test
    ۲. a written contract
    ۳. general agreement among participants or experts
@@ -2326,7 +2334,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: اجماع در روش دلفی و داوری علمی، توافق جمعی است نه حقیقت مطلق.
 
-۲۹۰) A «plausible» explanation is:
+۲۹۱) A «plausible» explanation is:
    ۱. proven beyond doubt
    ۲. statistically significant
    ۳. widely popular
@@ -2334,7 +2342,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «plausible» یعنی باورپذیر و سازگار با شواهد، نه اثبات‌شده.
 
-۲۹۱) «Scrutiny» means:
+۲۹۲) «Scrutiny» means:
    ۱. close and critical examination
    ۲. rapid approval
    ۳. casual reading
@@ -2342,7 +2350,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: نظارت دقیق و انتقادی، سازوکار اصلی پاسخگویی علمی و اداری است.
 
-۲۹۲) A «cumulative» effect is one that:
+۲۹۳) A «cumulative» effect is one that:
    ۱. occurs only once
    ۲. builds up over repeated exposure
    ۳. disappears quickly
@@ -2350,7 +2358,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: اثر تجمعی با تکرار و زمان انباشته می‌شود؛ همین، تحلیل طولی را ضروری می‌کند.
 
-۲۹۳) A «proxy» variable is:
+۲۹۴) A «proxy» variable is:
    ۱. the dependent variable
    ۲. a sampling error
    ۳. an indirect measure standing in for a concept that cannot be observed directly
@@ -2358,8 +2366,16 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: متغیر جانشین باید توجیه نظری داشته باشد؛ انتخاب نامناسب آن، اعتبار سنجش را تهدید می‌کند.
 
+۲۹۵) ___ of the variance in income is explained by education alone.
+   ۱. Many
+   ۲. Few
+   ۳. Little
+   ۴. Several
+   ✔ کلید: گزینه ۳
+   ✎ تحلیل: variance اسم غیرقابل شمارش است و با کمیت‌سنج‌های غیرشمارشی مانند little می‌آید؛ many، few و several فقط با اسم‌های شمارشی جمع به کار می‌روند.
+
 — بخش ۱۴: دستور و واژگان (سطح آزمون) —
-۲۹۴) Neither the data nor the model ___ adequate for the claim.
+۲۹۶) Neither the data nor the model ___ adequate for the claim.
    ۱. were
    ۲. have been
    ۳. was
@@ -2367,7 +2383,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: در «neither… nor» فعل با نزدیک‌ترین فاعل هماهنگ می‌شود؛ «model» مفرد است.
 
-۲۹۵) The report, along with its appendices, ___ submitted yesterday.
+۲۹۷) The report, along with its appendices, ___ submitted yesterday.
    ۱. were
    ۲. have
    ۳. are
@@ -2375,7 +2391,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: عبارت «along with» فاعل را جمع نمی‌کند؛ فعل با «report» هماهنگ می‌ماند.
 
-۲۹۶) Hardly ever ___ such a large sample in this kind of study.
+۲۹۸) Hardly ever ___ such a large sample in this kind of study.
    ۱. do we see
    ۲. we see
    ۳. we do see
@@ -2383,7 +2399,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: قید منفی در آغاز جمله، وارونگی فعل کمکی را ایجاب می‌کند.
 
-۲۹۷) It was not until 1990 ___ the national survey began.
+۲۹۹) It was not until 1990 ___ the national survey began.
    ۱. which
    ۲. that
    ۳. when
@@ -2391,7 +2407,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: ساختار تأکیدی «It was not until … that» زمان آغاز را برجسته می‌کند.
 
-۲۹۸) She asked whether the data ___ anonymized before release.
+۳۰۰) She asked whether the data ___ anonymized before release.
    ۱. have been
    ۲. are
    ۳. had been
@@ -2399,7 +2415,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: در نقل قول غیرمستقیم گذشته، ماضی بعید ترتیب زمانی را حفظ می‌کند.
 
-۲۹۹) The more variables in the model, ___ the risk of overfitting.
+۳۰۱) The more variables in the model, ___ the risk of overfitting.
    ۱. greater
    ۲. the greatest
    ۳. greatest
@@ -2407,15 +2423,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: ساختار «the more… the more…» دو افزایش هم‌بسته را بیان می‌کند.
 
-۳۰۰) ___ the sample being small, the effect was remarkably clear.
-   ۱. Despite
-   ۲. Although
-   ۳. Because
-   ۴. However
-   ✔ کلید: گزینه ۱
-   ✎ تحلیل: «Despite» با عبارت اسمی («the sample being small») می‌آید؛ «Although» به بند کامل نیاز دارد.
-
-۳۰۱) If the assumptions ___ met, the results would be valid.
+۳۰۲) If the assumptions ___ met, the results would be valid.
    ۱. are
    ۲. were
    ۳. will be
@@ -2423,7 +2431,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: شرطی نوع دوم (were + would) فرض خلاف واقع حال را بیان می‌کند.
 
-۳۰۲) The author, ___ earlier work we discussed, replied to the review.
+۳۰۳) The author, ___ earlier work we discussed, replied to the review.
    ۱. who
    ۲. whom
    ۳. whose
@@ -2431,7 +2439,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «whose» مالکیت را در بند موصولی غیرمحدودکننده بیان می‌کند.
 
-۳۰۳) Not until the audit ___ did the coding error appear.
+۳۰۴) Not until the audit ___ did the coding error appear.
    ۱. completed
    ۲. had completed
    ۳. completes
@@ -2439,7 +2447,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: پس از «Not until» وارونگی رخ می‌دهد؛ فعل مجهول ماضی لازم است.
 
-۳۰۴) The team ___ the coding frame before the analysis began.
+۳۰۵) The team ___ the coding frame before the analysis began.
    ۱. finalized
    ۲. finalize
    ۳. has finalize
@@ -2447,21 +2455,13 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: جمله زمان گذشته «began» دارد، پس گذشته ساده «finalized» درست است. «finalize» حال ساده است و «finalizing» بدون فعل کمکی نمی‌آید.
 
-۳۰۵) By next year, the panel ___ five waves of data.
+۳۰۶) By next year, the panel ___ five waves of data.
    ۱. completes
    ۲. will have completed
    ۳. completed
    ۴. is completing
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «by + زمان آینده» به آینده کامل نیاز دارد: will have completed. گذشته ساده و حال ساده با این قید زمانی هم‌خوان نیستند.
-
-۳۰۶) «Robustness» of a finding refers to its:
-   ۱. statistical significance
-   ۲. sample size
-   ۳. stability across different specifications
-   ۴. theoretical novelty
-   ✔ کلید: گزینه ۳
-   ✎ تحلیل: استواری با تحلیل حساسیت و تغییر روش‌ها سنجیده می‌شود.
 
 ۳۰۷) «Endogeneity» in regression means that:
    ۱. the dependent variable is binary
@@ -2479,15 +2479,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: سادگی، تفسیرپذیری و تعمیم‌پذیری را افزایش می‌دهد.
 
-۳۰۹) To «operationalize» a concept is to:
-   ۱. translate it
-   ۲. define how it will be measured
-   ۳. discuss it theoretically
-   ۴. compare it with others
-   ✔ کلید: گزینه ۲
-   ✎ تحلیل: عملیاتی‌سازی، پل میان مفهوم انتزاعی و شاخص قابل مشاهده است.
-
-۳۱۰) To «confound» a relation is to:
+۳۰۹) To «confound» a relation is to:
    ۱. confirm it
    ۲. measure it
    ۳. distort it by an uncontrolled third factor
@@ -2495,7 +2487,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: مخدوش‌شدن رابطه، خطر اصلی استنباط علّی از داده مشاهده‌ای است.
 
-۳۱۱) The «magnitude» of an effect is its:
+۳۱۰) The «magnitude» of an effect is its:
    ۱. significance level
    ۲. direction only
    ۳. standard error
@@ -2503,7 +2495,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: magnitude یعنی اندازه و بزرگی اثر، مستقل از معناداری آماری و جهت آن. سطح معناداری و خطای استاندارد مفاهیم دیگری‌اند.
 
-۳۱۲) «Prevalence» refers to:
+۳۱۱) «Prevalence» refers to:
    ۱. the proportion of existing cases at a point in time
    ۲. the rate of new cases
    ۳. the number of deaths
@@ -2511,7 +2503,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: شیوع با بروز متفاوت است؛ بروز به موارد تازه اشاره دارد.
 
-۳۱۳) «Incidence» refers to:
+۳۱۲) «Incidence» refers to:
    ۱. existing cases
    ۲. the rate of new cases over a period
    ۳. total population
@@ -2519,7 +2511,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: بروز، سرعت پیدایش موارد تازه را می‌سنجد.
 
-۳۱۴) «Attrition» in a panel study is:
+۳۱۳) «Attrition» in a panel study is:
    ۱. increase in sample size
    ۲. measurement error
    ۳. loss of participants over time
@@ -2527,7 +2519,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: ریزش غیرتصادفی می‌تواند ترکیب نمونه را تغییر دهد.
 
-۳۱۵) A «skewed» distribution is one that is:
+۳۱۴) A «skewed» distribution is one that is:
    ۱. perfectly symmetric
    ۲. always normal
    ۳. always bimodal
@@ -2535,7 +2527,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: جهت دنباله، علامت چولگی را تعیین می‌کند.
 
-۳۱۶) «Heteroskedasticity» means:
+۳۱۵) «Heteroskedasticity» means:
    ۱. unequal variance of errors across values of a predictor
    ۲. non-normal dependent variable
    ۳. missing data
@@ -2543,13 +2535,21 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: این وضعیت، خطای استاندارد ضرایب را نادرست می‌کند.
 
-۳۱۷) «Multicollinearity» refers to:
+۳۱۶) «Multicollinearity» refers to:
    ۱. correlation between error terms
    ۲. high correlation among predictors
    ۳. non-linearity
    ۴. small sample
    ✔ کلید: گزینه ۲
    ✎ تحلیل: همخطی، ضرایب را ناپایدار و تفسیر را دشوار می‌کند.
+
+۳۱۷) The researchers avoided ___ causal claims that the design could not support.
+   ۱. to make
+   ۲. making
+   ۳. make
+   ۴. made
+   ✔ کلید: گزینه ۲
+   ✎ تحلیل: فعل avoid با gerund می‌آید (avoid making)؛ ساختار avoid + to + مصدر در انگلیسی معیار نادرست است و دو گزینهٔ دیگر شکل فعل لازم برای این جایگاه را ندارند.
 
 — بخش ۱۵: ساختارهای دستوری آزمونی —
 ۳۱۸) If the hypothesis ___ tested earlier, the error would have been caught.
@@ -2688,15 +2688,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: فاعل «results» جمع است؛ عبارت معترضه بر تطابق اثر ندارد.
 
-۳۳۵) Only after the audit ___ the scale of the error.
-   ۱. they did realize
-   ۲. realized they
-   ۳. they realized
-   ۴. did they realize
-   ✔ کلید: گزینه ۴
-   ✎ تحلیل: «Only after» در آغاز جمله وارونگی می‌آورد.
-
-۳۳۶) The author suggests ___ the sample be expanded.
+۳۳۵) The author suggests ___ the sample be expanded.
    ۱. that
    ۲. whether
    ۳. what
@@ -2704,7 +2696,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «suggests that» بند اسمی با وجهی می‌سازد.
 
-۳۳۷) A number of studies ___ reported similar effects.
+۳۳۶) A number of studies ___ reported similar effects.
    ۱. was
    ۲. have
    ۳. is
@@ -2712,7 +2704,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «a number of» فاعل جمع می‌گیرد؛ «the number of» مفرد است.
 
-۳۳۸) The number of respondents ___ lower than expected.
+۳۳۷) The number of respondents ___ lower than expected.
    ۱. were
    ۲. have been
    ۳. was
@@ -2720,7 +2712,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «the number of» به‌عنوان شمارش، فاعل مفرد است.
 
-۳۳۹) Unless the coding rules ___ consistent, comparisons are meaningless.
+۳۳۸) Unless the coding rules ___ consistent, comparisons are meaningless.
    ۱. were
    ۲. will be
    ۳. is
@@ -2728,7 +2720,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: در بند شرط پس از unless، حال ساده به‌جای آینده می‌آید.
 
-۳۴۰) The study aims at ___ how norms change over time.
+۳۳۹) The study aims at ___ how norms change over time.
    ۱. understanding
    ۲. understand
    ۳. to understand
@@ -2736,7 +2728,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «aim at» با اسم/وجه وصفی (gerund) می‌آید.
 
-۳۴۱) The team was ___ to finish the coding by Friday.
+۳۴۰) The team was ___ to finish the coding by Friday.
    ۱. capable
    ۲. able
    ۳. possible
@@ -2744,7 +2736,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «able to» ساختار درست است؛ «capable of» شکل دیگر آن است.
 
-۳۴۲) There is little evidence ___ the policy reduced inequality.
+۳۴۱) There is little evidence ___ the policy reduced inequality.
    ۱. what
    ۲. whether
    ۳. that
@@ -2752,7 +2744,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «evidence that + بند» ساختار استاندارد است؛ «whether» معنی تردید می‌دهد و با «little evidence» هم‌خوان نیست.
 
-۳۴۳) The proportion of women in the sample ___ risen steadily.
+۳۴۲) The proportion of women in the sample ___ risen steadily.
    ۱. have
    ۲. are
    ۳. were
@@ -2760,7 +2752,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: هسته فاعل «the proportion of women» مفرد است، پس has. عبارت of-اضافه تعداد فاعل را تغییر نمی‌دهد.
 
-۳۴۴) Had the data been available, the analysis ___ different.
+۳۴۳) Had the data been available, the analysis ___ different.
    ۱. would have been
    ۲. will be
    ۳. would be
@@ -2768,7 +2760,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: وارونگی شرطی نوع سوم با «would have been» کامل می‌شود.
 
-۳۴۵) The variable was coded ___ 1 for yes and 0 for no.
+۳۴۴) The variable was coded ___ 1 for yes and 0 for no.
    ۱. to
    ۲. as
    ۳. for
@@ -2776,7 +2768,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «coded as» ترکیب استاندارد تعریف کد متغیر است: coded as 1 for yes.
 
-۳۴۶) Comparatively ___ studies examine this group.
+۳۴۵) Comparatively ___ studies examine this group.
    ۱. little
    ۲. less
    ۳. few
@@ -2784,7 +2776,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «few» برای اسم شمارشی جمع به کار می‌رود.
 
-۳۴۷) The researcher avoided ___ leading questions.
+۳۴۶) The researcher avoided ___ leading questions.
    ۱. ask
    ۲. to ask
    ۳. asked
@@ -2792,7 +2784,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «avoid» فعل بعدی را gerund می‌گیرد: avoided asking. افعالی مثل avoid و consider و enjoy با ing می‌آیند.
 
-۳۴۸) Neither the interviews nor the survey ___ the full picture.
+۳۴۷) Neither the interviews nor the survey ___ the full picture.
    ۱. captures
    ۲. are capturing
    ۳. have captured
@@ -2800,7 +2792,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: با «neither… nor» فعل با نزدیک‌ترین فاعل هماهنگ می‌شود.
 
-۳۴۹) The findings are consistent ___ earlier work.
+۳۴۸) The findings are consistent ___ earlier work.
    ۱. to
    ۲. with
    ۳. of
@@ -2808,7 +2800,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «consistent with» ترکیب ثابت است: findings are consistent with earlier work. حرف اضافه‌های دیگر با consistent نمی‌آیند.
 
-۳۵۰) Such a claim ___ substantial evidence.
+۳۴۹) Such a claim ___ substantial evidence.
    ۱. require
    ۲. requiring
    ۳. requires
@@ -2816,7 +2808,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «Such a claim» فاعل مفرد است، پس requires؛ وجود «a» نشانه مفرد بودن است.
 
-۳۵۱) The theory has been criticized ___ ignoring power.
+۳۵۰) The theory has been criticized ___ ignoring power.
    ۱. to
    ۲. of
    ۳. with
@@ -2824,7 +2816,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «criticized for + gerund» ساختار درست است: criticized for ignoring power. ترکیب «criticize of» غلط است.
 
-۳۵۲) Little ___ known about this population.
+۳۵۱) Little ___ known about this population.
    ۱. is
    ۲. are
    ۳. have
@@ -2832,7 +2824,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «little» با اسم غیرشمارشی و فعل مفرد می‌آید.
 
-۳۵۳) The interview lasted two hours, ___ was longer than planned.
+۳۵۲) The interview lasted two hours, ___ was longer than planned.
    ۱. that
    ۲. which
    ۳. who
@@ -2840,7 +2832,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «which» بند غیرتوصیفی می‌سازد و به کل جمله پیشین اشاره می‌کند؛ «that» بعد از ویرگول در بند غیرتوصیفی نمی‌آید.
 
-۳۵۴) It is not the method ___ matters, but the question.
+۳۵۳) It is not the method ___ matters, but the question.
    ۱. which one
    ۲. who
    ۳. that
@@ -2848,7 +2840,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: ساختار شکاف‌دار (cleft) با «that» می‌آید.
 
-۳۵۵) The more the sample is stratified, ___ precise the estimate.
+۳۵۴) The more the sample is stratified, ___ precise the estimate.
    ۱. more
    ۲. most
    ۳. much
@@ -2856,7 +2848,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: ساختار موازی «the more… the more…»: the more stratified… the more precise. شکل صفت باید مقایسه‌ای بماند.
 
-۳۵۶) Researchers must be careful not ___ overgeneralize.
+۳۵۵) Researchers must be careful not ___ overgeneralize.
    ۱. to
    ۲. for
    ۳. of
@@ -2864,7 +2856,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «be careful not to do» ساختار ثابت است: careful not to overgeneralize.
 
-۳۵۷) The proportion ___ households headed by women has risen.
+۳۵۶) The proportion ___ households headed by women has risen.
    ۱. in
    ۲. of
    ۳. for
@@ -2872,7 +2864,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «proportion of» ترکیب استاندارد است: the proportion of households. حرف اضافه دیگر در این معنا نمی‌آید.
 
-۳۵۸) The findings were robust ___ alternative specifications.
+۳۵۷) The findings were robust ___ alternative specifications.
    ۱. for
    ۲. with
    ۳. to
@@ -2880,7 +2872,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «robust to» در نگارش علمی یعنی نتیجه در برابر تغییر مفروضات و مشخصه‌ها مقاوم می‌ماند.
 
-۳۵۹) A growing body of research ___ that stigma deters help-seeking.
+۳۵۸) A growing body of research ___ that stigma deters help-seeking.
    ۱. show
    ۲. are showing
    ۳. have shown
@@ -2888,7 +2880,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: هسته فاعل «a growing body of research» مفرد است، پس shows؛ «body» واژه اصلی و مفرد است.
 
-۳۶۰) This holds true ___ both urban and rural settings.
+۳۵۹) This holds true ___ both urban and rural settings.
    ۱. in
    ۲. on
    ۳. at
@@ -2896,16 +2888,16 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «hold true in + محیط» ساختار درست است: holds true in both urban and rural settings.
 
-۳۶۱) The authors ___ the limitations of their design.
-   ۱. acknowledges
-   ۲. acknowledge
-   ۳. is acknowledging
-   ۴. has acknowledged
+۳۶۰) Rarely ___ a sample so representative of the whole population.
+   ۱. researchers find
+   ۲. do researchers find
+   ۳. researchers do find
+   ۴. find researchers
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: فاعل جمع «the authors» فعل جمع می‌گیرد: acknowledge. شکل s‌دار برای فاعل مفرد است.
+   ✎ تحلیل: وقتی قید منفی مانند Rarely در آغاز جمله بیاید، فعل کمکی پیش از فاعل قرار می‌گیرد (inversion): Rarely do researchers find…؛ گزینه‌های دیگر ترتیب عادی جمله یا ترتیب پرسشی نادرست دارند.
 
 — بخش ۱۶: دستور پیشرفته و جمله‌های آزمونی —
-۳۶۲) The hypothesis ___ the authors tested was not new.
+۳۶۱) The hypothesis ___ the authors tested was not new.
    ۱. what
    ۲. whose
    ۳. who
@@ -2913,7 +2905,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «that» بند موصولی محدودکننده برای اسم شیء می‌سازد.
 
-۳۶۳) For the results ___ comparable, coding must be identical.
+۳۶۲) For the results ___ comparable, coding must be identical.
    ۱. to be
    ۲. be
    ۳. been
@@ -2921,7 +2913,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: ساختار «for + مفعول + to be» هدف یا شرط را بیان می‌کند.
 
-۳۶۴) The more the respondents trust the interviewer, ___ candid the answers.
+۳۶۳) The more the respondents trust the interviewer, ___ candid the answers.
    ۱. more
    ۲. the more
    ۳. much
@@ -2929,7 +2921,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: موازی‌سازی مقایسه‌ای با «the more… the more».
 
-۳۶۵) There being no control group, the causal claim ___ weak.
+۳۶۴) There being no control group, the causal claim ___ weak.
    ۱. is remained
    ۲. remaining
    ۳. remains
@@ -2937,7 +2929,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: ساختار مطلق (absolute construction) با فاعل مستقل، فعل اصلی می‌خواهد.
 
-۳۶۶) ___ the sample was small, the effect size was substantial.
+۳۶۵) ___ the sample was small, the effect size was substantial.
    ۱. Despite
    ۲. Because of
    ۳. In spite
@@ -2945,7 +2937,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «While» هم‌زمانی یا تقابل دو بند را بیان می‌کند.
 
-۳۶۷) The authors were criticized for ___ the role of the state.
+۳۶۶) The authors were criticized for ___ the role of the state.
    ۱. neglecting
    ۲. neglected
    ۳. to neglect
@@ -2953,7 +2945,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «for» به‌عنوان حرف اضافه، gerund می‌گیرد.
 
-۳۶۸) Should the trend continue, inequality ___ widen.
+۳۶۷) Should the trend continue, inequality ___ widen.
    ۱. would
    ۲. will
    ۳. had
@@ -2961,7 +2953,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: وارونگی شرطی («Should…») با فعل آینده کامل می‌شود.
 
-۳۶۹) The interviews were transcribed ___ verbatim.
+۳۶۸) The interviews were transcribed ___ verbatim.
    ۱. most
    ۲. mostly of
    ۳. almost
@@ -2969,7 +2961,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «almost» قید تقریب است و مستقیماً صفت یا قید را می‌آورد: almost verbatim. «most» در این جایگاه نادرست است.
 
-۳۷۰) It is the quality of the questions, not their number, ___ matters.
+۳۶۹) It is the quality of the questions, not their number, ___ matters.
    ۱. which one
    ۲. what
    ۳. who
@@ -2977,7 +2969,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: ساختار شکاف‌دار تأکیدی: It is X, not Y, that matters؛ «that» بند تأکیدی می‌سازد.
 
-۳۷۱) The researcher, together with two assistants, ___ the coding scheme.
+۳۷۰) The researcher, together with two assistants, ___ the coding scheme.
    ۱. developed
    ۲. were developing
    ۳. have developed
@@ -2985,7 +2977,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «together with» فاعل را جمع نمی‌کند؛ هسته فاعل «the researcher» مفرد است، پس developed.
 
-۳۷۲) Not until the data were cleaned ___ apparent.
+۳۷۱) Not until the data were cleaned ___ apparent.
    ۱. the pattern did become
    ۲. did the pattern become
    ۳. the pattern became
@@ -2993,7 +2985,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: پس از عبارت منفی آغازین، وارونگی لازم است.
 
-۳۷۳) The less the concept is specified, ___ the measurement.
+۳۷۲) The less the concept is specified, ___ the measurement.
    ۱. weak
    ۲. weakest
    ۳. the weaker
@@ -3001,7 +2993,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: ساختار موازی مقایسه‌ای با صفت مقایسه‌ای.
 
-۳۷۴) Respondents were asked ___ they had experienced discrimination.
+۳۷۳) Respondents were asked ___ they had experienced discrimination.
    ۱. what
    ۲. which
    ۳. that
@@ -3009,7 +3001,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: پرسش غیرمستقیم بله/خیر با «whether» می‌آید.
 
-۳۷۵) The study ___ to explain variation across regions.
+۳۷۴) The study ___ to explain variation across regions.
    ۱. seeks
    ۲. seek
    ۳. seeking
@@ -3017,7 +3009,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: فاعل مفرد «the study» فعل مفرد می‌گیرد: seeks. «seek» شکل جمع است.
 
-۳۷۶) Given ___ the response rate was low, the authors weighted the data.
+۳۷۵) Given ___ the response rate was low, the authors weighted the data.
    ۱. which
    ۲. that
    ۳. whether
@@ -3025,7 +3017,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «given that + بند» یعنی «با توجه به اینکه»؛ گزینه‌های دیگر بند علّی نمی‌سازند.
 
-۳۷۷) The findings challenge the assumption ___ institutions are stable.
+۳۷۶) The findings challenge the assumption ___ institutions are stable.
    ۱. what
    ۲. which
    ۳. that
@@ -3033,7 +3025,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «assumption that» بند اسمی خبری می‌طلبد.
 
-۳۷۸) The data set, ___ was collected in 2019, is publicly available.
+۳۷۷) The data set, ___ was collected in 2019, is publicly available.
    ۱. that
    ۲. what
    ۳. whose
@@ -3041,7 +3033,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: بند موصولی غیرمحدودکننده با «which» می‌آید.
 
-۳۷۹) The team had no choice but ___ the deadline.
+۳۷۸) The team had no choice but ___ the deadline.
    ۱. to extend
    ۲. extended
    ۳. extending
@@ -3049,7 +3041,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «have no choice but to do» ساختار ثابت است.
 
-۳۸۰) Scarcely had the survey closed ___ responses were still arriving.
+۳۷۹) Scarcely had the survey closed ___ responses were still arriving.
    ۱. than
    ۲. when
    ۳. that
@@ -3057,7 +3049,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: ترکیب ثابت «scarcely… when»: scarcely had the survey closed when…. «than» در این ساختار نمی‌آید.
 
-۳۸۱) The more detailed the coding frame, ___ the risk of inconsistency.
+۳۸۰) The more detailed the coding frame, ___ the risk of inconsistency.
    ۱. great
    ۲. greatest
    ۳. the greater
@@ -3065,7 +3057,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: موازی‌سازی مقایسه‌ای: the more detailed the coding frame, the greater the risk of inconsistency.
 
-۳۸۲) The authors note that the effect ___ larger among younger cohorts.
+۳۸۱) The authors note that the effect ___ larger among younger cohorts.
    ۱. have been
    ۲. are
    ۳. were
@@ -3073,7 +3065,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «the effect» مفرد است، پس was؛ عبارت «among younger cohorts» فاعل را جمع نمی‌کند.
 
-۳۸۳) Without proper controls, any conclusion ___ premature.
+۳۸۲) Without proper controls, any conclusion ___ premature.
    ۱. is
    ۲. are
    ۳. have been
@@ -3081,7 +3073,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «any conclusion» مفرد است: any conclusion is premature.
 
-۳۸۴) The interview guide was revised ___ several pilot sessions.
+۳۸۳) The interview guide was revised ___ several pilot sessions.
    ۱. since
    ۲. after
    ۳. during
@@ -3089,7 +3081,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «after» توالی زمانی را با عبارت اسمی بیان می‌کند.
 
-۳۸۵) Researchers should report ___ they selected their cases.
+۳۸۴) Researchers should report ___ they selected their cases.
    ۱. that
    ۲. whether
    ۳. how
@@ -3097,7 +3089,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: پرسش غیرمستقیم دربارهٔ چگونگی با «how» می‌آید.
 
-۳۸۶) The greater the number of tests, ___ the chance of a false positive.
+۳۸۵) The greater the number of tests, ___ the chance of a false positive.
    ۱. higher
    ۲. highest
    ۳. high
@@ -3105,15 +3097,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: موازی‌سازی مقایسه‌ای: the greater the number of tests, the higher the chance of a false positive.
 
-۳۸۷) ___ being incomplete, the archive remains valuable.
-   ۱. Despite
-   ۲. Although
-   ۳. Because
-   ۴. However
-   ✔ کلید: گزینه ۱
-   ✎ تحلیل: «Despite + عبارت اسمی/gerund»: Despite being incomplete. «Although» به بند کامل نیاز دارد.
-
-۳۸۸) The panel was designed ___ the same households over time.
+۳۸۶) The panel was designed ___ the same households over time.
    ۱. following
    ۲. to follow
    ۳. follow
@@ -3121,7 +3105,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «be designed to + مصدر» هدف را بیان می‌کند: was designed to follow the same households.
 
-۳۸۹) Neither the theory nor the data ___ the claim.
+۳۸۷) Neither the theory nor the data ___ the claim.
    ۱. support
    ۲. are supporting
    ۳. supports
@@ -3129,7 +3113,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: با «neither… nor» فعل با فاعل نزدیک‌تر هماهنگ می‌شود.
 
-۳۹۰) So convincing ___ the evidence that the committee accepted it.
+۳۸۸) So convincing ___ the evidence that the committee accepted it.
    ۱. were
    ۲. did
    ۳. had
@@ -3137,7 +3121,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: ساختار «So + صفت + وارونگی + that» با فعل ربطی.
 
-۳۹۱) The authors discuss ___ the findings might differ in other settings.
+۳۸۹) The authors discuss ___ the findings might differ in other settings.
    ۱. whether
    ۲. which
    ۳. what
@@ -3145,7 +3129,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «discuss whether + بند» یعنی بحث درباره اینکه آیا…؛ «that» در این جایگاه خبر قطعی می‌سازد.
 
-۳۹۲) A stratified sample ___ greater precision for subgroup estimates.
+۳۹۰) A stratified sample ___ greater precision for subgroup estimates.
    ۱. offer
    ۲. offers
    ۳. offering
@@ -3153,7 +3137,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: فاعل مفرد «a stratified sample» فعل مفرد می‌گیرد: offers.
 
-۳۹۳) The proportion of missing cases ___ small in this wave.
+۳۹۱) The proportion of missing cases ___ small in this wave.
    ۱. were
    ۲. have been
    ۳. was
@@ -3161,7 +3145,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: هسته فاعل «the proportion of missing cases» مفرد است: was.
 
-۳۹۴) ___ the coding completed, the team moved to analysis.
+۳۹۲) ___ the coding completed, the team moved to analysis.
    ۱. Although
    ۲. However
    ۳. Because
@@ -3169,7 +3153,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: ساختار «with + مفعول + وجه وصفی» شرط/زمان را بیان می‌کند.
 
-۳۹۵) The results are in line ___ previous research.
+۳۹۳) The results are in line ___ previous research.
    ۱. with
    ۲. for
    ۳. of
@@ -3177,7 +3161,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «in line with» ترکیب ثابت است: in line with previous research.
 
-۳۹۶) It is important that the report ___ all limitations.
+۳۹۴) It is important that the report ___ all limitations.
    ۱. stated
    ۲. state
    ۳. states
@@ -3185,7 +3169,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: ساختار «it is important that» وجهی می‌طلبد.
 
-۳۹۷) The authors had the interviews ___ by two coders.
+۳۹۵) The authors had the interviews ___ by two coders.
    ۱. code
    ۲. coding
    ۳. coded
@@ -3193,7 +3177,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: ساختار سببی «have something done» اسم مفعول می‌طلبد.
 
-۳۹۸) Rarely ___ a study report both effect size and uncertainty.
+۳۹۶) Rarely ___ a study report both effect size and uncertainty.
    ۱. do
    ۲. is
    ۳. has
@@ -3201,7 +3185,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: قید منفی آغازین با فاعل مفرد، «does» می‌آورد.
 
-۳۹۹) The sampling frame ___ out of date, the estimates are biased.
+۳۹۷) The sampling frame ___ out of date, the estimates are biased.
    ۱. being
    ۲. is
    ۳. was
@@ -3209,7 +3193,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: ساختار مطلق: The sampling frame being out of date, the estimates are biased؛ فعل کامل در این ساختار نمی‌آید.
 
-۴۰۰) The effect was small ___ statistically significant.
+۳۹۸) The effect was small ___ statistically significant.
    ۱. thus
    ۲. yet
    ۳. hence
@@ -3217,7 +3201,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «other + اسم جمع» ساختار درست است: other studies. «others» ضمیر است و اسم بعد از آن نمی‌آید.
 
-۴۰۱) By contrast, ___ studies report the opposite pattern.
+۳۹۹) By contrast, ___ studies report the opposite pattern.
    ۱. another
    ۲. others
    ۳. other
@@ -3225,8 +3209,16 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «other + اسم جمع»: other studies report the opposite pattern؛ «another» فقط با اسم مفرد می‌آید.
 
+۴۰۰) The data ___ in 2019 remain the most cited in the field.
+   ۱. collecting
+   ۲. collected
+   ۳. which collected
+   ۴. collect
+   ✔ کلید: گزینه ۲
+   ✎ تحلیل: بند موصولی مجهول کوتاه شده است: the data which were collected → the data collected؛ چون داده‌ها خودشان جمع‌آوری نمی‌کنند، شکل معلوم collecting یا which collected نادرست است.
+
 — بخش ۱۷: دستور زبان؛ زمان‌ها، وجه و ساختارها —
-۴۰۲) کدام جمله برای بیان یک واقعیت علمی ثابت درست است؟
+۴۰۱) کدام جمله برای بیان یک واقعیت علمی ثابت درست است؟
    ۱. Water boils at 100°C.
    ۲. Water is boiling at 100°C.
    ۳. Water boiled at 100°C every day.
@@ -3234,7 +3226,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: حال ساده برای حقایق کلی و قوانین علمی به کار می‌رود؛ حال استمراری به وضعیت موقت اشاره دارد.
 
-۴۰۳) جملهٔ «The study ___ in 2019.» با کدام گزینه کامل می‌شود؟
+۴۰۲) جملهٔ «The study ___ in 2019.» با کدام گزینه کامل می‌شود؟
    ۱. was published
    ۲. has been published
    ۳. is published
@@ -3242,7 +3234,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: زمان مشخص گذشته با مجهول ماضی ساده می‌آید؛ حال کامل با زمانِ نامشخص یا اثر تا حال مناسب است.
 
-۴۰۴) «By the time the survey ended, most respondents ___ the questionnaire.»
+۴۰۳) «By the time the survey ended, most respondents ___ the questionnaire.»
    ۱. had completed
    ۲. completed
    ۳. have completed
@@ -3250,7 +3242,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: گذشته کامل برای رخدادی به کار می‌رود که پیش از رخداد گذشتهٔ دیگری کامل شده است؛ نشانهٔ آن «by the time» است.
 
-۴۰۵) تفاوت «will» و «be going to» در بیان آینده چیست؟
+۴۰۴) تفاوت «will» و «be going to» در بیان آینده چیست؟
    ۱. will برای تصمیم لحظه‌ای و پیش‌بینی و be going to برای قصد پیشین و شواهد حاضر
    ۲. هیچ تفاوتی ندارند
    ۳. will فقط برای گذشته است
@@ -3258,7 +3250,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: این تمایز در آزمون‌ها رایج است: «Look at those clouds; it is going to rain» شاهد حاضر و «I will help you» تصمیم آنی است.
 
-۴۰۶) کدام جمله مجهول درست است؟
+۴۰۵) کدام جمله مجهول درست است؟
    ۱. The data were analyzed using SPSS.
    ۲. The data analyzed using SPSS.
    ۳. The data was analyzing SPSS.
@@ -3266,7 +3258,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: در نوشتار علمی مجهول رایج است زیرا کنندهٔ کار اهمیت کمتری دارد؛ ساختار درست مجهول ماضی «were analyzed by» است.
 
-۴۰۷) گزارش گفتار در جملهٔ «He said, 'I am busy.'» کدام است؟
+۴۰۶) گزارش گفتار در جملهٔ «He said, 'I am busy.'» کدام است؟
    ۱. He said he was busy.
    ۲. He said he is busy.
    ۳. He says he was busy.
@@ -3274,7 +3266,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: در نقل قول غیرمستقیم با فعل گذشته، زمان یک پله عقب می‌رود؛ ضمیر نیز با گوینده هماهنگ می‌شود.
 
-۴۰۸) «If it ___ tomorrow, we will postpone the fieldwork.»
+۴۰۷) «If it ___ tomorrow, we will postpone the fieldwork.»
    ۱. rains
    ۲. will rain
    ۳. rained
@@ -3282,7 +3274,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: در شرطی نوع اول، جملهٔ if حال ساده و جملهٔ اصلی آینده است؛ will در بند شرط نمی‌آید.
 
-۴۰۹) «If I had more time, I ___ more interviews.»
+۴۰۸) «If I had more time, I ___ more interviews.»
    ۱. would conduct
    ۲. will conduct
    ۳. conducted
@@ -3290,7 +3282,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: شرطی نوع دوم وضعیت خلاف واقع حاضر را با گذشتهٔ ساده در بند شرط و would در بند اصلی بیان می‌کند.
 
-۴۱۰) «If they had coded the data carefully, the error ___ .»
+۴۰۹) «If they had coded the data carefully, the error ___ .»
    ۱. would not have occurred
    ۲. would not occur
    ۳. will not occur
@@ -3298,7 +3290,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: شرطی نوع سوم برای گذشتهٔ خلاف واقع است: had + p.p. در بند شرط و would have + p.p. در بند اصلی.
 
-۴۱۱) کدام جمله الزام اخلاقی پژوهشگر را بیان می‌کند؟
+۴۱۰) کدام جمله الزام اخلاقی پژوهشگر را بیان می‌کند؟
    ۱. Researchers must obtain informed consent.
    ۲. Researchers might obtain informed consent.
    ۳. Researchers could obtain informed consent.
@@ -3306,7 +3298,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: must الزام قوی است؛ might و could احتمال و may have done احتمال گذشته را بیان می‌کنند.
 
-۴۱۲) «The results ___ be due to sampling error, but further analysis is needed.»
+۴۱۱) «The results ___ be due to sampling error, but further analysis is needed.»
    ۱. may
    ۲. must
    ۳. should
@@ -3314,7 +3306,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: may احتمال را بیان می‌کند و با احتیاط علمی هم‌خوان است؛ must قطعیت و should توصیه را می‌رساند.
 
-۴۱۳) کدام جملهٔ موصولی غیرتوصیفی (non-defining) درست است؟
+۴۱۲) کدام جملهٔ موصولی غیرتوصیفی (non-defining) درست است؟
    ۱. Weber, who wrote about bureaucracy, influenced organization studies.
    ۲. Weber who wrote about bureaucracy influenced organization studies.
    ۳. Weber, that wrote about bureaucracy, influenced organization studies.
@@ -3322,7 +3314,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: بند غیرتوصیفی با کاما و who می‌آید و اطلاع اضافی می‌دهد؛ that در بند غیرتوصیفی به کار نمی‌رود.
 
-۴۱۴) «The theory ___ by Durkheim remains influential.»
+۴۱۳) «The theory ___ by Durkheim remains influential.»
    ۱. developed
    ۲. developing
    ۳. develops
@@ -3330,7 +3322,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: عبارت وصفی کوتاه‌شده «developed by» معادل «which was developed by» است؛ ساختار کاهش‌یافته در نوشتار آکادمیک رایج است.
 
-۴۱۵) کدام گزینه درست است؟ «The researchers decided ___ the sample.»
+۴۱۴) کدام گزینه درست است؟ «The researchers decided ___ the sample.»
    ۱. to expand
    ۲. expanding
    ۳. expand
@@ -3338,7 +3330,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: decide با مصدر to می‌آید؛ افعالی چون suggest و avoid با gerund و افعالی چون want با to همراه‌اند.
 
-۴۱۶) «She is interested ___ social mobility.»
+۴۱۵) «She is interested ___ social mobility.»
    ۱. in
    ۲. on
    ۳. at
@@ -3346,7 +3338,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: interested in ترکیب ثابت است؛ حرف اضافه پس از صفت را باید همراه واژه آموخت، نه با قاعدهٔ کلی.
 
-۴۱۷) «The findings depend ___ the quality of the data.»
+۴۱۶) «The findings depend ___ the quality of the data.»
    ۱. on
    ۲. of
    ۳. to
@@ -3354,7 +3346,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: depend on ترکیب ثابت است؛ همین هم‌آیند در نوشتار آکادمیک بسیار پرکاربرد است.
 
-۴۱۸) کدام جمله کاربرد حرف تعریف درست دارد؟
+۴۱۷) کدام جمله کاربرد حرف تعریف درست دارد؟
    ۱. The study examined the effects of inequality.
    ۲. Study examined effects of the inequality.
    ۳. A study examined effects of an inequality.
@@ -3362,7 +3354,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: اشاره به مطالعهٔ مشخص با the و اشاره به مفهوم کلی با the یا بدون حرف تعریف جمع می‌آید؛ «a effects» نادرست است.
 
-۴۱۹) تطابق فاعل و فعل در کدام جمله درست است؟
+۴۱۸) تطابق فاعل و فعل در کدام جمله درست است؟
    ۱. The number of respondents was small.
    ۲. The number of respondents were small.
    ۳. A number of respondents was small.
@@ -3370,7 +3362,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: فاعل «the number» مفرد است؛ در «a number of» فاعل جمع شمرده می‌شود. این تمایز در آزمون‌ها مکرر است.
 
-۴۲۰) کدام اسم غیرقابل شمارش است؟
+۴۱۹) کدام اسم غیرقابل شمارش است؟
    ۱. information
    ۲. interview
    ۳. respondent
@@ -3378,7 +3370,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: information غیرقابل شمارش است و «informations» نادرست است؛ برای شمارش از piece of information استفاده می‌شود.
 
-۴۲۱) شکل صحیح تفضیلی کدام است؟
+۴۲۰) شکل صحیح تفضیلی کدام است؟
    ۱. more significant
    ۲. significanter
    ۳. most significant
@@ -3386,7 +3378,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: صفت‌های چندبخشی با more تفضیل می‌سازند؛ most برای عالی است و پسوند -er برای صفت‌های کوتاه.
 
-۴۲۲) جای قید تکرار در جملهٔ درست کجاست؟
+۴۲۱) جای قید تکرار در جملهٔ درست کجاست؟
    ۱. The results usually support the hypothesis.
    ۲. Usually the results support usually the hypothesis.
    ۳. The results support usually the hypothesis.
@@ -3394,7 +3386,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: قید تکرار پیش از فعل اصلی و پس از فعل to be می‌آید؛ جای نادرست آن جمله را غیرطبیعی می‌کند.
 
-۴۲۳) کدام جمله وارونگی (inversion) درست دارد؟
+۴۲۲) کدام جمله وارونگی (inversion) درست دارد؟
    ۱. Rarely have researchers faced such a challenge.
    ۲. Rarely researchers have faced such a challenge.
    ۳. Rarely faced researchers have such a challenge.
@@ -3402,7 +3394,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: با قید منفی در آغاز جمله، فعل کمکی پیش از فاعل می‌آید؛ همین ساختار در نوشتار رسمی برای تأکید به کار می‌رود.
 
-۴۲۴) ساختار «It was Weber who...» چه نوع تأکیدی است؟
+۴۲۳) ساختار «It was Weber who...» چه نوع تأکیدی است؟
    ۱. جملهٔ شکافته (cleft) برای برجسته‌کردن یک عنصر
    ۲. جملهٔ پرسشی
    ۳. جملهٔ شرطی
@@ -3410,7 +3402,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: cleft sentence بخشی از جمله را برجسته می‌کند؛ نمونهٔ دیگر «What matters is...» است.
 
-۴۲۵) کدام جمله وجه التزامی (subjunctive) درست دارد؟
+۴۲۴) کدام جمله وجه التزامی (subjunctive) درست دارد؟
    ۱. The committee recommended that the study be replicated.
    ۲. The committee recommended that the study is replicated.
    ۳. The committee recommended that the study was replicated.
@@ -3418,7 +3410,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: پس از افعالی چون recommend و suggest، شکل پایهٔ فعل (be) در بند that می‌آید؛ همین ساختار در انگلیسی رسمی آمریکایی رایج است.
 
-۴۲۶) «I wish I ___ more time for the analysis.»
+۴۲۵) «I wish I ___ more time for the analysis.»
    ۱. had
    ۲. have
    ۳. will have
@@ -3426,7 +3418,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: wish با گذشتهٔ ساده، خلاف واقع حاضر را بیان می‌کند؛ با past perfect به گذشتهٔ خلاف واقع اشاره می‌شود.
 
-۴۲۷) تفاوت «used to» و «be used to» چیست؟
+۴۲۶) تفاوت «used to» و «be used to» چیست؟
    ۱. اولی عادت گذشته و دومی عادت‌کردن به چیزی در حال
    ۲. یکی هستند
    ۳. اولی آینده و دومی گذشته
@@ -3434,7 +3426,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «used to do» عادت گذشته و «be used to doing» خوگرفتن است؛ اشتباه این دو در آزمون‌ها رایج است.
 
-۴۲۸) «The project has been running ___ 2020.»
+۴۲۷) «The project has been running ___ 2020.»
    ۱. since
    ۲. for
    ۳. from
@@ -3442,7 +3434,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: since با نقطهٔ آغاز و for با مدت به کار می‌رود؛ «for 2020» نادرست است.
 
-۴۲۹) کدام جمله تضاد را درست بیان می‌کند؟
+۴۲۸) کدام جمله تضاد را درست بیان می‌کند؟
    ۱. Despite the small sample, the results were significant.
    ۲. Despite of the small sample, the results were significant.
    ۳. Although the small sample, the results were significant.
@@ -3450,7 +3442,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: despite با اسم و although با جمله می‌آید؛ «despite of» نادرست است و از خطاهای رایج نگارش است.
 
-۴۳۰) کدام جمله علت را درست بیان می‌کند؟
+۴۲۹) کدام جمله علت را درست بیان می‌کند؟
    ۱. The survey was shortened because the response rate was low.
    ۲. The survey was shortened because of the response rate was low.
    ۳. The survey was shortened because of low.
@@ -3458,15 +3450,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: because + جمله و because of + اسم می‌آید؛ انتخاب نادرست، ساختار جمله را می‌شکند.
 
-۴۳۱) «Neither the students nor the teacher ___ aware of the change.»
-   ۱. was
-   ۲. were
-   ۳. have been
-   ۴. are
-   ✔ کلید: گزینه ۱
-   ✎ تحلیل: با neither...nor فعل با نزدیک‌ترین فاعل هماهنگ می‌شود؛ اینجا teacher مفرد است.
-
-۴۳۲) «She hardly ever misses a deadline, ___?»
+۴۳۰) «She hardly ever misses a deadline, ___?»
    ۱. does she
    ۲. doesn't she
    ۳. is she
@@ -3474,7 +3458,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: hardly قید منفی است و پرسش پیوسته مثبت می‌گیرد؛ همین قاعده برای never و rarely هم برقرار است.
 
-۴۳۳) معنای فعل عبارتی «to carry out» در متن پژوهشی چیست؟
+۴۳۱) معنای فعل عبارتی «to carry out» در متن پژوهشی چیست؟
    ۱. انجام دادن
    ۲. حمل کردن
    ۳. لغو کردن
@@ -3482,7 +3466,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: carry out a study یعنی اجرای پژوهش؛ این فعل عبارتی در چکیدهٔ مقالات بسیار پرکاربرد است.
 
-۴۳۴) «nominalization» در نگارش آکادمیک چه کاری می‌کند؟
+۴۳۲) «nominalization» در نگارش آکادمیک چه کاری می‌کند؟
    ۱. فعل یا صفت را به اسم تبدیل می‌کند تا سبک رسمی‌تر شود
    ۲. جمله را کوتاه می‌کند
    ۳. فعل را حذف می‌کند
@@ -3490,7 +3474,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: مثلاً «we analyzed» به «the analysis of» تبدیل می‌شود؛ افراط در آن متن را مبهم و سنگین می‌کند، بنابراین باید متعادل باشد.
 
-۴۳۵) کدام جمله ساختار موازی درست دارد؟
+۴۳۳) کدام جمله ساختار موازی درست دارد؟
    ۱. The program aims to reduce poverty, improve education, and strengthen local institutions.
    ۲. The program aims to reduce poverty, improving education, and strength of institutions.
    ۳. The program aims reducing poverty, to improve education, and institutions.
@@ -3498,7 +3482,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: اجزای فهرست باید شکل دستوری یکسان داشته باشند؛ شکستن موازی‌سازی، خوانایی و دقت را کاهش می‌دهد.
 
-۴۳۶) «Having collected the data, the researcher began the analysis.» چه ساختاری است؟
+۴۳۴) «Having collected the data, the researcher began the analysis.» چه ساختاری است؟
    ۱. عبارت وصفی مشارکتی با فاعل مشترک
    ۲. جملهٔ مجهول
    ۳. جملهٔ شرطی
@@ -3506,7 +3490,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: فاعل هر دو بخش یکی است؛ اگر فاعل‌ها متفاوت باشند، «dangling modifier» رخ می‌دهد و جمله بی‌معنا می‌شود.
 
-۴۳۷) کدام جمله خطای «comma splice» دارد؟
+۴۳۵) کدام جمله خطای «comma splice» دارد؟
    ۱. The sample was small, the results were tentative.
    ۲. The sample was small; the results were tentative.
    ۳. The sample was small, so the results were tentative.
@@ -3514,7 +3498,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: پیوند دو جملهٔ کامل تنها با کاما نادرست است؛ نقطه‌ویرگول، حرف ربط یا تقسیم به دو جمله لازم است.
 
-۴۳۸) کاربرد آپاستروف در کدام گزینه درست است؟
+۴۳۶) کاربرد آپاستروف در کدام گزینه درست است؟
    ۱. The respondents' answers were anonymous.
    ۲. The respondents answers were anonymous.
    ۳. The respondent's answers were anonymous for all.
@@ -3522,7 +3506,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: مالکیت جمع باقاعده با آپاستروف پس از s ساخته می‌شود؛ «respondents's» نادرست است.
 
-۴۳۹) کدام عبارت برای نگارش آکادمیک مناسب‌تر است؟
+۴۳۷) کدام عبارت برای نگارش آکادمیک مناسب‌تر است؟
    ۱. The findings suggest that...
    ۲. I guess that...
    ۳. It's kinda clear that...
@@ -3530,7 +3514,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: نوشتار علمی از بیان محتاط و مستند استفاده می‌کند؛ عبارات محاوره‌ای و تعمیم‌های مطلق اعتبار متن را کم می‌کنند.
 
-۴۴۰) نقش «however» در متن چیست؟
+۴۳۸) نقش «however» در متن چیست؟
    ۱. پیوند تضاد میان دو ایده
    ۲. بیان علت
    ۳. بیان مثال
@@ -3538,15 +3522,23 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: however تضاد می‌سازد و با while و nevertheless هم‌خانواده است؛ استفادهٔ نادرست آن از خطاهای رایج پیوندی است.
 
-۴۴۱) جمع‌بندی دستور زبان کدام است؟
+۴۳۹) جمع‌بندی دستور زبان کدام است؟
    ۱. دقت در زمان، تطابق و پیوند جمله‌ها، پایهٔ نگارش آکادمیک است
    ۲. حفظ قاعده بدون تمرین کافی است
    ۳. ترجمهٔ واژه‌به‌واژه کافی است
    ۴. دستور در آزمون اهمیت ندارد
    ✔ کلید: گزینه ۱
    ✎ تحلیل: خطاهای دستوری معنای جمله را تغییر می‌دهند؛ تمرین در بافت متن، یادگیری قاعده را پایدار می‌کند.
+۴۴۰) The committee recommended that the survey ___ before the deadline.
+   ۱. is conducted
+   ۲. be conducted
+   ۳. was conducted
+   ۴. will be conducted
+   ✔ کلید: گزینه ۲
+   ✎ تحلیل: پس از افعال توصیه و الزام (recommend, suggest, insist) در انگلیسی رسمی، بند that با وجه التزامی be + past participle می‌آید؛ «was conducted» زمان گذشته است و الزام آینده را نمی‌رساند.
+
 — بخش ۱۸: ساختارهای پیشرفته و ترجمه —
-۴۴۲) Not only ___ the hypothesis, but they also replicated the study.
+۴۴۱) Not only ___ the hypothesis, but they also replicated the study.
    ۱. they tested
    ۲. they did test
    ۳. tested they
@@ -3554,7 +3546,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: پس از «Not only» در آغاز جمله، فعل کمکی پیش از فاعل می‌آید (inversion).
 
-۴۴۳) No sooner ___ the data than the power failed.
+۴۴۲) No sooner ___ the data than the power failed.
    ۱. had they collected
    ۲. they collected
    ۳. they had collected
@@ -3562,7 +3554,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: ساختار «No sooner had + فاعل + p.p. … than» رخداد مقدم را با وارونگی بیان می‌کند.
 
-۴۴۴) All proposals ___ by Friday.
+۴۴۳) All proposals ___ by Friday.
    ۱. must have submitted
    ۲. must be submitted
    ۳. must submit
@@ -3570,7 +3562,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: وجهی مجهول «must be + p.p.» الزام و مجهول را هم‌زمان بیان می‌کند.
 
-۴۴۵) It was the sampling method ___ explained the discrepancy.
+۴۴۴) It was the sampling method ___ explained the discrepancy.
    ۱. which
    ۲. what
    ۳. that
@@ -3578,7 +3570,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: ساختار تأکیدی «It was … that» برای برجسته‌کردن یک جزء جمله به کار می‌رود و با اسم غیرانسان «that» رایج‌تر است.
 
-۴۴۶) The study will proceed ___ that ethics approval is granted.
+۴۴۵) The study will proceed ___ that ethics approval is granted.
    ۱. unless
    ۲. providing
    ۳. in case
@@ -3586,7 +3578,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «provided that» به معنای «به شرط آنکه» است؛ «unless» معنای جمله را وارونه می‌کند.
 
-۴۴۷) ___ of the sample size, the pattern was clear.
+۴۴۶) ___ of the sample size, the pattern was clear.
    ۱. Regardless
    ۲. Despite
    ۳. Nevertheless
@@ -3594,7 +3586,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «regardless of» یعنی بدون توجه به؛ «despite» به همین معنا نزدیک است اما با «of» و در این ساختار «Regardless» درست است.
 
-۴۴۸) ___ that resources were limited, the team narrowed its scope.
+۴۴۷) ___ that resources were limited, the team narrowed its scope.
    ۱. Unless
    ۲. Given
    ۳. Despite
@@ -3602,7 +3594,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «Given that» یعنی با توجه به این واقعیت که؛ رابطه علّی-زمینه‌ای می‌سازد.
 
-۴۴۹) The groups differed ___ income and education.
+۴۴۸) The groups differed ___ income and education.
    ۱. in case of
    ۲. on behalf of
    ۳. in terms of
@@ -3610,15 +3602,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «in terms of» درباره بُعد یا معیار تفاوت صحبت می‌کند؛ سایر عبارات معنای دیگری دارند.
 
-۴۵۰) Interviews were recorded ___ preserve the exact wording.
-   ۱. so that
-   ۲. in order
-   ۳. for
-   ۴. so as to
-   ✔ کلید: گزینه ۴
-   ✎ تحلیل: «so as to + مصدر» هدف را بیان می‌کند؛ «so that» به بند کامل نیاز دارد.
-
-۴۵۱) The data were anonymized ___ any participant be identified.
+۴۴۹) The data were anonymized ___ any participant be identified.
    ۱. lest
    ۲. so that
    ۳. unless
@@ -3626,7 +3610,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «lest» یعنی مبادا و با فعل پایه (subjunctive) می‌آید؛ معنای جمله پیشگیری از شناسایی است.
 
-۴۵۲) ___ your help, the fieldwork would have failed.
+۴۵۰) ___ your help, the fieldwork would have failed.
    ۱. Except
    ۲. But for
    ۳. Besides
@@ -3634,7 +3618,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «But for» یعنی اگر کمک تو نبود و با شرطی نوع سوم می‌آید.
 
-۴۵۳) ___ for the pilot study, many errors would have gone unnoticed.
+۴۵۱) ___ for the pilot study, many errors would have gone unnoticed.
    ۱. Was it not
    ۲. If it is not
    ۳. Were it not
@@ -3642,7 +3626,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «Were it not for» معادل «If it were not for» است و در فرض خلاف واقع حال/گذشته به کار می‌رود؛ برای گذشته «Had it not been for» می‌آید.
 
-۴۵۴) ___ for the pilot, the questionnaire would have failed.
+۴۵۲) ___ for the pilot, the questionnaire would have failed.
    ۱. Were it not
    ۲. If it had
    ۳. Had not it been
@@ -3650,7 +3634,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: ساختار وارونه شرطی نوع سوم: «Had it not been for…» یعنی اگر … نبود.
 
-۴۵۵) The sample was small; ___, the results should be read cautiously.
+۴۵۳) The sample was small; ___, the results should be read cautiously.
    ۱. accordingly
    ۲. otherwise
    ۳. likewise
@@ -3658,7 +3642,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «accordingly» نتیجه‌گیری منطقی را بیان می‌کند: بر این اساس باید احتیاط کرد.
 
-۴۵۶) The model fit was poor; ___ the need for respecification.
+۴۵۴) The model fit was poor; ___ the need for respecification.
    ۱. albeit
    ۲. hence
    ۳. lest
@@ -3666,7 +3650,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «hence» نتیجه یا استلزام را بیان می‌کند؛ سایر گزینه‌ها رابطه نتیجه نمی‌سازند.
 
-۴۵۷) Codes were merged, ___ reducing redundancy in the frame.
+۴۵۵) Codes were merged, ___ reducing redundancy in the frame.
    ۱. whereas
    ۲. unless
    ۳. thereby
@@ -3674,7 +3658,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «thereby + ing» نتیجه عمل پیشین را بیان می‌کند.
 
-۴۵۸) The design was rigorous, ___ costly and slow.
+۴۵۶) The design was rigorous, ___ costly and slow.
    ۱. although
    ۲. despite
    ۳. however
@@ -3682,7 +3666,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: «albeit» پیش از صفت یا عبارت کوتاه به معنای «هرچند» می‌آید.
 
-۴۵۹) ___ the limitations, the study offers useful evidence.
+۴۵۷) ___ the limitations, the study offers useful evidence.
    ۱. Notwithstanding
    ۲. Unless
    ۳. Whereas
@@ -3690,7 +3674,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: «notwithstanding» یعنی با وجود؛ در آغاز جمله با عبارت اسمی می‌آید.
 
-۴۶۰) ___ the sampling frame, the authors provided little detail.
+۴۵۸) ___ the sampling frame, the authors provided little detail.
    ۱. In contrast
    ۲. With regard to
    ۳. As long as
@@ -3698,7 +3682,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: «with regard to» درباره یک موضوع خاص صحبت می‌کند: در خصوص چارچوب نمونه‌گیری.
 
-۴۶۱) The analysis can proceed ___ the assumptions hold.
+۴۵۹) The analysis can proceed ___ the assumptions hold.
    ۱. as soon as
    ۲. in order to
    ۳. as long as
@@ -3706,10 +3690,18 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: «as long as» شرط استمرار را بیان می‌کند: تا زمانی که مفروضات برقرار باشند.
 
+۴۶۰) ___ by inadequate funding, the project failed to meet its goals.
+   ۱. Hampering
+   ۲. Hampered
+   ۳. To hamper
+   ۴. Having hampering
+   ✔ کلید: گزینه ۲
+   ✎ تحلیل: عبارت وصفی کوتاه‌شدهٔ مجهول با past participle ساخته می‌شود: Because the project was hampered by… → Hampered by…؛ شکل Hampering معلوم است و به خود پروژه نسبت داده نمی‌شود.
+
 — بخش ۱۹: درک مطلب، ترجمه و جای‌خالی —
 متن ۱: «Durkheim argued that suicide rates are not merely individual tragedies but social facts shaped by levels of integration and regulation. Where integration is weak, egoistic suicide becomes more likely.»
 
-۴۶۲) بر پایه متن، نرخ خودکشی از دید دورکیم چیست؟
+۴۶۱) بر پایه متن، نرخ خودکشی از دید دورکیم چیست؟
    ۱. واقعیتی اجتماعی که با میزان انسجام و نظم اجتماعی شکل می‌گیرد
    ۲. نتیجه وراثت زیستی
    ۳. پدیده‌ای اقتصادی صرف
@@ -3717,7 +3709,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: عبارت «not merely individual tragedies but social facts» دقیقاً بر فراتر بودن از سطح فردی و وابستگی به انسجام و نظم اجتماعی تأکید دارد.
 
-۴۶۳) بر پایه متن، ضعف انسجام اجتماعی با کدام نوع خودکشی مرتبط است؟
+۴۶۲) بر پایه متن، ضعف انسجام اجتماعی با کدام نوع خودکشی مرتبط است؟
    ۱. خودکشی فاتالیستی
    ۲. خودکشی خودخواهانه (egoistic)
    ۳. خودکشی ایثارگرانه
@@ -3725,7 +3717,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: متن می‌گوید «Where integration is weak, egoistic suicide becomes more likely»؛ خودکشی آنومیک به ضعف نظم (regulation) مربوط است نه انسجام.
 
-۴۶۴) واژه «merely» در متن به چه معناست؟
+۴۶۳) واژه «merely» در متن به چه معناست؟
    ۱. قطعاً
    ۲. به‌طور تصادفی
    ۳. تنها، صرفاً
@@ -3735,7 +3727,7 @@
 
 متن ۲: «Weber distinguished between class, status, and party. A person may command modest economic resources yet enjoy high status because of the prestige attached to his profession.»
 
-۴۶۵) وبر در متن کدام سه بُعد قشربندی را تفکیک می‌کند؟
+۴۶۴) وبر در متن کدام سه بُعد قشربندی را تفکیک می‌کند؟
    ۱. درآمد، تحصیلات و مسکن
    ۲. طبقه، جنسیت و قومیت
    ۳. قدرت، ثروت و قانون
@@ -3743,7 +3735,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: متن صریحاً class (طبقه اقتصادی)، status (منزلت) و party (حزب/عرصه قدرت) را نام می‌برد؛ همین تفکیک، نقد وبر به فروکاست اقتصادی است.
 
-۴۶۶) مثال متن چه نکته‌ای را نشان می‌دهد؟
+۴۶۵) مثال متن چه نکته‌ای را نشان می‌دهد؟
    ۱. امکان ناهم‌خوانی میان منابع اقتصادی و منزلت اجتماعی
    ۲. هم‌راستایی کامل طبقه و منزلت
    ۳. بی‌اهمیتی شغل در منزلت
@@ -3751,7 +3743,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: ترکیب «modest economic resources yet high status» بر همین ناهم‌خوانی دلالت دارد؛ همین نکته، سنجش چندبعدی قشربندی را ضروری می‌کند.
 
-۴۶۷) واژه «prestige» در متن معادل کدام مفهوم است؟
+۴۶۶) واژه «prestige» در متن معادل کدام مفهوم است؟
    ۱. درآمد خالص
    ۲. اعتبار و منزلت اجتماعی
    ۳. قدرت سیاسی
@@ -3761,7 +3753,7 @@
 
 متن ۳: «Ethnographers rarely test hypotheses with large random samples; instead, they seek to understand how members of a group interpret their everyday world.»
 
-۴۶۸) بر پایه متن، هدف اصلی قوم‌نگاران چیست؟
+۴۶۷) بر پایه متن، هدف اصلی قوم‌نگاران چیست؟
    ۱. آزمون فرضیه با نمونه‌های بزرگ
    ۲. پیش‌بینی آماری رفتار جمعیت
    ۳. فهم چگونگی تفسیر جهان روزمره توسط اعضای یک گروه
@@ -3769,7 +3761,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: بند دوم جمله هدف را روشن می‌کند: فهم تفسیر اعضا از جهان روزمره؛ آزمون فرضیه با نمونه بزرگ ویژگی پژوهش کمی است.
 
-۴۶۹) کارکرد واژه «instead» در متن چیست؟
+۴۶۸) کارکرد واژه «instead» در متن چیست؟
    ۱. بیان علت
    ۲. بیان نتیجه
    ۳. بیان مثال
@@ -3777,7 +3769,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: instead رابطه تقابلی-جایگزینی می‌سازد: به‌جای آزمون فرضیه با نمونه بزرگ، به فهم معنا می‌پردازند.
 
-۴۷۰) کدام گزاره با متن ناسازگار است؟
+۴۶۹) کدام گزاره با متن ناسازگار است؟
    ۱. قوم‌نگاری با نمونه‌های تصادفی بزرگ کار می‌کند
    ۲. قوم‌نگاران به معنای کنشگران توجه دارند
    ۳. قوم‌نگاری به جهان روزمره گروه می‌پردازد
@@ -3785,7 +3777,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: متن صریحاً می‌گوید قوم‌نگاران به‌ندرت با نمونه‌های تصادفی بزرگ فرضیه آزمون می‌کنند؛ پس این گزاره ناسازگار است.
 
-۴۷۱) جای خالی را کامل کنید: «The researcher ___ the data before drawing any conclusion.»
+۴۷۰) جای خالی را کامل کنید: «The researcher ___ the data before drawing any conclusion.»
    ۱. analysis
    ۲. analyzed
    ۳. analytical
@@ -3793,7 +3785,7 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: جای فعل گذشته ساده analyzed است؛ analysis اسم، analytical صفت و analyzing صورت ing است.
 
-۴۷۲) جای خالی را کامل کنید: «___ the limitations, the study offers valuable insights into urban poverty.»
+۴۷۱) جای خالی را کامل کنید: «___ the limitations, the study offers valuable insights into urban poverty.»
    ۱. Although
    ۲. Because
    ۳. Despite
@@ -3801,7 +3793,7 @@
    ✔ کلید: گزینه ۳
    ✎ تحلیل: Despite پیش از عبارت اسمی می‌آید، در حالی که Although به بند کامل (فاعل + فعل) نیاز دارد.
 
-۴۷۳) ترجمه درست جمله «Social facts are external to the individual and exercise constraint over him» کدام است؟
+۴۷۲) ترجمه درست جمله «Social facts are external to the individual and exercise constraint over him» کدام است؟
    ۱. واقعیت‌های اجتماعی تنها در ذهن فرد وجود دارند
    ۲. واقعیت‌های اجتماعی درون فرد هستند و او را آزاد می‌کنند
    ۳. واقعیت‌های اجتماعی محصول انتخاب آزاد افرادند
@@ -3809,7 +3801,7 @@
    ✔ کلید: گزینه ۴
    ✎ تحلیل: external به معنای بیرونی و constraint به معنای اجبار و فشار است؛ همین دو ویژگی، تعریف دورکیمی واقعیت اجتماعی را می‌سازد.
 
-۴۷۴) معادل انگلیسی «هنجارهای اجتماعی» کدام است؟
+۴۷۳) معادل انگلیسی «هنجارهای اجتماعی» کدام است؟
    ۱. social norms
    ۲. social values
    ۳. social facts
@@ -3817,7 +3809,7 @@
    ✔ کلید: گزینه ۱
    ✎ تحلیل: norms قواعد رفتاری مشخص و values معیارهای آرمانی مطلوبیت‌اند؛ این دو در متون تخصصی تفکیک می‌شوند.
 
-۴۷۵) در جمله «The findings are tentative and need further replication»، واژه tentative چه معنایی دارد؟
+۴۷۴) در جمله «The findings are tentative and need further replication»، واژه tentative چه معنایی دارد؟
    ۱. قطعی و نهایی
    ۲. موقتی و نیازمند تأیید بیشتر
    ۳. نادرست و بی‌اعتبار
@@ -3825,13 +3817,21 @@
    ✔ کلید: گزینه ۲
    ✎ تحلیل: tentative یعنی مقدماتی و غیرقطعی؛ بند دوم جمله (need further replication) همین معنا را تقویت می‌کند.
 
-۴۷۶) جای خالی را کامل کنید: «Response rates were low; ___, the sample overrepresents highly educated respondents.»
+۴۷۵) جای خالی را کامل کنید: «Response rates were low; ___, the sample overrepresents highly educated respondents.»
    ۱. however
    ۲. moreover
    ۳. therefore
    ۴. otherwise
    ✔ کلید: گزینه ۳
    ✎ تحلیل: نرخ پاسخ پایین نتیجه‌ای در پی دارد (نمونه به سمت تحصیل‌کردگان می‌رود)؛ therefore رابطه نتیجه را بیان می‌کند، however تقابل و moreover افزودن است.
+
+۴۷۶) ___ that social class still shapes educational outcomes in most countries.
+   ۱. It is widely argued
+   ۲. It widely argues
+   ۳. Widely argued is
+   ۴. There is widely argued
+   ✔ کلید: گزینه ۱
+   ✎ تحلیل: ساختار مجهول گزارشی با جایگاه‌گیر «it» ساخته می‌شود: It is widely argued that…؛ در آن، جملهٔ that نقش فاعل واقعی را دارد و «it» تنها جای‌نگهدار است.
 
 — بخش ۲۰: درک مطلب و تکمیل متن —
 متن ۱: «For Weber, bureaucracy is the most efficient form of organization, yet it threatens individual freedom by enclosing people in an iron cage of rational rules.»
@@ -4609,7 +4609,7 @@ Passage 2: Cities grow through migration, but migration alone does not explain u
    ۳. Family size
    ۴. Language only
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: سه عامل صریحاً در متن ذکر شده‌اند.
+   ✎ تحلیل: متن بازار مسکن، حمل‌ونقل و مقررات پهنه‌بندی (zoning) را عوامل تعیین‌کنندهٔ دسترسی به شغل و خدمات می‌نامد؛ سه گزینهٔ دیگر یا فقط یک عامل را می‌آورند یا اصلاً در متن نیامده‌اند.
 
 ۵۷۱) The word "exclude" is closest in meaning to…
    ۱. keep out
@@ -4725,7 +4725,7 @@ Passage 4: Although women's educational attainment has risen sharply in many cou
    ۳. Equal pay versus unequal schooling
    ۴. Urban versus rural education
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: جملهٔ اول همین تضاد را بیان می‌کند.
+   ✎ تحلیل: جملهٔ نخست متن، افزایش سطح تحصیلات را در برابر پیشرفت کند مدیریت و ساختار سازمانی قرار می‌دهد؛ همین تضاد پاسخ درست است. «کاهش تحصیلات» و «برابری دستمزد در برابر نابرابری آموزش» خلاف متن‌اند.
 
 ۵۸۵) Which mechanism is NOT mentioned?
    ۱. Differences in cognitive ability
@@ -4749,7 +4749,7 @@ Passage 4: Although women's educational attainment has risen sharply in many cou
    ۳. favor outsiders
    ۴. reduce domestic labor
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: جملهٔ آخر همین نکته را می‌گوید.
+   ✎ تحلیل: جملهٔ پایانی متن می‌گوید ارزیابی‌ها ممکن است خودنمایی را پاداش دهند و شایستگی را نادیده بگیرند؛ همین عبارت گزینهٔ درست را می‌سازد. «نادیده گرفتن کامل عملکرد» اغراق است و دو گزینهٔ دیگر در متن هیچ پشتوانه‌ای ندارند.
 
 ۵۸۸) The author's main purpose is to…
    ۱. explain persistent inequality despite educational gains
@@ -4775,7 +4775,7 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ۳. Because damage is immediate
    ۴. Because voters read too much data
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: جملهٔ دوم همین توضیح را می‌دهد.
+   ✎ تحلیل: متن توضیح می‌دهد هزینه‌ها اکنون و به‌طور محسوس پرداخت می‌شوند، اما منافع آماری و پراکنده‌اند؛ همین عدم‌تقارن زمانی، پشتیبانی سیاسی را شکننده می‌کند. «ارزان بودن سیاست‌ها» و «فوری بودن خسارت» با متن هم‌سو نیستند.
 
 ۵۹۱) The word "temporal" refers to…
    ۱. time

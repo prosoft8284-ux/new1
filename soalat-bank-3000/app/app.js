@@ -6,7 +6,7 @@ const fag = (n) => fa(String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '٬'));
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const shuffle = (a) => { const x = a.slice(); for (let i = x.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [x[i], x[j]] = [x[j], x[i]]; } return x; };
 
-const KEY = 'sb:v4';
+const KEY = 'sb:v5';
 let IDX = null, PLAN = null;
 const SUB = {}, SUBIDX = {};
 let ST = { start: null, q: {}, days: {}, pos: {}, cycle: { queue: [], seen: [], round: 1 }, notify: { on: false, h: 20, m: 0 } };
@@ -191,7 +191,7 @@ function setupHTML() {
   <div class="card">
     <h2>روز ۱ را مشخص کن</h2>
     <p class="tiny mt8">برنامه ۱۷۰ روزه از روزی شروع می‌شود که تو انتخاب می‌کنی. هر روز که اپ را باز کنی، همان روزِ برنامه را می‌بینی.</p>
-    <div class="mt12"><input type="date" id="start-date" value="${isoOf()}" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;font-family:inherit"></div>
+    <div class="mt12"><input type="date" id="start-date" class="start-input" value="${isoOf()}" style="width:100%;padding:11px;border:1px solid var(--line);border-radius:12px;font-family:inherit"></div>
     <button class="btn primary block mt12" data-act="save-start">شروع از این تاریخ</button>
   </div>
   <div class="card">
@@ -418,7 +418,7 @@ function renderPlan() {
   const v = $('#view-plan');
   const doneDays = Object.values(ST.days).filter((x) => x.done).length;
   let html = `<div class="row-between"><h2>برنامه ۱۷۰ روزه</h2><span class="pill">${fa(doneDays)} روز تمام‌شده</span></div>`;
-  html += `<p class="tiny mt8">۱۰۰ روز مطالعه، ۲۰ آزمون مبحثی، ۲۰ روز استراحت، ۲۱ روز مرور، ۴ آزمون جامع و شبیه‌ساز.</p>`;
+      html += `<p class="tiny mt8">۱۰۰ روز مطالعه، ۲۰ آزمون مبحثی، ۲۰ روز استراحت، ۲۵ روز مرور و تحلیل، ۲ آزمون جامع و ۲ شبیه‌ساز.</p>`;
   for (const ph of PLAN.phases) {
     html += `<div class="phase-h"><b>فاز ${fa(ph.id)} — ${ph.title}</b><small>روز ${fa(ph.from)} تا ${fa(ph.to)}</small></div>`;
     for (const day of PLAN.days) if (day.d >= ph.from && day.d <= ph.to) html += dayRowHTML(day);
@@ -749,7 +749,10 @@ async function startExam({ mode, day }) {
     minutes = 200;
     title = 'آزمون جامع — ۲۰۰ سوال';
   }
-  S = { mode: 'exam', items, i: 0, ans: new Array(items.length).fill(null), left: minutes * 60, title };
+  S = {
+    mode: 'exam', items, i: 0, ans: new Array(items.length).fill(null),
+    left: minutes * 60, deadline: Date.now() + minutes * 60000, title,
+  };
   if (ticker) clearInterval(ticker);
   ticker = setInterval(tickExam, 1000);
   go('exam');
@@ -761,16 +764,29 @@ function mmss(sec) {
   return fa(String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0'));
 }
 
+/* زمان بر پایهٔ ساعت واقعی محاسبه می‌شود؛ اگر کاربر از اپ بیرون برود، شمارش متوقف نمی‌شود */
+function examLeft() {
+  if (!S || S.mode !== 'exam') return 0;
+  if (!S.deadline) return Math.max(0, S.left || 0);
+  return Math.max(0, Math.round((S.deadline - Date.now()) / 1000));
+}
+function paintTimer() {
+  const el = $('#exam-timer');
+  if (!el) return;
+  el.textContent = mmss(S.left);
+  el.classList.toggle('low', S.left <= 120);
+}
 function tickExam() {
   if (!S || S.mode !== 'exam') return;
-  S.left -= 1;
-  const el = $('#exam-timer');
-  if (el) {
-    el.textContent = mmss(Math.max(0, S.left));
-    el.classList.toggle('low', S.left <= 120);
-  }
+  S.left = examLeft();
+  paintTimer();
   if (S.left <= 0) { clearInterval(ticker); ticker = null; submitExam(); }
 }
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden || !S || S.mode !== 'exam') return;
+  S.left = examLeft();
+  paintTimer();
+});
 
 /* پاسخنامه آزمون: نوار خانه‌هایی که می‌شود روی هر سوال پرید */
 function answerSheetHTML() {
@@ -819,28 +835,30 @@ function submitExam() {
   const rows = S.items.map((it, i) => {
     const pick = S.ans[i];
     const ok = pick !== null && pick + 1 === it.q.key;
-    record(it.q.id, ok);
+    // فقط سوال‌هایی که واقعاً پاسخ داده شده‌اند در پیشرفت و فهرست خطاها ثبت می‌شوند
+    if (pick !== null) record(it.q.id, ok);
     return { it, pick, ok };
   });
-  const correct = rows.filter((r) => r.ok).length;
+  const answered = rows.filter((r) => r.pick !== null);
   showResult({
     title: S.title,
     total: rows.length,
-    correct,
-    rows: rows.filter((r) => !r.ok),
+    correct: answered.filter((r) => r.ok).length,
+    rows: answered.filter((r) => !r.ok),
+    blank: rows.length - answered.length,
     mode: 'exam',
   });
 }
 
 /* ---------- نتیجه ---------- */
-function showResult({ title, total, correct, rows, mode, day }) {
+function showResult({ title, total, correct, rows, mode, day, blank = 0 }) {
   const v = $('#view-result');
   const pct = total ? Math.round((correct / total) * 100) : 0;
   let html = `
   <div class="card">
     <small class="tiny">${esc(title)}</small>
     <div class="score" style="--p:${pct}%"><div><b>${fa(pct)}٪</b><small>${fa(correct)} از ${fa(total)}</small></div></div>
-    <div class="row-between"><small class="tiny">نادرست: ${fa(total - correct)}</small><small class="tiny">${mode === 'exam' ? 'در کارنامه ثبت شد' : 'در پیشرفت ثبت شد'}</small></div>
+    <div class="row-between"><small class="tiny">نادرست: ${fa(total - correct - blank)}${blank ? ' · بی‌پاسخ: ' + fa(blank) : ''}</small><small class="tiny">${mode === 'exam' ? 'در کارنامه ثبت شد' : 'در پیشرفت ثبت شد'}</small></div>
   </div>`;
 
   if (rows.length) {
@@ -912,7 +930,7 @@ function openSheet() {
   <div class="sheet-card">
     <div class="row-between"><h3>تنظیمات</h3><button class="btn ghost small" data-act="close-sheet">بستن</button></div>
     <p class="tiny mt12">تاریخ شروع (روز ۱)</p>
-    <input type="date" id="start-date" value="${ST.start || isoOf()}">
+    <input type="date" id="sheet-start-date" class="start-input" value="${ST.start || isoOf()}">
     <button class="btn primary block mt8" data-act="save-start">ذخیره تاریخ</button>
     <p class="tiny mt8">${ST.start ? `امروز روز ${fa(d)} از ۱۷۰ است.` : 'هنوز تاریخ شروع انتخاب نشده.'}</p>
     <hr>
@@ -980,7 +998,11 @@ document.addEventListener('click', async (e) => {
   if (act === 'close-sheet') { $('#sheet').classList.add('hidden'); return; }
 
   if (act === 'save-start') {
-    const val = ($('#start-date') || {}).value;
+    // در تنظیمات، ورودی تاریخ داخل شیت اولویت دارد؛ وگرنه کارت شروع در صفحهٔ «امروز»
+    const sheet = $('#sheet');
+    const sheetOpen = sheet && !sheet.classList.contains('hidden');
+    const sheetInput = sheetOpen ? $('#sheet-start-date') : null;
+    const val = (sheetInput ? sheetInput.value : '') || ($('#start-date') || {}).value;
     if (!val) { toast('تاریخ را انتخاب کن'); return; }
     ST.start = val; saveST();
     $('#sheet').classList.add('hidden');
