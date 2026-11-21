@@ -51,6 +51,13 @@ a{color:inherit}
   background:var(--panel);border:1px solid var(--line);backdrop-filter:blur(7px);
   box-shadow:0 8px 26px rgba(0,0,0,.45);white-space:nowrap;
 }
+/* over a bright noon sky the chips were unreadable: darken them and give the
+   digits a shadow instead of trusting the panel tint */
+.hud-top .chip{background:rgba(5,15,24,.74);border-color:rgba(120,200,230,.22)}
+.ammo span,.ammo em,.ammo b,.ammo div{text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.banner span{text-shadow:0 1px 4px rgba(0,0,0,.9)}
+.chip small{text-shadow:0 1px 3px rgba(0,0,0,.85)}
+.chip b{text-shadow:0 1px 3px rgba(0,0,0,.85)}
 .chip small{color:var(--dim);font-size:10px}
 .chip b{font:700 15px/1 "Bahnschrift",system-ui,sans-serif;letter-spacing:.02em}
 .wave-chip b{color:var(--cy)}
@@ -174,6 +181,9 @@ a{color:inherit}
 .keys span{display:flex;align-items:center;gap:5px;font-size:10px;color:#a9cfe0;background:rgba(8,22,34,.6);border:1px solid rgba(100,224,255,.14);padding:5px 8px;border-radius:8px}
 kbd{font:700 9.5px/1 ui-monospace,Consolas,monospace;background:rgba(100,224,255,.14);border:1px solid rgba(100,224,255,.3);border-radius:4px;padding:3px 5px;color:#cdf3ff}
 
+.roster{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 12px;max-height:98px;overflow:auto}
+.roster span{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:999px;background:rgba(8,22,34,.62);border:1px solid rgba(100,224,255,.14);font-size:9.5px;color:#cfe9f6}
+.roster i{display:block;width:6px;height:6px;border-radius:50%}
 .arse{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:2px 0 14px}
 .arse div{display:flex;flex-direction:column;gap:3px;align-items:center;min-width:104px;padding:7px 10px;border-radius:10px;background:rgba(8,22,34,.6);border:1px solid rgba(100,224,255,.14)}
 .arse b{font-size:10.5px;color:#dff4ff}
@@ -215,17 +225,21 @@ kbd{font:700 9.5px/1 ui-monospace,Consolas,monospace;background:rgba(100,224,255
 #toast.show{opacity:1;transform:translate(-50%,0)}
 
 /* ---------------- touch ---------------- */
+/* ---------------- touch: rebuilt from scratch ----------------
+   One thumb steers the stick, the other rests on a single big cut; the lighter
+   tools sit on an arc above it, so nothing overlaps and every target is at
+   least 54 px. The old three-row pad is gone. */
 #touch{
   position:fixed;inset:0;z-index:30;pointer-events:none;
-  --fire:clamp(98px,23vmin,126px);
-  --sm:clamp(58px,13vmin,70px);
-  --md:clamp(66px,15vmin,80px);
-  --gap:clamp(9px,2vmin,13px);
+  --stick:clamp(132px,32vmin,158px);
+  --strike:clamp(104px,24vmin,124px);
+  --mid:clamp(64px,14vmin,76px);
+  --small:clamp(54px,12vmin,62px);
 }
 /* left thumbstick: a large pad with a visible ring and throw */
 #joy{
   position:absolute;left:calc(18px + var(--safe-l));bottom:calc(24px + var(--safe-b));
-  width:clamp(132px,31vmin,152px);height:clamp(132px,31vmin,152px);
+  width:var(--stick);height:var(--stick);
   border-radius:50%;pointer-events:auto;
   background:radial-gradient(circle at 50% 45%,rgba(100,224,255,.20),rgba(4,14,22,.58) 72%);
   border:2px solid rgba(100,224,255,.36);
@@ -238,46 +252,51 @@ kbd{font:700 9.5px/1 ui-monospace,Consolas,monospace;background:rgba(100,224,255
   border:2px solid rgba(220,252,255,.82);
   box-shadow:0 0 24px rgba(100,224,255,.5),0 4px 12px rgba(0,0,0,.35);
 }
-/* right pad: three stacked rows, each button a real 58-126 px target */
-#tPad{
-  position:absolute;right:calc(16px + var(--safe-r));bottom:calc(18px + var(--safe-b));
-  display:flex;flex-direction:column;align-items:flex-end;gap:var(--gap);pointer-events:none;
+/* right hand: the blade is one button, everything else arcs around it */
+#touch .tcirc{
+  position:absolute;pointer-events:auto;display:grid;place-items:center;
+  border-radius:50%;border:2px solid rgba(112,226,255,.34);
+  background:radial-gradient(circle at 50% 32%,rgba(20,48,66,.92),rgba(6,16,26,.84));
+  color:#e8fbff;backdrop-filter:blur(6px);padding:0;
+  font:800 21px/1 system-ui,sans-serif;
+  box-shadow:0 10px 26px rgba(0,0,0,.5),inset 0 0 22px rgba(112,226,255,.12);
+  transition:transform .08s ease,background .08s ease,box-shadow .08s ease;touch-action:none;
 }
-#tPad .trow{display:flex;align-items:center;justify-content:flex-end;gap:var(--gap);pointer-events:none}
-#touch .tbtn{
-  position:relative;pointer-events:auto;display:grid;place-items:center;
-  border-radius:50%;border:2px solid rgba(100,224,255,.38);
-  background:radial-gradient(circle at 50% 34%,rgba(18,44,62,.84),rgba(5,16,26,.74));
-  color:#e6f9ff;backdrop-filter:blur(4px);
-  font:700 21px/1 system-ui,sans-serif;padding:0;
-  box-shadow:0 8px 22px rgba(0,0,0,.45),inset 0 0 20px rgba(100,224,255,.10);
-  transition:transform .07s ease,background .07s ease,box-shadow .07s ease;touch-action:none;
+#touch .tcirc:active{transform:scale(.9);box-shadow:0 0 30px rgba(112,226,255,.5)}
+#touch .small{width:var(--small);height:var(--small);font-size:22px}
+#touch .mini{
+  width:var(--small);height:var(--small);font-size:24px;
+  border-color:rgba(112,226,255,.26);
+  background:radial-gradient(circle at 50% 32%,rgba(18,40,56,.78),rgba(5,14,22,.72));
 }
-#touch .tbtn:active{transform:scale(.9);background:radial-gradient(circle at 50% 40%,rgba(100,224,255,.5),rgba(10,40,58,.86));box-shadow:0 0 26px rgba(100,224,255,.55)}
-#touch .sm{width:var(--sm);height:var(--sm);font-size:22px}
-#touch .md{width:var(--md);height:var(--md);font-size:26px}
-#touch .md.on{background:radial-gradient(circle at 50% 36%,rgba(120,240,255,.6),rgba(12,52,72,.86));border-color:rgba(180,246,255,.9);box-shadow:0 0 26px rgba(100,224,255,.6)}
-/* one tap = one shot: a solid, unmistakable trigger, not a hold-to-fire pad */
-#touch .lg{
-  width:var(--fire);height:var(--fire);border:3px solid rgba(255,158,168,.85);
-  background:radial-gradient(circle at 50% 34%,rgba(255,132,138,.62),rgba(120,18,30,.74));
-  box-shadow:0 0 34px rgba(255,80,100,.5),inset 0 0 28px rgba(255,150,160,.28);
+#touch .mid{
+  width:var(--mid);height:var(--mid);font-size:26px;color:#ffe6b0;
+  border-color:rgba(255,196,106,.55);
+  background:radial-gradient(circle at 50% 32%,rgba(74,50,18,.9),rgba(26,14,6,.86));
+  box-shadow:0 10px 26px rgba(0,0,0,.5),inset 0 0 22px rgba(255,196,106,.16);
+}
+#touch .mid:active{background:radial-gradient(circle at 50% 34%,rgba(255,214,140,.85),rgba(120,64,14,.9));box-shadow:0 0 34px rgba(255,196,106,.6)}
+/* the one button that never moves */
+#touch .main{
+  width:var(--strike);height:var(--strike);border:3px solid rgba(255,158,168,.8);
+  background:radial-gradient(circle at 50% 30%,rgba(255,120,132,.62),rgba(96,14,26,.86));
+  box-shadow:0 0 40px rgba(255,80,100,.42),inset 0 0 30px rgba(255,150,160,.24);
   overflow:hidden;
 }
-#touch .lg i{
-  display:block;width:calc(var(--fire) * .3);height:calc(var(--fire) * .3);border-radius:50%;
-  border:3px solid rgba(255,236,238,.95);box-shadow:0 0 16px rgba(255,91,110,.75);margin-top:-10%;
+#touch .main i{
+  display:block;width:34%;height:34%;border-radius:50%;
+  border:3px solid rgba(255,236,238,.95);box-shadow:0 0 16px rgba(255,91,110,.7);margin-top:-8%;
 }
-#touch .lg b{
-  position:absolute;bottom:16%;left:0;right:0;text-align:center;
-  font:800 12px/1 system-ui,sans-serif;letter-spacing:.14em;color:#ffe6e9;
-}
-#touch .lg:active,#touch .lg.hit{background:radial-gradient(circle at 50% 36%,rgba(255,190,190,.78),rgba(150,26,38,.78));transform:scale(.94)}
+#touch .main b{position:absolute;bottom:16%;left:0;right:0;text-align:center;font:800 12px/1 system-ui,sans-serif;letter-spacing:.16em;color:#ffe6e9}
+#touch .main:active,#touch .main.hit{background:radial-gradient(circle at 50% 34%,rgba(255,196,196,.85),rgba(140,20,32,.9));transform:scale(.94)}
+
+/* thumb arc: no two targets touch, every gap at least 10 px */
+#touch #tStrike{right:calc(16px + var(--safe-r));bottom:calc(22px + var(--safe-b))}
+#touch #tSpin{right:calc(16px + var(--safe-r) + var(--strike) + 12px);bottom:calc(30px + var(--safe-b))}
+#touch #tSwap{right:calc(26px + var(--safe-r));bottom:calc(22px + var(--safe-b) + var(--strike) + 14px)}
+#touch #tBench{right:calc(16px + var(--safe-r) + var(--strike) + 6px);bottom:calc(30px + var(--safe-b) + var(--mid) + 12px)}
+#touch #tSprint{left:calc(22px + var(--safe-l));bottom:calc(30px + var(--safe-b) + var(--stick))}
 .wslot.locked{opacity:.38}
-#touch #tSprint{position:absolute;left:calc(30px + var(--safe-l));bottom:calc(34px + var(--safe-b) + clamp(132px,31vmin,152px))}
-#tScan{color:#8ff0ff;border-color:rgba(143,240,255,.55)}
-#touch .tbtn.scan-btn:active{background:radial-gradient(circle at 50% 40%,rgba(143,240,255,.55),rgba(9,40,52,.86))}
-@media (max-width:560px){.scan-chip{display:none}}
 .wslots{pointer-events:auto}
 .wslot{cursor:pointer}
 .wslot:active{background:rgba(100,224,255,.28)}
@@ -410,7 +429,7 @@ body.touch-mode .wslot{padding:3px 7px}
 .bench-rows .go{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11.5px;padding:9px 12px;text-align:start}
 .bench-rows .go em{font-style:normal;font-size:10px;color:#8ff0ff;white-space:nowrap}
 .bench-rows .go.off{opacity:.42}
-#tMelee{color:#ffd9a0;border-color:rgba(255,209,102,.5)}
+#tSpin{color:#ffd9a0;border-color:rgba(255,209,102,.5)}
 #tBench{color:#c9b3ff;border-color:rgba(201,179,255,.5)}
 @media (max-width:560px){
   .phase-chip{display:none}
@@ -471,7 +490,7 @@ body.hunted::after{
 .down-inner span{font:800 74px/1 "Bahnschrift","Impact",system-ui,sans-serif;color:#fff;text-shadow:0 0 40px rgba(255,209,102,.65);direction:ltr}
 .down-inner small{font-size:11px;color:#ffc9b0;letter-spacing:.03em}
 body.down #touch,body.down #cross,body.down #bountyCard{opacity:.16;pointer-events:none}
-body.down #touch .tbtn{pointer-events:none}
+body.down #touch .tcirc{pointer-events:none}
 @media (max-width:560px){
   /* a phone's top strip already holds the compass and the banner: the
      contract tracker drops to the left edge instead of stacking on them */

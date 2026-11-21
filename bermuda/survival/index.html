@@ -71,20 +71,14 @@
 <div id="flash"></div>
 <div id="dmg"></div>
 
-<!-- ================= TOUCH — CODM-style, kept minimal ================= -->
+<!-- ================= TOUCH — one thumb steers, one thumb cuts ================= -->
 <div id="touch" class="hidden">
   <div id="joy"><i></i></div>
-  <button id="tSprint" class="tbtn sm" type="button" aria-label="دویدن">»</button>
-  <div id="tPad">
-    <div class="trow">
-      <button id="tBench" class="tbtn sm" type="button" aria-label="میز کار">⚒</button>
-      <button id="tMelee" class="tbtn sm" type="button" aria-label="ضربهٔ سنگین">⚔</button>
-      <button id="tReload" class="tbtn sm" type="button" aria-label="تعویض شمشیر">⇄</button>
-    </div>
-    <div class="trow fire-row">
-      <button id="tFire" class="tbtn lg" type="button" aria-label="ضربهٔ شمشیر"><i></i><b>ضربه</b></button>
-    </div>
-  </div>
+  <button id="tSprint" class="tcirc mini" type="button" aria-label="دویدن">»</button>
+  <button id="tBench" class="tcirc small" type="button" aria-label="میز کار">⚒</button>
+  <button id="tSwap" class="tcirc small" type="button" aria-label="تعویض شمشیر">⇄</button>
+  <button id="tSpin" class="tcirc mid" type="button" aria-label="ضربهٔ چرخشی">✦</button>
+  <button id="tStrike" class="tcirc main" type="button" aria-label="ضربهٔ شمشیر"><i></i><b>ضربه</b></button>
 </div>
 
 <!-- ================= LOADING ================= -->
@@ -136,6 +130,7 @@
     </div>
 
     <div class="arse" id="arse"></div>
+    <div class="roster" id="roster" aria-label="بیست شکارچی جزیره"></div>
 
     <div class="start-foot">
       <div class="bestline" id="bestline"></div>

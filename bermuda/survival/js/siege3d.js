@@ -158,11 +158,13 @@
     stam: 5, stamMax: 5, swingT: 9, swingHeavy: false, lastSwing: -9,
     down: false, downT: 0, falling: false, invuln: 0, deaths: 0,
     bounty: null, bountyNo: 0, bountyKills: 0, bountyT: 0, bountyDelay: 0, looted: 0,
+    roster: [], hunterKills: 0,
     hunters: [], hunterTick: 0, youRing: null, lastHitBy: null, lastHitByAt: -99,
     cmpT: 0,
     barrels: [], traps: [], cycle: 0.12, nightK: 0, storm: 0, stormT: 70, phase: 'روز',
     dmgSrc: null, threat: 0, threatT: 0, diffExtra: 0,
     shake: 0, recoil: 0, bloom: 0, recoverPitch: 0, roll: 0, hitT: 0, bannerT: 0, stepT: 0,
+    swingKind: 0, comboStep: 0, waves: [],
     enemies: [], bolts: [], ebolts: [], pickups: [], tracers: [],
     parts: [], locked: false, hadLock: false, dragging: false, dragSX: 0, dragSY: 0,
     quality: 'high', started: false
@@ -940,6 +942,36 @@
     }
   }
 
+  /* A cleave leaves a ring of light running along the ground: the visual proof
+     that the cut covered a circle instead of a line. */
+  function slashWave(color, at, radius) {
+    var m = new T.Mesh(
+      new T.RingGeometry(0.42, 0.62, 40),
+      new T.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.6, side: T.DoubleSide, depthWrite: false, depthTest: false, blending: T.AdditiveBlending })
+    );
+    m.rotation.x = -Math.PI / 2;
+    m.position.set(at.x, at.y + 0.12, at.z);
+    m.renderOrder = 995;
+    scene.add(m);
+    G.waves.push({ mesh: m, t: 0, r: radius });
+  }
+
+  function updateWaves(dt) {
+    for (var i = G.waves.length - 1; i >= 0; i--) {
+      var wv = G.waves[i];
+      wv.t += dt;
+      var k = wv.t / 0.34;
+      wv.mesh.scale.setScalar(0.7 + k * wv.r);
+      wv.mesh.material.opacity = Math.max(0, 0.6 * (1 - k));
+      if (k >= 1) {
+        scene.remove(wv.mesh);
+        wv.mesh.geometry.dispose();
+        wv.mesh.material.dispose();
+        G.waves.splice(i, 1);
+      }
+    }
+  }
+
   function updateParticles(dt) {
     for (var i = 0; i < MAXP; i++) {
       var p = parts[i];
@@ -1431,7 +1463,9 @@
       burst: 0, burstT: 0, alarm: 0,
       bob: rand(0, 6.28), hitT: 0,
       home: { x: x, z: z }, zone: null,
-      aggro: false, aggroT: 0, noticeT: 0, backoff: 0, tr: rand(0, 6.28)
+      aggro: false, aggroT: 0, noticeT: 0, backoff: 0, tr: rand(0, 6.28),
+      /* sky: -1 grounded, >0 still falling in; pro: one of the twenty */
+      sky: -1, pro: false, poise: false, combo: 0, lunge: 0, guardT: 0, slot: null
     };
     g.userData.enemy = e;
     G.enemies.push(e);
@@ -1467,6 +1501,8 @@
       e.foeT = 5;
       emit(e.pos.x, e.pos.y + e.def.h * 0.5, e.pos.z, 3, 0xffd166, 3, 0.3, 6);
     }
+    /* a hunter with its blade up eats part of the cut */
+    if (e.guardT > 0) dmg *= 0.45;
     e.hp -= dmg;
     e.flash = 1;
     e.hitT = 0.12;
@@ -1475,7 +1511,7 @@
        their own quarrel, and must not drag the whole camp onto the player */
     if (!by && !e.aggro) aggroEnemy(e);
     /* heavy hits shove the target back and interrupt a wind-up */
-    if (!e.def.boss) e.stagger = Math.max(e.stagger, Math.min(0.42, dmg / 150));
+    if (!e.def.boss) e.stagger = Math.max(e.stagger, Math.min(0.42, dmg / 150) * (e.poise ? 0.35 : 1));
     if (e.state === 'wind') { e.state = 'walk'; e.cd = 0.7; }
     SFX3D.play(head ? 'headshot' : 'hit', e.pos);
     if (hitPoint) {
@@ -1520,6 +1556,17 @@
     emit(e.pos.x, e.pos.y + e.def.h * 0.5, e.pos.z, 8, 0xffffff, 6, 0.4, 6);
     SFX3D.play('kill', e.pos);
     if (e.group.userData.bar) e.group.userData.bar.visible = false;
+    /* a named hunter is not gone: the sky owes us ten seconds */
+    if (e.hunterDef && e.slot) {
+      e.slot.e = null;
+      e.slot.timer = HUNTER_RESPAWN;
+      e.slot.deaths++;
+      if (!botKill) {
+        G.parts += 2;
+        G.hunterKills = (G.hunterKills || 0) + 1;
+        showBanner('شکارچی افتاد · ' + e.name, 'ده ثانیه بعد از آسمان برمی‌گردد · قطعه +۲', 2000);
+      }
+    }
     dropLoot(e);
     if (e.def.boss) {
       SFX3D.play('explode', e.pos);
@@ -1777,20 +1824,23 @@
       if (e.pointerId === lookId) lookId = null;
     });
 
-    var fire = $('tFire');
-    /* One tap = one shot. The button never holds the trigger and never aims. */
-    fire.addEventListener('pointerdown', function (e) {
-      e.preventDefault(); e.stopPropagation();
-      fire.classList.add('hit');
-      setTimeout(function () { fire.classList.remove('hit'); }, 110);
-      tryFire();
-    });
-    fire.addEventListener('pointerup', function (e) { e.stopPropagation(); });
-    fire.addEventListener('pointercancel', function (e) { e.stopPropagation(); });
-    fire.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-    $('tReload').addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); startReload(); });
-    var meleeBtn = $('tMelee');
-    if (meleeBtn) meleeBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); tryMelee(); });
+    /* one tap, one cut: the strike button is the only thing under the thumb */
+    var strike = $('tStrike');
+    if (strike) {
+      strike.addEventListener('pointerdown', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        strike.classList.add('hit');
+        setTimeout(function () { strike.classList.remove('hit'); }, 105);
+        tryFire();
+      });
+      strike.addEventListener('pointerup', function (e) { e.preventDefault(); e.stopPropagation(); });
+      strike.addEventListener('pointercancel', function (e) { e.stopPropagation(); });
+      strike.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    }
+    var spin = $('tSpin');
+    if (spin) spin.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); tryMelee(); });
+    var swap = $('tSwap');
+    if (swap) swap.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); startReload(); });
     var benchBtn = $('tBench');
     if (benchBtn) benchBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); openBench(); });
 
@@ -1964,25 +2014,43 @@
     };
   }
 
+  /* ------------------------------------------------------------- blade combo
+     Three taps in rhythm become a chain: the second cut is faster and longer,
+     the third is a shoulder-to-hip cleave that shoves bodies off their feet.
+     The spin (F) has no front at all - it takes the whole circle. */
+  var COMBO_WINDOW = 1.05;
   function swingBlade(heavy) {
     if (!G.running || G.paused || G.over || G.down) return;
     var w = WEAPONS[G.widx];
-    var rate = w.rate * Math.pow(0.93, G.upg.speed || 0) * (heavy ? 1.6 : 1);
+    var chain = !heavy && (G.t - (G.lastSwing || -9)) < COMBO_WINDOW ? (G.comboStep + 1) % 3 : 0;
+    var rate = w.rate * Math.pow(0.93, G.upg.speed || 0) * (heavy ? 1.5 : (chain === 2 ? 1.12 : 1 - chain * 0.07));
     if (G.t - G.lastSwing < rate) return;
     var st = bladeStats(heavy);
     if (G.stam < st.cost) {
       if (G.t - (G.emptyT || -9) > 0.4) { SFX3D.play('empty'); G.emptyT = G.t; toast('نفس کم است — یک لحظه صبر کن یا غارت کن'); }
       return;
     }
+    var finisher = !heavy && chain === 2;
+    if (!heavy) {
+      st.dmg *= 1 + chain * 0.2;
+      st.reach += chain * 0.18;
+      if (finisher) { st.arc = Math.cos(Math.PI * 0.7); st.dmg *= 1.1; }
+    } else {
+      st.arc = -1;         /* a spin covers the whole circle */
+      st.reach += 0.35;
+      st.dmg *= 1.15;
+    }
+    G.comboStep = heavy ? 0 : chain;
     G.lastSwing = G.t;
     G.swingT = 0;
     G.swingHeavy = !!heavy;
+    G.swingKind = heavy ? 3 : chain;
     /* alternate the cut: left-right-left keeps a long fight from looking
        like the same animation on a loop */
     G.swingSide = -(G.swingSide || 1);
     G.stam -= st.cost;
-    G.recoil = heavy ? 1.5 : 1;
-    G.shake = Math.min(1.2, G.shake + (heavy ? 0.42 : 0.2));
+    G.recoil = heavy ? 1.7 : (finisher ? 1.35 : 1);
+    G.shake = Math.min(1.4, G.shake + (heavy ? 0.55 : (finisher ? 0.4 : 0.2)));
     P.pitch = clamp(P.pitch + w.kick * (heavy ? 1.6 : 1), -1.45, 1.45);
     G.roll += rand(-1, 1) * w.kick * 0.8;
     muzzleLight.color.setHex(w.color);
@@ -2002,19 +2070,22 @@
       hits.push({ e: e, d: d });
     }
     hits.sort(function (a, b) { return a.d - b.d; });
-    var maxHits = heavy ? 2 : 3;
+    var maxHits = heavy ? 7 : (finisher ? 5 : 3);
     for (var h = 0; h < hits.length && h < maxHits; h++) {
       var he = hits[h].e;
       var pt = new T.Vector3(he.pos.x, he.pos.y + he.def.h * 0.58, he.pos.z);
       damageEnemy(he, st.dmg, pt, false);
-      if (heavy && !he.dead) {
-        he.stagger = Math.max(he.stagger, 0.6);
-        he.pos.x += (he.pos.x - P.pos.x) / Math.max(0.01, hits[h].d) * 0.7;
-        he.pos.z += (he.pos.z - P.pos.z) / Math.max(0.01, hits[h].d) * 0.7;
+      if ((heavy || finisher) && !he.dead) {
+        he.stagger = Math.max(he.stagger, heavy ? 0.75 : 0.5);
+        var push = heavy ? 1.0 : 0.6;
+        he.pos.x += (he.pos.x - P.pos.x) / Math.max(0.01, hits[h].d) * push;
+        he.pos.z += (he.pos.z - P.pos.z) / Math.max(0.01, hits[h].d) * push;
       }
-      emit(pt.x, pt.y, pt.z, 8, 0xff3b52, 5.5, 0.42, 9);
+      emit(pt.x, pt.y, pt.z, heavy ? 12 : 8, 0xff3b52, 5.5, 0.42, 9);
       showHitmark(false);
     }
+    /* the ground answers a cleave: a ring of light where the circle closed */
+    if (heavy || finisher) slashWave(heavy ? 0xffd166 : w.color, P.pos, heavy ? 3.6 : 2.7);
     /* barrels are still a blade problem: one good cut sets them off */
     for (var b = 0; b < G.barrels.length; b++) {
       var bb = G.barrels[b];
@@ -2960,6 +3031,110 @@
     blockers.push({ x: bp.x, z: bp.z, r: 1.4, y0: heightAt(bp.x, bp.z), y1: heightAt(bp.x, bp.z) + 0.7 });
   }
 
+  /* --------------------------------------------- the twenty bounty hunters
+     Twenty named hunters live on the island. Each one is a pawn like any
+     other - a contract can name one, a rival can cut one down, the player can
+     loot one - but they carry a trained blade, they keep a grudge, and when
+     they fall the sky hands them back ten seconds later, exactly like the
+     player. Their home is a camp; their accent is their signature. */
+  var HUNTER_DEFS = [
+    { name: 'کاوهٔ تیغهٔ سرخ', kind: 'warrior', rank: 3, accent: 0xff5b6e, home: [72, 62] },
+    { name: 'سایهٔ دوتیغه', kind: 'stalker', rank: 2, accent: 0x9b7bff, home: [-76, 58] },
+    { name: 'گرگ تلماسه', kind: 'runner', rank: 2, accent: 0x8ce07a, home: [60, 185] },
+    { name: 'عصب‌زن سپیده', kind: 'neural', rank: 2, accent: 0x6fd8ff, home: [0, -46] },
+    { name: 'مشت آهنین', kind: 'brute', rank: 3, accent: 0xffa64d, home: [96, -50] },
+    { name: 'جهندهٔ بی‌صدا', kind: 'skitter', rank: 2, accent: 0xd0a4ff, home: [-112, 4] },
+    { name: 'بمب‌گذار دیوانه', kind: 'bomber', rank: 2, accent: 0xffc46a, home: [140, 6] },
+    { name: 'بانوی زره‌پوش', kind: 'warrior', rank: 4, accent: 0xffd166, home: [34, -108] },
+    { name: 'شمشیر سرد', kind: 'warrior', rank: 3, accent: 0xbfe9ff, home: [-72, -88] },
+    { name: 'زخم کهربا', kind: 'stalker', rank: 3, accent: 0xffb35c, home: [174, 63] },
+    { name: 'سنگ‌شکن', kind: 'brute', rank: 3, accent: 0xd8d2c4, home: [181, -96] },
+    { name: 'کماندار بنفش', kind: 'neural', rank: 3, accent: 0xb56bff, home: [34, -192] },
+    { name: 'باد غربی', kind: 'runner', rank: 3, accent: 0x7dffb0, home: [-199, 14] },
+    { name: 'دزد بندر', kind: 'skitter', rank: 3, accent: 0x8ff0ff, home: [-140, -160] },
+    { name: 'استخوان‌خوار', kind: 'brute', rank: 4, accent: 0xe9fff4, home: [-100, 149] },
+    { name: 'تیغهٔ نقره', kind: 'warrior', rank: 2, accent: 0xdceaff, home: [110, -52] },
+    { name: 'پرچم‌دار سرخ', kind: 'bomber', rank: 3, accent: 0xff845c, home: [150, 20] },
+    { name: 'گراز زخمی', kind: 'brute', rank: 2, accent: 0xa87cff, home: [64, 70] },
+    { name: 'سایهٔ شمال', kind: 'stalker', rank: 4, accent: 0x8a4bff, home: [20, -180] },
+    { name: 'آخرین شکارچی', kind: 'neural', rank: 4, accent: 0xff7bdc, home: [-30, -40] }
+  ];
+  var HUNTER_RESPAWN = 10;
+  var HUNTER_SKY = 46;
+
+  function spawnHunter(slot, x, z, sky) {
+    var def = slot.def;
+    var e = spawnEnemy(def.kind, x, z, false, false);
+    if (!e) return null;
+    e.hunterDef = def;
+    e.slot = slot;
+    e.pro = true;
+    e.name = def.name;
+    e.zone = null;
+    e.poise = true;
+    e.combo = def.rank >= 3 ? 2 : 1;
+    e.maxHp = Math.round(e.maxHp * (1 + 0.25 * def.rank));
+    e.hp = e.maxHp;
+    upgradeBot(e, Math.min(4, def.rank));
+    if (e.rankRing) {
+      e.rankRing.material.color.setHex(def.accent);
+      e.rankRing.material.opacity = 0.66;
+    }
+    if (e.rankBlade) {
+      e.rankBlade.traverse(function (o) {
+        if (o.isMesh && o.material && o.material.emissive) o.material.emissive.setHex(def.accent);
+      });
+    }
+    /* a signature ring under the feet: a hunter reads from a distance */
+    var ring = new T.Mesh(
+      new T.TorusGeometry(e.def.r * 1.35, 0.045, 6, 24),
+      new T.MeshBasicMaterial({ color: def.accent, transparent: true, opacity: 0.55, blending: T.AdditiveBlending, depthWrite: false })
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = 0.11;
+    e.group.add(ring);
+    e.proRing = ring;
+    if (sky) {
+      e.sky = HUNTER_SKY;
+      e.pos.y = heightAt(x, z) + HUNTER_SKY;
+      e.group.position.y = e.pos.y;
+      e.group.rotation.y = rand(0, 6.283);
+    }
+    return e;
+  }
+
+  function seedHunters() {
+    G.roster = [];
+    for (var i = 0; i < HUNTER_DEFS.length; i++) {
+      var def = HUNTER_DEFS[i];
+      var slot = { def: def, e: null, timer: 0, deaths: 0 };
+      G.roster.push(slot);
+      var hx = def.home[0] + rand(-7, 7), hz = def.home[1] + rand(-7, 7);
+      if (heightAt(hx, hz) < 1.3) { hx = def.home[0]; hz = def.home[1]; }
+      slot.e = spawnHunter(slot, hx, hz, 0);
+      if (slot.e) slot.e.home = { x: hx, z: hz };
+    }
+  }
+
+  /* ten seconds after a hunter falls, the sky gives them back */
+  function updateHunters(dt) {
+    for (var i = 0; i < G.roster.length; i++) {
+      var s = G.roster[i];
+      if (s.e) continue;
+      s.timer -= dt;
+      if (s.timer > 0) continue;
+      var a = rand(0, 6.283), r = rand(52, 92);
+      var hx = P.pos.x + Math.cos(a) * r, hz = P.pos.z + Math.sin(a) * r;
+      if (heightAt(hx, hz) < 1.3) { hx = s.def.home[0]; hz = s.def.home[1]; }
+      s.timer = 0;
+      s.e = spawnHunter(s, hx, hz, true);
+      if (s.e) {
+        s.e.home = { x: hx, z: hz };
+        if (s.deaths > 1) toast(s.def.name + ' از آسمان برگشت');
+      }
+    }
+  }
+
   function seedZones() {
     /* camp props are instanced: restart their counters so a resume rebuild
        does not leave stale tents standing */
@@ -3193,9 +3368,30 @@
         continue;
       }
 
+      /* a hunter falling back in: no AI, no damage, just the drop */
+      if (e.sky >= 0) {
+        e.sky -= dt * 16;
+        var sgy = heightAt(e.pos.x, e.pos.z);
+        if (e.sky > 0) {
+          e.pos.y = sgy + e.sky;
+          e.group.position.set(e.pos.x, e.pos.y, e.pos.z);
+          e.group.rotation.y += dt * 2.2;
+          e.px = e.pos.x; e.pz = e.pos.z;
+          continue;
+        }
+        e.sky = -1;
+        e.pos.y = sgy;
+        e.group.position.y = sgy;
+        emit(e.pos.x, sgy + 0.2, e.pos.z, 18, 0xd8e6ff, 7, 0.6, 10);
+        emit(e.pos.x, sgy + 0.2, e.pos.z, 8, 0xffd166, 4, 0.5, 8);
+        SFX3D.play('explode', e.pos);
+        G.shake = Math.min(1.4, G.shake + 0.3);
+      }
+
       e.t += dt;
       if (e.flash > 0) e.flash = Math.max(0, e.flash - dt * 5);
       if (e.hitT > 0) e.hitT -= dt;
+      if (e.guardT > 0) e.guardT -= dt;
       var glowBase = e.bounty ? 0.34 : e.rank ? 0.3 : (e.elite || e.leader) ? 0.5 : 0.07;
       if (ud.mats) {
         for (var mi = 0; mi < ud.mats.length; mi++) ud.mats[mi].emissiveIntensity = glowBase + e.flash * 2.4;
@@ -3210,7 +3406,7 @@
          sooner than the desktop, at a range the fog already hides. */
       /* hunters and duellists keep fighting off-screen: the contract moves
          without the player, so a far hunt must still resolve */
-      if (!e.aggro && !e.hunter && !e.foe && dist > CULL_R) {
+      if (!e.aggro && !e.hunter && !e.foe && !e.pro && dist > CULL_R) {
         e.group.visible = false;
         e.px = e.pos.x; e.pz = e.pos.z;
         if (ud.bar) ud.bar.visible = false;
@@ -3400,23 +3596,47 @@
           }
         }
       } else {
-        /* melee: press in, strike, then pull back so it never face-hugs you */
+        /* melee. A trained hunter fights in a rhythm: close the gap with a
+           lunge, cut twice, step out on the arc, and raise its blade when the
+           player winds up. A camp bot just presses in and swings. */
         if (e.state === 'wind') {
           e.stateT -= dt;
-          e.pos.x += nx * 0.8 * dt;
-          e.pos.z += nz * 0.8 * dt;
+          e.pos.x += nx * (e.pro ? 1.7 : 0.8) * dt;
+          e.pos.z += nz * (e.pro ? 1.7 : 0.8) * dt;
           if (e.stateT <= 0) {
             e.state = 'walk';
-            e.cd = rand(1.5, 2.1);
-            e.backoff = rand(1.6, 2.6);
-            if (dist < reach * 1.6) {
+            e.cd = e.pro ? rand(0.75, 1.15) : rand(1.5, 2.1);
+            e.backoff = e.pro ? rand(0.35, 0.9) : rand(1.6, 2.6);
+            if (dist < reach * (e.pro ? 1.9 : 1.6)) {
               hitPawn(e, foe, e.def.dmg * (e.dmgMul || 1));
               if (ud.view) ud.view.attack();
               e.bladeT = 0;
+              /* a hunter chains the second cut before stepping back */
+              if (e.pro && e.combo > 0) {
+                e.combo--;
+                e.state = 'wind';
+                e.stateT = 0.24;
+                e.backoff = 0;
+              }
             }
+          }
+        } else if (e.lunge > 0) {
+          /* a committed dash with the blade already coming down */
+          e.lunge -= dt;
+          e.pos.x += nx * spd * 2.4 * dt;
+          e.pos.z += nz * spd * 2.4 * dt;
+          if (dist < reach * 1.2) {
+            e.lunge = 0;
+            e.state = 'wind';
+            e.stateT = 0.22;
+            e.cd = rand(0.9, 1.4);
+            if (ud.view) ud.view.attack();
+            e.bladeT = 0;
+            hitPawn(e, foe, e.def.dmg * 0.85 * (e.dmgMul || 1));
           }
         } else if (e.backoff > 0) {
           e.backoff -= dt;
+          if (e.backoff <= 0 && e.pro) e.combo = Math.max(e.combo, 1);
           if (dist < 4.4) {
             e.pos.x -= nx * spd * 0.6 * dt;
             e.pos.z -= nz * spd * 0.6 * dt;
@@ -3427,12 +3647,21 @@
             e.pos.x += -nz * e.flank * spd * 0.4 * dt;
             e.pos.z += nx * e.flank * spd * 0.4 * dt;
           }
+        } else if (e.pro && e.cd <= 0.35 && dist > 5.5 && dist < 12 && los) {
+          /* too far to cut and too close to ignore: dash in */
+          e.lunge = 0.5;
+          e.cd = rand(1.4, 2.1);
+          if (ud.view) ud.view.wind();
         } else if (dist > reach) {
           e.pos.x += nx * spd * dt;
           e.pos.z += nz * spd * dt;
+          /* a hunter's next cut is always loading while it closes in */
+          if (e.pro) e.cd -= dt * 0.75;
         } else {
           e.cd -= dt;
-          if (e.cd <= 0) { e.state = 'wind'; e.stateT = 0.45; if (ud.view) ud.view.wind(); }
+          /* read the wind-up and guard: a hunter is not a sandbag */
+          if (e.pro && dist < reach * 1.35 && G.swingT < 0.09) e.guardT = 0.4;
+          if (e.cd <= 0) { e.state = 'wind'; e.stateT = e.pro ? 0.3 : 0.45; if (ud.view) ud.view.wind(); }
         }
       }
 
@@ -3819,6 +4048,7 @@
     }
 
     var side = G.swingSide || 1;
+    var kind = G.swingKind || 0;
     var breathe = Math.sin(G.t * 1.55) * 0.004;
     gun.position.x = lerp(gun.position.x, base.x + pxo * side + swayX, Math.min(1, dt * 16));
     gun.position.y = lerp(gun.position.y, base.y - swayY + pyo + breathe, Math.min(1, dt * 16));
@@ -3826,6 +4056,19 @@
     gun.rotation.x = lerp(gun.rotation.x, rx, Math.min(1, dt * 26));
     gun.rotation.y = lerp(gun.rotation.y, G.aim ? (IS_TOUCH ? 0.5 : 0.16) : (IS_TOUCH ? 0.72 : 0.3), Math.min(1, dt * 12));
     gun.rotation.z = lerp(gun.rotation.z, baseZ + (z - baseZ) * side + swayX * 0.5, Math.min(1, dt * 30));
+    /* each link of the chain moves differently, and the spin (F) leaves the
+       hand entirely: one full turn around the body, like a musou cleave */
+    if (kind === 3) {
+      var sp = clamp(t / 0.36, 0, 1);
+      var ang = sp * Math.PI * 2;
+      gun.position.x += Math.cos(ang) * 0.26 * (1 - sp * 0.35);
+      gun.position.z += Math.sin(ang) * 0.12;
+      gun.rotation.z += Math.sin(ang) * 0.9;
+    } else if (kind === 2) {
+      gun.position.y -= Math.sin(clamp(t / 0.3, 0, 1) * Math.PI) * 0.08;
+    } else if (kind === 1) {
+      gun.position.x -= Math.sin(clamp(t / 0.26, 0, 1) * Math.PI) * 0.05;
+    }
 
     /* the cut trail: a bright arc that only exists during the swing */
     var cutK = t > 0.06 && t < 0.42 ? (t - 0.06) / 0.36 : -1;
@@ -3833,7 +4076,7 @@
       slashMesh.visible = true;
       slashMat.opacity = 0.62 * Math.sin(cutK * Math.PI);
       slashMesh.rotation.z = z * 1.15 - 0.25;
-      slashMesh.scale.setScalar(0.82 + (w.tier - 1) * 0.08);
+      slashMesh.scale.setScalar(0.82 + (w.tier - 1) * 0.08 + (kind === 3 ? 0.4 : kind === 2 ? 0.24 : 0));
     } else if (slashMesh.visible) {
       slashMesh.visible = false;
     }
@@ -4228,6 +4471,7 @@
     G.bounty = null;
     G.bountyNo = 0;
     G.bountyKills = 0;
+    G.hunterKills = 0;
     G.looted = 0;
     G.bountyDelay = 0;
     G.swingT = 9;
@@ -4239,6 +4483,7 @@
     setDifficulty(run ? run.diff : G.diff);
     if (run) restoreWeapons(run);
     seedZones();
+    seedHunters();
     seedStashes();
     if (run) applyRunState(run);
     else {
@@ -4328,6 +4573,16 @@
       d.innerHTML = '<b>' + w.name + '</b><small>' + (w.owned ? 'همراه · تیغهٔ ' + fa(w.tier) : 'پاداش قرارداد شکار') + '</small><i>' + fa(i + 1) + '</i>';
       arse.appendChild(d);
     });
+    /* the twenty named hunters, so the island has faces before the first cut */
+    var roster = $('roster');
+    if (roster) {
+      HUNTER_DEFS.forEach(function (d) {
+        var s = document.createElement('span');
+        var hex = ('000000' + d.accent.toString(16)).slice(-6);
+        s.innerHTML = '<i style="background:#' + hex + '"></i>' + d.name;
+        roster.appendChild(s);
+      });
+    }
     /* weapon slots */
     var slots = $('wslots');
     WEAPONS.forEach(function (w, i) {
@@ -4503,7 +4758,9 @@
     updateBolts(dt);
     updatePickups(dt);
     updateParticles(dt);
+    updateWaves(dt);
     updateFeuds(dt);
+    updateHunters(dt);
     updateHazards(dt);
     atmosphere(dt);
     if (G.meleeT > 0) G.meleeT -= dt;
