@@ -34,7 +34,10 @@
 
   <div id="compass" class="compass"><div id="compassRow"></div></div>
   <div id="dmgDir" class="dmg-dir hidden"><i>▲</i></div>
-  <div id="benchHint" class="bench-hint hidden">E · میز کار بِیکن</div>
+  <div id="radar" class="radar" aria-label="رادار">
+    <canvas id="radarCv" width="240" height="240"></canvas>
+    <em id="radarDist">—</em>
+  </div>
 
   <div id="banner" class="banner"><b id="bannerTitle"></b><span id="bannerSub"></span></div>
 
@@ -71,7 +74,7 @@
   </div>
 
   <div id="combo" class="combo"><b id="comboNum">×۲</b><small>زنجیرهٔ کشتار</small></div>
-  <div id="tip">WASD حرکت · کلیک ضربهٔ شمشیر · F چرخش · R تعویض شمشیر · Z بمب · X سپر · C خشم · E میز کار · Shift دویدن</div>
+  <div id="tip">WASD حرکت · کلیک ضربهٔ شمشیر · F چرخش · R تعویض شمشیر · Z بمب · X سپر · C خشم · E کارگاه · Shift دویدن</div>
 </div>
 
 <div id="flash"></div>
@@ -81,8 +84,6 @@
 <div id="touch" class="hidden">
   <div id="joy"><i></i></div>
   <button id="tSprint" class="tcirc mini" type="button" aria-label="دویدن">»</button>
-  <button id="tBench" class="tcirc small" type="button" aria-label="میز کار">⚒</button>
-  <button id="tSwap" class="tcirc small" type="button" aria-label="تعویض شمشیر">⇄</button>
   <button id="tSpin" class="tcirc mid" type="button" aria-label="ضربهٔ چرخشی">✦</button>
   <button id="tStrike" class="tcirc main" type="button" aria-label="ضربهٔ شمشیر"><i></i><b>ضربه</b></button>
 </div>
@@ -110,7 +111,7 @@
         <span><i>۱</i> بازی شمشیر است: کلیک یا دکمهٔ «ضربه» یک ضربهٔ کمانی می‌زند و F ضربهٔ سنگین است. هر ضربه «نفس» می‌خواهد و نفس بین ضربه‌ها برمی‌گردد.</span>
         <span><i>۲</i> هر دور جزیره یک پاون زنده را قرعه می‌کشد و با هالهٔ طلایی علامت می‌زند. تو هم دقیقاً یک سهم در این قرعه داری — نه کمتر، نه بیشتر.</span>
         <span><i>۳</i> بات‌ها هم شکارچی دارند: چند رقیب به سراغ هدف می‌روند و هر کسی او را بیندازد پول را برمی‌دارد و تیغهٔ بهتری می‌خرد. اگر خودت هدف شدی، هر کسی نزدیک باشد دنبالت می‌کند — ۷۲ ثانیه دوام بیار تا سهمت را بگیری.</span>
-        <span><i>۴</i> هر کسی را کشتی، جسدش غارت‌کردنی است: روی نفس، جان و قطعه‌ها راه برو تا برداشته شوند. قطعه در میز کار بِیکن خرج می‌شود.</span>
+        <span><i>۴</i> هر کسی را کشتی، جسدش غارت‌کردنی است: روی نفس، جان و قطعه‌ها راه برو تا برداشته شوند. قطعه در کارگاه (منوی توقف یا کلید E) خرج می‌شود.</span>
         <span><i>۵</i> اگر بیفتی بازی تمام نمی‌شود: ده ثانیه بعد از آسمان سقوط می‌کنی — با شمشیر شکسته. کسی که تو را انداخت، قرارداد را برداشت.</span>
         <span><i>۶</i> شمشیر آهنی، نقره و کهربا پاداش قراردادها هستند و هر ۲۰ ثانیه ذخیره می‌شود؛ بستن اپ مأموریت، قطعه‌ها و شمشیرهای پیدا‌شده را نمی‌سوزاند.</span>
       </div>
@@ -132,7 +133,7 @@
       <span><kbd>R</kbd> تعویض شمشیر</span>
       <span><kbd>۱ ۲ ۳ ۴</kbd> شمشیرها</span>
       <span><kbd>Shift</kbd> دویدن</span>
-      <span><kbd>E</kbd> میز کار</span>
+      <span><kbd>E</kbd> کارگاه</span>
     </div>
 
     <div class="arse" id="arse"></div>
@@ -149,7 +150,7 @@
 <!-- ================= BENCH ================= -->
 <div id="bench" class="screen hidden">
   <div class="modal-box bench-box">
-    <h2>میز کار بِیکن</h2>
+    <h2>کارگاه — ارتقاها و تجهیزات</h2>
     <p class="muted">قطعات فنی: <b id="partNum">۰</b> · جان: <b id="benchHp">۱۰۰ / ۱۰۰</b></p>
     <div class="bench-rows">
       <button class="go ghost" type="button" data-buy="kit">بستهٔ تجهیزات (بمب · سپر · خشم)<em>۳ قطعه</em></button>
@@ -170,6 +171,7 @@
     <p class="muted">بازی متوقف است — بیگانه‌ها هم منتظرند.</p>
     <div class="pause-rows">
       <button id="pResume" class="go" type="button">ادامه</button>
+      <button id="pBench" class="go ghost" type="button">کارگاه · ارتقاها</button>
       <button id="pSound" class="go ghost" type="button">صدا: روشن</button>
       <button id="pQuality" class="go ghost" type="button">کیفیت: بالا</button>
       <button id="pRestart" class="go ghost" type="button">شروع دوباره</button>

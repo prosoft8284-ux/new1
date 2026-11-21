@@ -74,11 +74,9 @@
   var ISLE_R = 100 * WS;
   /* enemies farther than this (and not hunting you) are not drawn at all */
   var CULL_R = IS_TOUCH ? 95 : 125;
-  var BEACON = { x: 0, z: -10 * WS };
   /* spawned between the coastal camp and the dunes: the first fight is a short
      walk, not a cross-island hike */
   var SPAWN = { x: 8, z: 104 };
-  var BEACON_H = null;
 
   function shapeAt(x, z) {
     var r = Math.hypot(x, z), a = Math.atan2(z, x);
@@ -94,16 +92,8 @@
     return -7.5 + s * (10 + 19 * n + 8 * ridge);
   }
   function heightAt(x, z) {
-    var h = rawHeight(x, z);
-    if (BEACON_H === null) return h;
-    var d = Math.hypot(x - BEACON.x, z - BEACON.z);
-    if (d < 44) {
-      var k = smoothstep(44, 18, d);
-      h = h * (1 - k) + BEACON_H * k;
-    }
-    return h;
+    return rawHeight(x, z);
   }
-  BEACON_H = rawHeight(BEACON.x, BEACON.z);
 
   /* ------------------------------------------------------------------ state */
   /* ------------------------------------------------------------------ swords
@@ -159,7 +149,7 @@
     /* approved expansion: economy, upgrades, hazards, sky cycle, save */
     parts: 0, upg: { dmg: 0, mag: 0, reload: 0 }, diff: 'soldier', dmgTaken: 1,
     props: [],
-    meleeT: 0, benchOpen: false, benchHint: false,
+    meleeT: 0, benchOpen: false,
     /* blade combat, contracts and the sky-return penalty */
     stam: 5, stamMax: 5, swingT: 9, swingHeavy: false, lastSwing: -9,
     down: false, downT: 0, falling: false, invuln: 0, deaths: 0,
@@ -183,7 +173,8 @@
     yaw: 0, pitch: 0, radius: 0.42, onGround: true,
     bobT: 0, sprint: false
   };
-  P.yaw = Math.atan2(-(BEACON.x - P.pos.x), -(BEACON.z - P.pos.z));
+  /* start looking at the middle of the island, not at a landmark */
+  P.yaw = Math.atan2(P.pos.x, P.pos.z);
   P.pos.y = heightAt(P.pos.x, P.pos.z);
 
   var keys = {};
@@ -191,7 +182,7 @@
   var joyVec = { x: 0, y: 0 };
   var colliders = [];   // {x,z,r} — blocks the player's feet
   /* Solid silhouettes that stop bullets: rocks, trunks, pillars, crates and
-     the relay base. {x,z,r,y0,y1} is a vertical cylinder, which is all the
+     a crate. {x,z,r,y0,y1} is a vertical cylinder, which is all the
      shot tracer needs and is far cheaper than per-triangle ray tests. */
   var blockers = [];
 
@@ -583,7 +574,6 @@
       var x = Math.cos(a) * r, z = Math.sin(a) * r;
       var h = heightAt(x, z);
       if (h < 1.3 || h > 26) continue;
-      if (Math.hypot(x - BEACON.x, z - BEACON.z) < 28) continue;
       if (Math.hypot(x - SPAWN.x, z - SPAWN.z) < 9) continue;
       spots.push({ x: x, z: z, h: h, H: rand(3.8, 6.4), ry: rand(0, 6.283), tilt: rand(-0.09, 0.09) });
     }
@@ -675,7 +665,6 @@
       var rx = Math.cos(ra) * rr, rz = Math.sin(ra) * rr;
       var rh = heightAt(rx, rz);
       if (rh < -0.6) continue;
-      if (Math.hypot(rx - BEACON.x, rz - BEACON.z) < 16) continue;
       if (Math.hypot(rx - SPAWN.x, rz - SPAWN.z) < 10) continue;
       var sc = rand(0.35, 1.7);
       dummy.position.set(rx, rh + sc * 0.32, rz);
@@ -707,7 +696,6 @@
       var bx = Math.cos(ba) * br, bz = Math.sin(ba) * br;
       var bh = heightAt(bx, bz);
       if (bh < 0.9) continue;
-      if (Math.hypot(bx - BEACON.x, bz - BEACON.z) < 12) continue;
       if (Math.hypot(bx - SPAWN.x, bz - SPAWN.z) < 12) continue;
       var bs = rand(0.32, 0.9);
       dummy.position.set(bx, bh + bs * 0.28, bz);
@@ -733,10 +721,11 @@
     var crys = new T.InstancedMesh(crysGeo, crysMat, 54);
     var ci = 0;
     for (var cc = 0; cc < 54; cc++) {
-      var ca = rand(0, 6.283), cr = rand(6, 16);
-      var cx = BEACON.x + Math.cos(ca) * cr;
-      var cz = BEACON.z + Math.sin(ca) * cr;
+      var ca = rand(0, 6.283), cr = Math.sqrt(Math.random()) * ISLE_R * 0.82;
+      var cx = Math.cos(ca) * cr;
+      var cz = Math.sin(ca) * cr;
       var ch = heightAt(cx, cz);
+      if (ch < 1.0) continue;
       var cs = rand(0.22, 0.85);
       dummy.position.set(cx, ch + cs * 0.6, cz);
       dummy.rotation.set(rand(-0.3, 0.3), rand(0, 6.28), rand(-0.3, 0.3));
@@ -744,6 +733,7 @@
       dummy.updateMatrix();
       crys.setMatrixAt(ci++, dummy.matrix);
     }
+    crys.count = ci;
     crys.instanceMatrix.needsUpdate = true;
     scene.add(crys);
 
@@ -760,7 +750,7 @@
     var cri = 0;
     for (var k = 0; k < N_CRATE; k++) {
       var ka = rand(0, 6.283), kr = rand(22, 118 * WS / 2.4);
-      var kx = BEACON.x + Math.cos(ka) * kr, kz = BEACON.z + Math.sin(ka) * kr;
+      var kx = Math.cos(ka) * kr, kz = Math.sin(ka) * kr;
       var kh = heightAt(kx, kz);
       if (kh < 1) continue;
       var size = rand(1.0, 2.3);
@@ -793,7 +783,6 @@
       var rpx = Math.cos(rpa) * rpr, rpz = Math.sin(rpa) * rpr;
       var rph = heightAt(rpx, rpz);
       if (rph < 1.4) continue;
-      if (Math.hypot(rpx - BEACON.x, rpz - BEACON.z) < 20) continue;
       var phgt = rand(2.4, 6.0);
       dummy.position.set(rpx, rph - 0.15, rpz);
       dummy.rotation.set(rand(-0.05, 0.05), rand(0, 6.28), rand(-0.07, 0.07));
@@ -819,7 +808,6 @@
       var dtx = Math.cos(dta) * dtr, dtz = Math.sin(dta) * dtr;
       var dth = heightAt(dtx, dtz);
       if (dth < 1.2) continue;
-      if (Math.hypot(dtx - BEACON.x, dtz - BEACON.z) < 16) continue;
       if (Math.hypot(dtx - SPAWN.x, dtz - SPAWN.z) < 6) continue;
       var dsc = rand(0.8, 1.5);
       dummy.position.set(dtx, dth - 0.1, dtz);
@@ -855,60 +843,8 @@
     pods.instanceMatrix.needsUpdate = true;
     scene.add(pods);
 
-    /* alien relay (the objective landmark) ------------------------------ */
-    var beacon = new T.Group();
-    beacon.position.set(BEACON.x, BEACON_H, BEACON.z);
-    var dark = new T.MeshStandardMaterial({ color: 0x2a2f3a, roughness: 0.6, metalness: 0.65 });
-    var glowMat = new T.MeshStandardMaterial({ color: 0xc07bff, emissive: 0x9b3bff, emissiveIntensity: 2.6, roughness: 0.28, metalness: 0.1 });
-
-    var base = new T.Mesh(new T.CylinderGeometry(3.1, 4.0, 1.1, 8), dark);
-    base.position.y = 0.5;
-    base.receiveShadow = true;
-    beacon.add(base);
-
-    for (var l = 0; l < 3; l++) {
-      var ang = l * (Math.PI * 2 / 3);
-      var leg = new T.Mesh(new T.BoxGeometry(0.42, 5.6, 0.42), dark);
-      leg.position.set(Math.cos(ang) * 1.5, 3.1, Math.sin(ang) * 1.5);
-      leg.rotation.z = Math.cos(ang) * 0.16;
-      leg.rotation.x = -Math.sin(ang) * 0.16;
-      leg.castShadow = true;
-      beacon.add(leg);
-    }
-
-    var ring = new T.Mesh(new T.TorusGeometry(2.0, 0.16, 8, 40), glowMat);
-    ring.position.y = 4.4;
-    ring.rotation.x = Math.PI / 2;
-    beacon.add(ring);
-
-    var ring2 = new T.Mesh(new T.TorusGeometry(2.6, 0.09, 6, 40), glowMat);
-    ring2.position.y = 5.6;
-    ring2.rotation.x = Math.PI / 2.6;
-    beacon.add(ring2);
-
-    var core = new T.Mesh(new T.SphereGeometry(0.92, 16, 12), glowMat);
-    core.position.y = 5.1;
-    beacon.add(core);
-
-    var beam = new T.Mesh(
-      new T.CylinderGeometry(0.9, 2.6, 26, 12, 1, true),
-      new T.MeshBasicMaterial({ color: 0x9b4bff, transparent: true, opacity: 0.13, side: T.DoubleSide, depthWrite: false, blending: T.AdditiveBlending })
-    );
-    beam.position.y = 15;
-    beacon.add(beam);
-
-    var bl = new T.PointLight(0xb46bff, 3.2, 34, 2);
-    bl.position.y = 5.2;
-    beacon.add(bl);
-
-    scene.add(beacon);
-    G.beacon = beacon;
-    G.beaconRing = ring;
-    G.beaconRing2 = ring2;
-    G.beaconCore = core;
-    G.beaconLight = bl;
-    colliders.push({ x: BEACON.x, z: BEACON.z, r: 4.0 });
-    blockers.push({ x: BEACON.x, z: BEACON.z, r: 3.4, y0: BEACON_H - 1, y1: BEACON_H + 7.5 });
+    /* the relay pillar that used to stand in the middle of the island is gone.
+       The contract is the landmark now, and the radar is what points at it. */
   })();
 
   /* --------------------------------------------------------------- particles */
@@ -1252,32 +1188,20 @@
 
   var guns = WEAPONS.map(function (w) { return buildSword(w.key); });
   guns.forEach(function (g, i) {
-    g.position.set(IS_TOUCH ? -0.04 : 0.24, IS_TOUCH ? -0.56 : -0.5, IS_TOUCH ? -0.54 : -0.62);
-    g.scale.setScalar(IS_TOUCH ? 0.32 : 0.44);
-    g.rotation.set(-0.06, IS_TOUCH ? 0.95 : 0.3, IS_TOUCH ? 0.28 : 0.42);
+    g.position.set(IS_TOUCH ? 0.05 : 0.24, IS_TOUCH ? -0.52 : -0.5, IS_TOUCH ? -0.52 : -0.62);
+    g.scale.setScalar(IS_TOUCH ? 0.36 : 0.44);
+    g.rotation.set(-0.06, IS_TOUCH ? 0.9 : 0.3, IS_TOUCH ? 0.24 : 0.42);
     g.visible = i === 0;
     camera.add(g);
   });
   /* held poses: idle low-left, guard (right-click / aim) raised, sprint tucked */
   /* on a phone the right third is the button pad, so the blade waits in the
      gap between the thumbstick and the trigger, low enough to stay clear */
-  var SWORD_HIP = IS_TOUCH ? new T.Vector3(-0.04, -0.56, -0.54) : new T.Vector3(0.24, -0.5, -0.62);
-  var SWORD_GUARD = IS_TOUCH ? new T.Vector3(-0.02, -0.44, -0.5) : new T.Vector3(0.08, -0.34, -0.5);
-  var SWORD_SPRINT = IS_TOUCH ? new T.Vector3(0.06, -0.6, -0.52) : new T.Vector3(0.34, -0.56, -0.54);
+  var SWORD_HIP = IS_TOUCH ? new T.Vector3(0.05, -0.52, -0.52) : new T.Vector3(0.24, -0.5, -0.62);
+  var SWORD_GUARD = IS_TOUCH ? new T.Vector3(0.02, -0.38, -0.46) : new T.Vector3(0.08, -0.34, -0.5);
+  var SWORD_SPRINT = IS_TOUCH ? new T.Vector3(0.14, -0.58, -0.5) : new T.Vector3(0.34, -0.56, -0.54);
   var SWORD_RZ = IS_TOUCH ? 0.28 : 0.42;
   var SWORD_RZ_AIM = IS_TOUCH ? 0.02 : 0.2;
-
-  /* the white arc that follows a swing: a cheap additive ring sector that is
-     only visible for a quarter of a second */
-  var slashMat = new T.MeshBasicMaterial({
-    color: 0xe8f8ff, transparent: true, opacity: 0,
-    blending: T.AdditiveBlending, depthWrite: false, depthTest: false, side: T.DoubleSide
-  });
-  var slashMesh = new T.Mesh(new T.RingGeometry(0.38, 0.72, 26, 1, -0.6, 2.4), slashMat);
-  slashMesh.position.set(-0.02, -0.1, -0.78);
-  slashMesh.renderOrder = 998;
-  slashMesh.visible = false;
-  camera.add(slashMesh);
 
   /* lamps on the viewmodel so the blackened metal still shows its engraving */
   var viewLight = new T.PointLight(0xdccaff, 0.7, 2.6, 2);
@@ -1978,10 +1902,6 @@
     }
     var spin = $('tSpin');
     if (spin) spin.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); tryMelee(); });
-    var swap = $('tSwap');
-    if (swap) swap.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); startReload(); });
-    var benchBtn = $('tBench');
-    if (benchBtn) benchBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); openBench(); });
     /* the item bar: one tap, one use, nothing to open first */
     var itemBar = $('items');
     if (itemBar) {
@@ -2031,7 +1951,7 @@
     return maxT;
   }
 
-  /* Solid cover: every trunk, boulder, pillar, crate and the relay base is a
+  /* Solid cover: every trunk, boulder, pillar and crate is a
      vertical cylinder. A shot (or an alien bolt) dies on the first one it
      enters, so rocks and trees actually protect you - and them. */
   function blockerRayT(origin, dir, maxT) {
@@ -2897,7 +2817,7 @@
     document.body.classList.remove('down');
     var box = $('downBox');
     if (box) box.classList.add('hidden');
-    /* land on open ground near the beacon, never inside a garrison */
+    /* land on open ground near where you fell, never inside a garrison */
     var lx = SPAWN.x, lz = SPAWN.z;
     for (var i = 0; i < 12; i++) {
       var a = rand(0, 6.283), r = rand(18, 52);
@@ -2975,7 +2895,7 @@
       mix: ['runner', 'skitter', 'neural', 'runner'], loot: ['ammo', 'med'] },
     { id: 'dock', name: 'اسکلهٔ زنگ‌زده', x: -112, z: 4, r: 28, tier: 2, lead: 'warrior',
       mix: ['skitter', 'runner', 'neural', 'warrior'], loot: ['shotgun', 'ammo'] },
-    { id: 'relay', name: 'رلهٔ بنفش', x: 0, z: -46, r: 32, tier: 3, lead: 'neural',
+    { id: 'relay', name: 'گودال بنفش', x: 0, z: -46, r: 32, tier: 3, lead: 'neural',
       mix: ['warrior', 'neural', 'runner', 'skitter'], loot: ['med', 'ammo'] },
     { id: 'quarry', name: 'معدن سنگی', x: 96, z: -50, r: 30, tier: 3, lead: 'warrior',
       mix: ['warrior', 'runner', 'bomber', 'neural', 'stalker'], loot: ['ammo', 'med'] },
@@ -3014,7 +2934,6 @@
       var x = z.x + Math.cos(a) * rr, zz = z.z + Math.sin(a) * rr;
       if (heightAt(x, zz) < 1.6) continue;
       if (Math.hypot(x, zz) > ISLE_R * 0.86) continue;
-      if (Math.hypot(x - BEACON.x, zz - BEACON.z) < 4) continue;
       return { x: x, z: zz };
     }
     return { x: z.x, z: z.z };
@@ -3097,7 +3016,6 @@
       var x = z.x + Math.cos(a) * reach;
       var zz = z.z + Math.sin(a) * reach;
       if (heightAt(x, zz) < 1.6) continue;
-      if (Math.hypot(x - BEACON.x, zz - BEACON.z) < 15) continue;
       if (Math.hypot(x - SPAWN.x, zz - SPAWN.z) < 10) continue;
       return { x: x, z: zz };
     }
@@ -4281,63 +4199,67 @@
     var sprinting = P.sprint && hs > 3.5;
     var base = G.aim ? SWORD_GUARD : (sprinting ? SWORD_SPRINT : SWORD_HIP);
 
-    /* --- swing keyframes: wind up, cut across, settle back --- */
+    /* --- swing keyframes -------------------------------------------------
+       Three links, three silhouettes. Every cut leaves from a different
+       corner of the view and lands on a different side, so a chain reads as
+       forehand -> backhand -> overhead chop instead of one twitch on repeat;
+       the spin (F) leaves the hand and carries the blade around the body.
+         A: wind up   0.00 - 0.10
+         B: the cut   0.10 - 0.27   (eased out: fastest through the middle)
+         C: settle    0.27 - 0.58
+    */
     var t = G.swingT;
     var baseZ = G.aim ? SWORD_RZ_AIM : SWORD_RZ;
     var baseX = G.aim ? -0.02 : -0.08;
-    var z = baseZ, rx = baseX, pxo = 0, pyo = 0;
-    if (t < 0.08) {
-      var k1 = t / 0.08;
-      z = lerp(baseZ, baseZ + 0.62, k1);
-      rx = lerp(baseX, baseX - 0.42, k1);
-      pxo = -0.06 * k1;
-    } else if (t < 0.26) {
-      var k2 = (t - 0.08) / 0.18;
-      z = lerp(baseZ + 0.62, baseZ - 1.7, k2);
-      rx = lerp(baseX - 0.42, baseX + 0.75, k2);
-      pxo = lerp(-0.06, 0.2, k2);
-      pyo = 0.06 * k2;
-    } else {
-      var k3 = clamp((t - 0.26) / 0.26, 0, 1);
-      var ease = 1 - Math.pow(1 - k3, 3);
-      z = lerp(baseZ - 1.7, baseZ, ease);
-      rx = lerp(baseX + 0.75, baseX, ease);
-      pxo = lerp(0.2, 0, ease);
-      pyo = lerp(0.06, 0, ease);
-    }
-
     var side = G.swingSide || 1;
     var kind = G.swingKind || 0;
-    var breathe = Math.sin(G.t * 1.55) * 0.004;
-    gun.position.x = lerp(gun.position.x, base.x + pxo * side + swayX, Math.min(1, dt * 16));
-    gun.position.y = lerp(gun.position.y, base.y - swayY + pyo + breathe, Math.min(1, dt * 16));
-    gun.position.z = lerp(gun.position.z, base.z + G.recoil * 0.03, Math.min(1, dt * 18));
-    gun.rotation.x = lerp(gun.rotation.x, rx, Math.min(1, dt * 26));
-    gun.rotation.y = lerp(gun.rotation.y, G.aim ? (IS_TOUCH ? 0.5 : 0.16) : (IS_TOUCH ? 0.72 : 0.3), Math.min(1, dt * 12));
-    gun.rotation.z = lerp(gun.rotation.z, baseZ + (z - baseZ) * side + swayX * 0.5, Math.min(1, dt * 30));
-    /* each link of the chain moves differently, and the spin (F) leaves the
-       hand entirely: one full turn around the body, like a musou cleave */
-    if (kind === 3) {
-      var sp = clamp(t / 0.36, 0, 1);
-      var ang = sp * Math.PI * 2;
-      gun.position.x += Math.cos(ang) * 0.26 * (1 - sp * 0.35);
-      gun.position.z += Math.sin(ang) * 0.12;
-      gun.rotation.z += Math.sin(ang) * 0.9;
-    } else if (kind === 2) {
-      gun.position.y -= Math.sin(clamp(t / 0.3, 0, 1) * Math.PI) * 0.08;
-    } else if (kind === 1) {
-      gun.position.x -= Math.sin(clamp(t / 0.26, 0, 1) * Math.PI) * 0.05;
+
+    var rest = { x: 0, y: 0, z: 0, rx: baseX, rz: baseZ };
+    var wind, cut;
+    if (kind === 2) {
+      /* overhead: the blade rises behind the shoulder, then bites the ground */
+      wind = { x: 0.02 * side, y: 0.32, z: 0.03, rx: baseX - 1.15, rz: baseZ + 0.10 * side };
+      cut = { x: 0.02 * side, y: -0.22, z: -0.11, rx: baseX + 0.92, rz: baseZ - 0.18 * side };
+    } else {
+      /* flat diagonal: a wide scythe from one hip to the opposite shoulder */
+      wind = { x: 0.24 * side, y: 0.07, z: 0.03, rx: baseX - 0.58, rz: baseZ + 1.05 * side };
+      cut = { x: -0.30 * side, y: 0.17, z: -0.08, rx: baseX + 0.98, rz: baseZ - 1.20 * side };
+    }
+    function mixPose(a, b, k) {
+      return {
+        x: lerp(a.x, b.x, k), y: lerp(a.y, b.y, k), z: lerp(a.z, b.z, k),
+        rx: lerp(a.rx, b.rx, k), rz: lerp(a.rz, b.rz, k)
+      };
+    }
+    var pose;
+    if (t < 0.10) {
+      var ka = t / 0.10;
+      pose = mixPose(rest, wind, ka * ka);
+    } else if (t < 0.27) {
+      var kb = (t - 0.10) / 0.17;
+      pose = mixPose(wind, cut, 1 - Math.pow(1 - kb, 3));
+    } else {
+      var kc = clamp((t - 0.27) / 0.31, 0, 1);
+      pose = mixPose(cut, rest, kc * kc * (3 - 2 * kc));
     }
 
-    /* the cut trail: a bright arc that only exists during the swing */
-    var cutK = t > 0.06 && t < 0.42 ? (t - 0.06) / 0.36 : -1;
-    if (cutK >= 0) {
-      slashMesh.visible = true;
-      slashMat.opacity = 0.62 * Math.sin(cutK * Math.PI);
-      slashMesh.rotation.z = z * 1.15 - 0.25;
-      slashMesh.scale.setScalar(0.82 + (w.tier - 1) * 0.08 + (kind === 3 ? 0.4 : kind === 2 ? 0.24 : 0));
-    } else if (slashMesh.visible) {
-      slashMesh.visible = false;
+    var breathe = Math.sin(G.t * 1.55) * 0.004;
+    gun.position.x = lerp(gun.position.x, base.x + pose.x + swayX, Math.min(1, dt * 30));
+    gun.position.y = lerp(gun.position.y, base.y - swayY + pose.y + breathe, Math.min(1, dt * 30));
+    gun.position.z = lerp(gun.position.z, base.z + pose.z + G.recoil * 0.03, Math.min(1, dt * 30));
+    gun.rotation.x = lerp(gun.rotation.x, pose.rx, Math.min(1, dt * 38));
+    gun.rotation.y = lerp(gun.rotation.y, G.aim ? (IS_TOUCH ? 0.5 : 0.16) : (IS_TOUCH ? 0.72 : 0.3), Math.min(1, dt * 12));
+    gun.rotation.z = lerp(gun.rotation.z, pose.rz + swayX * 0.5, Math.min(1, dt * 40));
+    /* the spin leaves the hand entirely: one full turn around the body */
+    if (kind === 3) {
+      /* the orbit fades to nothing as the turn completes, otherwise the blade
+         would finish the spin parked a hand's width to the right */
+      var sp = clamp(t / 0.38, 0, 1);
+      var ang = sp * Math.PI * 2;
+      var fade = 1 - sp;
+      gun.position.x += Math.cos(ang) * 0.30 * fade;
+      gun.position.z += Math.sin(ang) * 0.14 * fade;
+      gun.rotation.z += Math.sin(ang) * 0.75 * fade;
     }
 
     var cross = $('cross');
@@ -4469,6 +4391,104 @@
     }
   }
 
+  /* --------------------------------------------------------------- radar
+     A small rotating scope instead of another list of numbers: the player is
+     the arrow at the centre, the contract is a gold diamond (pinned to the
+     rim when it is out of range), camps are pale squares and anything close
+     enough to matter is a red dot. Everything is drawn player-up, so "up" is
+     always the way you are looking. */
+  var radarCv = null, radarCtx = null, radarT = -9, radarRange = 130;
+  function drawRadar() {
+    var cv = $('radarCv');
+    if (!cv || !cv.getContext) return;
+    if (radarCv !== cv) { radarCv = cv; radarCtx = cv.getContext('2d'); }
+    var ctx = radarCtx;
+    if (!ctx) return;
+    var W = cv.width, H = cv.height, mx0 = W / 2, my0 = H / 2, R = W / 2 - 6;
+    var k = R / radarRange;
+    var sy = Math.sin(P.yaw), ct = Math.cos(P.yaw);
+    function at(x, z) {
+      var dx = x - P.pos.x, dz = z - P.pos.z;
+      return { x: mx0 + (dx * ct - dz * sy) * k, y: my0 + (dx * sy + dz * ct) * k, d: Math.hypot(dx, dz) };
+    }
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.beginPath(); ctx.arc(mx0, my0, R, 0, 6.2832); ctx.clip();
+    ctx.fillStyle = 'rgba(3,11,18,.66)'; ctx.fillRect(0, 0, W, H);
+    /* range rings + spokes */
+    ctx.strokeStyle = 'rgba(120,200,230,.15)'; ctx.lineWidth = 2;
+    for (var rr = 1; rr <= 3; rr++) { ctx.beginPath(); ctx.arc(mx0, my0, R * rr / 3, 0, 6.2832); ctx.stroke(); }
+    ctx.beginPath();
+    ctx.moveTo(mx0 - R, my0); ctx.lineTo(mx0 + R, my0);
+    ctx.moveTo(mx0, my0 - R); ctx.lineTo(mx0, my0 + R);
+    ctx.stroke();
+    /* camps are places, not targets */
+    for (var zi = 0; zi < ZONES.length; zi++) {
+      var zp = at(ZONES[zi].x, ZONES[zi].z);
+      if (zp.d > radarRange) continue;
+      ctx.fillStyle = 'rgba(150,205,225,.55)';
+      ctx.fillRect(zp.x - 4, zp.y - 4, 8, 8);
+    }
+    /* caches worth a detour */
+    for (var pp2 = 0; pp2 < G.pickups.length; pp2++) {
+      var pp = at(G.pickups[pp2].x, G.pickups[pp2].z);
+      if (pp.d > radarRange) continue;
+      ctx.fillStyle = 'rgba(143,240,255,.8)';
+      ctx.beginPath(); ctx.arc(pp.x, pp.y, 3.6, 0, 6.2832); ctx.fill();
+    }
+    /* everything hostile that is close enough to matter */
+    var be = G.bounty && G.bounty.e && !G.bounty.e.dead ? G.bounty.e : null;
+    for (var ei = 0; ei < G.enemies.length; ei++) {
+      var en = G.enemies[ei];
+      if (en.dead) continue;
+      var ep = at(en.pos.x, en.pos.z);
+      if (ep.d > radarRange) continue;
+      if (en === be) continue;
+      ctx.fillStyle = (en.hunter || en.aggro) ? 'rgba(255,92,110,.95)' : 'rgba(255,125,135,.5)';
+      ctx.beginPath(); ctx.arc(ep.x, ep.y, en.hunter ? 6 : 4.2, 0, 6.2832); ctx.fill();
+    }
+    /* the player: arrow + a faint cone of what is in front of them */
+    ctx.fillStyle = 'rgba(160,230,255,.10)';
+    ctx.beginPath();
+    ctx.moveTo(mx0, my0); ctx.lineTo(mx0 - R * 0.34, my0 - R * 0.62);
+    ctx.lineTo(mx0 + R * 0.34, my0 - R * 0.62); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#eafaff';
+    ctx.beginPath();
+    ctx.moveTo(mx0, my0 - 10); ctx.lineTo(mx0 + 6.6, my0 + 7.6);
+    ctx.lineTo(mx0, my0 + 3.8); ctx.lineTo(mx0 - 6.6, my0 + 7.6);
+    ctx.closePath(); ctx.fill();
+    /* north tick */
+    ctx.fillStyle = 'rgba(170,215,232,.62)';
+    ctx.font = '600 18px system-ui,sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('N', mx0 + sy * (R - 13), my0 - ct * (R - 13));
+    /* the contract, pinned to the rim while it is off the scope */
+    var label = '';
+    if (be) {
+      var bp = at(be.pos.x, be.pos.z);
+      label = fa(Math.round(bp.d)) + ' م تا هدف';
+      var out = bp.d > radarRange;
+      var ang = Math.atan2(bp.y - my0, bp.x - mx0);
+      var dx2 = out ? mx0 + Math.cos(ang) * (R - 10) : bp.x;
+      var dy2 = out ? my0 + Math.sin(ang) * (R - 10) : bp.y;
+      if (!out) {
+        ctx.strokeStyle = 'rgba(255,209,102,.28)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(mx0, my0); ctx.lineTo(dx2, dy2); ctx.stroke();
+      }
+      ctx.save();
+      ctx.translate(dx2, dy2); ctx.rotate(Math.PI / 4);
+      ctx.shadowColor = 'rgba(255,200,80,.9)'; ctx.shadowBlur = 12;
+      ctx.fillStyle = '#ffd166';
+      ctx.fillRect(-5.4, -5.4, 10.8, 10.8);
+      ctx.restore();
+    } else if (G.bounty && G.bounty.you) {
+      label = 'تو هدفی — فرار کن';
+    }
+    ctx.restore();
+    var dl = $('radarDist');
+    if (dl) setText(dl, label || 'جزیره');
+  }
+
   function updateHUD(force) {
     var hp = Math.max(0, Math.round(G.hp));
     setText($('hpTxt'), fa(hp));
@@ -4530,10 +4550,18 @@
           var rq = (Math.atan2(qx, qz) - (P.yaw + Math.PI)) * 180 / Math.PI;
           html += '<span class="bty"><i style="transform:rotate(' + rq.toFixed(0) + 'deg)">◆</i><em>شکار ' + fa(Math.round(Math.hypot(qx, qz))) + ' م</em></span>';
         }
-        var bdx = BEACON.x - P.pos.x, bdz = BEACON.z - P.pos.z;
-        var bdist = Math.hypot(bdx, bdz);
-        var r2 = (Math.atan2(bdx, bdz) - (P.yaw + Math.PI)) * 180 / Math.PI;
-        html += '<span class="bcn"><i style="transform:rotate(' + r2.toFixed(0) + 'deg)">◆</i><em>بِیکن ' + fa(Math.round(bdist)) + ' م</em></span>';
+        /* nearest camp: a direction is worth more than a landmark you have to
+           walk back to */
+        var nz = null, nd = 1e9;
+        for (var zi2 = 0; zi2 < ZONES.length; zi2++) {
+          var zd2 = Math.hypot(ZONES[zi2].x - P.pos.x, ZONES[zi2].z - P.pos.z);
+          if (zd2 < nd) { nd = zd2; nz = ZONES[zi2]; }
+        }
+        if (nz) {
+          var cdx = nz.x - P.pos.x, cdz = nz.z - P.pos.z;
+          var r3 = (Math.atan2(cdx, cdz) - (P.yaw + Math.PI)) * 180 / Math.PI;
+          html += '<span><i style="transform:rotate(' + r3.toFixed(0) + 'deg)">▲</i><em>' + nz.name + ' ' + fa(Math.round(nd)) + ' م</em></span>';
+        }
         row.innerHTML = html;
       }
     }
@@ -4550,11 +4578,9 @@
 
     updateItemsHUD();
 
-    var bh = $('benchHint');
-    if (bh) {
-      var nearB = G.running && !G.over && Math.hypot(P.pos.x - BEACON.x, P.pos.z - BEACON.z) < 8;
-      bh.classList.toggle('hidden', !nearB);
-    }
+    /* the scope moves with the player, so it is refreshed on a slow tick and
+       not on every frame */
+    if (G.t - radarT > 0.1 || force) { radarT = G.t; drawRadar(); }
   }
 
   function showBanner(title, sub, ms) {
@@ -4695,13 +4721,9 @@
     G.bountyDelay = 1.5;
     if (o.px && heightAt(o.px, o.pz) > 0.5 && Math.hypot(o.px, o.pz) < ISLE_R * 0.94) {
       var px = o.px, pz = o.pz;
-      /* never resume inside the relay's collision cylinder */
-      var bd = Math.hypot(px - BEACON.x, pz - BEACON.z);
-      if (bd < 5.6) {
-        var ba = Math.atan2(pz - BEACON.z, px - BEACON.x) || 0.7;
-        px = BEACON.x + Math.cos(ba) * 5.6;
-        pz = BEACON.z + Math.sin(ba) * 5.6;
-      }
+      /* never resume inside a rock or a trunk: a checkpoint is a place, not a
+         guarantee that nothing grew there */
+      if (insideBlocker(tmpV.set(px, heightAt(px, pz) + 1.1, pz))) { px = SPAWN.x; pz = SPAWN.z; }
       P.pos.set(px, heightAt(px, pz), pz);
       P.vel.set(0, 0, 0);
     }
@@ -4777,12 +4799,8 @@
     { id: 'speed', name: 'ضربه‌های سریع‌تر', cost: 2, max: 4 },
     { id: 'heal', name: 'درمان کامل', cost: 2, max: 99 }
   ];
-  function benchNear() {
-    return Math.hypot(P.pos.x - BEACON.x, P.pos.z - BEACON.z) < 8;
-  }
   function openBench() {
     if (!G.running || G.over) return;
-    if (!benchNear()) { toast('میز کار کنار بِیکن است — به ستون بنفش برگرد'); return; }
     G.benchOpen = true;
     G.paused = true;
     G.firing = false;
@@ -4833,7 +4851,7 @@
       if (G.parts < 2) { toast('قطعه کافی نیست · ' + fa(G.parts) + '/۲'); return; }
       G.parts -= 2;
       G.hp = G.maxHp;
-      showBanner('ترمیم در بِیکن', 'جان کامل شد', 1200);
+      showBanner('ترمیم در کارگاه', 'جان کامل شد', 1200);
       SFX3D.play('med');
     } else {
       var u = null;
@@ -4877,7 +4895,12 @@
       var s = document.createElement('div');
       s.className = 'wslot' + (i === 0 ? ' on' : '');
       s.innerHTML = '<b>' + fa(i + 1) + '</b><span>' + w.short + '</span>';
-      s.addEventListener('pointerdown', function (ev) { ev.preventDefault(); ev.stopPropagation(); switchWeapon(i); });
+      s.addEventListener('pointerdown', function (ev) {
+        ev.preventDefault(); ev.stopPropagation();
+        /* on a phone only the current blade is shown: tapping it cycles */
+        if (IS_TOUCH && i === G.widx) { startReload(); return; }
+        switchWeapon(i);
+      });
       slots.appendChild(s);
     });
 
@@ -4924,6 +4947,12 @@
 
     $('btnPause').addEventListener('click', pauseGame);
     $('pResume').addEventListener('click', resumeGame);
+    /* the workshop lives in the pause menu now: no pillars, no hammer button */
+    var pb = $('pBench');
+    if (pb) pb.addEventListener('click', function () {
+      $('pause').classList.add('hidden');
+      openBench();
+    });
     $('pRestart').addEventListener('click', function () { location.reload(); });
     $('modalMain').addEventListener('click', function () { location.reload(); });
 
@@ -4961,16 +4990,6 @@
   /* -------------------------------------------------------------------- loop */
   function animateWorld(dt) {
     G.frame++;
-    if (G.beaconRing) G.beaconRing.rotation.z += dt * 0.6;
-    if (G.beaconRing2) {
-      G.beaconRing2.rotation.z -= dt * 0.9;
-      G.beaconRing2.position.y = 5.6 + Math.sin(G.t * 1.1) * 0.12;
-    }
-    if (G.beaconCore) {
-      var pulse = 1 + Math.sin(G.t * 2.4) * 0.09;
-      G.beaconCore.scale.setScalar(pulse);
-    }
-    if (G.beaconLight) G.beaconLight.intensity = 3.0 + Math.sin(G.t * 2.4) * 0.7;
 
     /* tracers fade */
     for (var i = G.tracers.length - 1; i >= 0; i--) {

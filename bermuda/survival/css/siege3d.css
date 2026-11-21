@@ -84,7 +84,21 @@ a{color:inherit}
 .items .item.on{border-color:#8ff0ff;box-shadow:0 0 20px rgba(143,240,255,.55)}
 /* on a phone the bottom centre belongs to the control arc: lift the bar into
    the gap above the joystick so a thumb never fights a bomb */
-body.touch-mode .items{bottom:calc(196px + var(--safe-b));gap:10px}
+/* the item rail: three small tiles stacked on the right edge, above the
+   tools, so it never sits under a thumb and never covers the view */
+body.touch-mode .items{
+  left:auto;right:calc(20px + var(--safe-r));transform:none;
+  bottom:calc(26px + var(--safe-b) + var(--strike) + 14px + var(--tool) + 16px);
+  flex-direction:column;gap:7px;
+}
+body.touch-mode .items .item{
+  width:clamp(40px,9.5vmin,46px);height:clamp(40px,9.5vmin,46px);
+  border-radius:11px;background:rgba(6,15,23,.82);
+  border:1px solid rgba(140,210,235,.26);
+  box-shadow:0 6px 16px rgba(0,0,0,.35);
+  backdrop-filter:blur(8px);
+}
+body.touch-mode .items .item.off{opacity:.55}
 @media (max-height:430px){.items{display:none}}
 .chip small{text-shadow:0 1px 3px rgba(0,0,0,.85)}
 .chip b{text-shadow:0 1px 3px rgba(0,0,0,.85)}
@@ -259,12 +273,15 @@ kbd{font:700 9.5px/1 ui-monospace,Consolas,monospace;background:rgba(100,224,255
    One thumb steers the stick, the other rests on a single big cut; the lighter
    tools sit on an arc above it, so nothing overlaps and every target is at
    least 54 px. The old three-row pad is gone. */
+/* the control sizes live on the body, not on #touch: the item rail and the
+   radar are siblings of #touch and need the same numbers */
+body.touch-mode{
+  --stick:clamp(126px,30vmin,148px);
+  --strike:clamp(98px,23vmin,112px);
+  --tool:clamp(52px,12vmin,58px);
+}
 #touch{
   position:fixed;inset:0;z-index:30;pointer-events:none;
-  --stick:clamp(132px,32vmin,158px);
-  --strike:clamp(104px,24vmin,124px);
-  --mid:clamp(64px,14vmin,76px);
-  --small:clamp(54px,12vmin,62px);
 }
 /* left thumbstick: a large pad with a visible ring and throw */
 #joy{
@@ -285,47 +302,39 @@ kbd{font:700 9.5px/1 ui-monospace,Consolas,monospace;background:rgba(100,224,255
 /* right hand: the blade is one button, everything else arcs around it */
 #touch .tcirc{
   position:absolute;pointer-events:auto;display:grid;place-items:center;
-  border-radius:50%;border:2px solid rgba(112,226,255,.34);
-  background:radial-gradient(circle at 50% 32%,rgba(20,48,66,.92),rgba(6,16,26,.84));
-  color:#e8fbff;backdrop-filter:blur(6px);padding:0;
-  font:800 21px/1 system-ui,sans-serif;
-  box-shadow:0 10px 26px rgba(0,0,0,.5),inset 0 0 22px rgba(112,226,255,.12);
-  transition:transform .08s ease,background .08s ease,box-shadow .08s ease;touch-action:none;
+  border-radius:50%;border:1.5px solid rgba(150,225,245,.26);
+  background:rgba(6,16,24,.52);
+  color:#e6f8ff;backdrop-filter:blur(9px);padding:0;
+  font:700 19px/1 system-ui,sans-serif;
+  box-shadow:0 8px 22px rgba(0,0,0,.38);
+  transition:transform .09s ease,background .09s ease,border-color .09s ease;touch-action:none;
 }
-#touch .tcirc:active{transform:scale(.9);box-shadow:0 0 30px rgba(112,226,255,.5)}
-#touch .small{width:var(--small);height:var(--small);font-size:22px}
-#touch .mini{
-  width:var(--small);height:var(--small);font-size:24px;
-  border-color:rgba(112,226,255,.26);
-  background:radial-gradient(circle at 50% 32%,rgba(18,40,56,.78),rgba(5,14,22,.72));
-}
+#touch .tcirc:active{transform:scale(.92);border-color:rgba(180,240,255,.62);background:rgba(20,44,60,.66)}
+#touch .small,#touch .mini{width:var(--tool);height:var(--tool);font-size:19px;color:#bfe6f5}
 #touch .mid{
-  width:var(--mid);height:var(--mid);font-size:26px;color:#ffe6b0;
-  border-color:rgba(255,196,106,.55);
-  background:radial-gradient(circle at 50% 32%,rgba(74,50,18,.9),rgba(26,14,6,.86));
-  box-shadow:0 10px 26px rgba(0,0,0,.5),inset 0 0 22px rgba(255,196,106,.16);
+  width:var(--tool);height:var(--tool);font-size:20px;color:#ffd9a0;
+  border-color:rgba(255,201,120,.4);
 }
-#touch .mid:active{background:radial-gradient(circle at 50% 34%,rgba(255,214,140,.85),rgba(120,64,14,.9));box-shadow:0 0 34px rgba(255,196,106,.6)}
-/* the one button that never moves */
+#touch .mid:active{background:rgba(78,50,16,.62);border-color:rgba(255,214,150,.8)}
+/* the one button that never moves: a blade mark in a thin ring, not a siren */
 #touch .main{
-  width:var(--strike);height:var(--strike);border:3px solid rgba(255,158,168,.8);
-  background:radial-gradient(circle at 50% 30%,rgba(255,120,132,.62),rgba(96,14,26,.86));
-  box-shadow:0 0 40px rgba(255,80,100,.42),inset 0 0 30px rgba(255,150,160,.24);
+  width:var(--strike);height:var(--strike);border:2px solid rgba(255,178,188,.5);
+  background:radial-gradient(circle at 50% 34%,rgba(96,26,38,.7),rgba(8,9,15,.82));
+  box-shadow:0 10px 28px rgba(0,0,0,.46),inset 0 0 26px rgba(255,120,140,.12);
   overflow:hidden;
 }
 #touch .main i{
-  display:block;width:34%;height:34%;border-radius:50%;
-  border:3px solid rgba(255,236,238,.95);box-shadow:0 0 16px rgba(255,91,110,.7);margin-top:-8%;
+  display:block;width:3px;height:44%;border-radius:2px;
+  background:linear-gradient(180deg,#fff,#ffb6c0);
+  transform:rotate(38deg);box-shadow:0 0 14px rgba(255,150,168,.75);margin-top:-8%;
 }
-#touch .main b{position:absolute;bottom:16%;left:0;right:0;text-align:center;font:800 12px/1 system-ui,sans-serif;letter-spacing:.16em;color:#ffe6e9}
-#touch .main:active,#touch .main.hit{background:radial-gradient(circle at 50% 34%,rgba(255,196,196,.85),rgba(140,20,32,.9));transform:scale(.94)}
+#touch .main b{position:absolute;bottom:15%;left:0;right:0;text-align:center;font:700 10px/1 system-ui,sans-serif;letter-spacing:.18em;color:rgba(255,225,230,.85)}
+#touch .main:active,#touch .main.hit{background:radial-gradient(circle at 50% 36%,rgba(158,52,66,.8),rgba(14,10,18,.9));transform:scale(.95)}
 
-/* thumb arc: no two targets touch, every gap at least 10 px */
-#touch #tStrike{right:calc(16px + var(--safe-r));bottom:calc(22px + var(--safe-b))}
-#touch #tSpin{right:calc(16px + var(--safe-r) + var(--strike) + 12px);bottom:calc(30px + var(--safe-b))}
-#touch #tSwap{right:calc(26px + var(--safe-r));bottom:calc(22px + var(--safe-b) + var(--strike) + 14px)}
-#touch #tBench{right:calc(16px + var(--safe-r) + var(--strike) + 6px);bottom:calc(30px + var(--safe-b) + var(--mid) + 12px)}
-#touch #tSprint{left:calc(22px + var(--safe-l));bottom:calc(30px + var(--safe-b) + var(--stick))}
+/* right thumb: one cut under it, two tools within a short flick. Nothing else. */
+#touch #tStrike{right:calc(18px + var(--safe-r));bottom:calc(26px + var(--safe-b))}
+#touch #tSpin{right:calc(26px + var(--safe-r));bottom:calc(26px + var(--safe-b) + var(--strike) + 14px)}
+#touch #tSprint{right:calc(18px + var(--safe-r) + var(--strike) + 14px);bottom:calc(44px + var(--safe-b))}
 .wslot.locked{opacity:.38}
 .wslots{pointer-events:auto}
 .wslot{cursor:pointer}
@@ -374,8 +383,16 @@ body.touch-mode .boss{top:calc(200px + var(--safe-t))}
   body.touch-mode .banner b{font-size:18px}
   body.touch-mode .boss{top:calc(146px + var(--safe-t))}
 }
-body.touch-mode .wslot span{display:none}
-body.touch-mode .wslot{padding:3px 7px}
+/* one blade pill instead of ten little buttons: the current sword, tap to
+   cycle. The rest of the arsenal stays in the pause screen's list. */
+body.touch-mode .wslot{display:none}
+body.touch-mode .wslot.on{
+  display:flex;gap:6px;padding:4px 10px;border-radius:9px;
+  background:rgba(8,20,30,.62);border:1px solid rgba(140,210,235,.28);
+  box-shadow:none;color:#dff4ff;
+}
+body.touch-mode .wslot.on span{display:inline;font-size:10px;color:#9fc7d8}
+body.touch-mode .wslot.on b{color:#eafaff}
 
 @media (max-width:560px){
   .threat-chip{display:none}
@@ -418,6 +435,12 @@ body.touch-mode .wslot{padding:3px 7px}
   #joy i{width:54px;height:54px;margin:-27px 0 0 -27px}
   body.touch-mode .hpbar{width:30vw}
   .combo b{font-size:20px}
+  /* short screen: the rail has no room above the tools, so it lies down in
+     the empty strip between the thumbs */
+  body.touch-mode .items{
+    left:50%;right:auto;transform:translateX(-50%);
+    bottom:calc(14px + var(--safe-b));flex-direction:row;gap:8px;
+  }
 }
 /* narrow portrait: keep the fire pad clear of the thumbstick */
 @media (max-width:400px){
@@ -446,10 +469,6 @@ body.touch-mode .wslot{padding:3px 7px}
 .dmg-dir{position:absolute;left:50%;top:58%;transform:translateX(-50%);pointer-events:none}
 .dmg-dir i{display:block;font-style:normal;font-size:30px;color:#ff4b6b;text-shadow:0 0 18px rgba(255,60,90,.9);transition:transform .1s linear}
 .dmg-dir.hidden{display:none !important}
-.bench-hint{position:absolute;left:50%;bottom:calc(96px + var(--safe-b));transform:translateX(-50%);
-  padding:7px 12px;border-radius:10px;background:rgba(8,26,36,.78);border:1px solid rgba(143,240,255,.35);
-  color:#d9f6ff;font-size:11px;letter-spacing:.03em;box-shadow:0 0 18px rgba(100,224,255,.25)}
-.bench-hint.hidden{display:none !important}
 .diff-row{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
 .diff-row button{flex:0 0 auto;padding:7px 14px;border-radius:10px;cursor:pointer;font-size:11px;
   color:#a9cfe0;background:rgba(8,22,34,.7);border:1px solid rgba(100,224,255,.16)}
@@ -460,7 +479,27 @@ body.touch-mode .wslot{padding:3px 7px}
 .bench-rows .go em{font-style:normal;font-size:10px;color:#8ff0ff;white-space:nowrap}
 .bench-rows .go.off{opacity:.42}
 #tSpin{color:#ffd9a0;border-color:rgba(255,209,102,.5)}
-#tBench{color:#c9b3ff;border-color:rgba(201,179,255,.5)}
+/* radar: a small rotating scope in the corner, player-up, so the contract
+   and the camps have a direction instead of a number */
+.radar{
+  position:absolute;left:calc(14px + var(--safe-l));top:auto;bottom:calc(104px + var(--safe-b));
+  width:138px;height:138px;border-radius:50%;z-index:29;pointer-events:none;
+  background:rgba(4,12,19,.55);border:1px solid rgba(120,200,230,.22);
+  box-shadow:0 12px 30px rgba(0,0,0,.45),inset 0 0 30px rgba(60,160,200,.10);
+  backdrop-filter:blur(4px);
+}
+.radar canvas{display:block;width:100%;height:100%;border-radius:50%}
+.radar em{
+  position:absolute;left:0;right:0;bottom:-16px;text-align:center;font-style:normal;
+  font-size:9.5px;color:#9fd7ea;letter-spacing:.04em;white-space:nowrap;
+}
+/* on a phone the scope takes the classic corner under the pause buttons: the
+   bottom-left already belongs to the thumbstick and the contract card */
+body.touch-mode .radar{
+  width:88px;height:88px;
+  top:calc(50px + var(--safe-t));bottom:auto;
+}
+body.touch-mode .radar em{font-size:8.5px;bottom:-12px}
 @media (max-width:560px){
   .phase-chip{display:none}
   .compass{top:calc(50px + var(--safe-t));max-width:78vw}
@@ -533,4 +572,4 @@ body.down #touch .tcirc{pointer-events:none}
 @media (max-height:520px){
   .bounty-card{top:calc(96px + var(--safe-t))}
 }
-body.touch-mode .compass{top:calc(126px + var(--safe-t))}
+body.touch-mode .compass{top:calc(150px + var(--safe-t))}
