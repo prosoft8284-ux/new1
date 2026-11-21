@@ -1851,11 +1851,19 @@
     SFX3D.play('kill', e.pos);
     if (e.group.userData.bar) e.group.userData.bar.visible = false;
     /* a named hunter is not gone: the sky owes us ten seconds */
+    if (e.vengeance && e.avengedFor) {
+      /* the avenger is down: now the hunter himself can come back */
+      for (var rs = 0; rs < G.roster.length; rs++) {
+        if (G.roster[rs].def.name === e.avengedFor) { G.roster[rs].timer = HUNTER_RESPAWN; break; }
+      }
+      showBanner('انتقام گرفته شد', 'خون‌خواه افتاد · ' + e.avengedFor + ' به آسمان برمی‌گردد', 2200);
+    }
     if (e.hunterDef && e.slot) {
-      /* someone who loved them takes up the blade */
-      if (!botKill && !e.vengeance) enqueueAvenger(e);
       e.slot.e = null;
       e.slot.timer = HUNTER_RESPAWN;
+      /* someone who loved them takes up the blade, and the seat stays empty
+         while the grudge is out there: the island never fields two of them */
+      if (!botKill && !e.vengeance && enqueueAvenger(e)) e.slot.timer = 1e9;
       e.slot.deaths++;
       if (!botKill) {
         G.parts += 2;
@@ -3657,13 +3665,14 @@
      hunter's colour and name, and they only have one thing on their mind. */
   function enqueueAvenger(e) {
     if (!G.revenge) G.revenge = [];
-    for (var i = 0; i < G.revenge.length; i++) if (G.revenge[i].name === e.name) return;
+    for (var i = 0; i < G.revenge.length; i++) if (G.revenge[i].name === e.name) return false;
     G.revenge.push({
       name: e.name,
       accent: (e.hunterDef && e.hunterDef.accent) || 0xff5b6e,
       at: G.t + rand(7, 12)
     });
     showBanner('خون‌خواه بیدار شد', 'کسی برای ' + e.name + ' تیغ برداشت', 2100);
+    return true;
   }
 
   function updateRevenge(dt) {
@@ -3678,6 +3687,7 @@
       var av = spawnEnemy('avenger', x, z, false, false);
       if (!av) { G.revenge.splice(i, 1); continue; }
       av.vengeance = true;
+      av.avengedFor = r.name;
       av.name = r.name + ' · خون‌خواه';
       av.pro = true;
       av.poise = true;
@@ -4577,7 +4587,7 @@
           var zz = ZONES[ci];
           if (Math.hypot(P.pos.x - zz.x, P.pos.z - zz.z) < zz.r * 0.85) { underCamp = true; break; }
         }
-        SFX3D.play('foot', null, underCamp ? 'wood' : (P.pos.y > 12 ? 'stone' : 'sand'));
+        SFX3D.play('foot', null, underCamp ? 'wood' : (P.pos.y > 22 ? 'stone' : 'sand'));
       }
     }
 

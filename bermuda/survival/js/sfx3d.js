@@ -371,6 +371,16 @@ window.SFX3D = (function () {
       } catch (e) {}
     },
     isMuted: function () { return muted; },
+    /* used by the test harness: proves the ambient graph really exists */
+    debug: function () {
+      return {
+        ready: ready, state: ctx ? ctx.state : null,
+        layers: ambience ? Object.keys(ambience) : [],
+        wind: ambience && ambience.windGain ? +ambience.windGain.gain.value.toFixed(4) : null,
+        surf: ambience && ambience.surfGain ? +ambience.surfGain.gain.value.toFixed(4) : null,
+        murmur: ambience && ambience.murGain ? +ambience.murGain.gain.value.toFixed(4) : null
+      };
+    },
     toggle: function () {
       muted = !muted;
       if (master) master.gain.value = muted ? 0 : 0.8;
