@@ -64,8 +64,14 @@
     </div>
   </div>
 
+  <div id="items" class="items">
+    <button class="item" data-it="bomb" type="button" aria-label="بمب آتشزا">✷<b>۰</b></button>
+    <button class="item" data-it="shield" type="button" aria-label="سپر">◈<b>۰</b></button>
+    <button class="item" data-it="rage" type="button" aria-label="معجون خشم">✹<b>۰</b></button>
+  </div>
+
   <div id="combo" class="combo"><b id="comboNum">×۲</b><small>زنجیرهٔ کشتار</small></div>
-  <div id="tip">WASD حرکت · کلیک ضربهٔ شمشیر · F ضربهٔ سنگین · R تعویض شمشیر · E میز کار · Shift دویدن · Esc توقف</div>
+  <div id="tip">WASD حرکت · کلیک ضربهٔ شمشیر · F چرخش · R تعویض شمشیر · Z بمب · X سپر · C خشم · E میز کار · Shift دویدن</div>
 </div>
 
 <div id="flash"></div>
@@ -146,6 +152,7 @@
     <h2>میز کار بِیکن</h2>
     <p class="muted">قطعات فنی: <b id="partNum">۰</b> · جان: <b id="benchHp">۱۰۰ / ۱۰۰</b></p>
     <div class="bench-rows">
+      <button class="go ghost" type="button" data-buy="kit">بستهٔ تجهیزات (بمب · سپر · خشم)<em>۳ قطعه</em></button>
       <button class="go ghost" type="button" data-buy="dmg">تیزی همهٔ شمشیرها +۱۴٪<em>۳ قطعه</em></button>
       <button class="go ghost" type="button" data-buy="reach">برد ضربه +۱۲ سانتی‌متر<em>۳ قطعه</em></button>
       <button class="go ghost" type="button" data-buy="speed">ضربه‌های سریع‌تر<em>۲ قطعه</em></button>

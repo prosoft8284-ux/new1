@@ -198,7 +198,13 @@ window.SFX3D = (function () {
     swing: function (o, t) {
       noise(o, t, 0.17, 'bandpass', 1100, 260, 1.6, 0.24);
       noise(o, t + 0.03, 0.09, 'highpass', 3400, 1500, 1.2, 0.09);
-    }
+    },
+    /* the same air, but a whole body behind it: slower, lower, longer */
+    swingBig: function (o, t) {
+      noise(o, t, 0.28, 'bandpass', 760, 170, 1.1, 0.34);
+      noise(o, t + 0.02, 0.14, 'highpass', 3000, 1100, 1, 0.13);
+      tone(o, t, 'sine', 118, 58, 0.24, 0.15);
+    },
   };
 
   /* ---------------- ambient bed ---------------- */

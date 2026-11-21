@@ -112,10 +112,16 @@
      with when the sky gives you another chance. Reach, arc and damage climb
      with the tier; stamina (نفس) is the only ammunition a blade needs. */
   var WEAPONS = [
-    { key: 'broken', name: 'شمشیر شکسته', short: 'شکسته', tier: 1, dmg: 32, rate: 0.46, reach: 2.6, arc: 1.0, kick: 0.02, color: 0xffe6a6, owned: true },
-    { key: 'iron', name: 'شمشیر آهنی', short: 'آهنی', tier: 2, dmg: 48, rate: 0.42, reach: 2.9, arc: 1.1, kick: 0.025, color: 0xbfe9ff, owned: false },
-    { key: 'silver', name: 'تیغهٔ نقره', short: 'نقره', tier: 3, dmg: 68, rate: 0.38, reach: 3.1, arc: 1.15, kick: 0.03, color: 0xd8e9ff, owned: false },
-    { key: 'ember', name: 'شمشیر کهربا', short: 'کهربا', tier: 4, dmg: 92, rate: 0.34, reach: 3.3, arc: 1.25, kick: 0.035, color: 0xffb35c, owned: false }
+    { key: 'broken', name: 'شمشیر شکسته', short: 'شکسته', tier: 1, dmg: 32, rate: 0.46, reach: 2.6, arc: 1.0, kick: 0.02, color: 0xffe6a6, owned: true, look: 'broken' },
+    { key: 'iron', name: 'شمشیر آهنی', short: 'آهنی', tier: 2, dmg: 48, rate: 0.42, reach: 2.9, arc: 1.1, kick: 0.025, color: 0xbfe9ff, owned: false, look: 'iron' },
+    { key: 'silver', name: 'تیغهٔ نقره', short: 'نقره', tier: 3, dmg: 68, rate: 0.38, reach: 3.1, arc: 1.15, kick: 0.03, color: 0xd8e9ff, owned: false, look: 'silver' },
+    { key: 'gale', name: 'شمشیر باد', short: 'باد', tier: 3, dmg: 56, rate: 0.29, reach: 3.5, arc: 1.3, kick: 0.018, color: 0x9dffe0, owned: false, look: 'gale' },
+    { key: 'frost', name: 'تیغهٔ یخ', short: 'یخ', tier: 3, dmg: 62, rate: 0.4, reach: 3.0, arc: 1.12, kick: 0.03, color: 0x8ff0ff, owned: false, look: 'frost', trait: 'chill' },
+    { key: 'ember', name: 'شمشیر کهربا', short: 'کهربا', tier: 4, dmg: 92, rate: 0.34, reach: 3.3, arc: 1.25, kick: 0.035, color: 0xffb35c, owned: false, look: 'ember', trait: 'burn' },
+    { key: 'blood', name: 'تیغهٔ خون', short: 'خون', tier: 4, dmg: 76, rate: 0.36, reach: 3.1, arc: 1.18, kick: 0.03, color: 0xff5b6e, owned: false, look: 'blood', trait: 'leech' },
+    { key: 'hammer', name: 'پتک جنگی', short: 'پتک', tier: 4, dmg: 118, rate: 0.62, reach: 3.0, arc: 0.9, kick: 0.07, color: 0xffd166, owned: false, look: 'hammer', trait: 'crush' },
+    { key: 'sun', name: 'تیغهٔ خورشید', short: 'خورشید', tier: 5, dmg: 96, rate: 0.33, reach: 3.4, arc: 1.28, kick: 0.04, color: 0xffe08a, owned: false, look: 'sun', trait: 'burn' },
+    { key: 'legend', name: 'شمشیر افسانه', short: 'افسانه', tier: 6, dmg: 112, rate: 0.31, reach: 3.6, arc: 1.3, kick: 0.04, color: 0xffffff, owned: false, look: 'legend', trait: 'leech' }
   ];
 
   /* old checkpoints and zone caches still name the firearms: every one of them
@@ -165,6 +171,7 @@
     dmgSrc: null, threat: 0, threatT: 0, diffExtra: 0,
     shake: 0, recoil: 0, bloom: 0, recoverPitch: 0, roll: 0, hitT: 0, bannerT: 0, stepT: 0,
     swingKind: 0, comboStep: 0, waves: [],
+    hitstop: 0, punch: 0, rageT: 0, shieldT: 0, items: { bomb: 0, shield: 0, rage: 0 },
     enemies: [], bolts: [], ebolts: [], pickups: [], tracers: [],
     parts: [], locked: false, hadLock: false, dragging: false, dragSX: 0, dragSY: 0,
     quality: 'high', started: false
@@ -1114,39 +1121,114 @@
   /* the blade view-model: forged steel, a notched edge on the broken tier and
      a rune-lit fuller on the top two. Built once per tier and shown one at a
      time, exactly the way the guns used to be swapped. */
+  /* Ten blades with their own silhouettes: a chipped starter sword, four
+     straight tiers, a winged wind blade, a jagged ice edge, a war hammer and
+     two glowing endgame pieces. Colour, thickness and ornaments carry the
+     identity; the stats carry the feel. */
   function buildSword(kind) {
-    var tier = 1;
-    for (var i = 0; i < WEAPONS.length; i++) if (WEAPONS[i].key === kind) tier = WEAPONS[i].tier;
+    var w = null;
+    for (var i = 0; i < WEAPONS.length; i++) if (WEAPONS[i].key === kind) w = WEAPONS[i];
+    var tier = w ? w.tier : 1;
+    var look = (w && w.look) || 'iron';
     var g = new T.Group();
-    var steel = new T.MeshStandardMaterial({ color: 0xc9d2df, metalness: 0.55, roughness: 0.3, envMapIntensity: 1.3 });
-    if (tier <= 1) { steel.color.setHex(0x8f959e); steel.metalness = 0.62; steel.roughness = 0.62; }
-    if (tier >= 3) { steel.emissive = new T.Color(tier >= 4 ? 0xff7a1a : 0x6fa8ff); steel.emissiveIntensity = tier >= 4 ? 0.7 : 0.42; }
-    else if (tier === 2) { steel.emissive = new T.Color(0x3a6a9a); steel.emissiveIntensity = 0.16; }
-    var brass = new T.MeshStandardMaterial({ color: tier >= 3 ? 0xffc978 : 0x9c8150, metalness: 0.92, roughness: 0.3 });
-    var leather = new T.MeshStandardMaterial({ color: tier >= 3 ? 0x3a1220 : 0x2a1e18, roughness: 0.96 });
-    var bladeLen = 0.56 + tier * 0.055;
 
-    var blade = new T.Mesh(new T.BoxGeometry(0.078, bladeLen, 0.016), steel);
-    blade.position.y = bladeLen * 0.5 + 0.1;
+    var steelCol = 0xc9d2df, glowCol = 0x000000, glowK = 0, guardCol = 0xf0b94a;
+    if (look === 'broken') { steelCol = 0x8f959e; guardCol = 0x6b6047; }
+    else if (look === 'gale') { steelCol = 0xd8fff4; guardCol = 0x6ac9b0; glowCol = 0x2affc4; glowK = 0.4; }
+    else if (look === 'frost') { steelCol = 0xcaf6ff; guardCol = 0x7ab8d8; glowCol = 0x2ad4ff; glowK = 0.55; }
+    else if (look === 'ember') { steelCol = 0xffd0a0; guardCol = 0xffa040; glowCol = 0xff6a10; glowK = 0.8; }
+    else if (look === 'blood') { steelCol = 0xe0b0b8; guardCol = 0x8a2030; glowCol = 0xff1a3a; glowK = 0.6; }
+    else if (look === 'sun') { steelCol = 0xfff0c0; guardCol = 0xffd166; glowCol = 0xffa000; glowK = 0.95; }
+    else if (look === 'legend') { steelCol = 0xe8eeff; guardCol = 0xffe9a8; glowCol = 0xfff6d8; glowK = 0.45; }
+    else if (look === 'silver') { steelCol = 0xe8f2ff; guardCol = 0xd8c79a; glowCol = 0x4a7ac0; glowK = 0.4; }
+    else if (look === 'iron') { steelCol = 0xbfc9d6; guardCol = 0x8a7a5a; glowCol = 0x2a4a6a; glowK = 0.12; }
+    else if (look === 'hammer') { steelCol = 0xaab6c6; guardCol = 0xc9914a; glowCol = 0xffa040; glowK = 0.22; }
+
+    var steel = new T.MeshStandardMaterial({ color: steelCol, metalness: 0.6, roughness: look === 'broken' ? 0.62 : 0.26, envMapIntensity: 1.35 });
+    if (glowK) { steel.emissive = new T.Color(glowCol); steel.emissiveIntensity = glowK; }
+    var brass = new T.MeshStandardMaterial({ color: guardCol, metalness: 0.55, roughness: 0.42, emissive: new T.Color(glowCol), emissiveIntensity: glowK * 0.45 });
+    var leather = new T.MeshStandardMaterial({ color: 0x2a1e18, roughness: 0.95 });
+
+    if (look === 'hammer') {
+      var haft = new T.Mesh(new T.CylinderGeometry(0.03, 0.036, 0.96, 8), leather);
+      haft.position.y = 0.36;
+      g.add(haft);
+      var head = new T.Mesh(new T.BoxGeometry(0.3, 0.22, 0.24), steel);
+      head.position.y = 0.88;
+      g.add(head);
+      [-0.085, 0.085].forEach(function (x) {
+        var band = new T.Mesh(new T.BoxGeometry(0.045, 0.245, 0.26), brass);
+        band.position.set(x, 0.88, 0);
+        g.add(band);
+      });
+      var spike = new T.Mesh(new T.ConeGeometry(0.075, 0.24, 4), steel);
+      spike.position.y = 1.1;
+      g.add(spike);
+      var cap = new T.Mesh(new T.SphereGeometry(0.045, 8, 6), brass);
+      cap.position.y = -0.16;
+      g.add(cap);
+      var hammerTip = new T.Object3D();
+      hammerTip.position.y = 1.1;
+      g.add(hammerTip);
+      g.userData.muzzle = hammerTip;
+      g.userData.glows = [];
+      g.userData.tier = tier;
+      g.traverse(function (o) { if (o.isMesh) { o.castShadow = false; o.frustumCulled = false; } });
+      return g;
+    }
+
+    var len = look === 'gale' ? 0.74 : look === 'legend' ? 0.8 : look === 'frost' ? 0.68 : (look === 'sun' ? 0.78 : (look === 'silver' ? 0.72 : (look === 'ember' ? 0.74 : 0.6 + tier * 0.04)));
+    var wide = look === 'gale' ? 0.048 : (look === 'sun' || look === 'legend') ? 0.088 : 0.072;
+    var blade = new T.Mesh(new T.BoxGeometry(wide, len, 0.018), steel);
+    blade.position.y = len * 0.5 + 0.1;
     g.add(blade);
-    var tip = new T.Mesh(new T.ConeGeometry(0.052, 0.2, 4), steel);
-    tip.position.y = bladeLen + 0.2;
+    var tip = new T.Mesh(new T.ConeGeometry(wide * 0.64, 0.2, 4), steel);
+    tip.position.y = len + 0.19;
     tip.rotation.y = Math.PI / 4;
     g.add(tip);
-    /* fuller + a chipped notch on the starter blade */
-    var fuller = new T.Mesh(new T.BoxGeometry(0.011, bladeLen * 0.8, 0.019), new T.MeshStandardMaterial({ color: 0x6f7a8a, metalness: 0.7, roughness: 0.5 }));
-    fuller.position.y = bladeLen * 0.5 + 0.08;
+    var fuller = new T.Mesh(new T.BoxGeometry(0.012, len * 0.8, 0.02), new T.MeshStandardMaterial({ color: look === 'blood' ? 0x4a0810 : 0x6f7a8a, metalness: 0.7, roughness: 0.5 }));
+    fuller.position.y = len * 0.5 + 0.08;
     g.add(fuller);
-    /* a brighter edge strip fakes a bevel: without it the blade reads as a ribbon */
-    var edge = new T.Mesh(new T.BoxGeometry(0.018, bladeLen * 0.98, 0.011), new T.MeshStandardMaterial({ color: 0xf2f8ff, metalness: 0.95, roughness: 0.12 }));
-    edge.position.set(0.031, bladeLen * 0.5 + 0.1, 0);
+    var edge = new T.Mesh(
+      new T.BoxGeometry(0.016, len * 0.98, 0.012),
+      new T.MeshStandardMaterial({ color: 0xffffff, metalness: 0.95, roughness: 0.1, emissive: new T.Color(glowK ? glowCol : 0x9fb6cc), emissiveIntensity: glowK ? glowK * 0.9 : 0.15 })
+    );
+    edge.position.set(wide * 0.4, len * 0.5 + 0.1, 0);
     g.add(edge);
-    if (tier <= 1) {
+
+    if (look === 'broken') {
       var chip = new T.Mesh(new T.BoxGeometry(0.056, 0.035, 0.018), new T.MeshStandardMaterial({ color: 0x2a2a2e, roughness: 1 }));
-      chip.position.set(0, bladeLen * 0.62, 0);
+      chip.position.set(0, len * 0.62, 0);
       g.add(chip);
     }
-    var guard = new T.Mesh(new T.BoxGeometry(0.22 + tier * 0.02, 0.038, 0.055), brass);
+    if (look === 'frost') {
+      for (var f = 0; f < 4; f++) {
+        var icicle = new T.Mesh(new T.ConeGeometry(0.026, 0.14 - f * 0.02, 5), new T.MeshStandardMaterial({ color: 0x9be8ff, emissive: 0x2ad4ff, emissiveIntensity: 1.2, roughness: 0.2 }));
+        icicle.position.set(-wide * 0.6, len * (0.25 + f * 0.16), 0);
+        icicle.rotation.z = 1.1;
+        g.add(icicle);
+      }
+    }
+    if (look === 'gale') {
+      [-1, 1].forEach(function (s) {
+        var wing = new T.Mesh(new T.BoxGeometry(0.11, 0.02, 0.06), brass);
+        wing.position.set(s * 0.12, 0.1, 0);
+        wing.rotation.z = s * 0.5;
+        g.add(wing);
+      });
+    }
+    if (look === 'sun' || look === 'legend') {
+      for (var r = 0; r < 3; r++) {
+        var rune = new T.Mesh(new T.BoxGeometry(0.03, 0.016, 0.021), new T.MeshBasicMaterial({ color: glowCol }));
+        rune.position.set(0, len * (0.3 + r * 0.2), 0.011);
+        g.add(rune);
+      }
+      var crown = new T.Mesh(new T.SphereGeometry(0.035, 8, 6), new T.MeshBasicMaterial({ color: glowCol }));
+      crown.position.y = len + 0.3;
+      g.add(crown);
+    }
+    var guardW = look === 'legend' ? 0.34 : look === 'gale' ? 0.3 : 0.22 + tier * 0.012;
+    var guard = new T.Mesh(new T.BoxGeometry(guardW, 0.038, 0.055), brass);
     guard.position.y = 0.095;
     g.add(guard);
     var grip = new T.Mesh(new T.CylinderGeometry(0.024, 0.028, 0.18, 8), leather);
@@ -1155,16 +1237,11 @@
     var pommel = new T.Mesh(new T.SphereGeometry(0.036, 8, 6), brass);
     pommel.position.y = -0.105;
     g.add(pommel);
-    if (tier >= 2) {
-      var gem = new T.Mesh(
-        new T.IcosahedronGeometry(0.026, 0),
-        new T.MeshBasicMaterial({ color: tier >= 4 ? 0xffa040 : 0x9be8ff })
-      );
-      gem.position.set(0, 0.095, 0.04);
-      g.add(gem);
-    }
+    var gem = new T.Mesh(new T.IcosahedronGeometry(0.028, 0), new T.MeshBasicMaterial({ color: glowK ? glowCol : 0x9be8ff }));
+    gem.position.set(0, 0.095, 0.04);
+    g.add(gem);
     var tipNode = new T.Object3D();
-    tipNode.position.y = bladeLen + 0.24;
+    tipNode.position.y = len + 0.26;
     g.add(tipNode);
     g.userData.muzzle = tipNode;
     g.userData.glows = [];
@@ -1175,19 +1252,19 @@
 
   var guns = WEAPONS.map(function (w) { return buildSword(w.key); });
   guns.forEach(function (g, i) {
-    g.position.set(IS_TOUCH ? -0.02 : 0.24, IS_TOUCH ? -0.58 : -0.5, IS_TOUCH ? -0.56 : -0.62);
-    g.scale.setScalar(IS_TOUCH ? 0.42 : 0.46);
-    g.rotation.set(-0.08, IS_TOUCH ? 0.72 : 0.3, IS_TOUCH ? 0.18 : 0.42);
+    g.position.set(IS_TOUCH ? -0.04 : 0.24, IS_TOUCH ? -0.56 : -0.5, IS_TOUCH ? -0.54 : -0.62);
+    g.scale.setScalar(IS_TOUCH ? 0.32 : 0.44);
+    g.rotation.set(-0.06, IS_TOUCH ? 0.95 : 0.3, IS_TOUCH ? 0.28 : 0.42);
     g.visible = i === 0;
     camera.add(g);
   });
   /* held poses: idle low-left, guard (right-click / aim) raised, sprint tucked */
   /* on a phone the right third is the button pad, so the blade waits in the
      gap between the thumbstick and the trigger, low enough to stay clear */
-  var SWORD_HIP = IS_TOUCH ? new T.Vector3(-0.02, -0.58, -0.56) : new T.Vector3(0.24, -0.5, -0.62);
-  var SWORD_GUARD = IS_TOUCH ? new T.Vector3(-0.06, -0.42, -0.5) : new T.Vector3(0.08, -0.34, -0.5);
-  var SWORD_SPRINT = IS_TOUCH ? new T.Vector3(0.06, -0.62, -0.54) : new T.Vector3(0.34, -0.56, -0.54);
-  var SWORD_RZ = IS_TOUCH ? 0.18 : 0.42;
+  var SWORD_HIP = IS_TOUCH ? new T.Vector3(-0.04, -0.56, -0.54) : new T.Vector3(0.24, -0.5, -0.62);
+  var SWORD_GUARD = IS_TOUCH ? new T.Vector3(-0.02, -0.44, -0.5) : new T.Vector3(0.08, -0.34, -0.5);
+  var SWORD_SPRINT = IS_TOUCH ? new T.Vector3(0.06, -0.6, -0.52) : new T.Vector3(0.34, -0.56, -0.54);
+  var SWORD_RZ = IS_TOUCH ? 0.28 : 0.42;
   var SWORD_RZ_AIM = IS_TOUCH ? 0.02 : 0.2;
 
   /* the white arc that follows a swing: a cheap additive ring sector that is
@@ -1587,6 +1664,15 @@
     }
     if (Math.random() < (e.elite ? 0.7 : 0.4)) spawnPickup('med', e.pos.x - 1.0, e.pos.z + 0.5);
     if (Math.random() < 0.35) spawnPickup('part', e.pos.x + 0.5, e.pos.z - 1.1);
+    /* hunters carry the good stuff: a body worth cutting down twice */
+    if (Math.random() < (e.hunterDef ? 0.9 : e.leader ? 0.5 : 0.14)) {
+      spawnPickup(pick(['bomb', 'shield', 'rage']), e.pos.x + rand(-1, 1), e.pos.z + rand(-1, 1));
+    }
+    /* a named hunter occasionally carries the next blade in the chain */
+    if (e.hunterDef && Math.random() < 0.22) {
+      var nl = nextLockedSword();
+      if (nl) spawnPickup(nl.key, e.pos.x + rand(-1.4, 1.4), e.pos.z + rand(-1.4, 1.4));
+    }
   }
 
   /* ---------------------------------------------------------------- pickups */
@@ -1597,6 +1683,9 @@
     med: [0x7dffb0, 0x1fa85c], ammo: [0xffd479, 0xa8741a], part: [0xc9b3ff, 0x6a3ec9],
     stam: [0x9dffe0, 0x1f9a7a], broken: [0xa8b4c2, 0x3a4450], iron: [0xbfe9ff, 0x2a6a9a],
     silver: [0xdceaff, 0x4a6aa8], ember: [0xffb35c, 0xa8541a],
+    gale: [0x9dffe0, 0x1f8a6a], frost: [0x8ff0ff, 0x1a7aa8], blood: [0xff8a9a, 0x8a0a1a],
+    hammer: [0xffd166, 0x8a6414], sun: [0xffe08a, 0xa86a00], legend: [0xffffff, 0x8a8aa8],
+    bomb: [0xffb35c, 0x8a2a00], shield: [0x8ff0ff, 0x1a6a9a], rage: [0xff5b6e, 0x8a0a1a],
     rifle: [0x9fe8ff, 0x2a7ea8], shotgun: [0xffb27a, 0xa85a1a], plasma: [0xc9a6ff, 0x5a2aa8]
   };
 
@@ -1673,6 +1762,47 @@
       g.add(cork);
       return g;
     }
+    /* ---------- consumables: a bomb, a ward, a rage draught ---------- */
+    if (kind === 'bomb') {
+      var orb = new T.Mesh(new T.SphereGeometry(0.26, 12, 10), new T.MeshStandardMaterial({ color: 0x2a2a30, roughness: 0.55, metalness: 0.4 }));
+      orb.position.y = 0.22;
+      orb.castShadow = true;
+      g.add(orb);
+      var fuse = new T.Mesh(new T.CylinderGeometry(0.026, 0.03, 0.22, 6), pickupMat.brass);
+      fuse.position.set(0, 0.46, 0);
+      fuse.rotation.z = 0.3;
+      g.add(fuse);
+      var spark = new T.Mesh(new T.SphereGeometry(0.06, 8, 6), new T.MeshBasicMaterial({ color: 0xffb03a }));
+      spark.position.set(0.06, 0.56, 0);
+      g.add(spark);
+      return g;
+    }
+    if (kind === 'shield') {
+      var disc = new T.Mesh(
+        new T.CylinderGeometry(0.3, 0.3, 0.07, 14),
+        new T.MeshStandardMaterial({ color: 0x9be8ff, emissive: 0x1a6a9a, emissiveIntensity: 0.9, metalness: 0.85, roughness: 0.25 })
+      );
+      disc.rotation.z = Math.PI / 2;
+      disc.position.y = 0.28;
+      g.add(disc);
+      var boss = new T.Mesh(new T.SphereGeometry(0.08, 8, 6), pickupMat.brass);
+      boss.position.set(0.05, 0.28, 0);
+      g.add(boss);
+      return g;
+    }
+    if (kind === 'rage') {
+      var vial = new T.Mesh(new T.CylinderGeometry(0.1, 0.13, 0.32, 10), new T.MeshStandardMaterial({ color: 0x30060c, roughness: 0.4, metalness: 0.3 }));
+      vial.position.y = 0.1;
+      g.add(vial);
+      var juice = new T.Mesh(
+        new T.SphereGeometry(0.11, 10, 8),
+        new T.MeshStandardMaterial({ color: 0xff5b6e, emissive: 0x8a0a1a, emissiveIntensity: 1.5, roughness: 0.3 })
+      );
+      juice.position.y = 0.3;
+      g.add(juice);
+      return g;
+    }
+
     var col = PICKUP_COL[kind] || PICKUP_COL.stam;
     /* a dropped blade lies across the ground, glowing at its tier */
     if (!gunPickupMat[kind]) {
@@ -1721,6 +1851,15 @@
     if (e.code === 'Digit2') switchWeapon(1);
     if (e.code === 'Digit3') switchWeapon(2);
     if (e.code === 'Digit4') switchWeapon(3);
+    if (e.code === 'Digit5') switchWeapon(4);
+    if (e.code === 'Digit6') switchWeapon(5);
+    if (e.code === 'Digit7') switchWeapon(6);
+    if (e.code === 'Digit8') switchWeapon(7);
+    if (e.code === 'Digit9') switchWeapon(8);
+    if (e.code === 'Digit0') switchWeapon(9);
+    if (e.code === 'KeyZ') useItem('bomb');
+    if (e.code === 'KeyX') useItem('shield');
+    if (e.code === 'KeyC') useItem('rage');
     if (e.code === 'KeyF') tryMelee();
     if (e.code === 'KeyE') { if (G.benchOpen) closeBench(); else openBench(); }
     if (e.code === 'Escape') { if (G.running && !G.paused) pauseGame(); }
@@ -1843,6 +1982,17 @@
     if (swap) swap.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); startReload(); });
     var benchBtn = $('tBench');
     if (benchBtn) benchBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); openBench(); });
+    /* the item bar: one tap, one use, nothing to open first */
+    var itemBar = $('items');
+    if (itemBar) {
+      var iBtns = itemBar.children;
+      for (var ii = 0; ii < iBtns.length; ii++) {
+        iBtns[ii].addEventListener('pointerdown', function (ev) {
+          ev.preventDefault(); ev.stopPropagation();
+          useItem(this.getAttribute('data-it'));
+        });
+      }
+    }
 
     var sp = $('tSprint');
     if (sp) {
@@ -2030,6 +2180,8 @@
       if (G.t - (G.emptyT || -9) > 0.4) { SFX3D.play('empty'); G.emptyT = G.t; toast('نفس کم است — یک لحظه صبر کن یا غارت کن'); }
       return;
     }
+    /* a rage draught turns three cuts into a sentence the island remembers */
+    if (G.rageT > 0) st.dmg *= 1.5;
     var finisher = !heavy && chain === 2;
     if (!heavy) {
       st.dmg *= 1 + chain * 0.2;
@@ -2055,7 +2207,7 @@
     G.roll += rand(-1, 1) * w.kick * 0.8;
     muzzleLight.color.setHex(w.color);
     muzzleLight.intensity = heavy ? 4.5 : 2.2;
-    SFX3D.play('swing');
+    SFX3D.play(heavy || finisher ? 'swingBig' : 'swing');
 
     var fx = -Math.sin(P.yaw), fz = -Math.cos(P.yaw);
     var hits = [];
@@ -2075,9 +2227,17 @@
       var he = hits[h].e;
       var pt = new T.Vector3(he.pos.x, he.pos.y + he.def.h * 0.58, he.pos.z);
       damageEnemy(he, st.dmg, pt, false);
-      if ((heavy || finisher) && !he.dead) {
+      /* the blade's own temperament, not just its numbers */
+      var tr = w.trait;
+      if (!he.dead && tr === 'chill') he.slowT = Math.max(he.slowT || 0, 2.4);
+      if (!he.dead && tr === 'burn') he.burnT = Math.max(he.burnT || 0, 2.8);
+      if (tr === 'leech') G.hp = Math.min(G.maxHp, G.hp + st.dmg * 0.05);
+      /* impact weight: a short freeze of the world, then a camera punch */
+      G.hitstop = Math.max(G.hitstop, heavy ? 0.11 : (finisher ? 0.08 : (tr === 'crush' ? 0.09 : 0.045)));
+      G.punch = Math.max(G.punch, heavy ? 0.5 : (finisher ? 0.38 : 0.22));
+      if ((heavy || finisher || tr === 'crush') && !he.dead) {
         he.stagger = Math.max(he.stagger, heavy ? 0.75 : 0.5);
-        var push = heavy ? 1.0 : 0.6;
+        var push = heavy ? 1.0 : (tr === 'crush' ? 1.3 : 0.6);
         he.pos.x += (he.pos.x - P.pos.x) / Math.max(0.01, hits[h].d) * push;
         he.pos.z += (he.pos.z - P.pos.z) / Math.max(0.01, hits[h].d) * push;
       }
@@ -2185,6 +2345,85 @@
      Every round the island picks one living thing as the contract: it is
      marked in gold, it grows tougher and it hunts you instead of holding its
      post. Cut it down and the island pays, then names the next one. */
+  /* --------------------------------------------------------------- items
+     Three consumables ride in a small bar above the thumbs: a fire bomb for
+     the pack that closed in, a ward for the second before a contract swings,
+     and a rage draught for the moment the chain has to break something. */
+  var ITEM_NAME = { bomb: 'بمب آتش‌زا', shield: 'سپر نور', rage: 'معجون خشم' };
+
+  function updateItemsHUD() {
+    var bar = $('items');
+    if (!bar) return;
+    var btns = bar.children;
+    for (var i = 0; i < btns.length; i++) {
+      var k = btns[i].getAttribute('data-it');
+      var n = G.items[k] || 0;
+      setText(btns[i].querySelector('b'), fa(n));
+      btns[i].classList.toggle('off', n <= 0);
+      btns[i].classList.toggle('on', k === 'shield' ? G.shieldT > 0 : (k === 'rage' ? G.rageT > 0 : false));
+    }
+  }
+
+  function throwBomb() {
+    var fx = -Math.sin(P.yaw), fz = -Math.cos(P.yaw);
+    var bx = P.pos.x + fx * 8.5, bz = P.pos.z + fz * 8.5;
+    /* land it on the first pawn in the path, otherwise where the eye lands */
+    for (var i = 0; i < G.enemies.length; i++) {
+      var e = G.enemies[i];
+      if (e.dead) continue;
+      var dx = e.pos.x - P.pos.x, dz = e.pos.z - P.pos.z;
+      var d = Math.hypot(dx, dz);
+      if (d > 13 || d < 1) continue;
+      if ((dx * fx + dz * fz) / d < 0.8) continue;
+      bx = e.pos.x; bz = e.pos.z;
+      break;
+    }
+    var by = heightAt(bx, bz) + 0.9;
+    emit(bx, by, bz, 34, 0xffb03a, 11, 0.7, 9);
+    emit(bx, by, bz, 16, 0xfff0c0, 6, 0.45, 7);
+    emit(bx, by, bz, 12, 0x2a2a2e, 4, 0.8, 4);
+    SFX3D.play('explode', { x: bx, y: by, z: bz });
+    G.shake = Math.min(1.5, G.shake + 0.9);
+    G.hitstop = Math.max(G.hitstop, 0.06);
+    slashWave(0xffb03a, { x: bx, y: by, z: bz }, 6);
+    var rad = 5.2;
+    for (var k = 0; k < G.enemies.length; k++) {
+      var en = G.enemies[k];
+      if (en.dead) continue;
+      var ed = Math.hypot(en.pos.x - bx, en.pos.z - bz);
+      if (ed > rad) continue;
+      damageEnemy(en, 95 * (1 - (ed / rad) * 0.5), null, false);
+      if (!en.dead) en.burnT = Math.max(en.burnT || 0, 2.2);
+    }
+    if (Math.hypot(P.pos.x - bx, P.pos.z - bz) < rad) hurtPlayer(14, { x: bx, y: by, z: bz });
+    if (G.barrels) {
+      for (var b = 0; b < G.barrels.length; b++) {
+        var bb = G.barrels[b];
+        if (!bb.dead && Math.hypot(bb.x - bx, bb.z - bz) < rad) damageBarrel(bb, 999, null);
+      }
+    }
+  }
+
+  function useItem(k) {
+    if (!G.running || G.paused || G.over || G.down) return;
+    if (!(G.items[k] > 0)) { toast(ITEM_NAME[k] + ' نداری — از شکارچی‌ها یا میز کار بگیر'); return; }
+    G.items[k]--;
+    if (k === 'bomb') throwBomb();
+    else if (k === 'shield') {
+      G.shieldT = 8;
+      showBanner('سپر نور', '۸ ثانیه آسیب دریافتی کمتر از نصف', 1600);
+      emit(P.pos.x, P.pos.y + 1.2, P.pos.z, 24, 0x8ff0ff, 4.5, 0.6, 3);
+      SFX3D.play('equip');
+    } else if (k === 'rage') {
+      G.rageT = 10;
+      showBanner('معجون خشم', '۱۰ ثانیه آسیب شمشیر ۵۰٪ بیشتر', 1600);
+      emit(P.pos.x, P.pos.y + 1.2, P.pos.z, 24, 0xff5b6e, 5, 0.6, 3);
+      SFX3D.play('wave');
+    }
+    updateItemsHUD();
+    updateHUD(true);
+  }
+
   function bountySquad() {
     var a = rand(0, 6.283), r = rand(34, 56);
     var x = P.pos.x + Math.cos(a) * r, z = P.pos.z + Math.sin(a) * r;
@@ -2517,6 +2756,8 @@
     G.bountyDelay = 3.5;
     spawnPickup('part', e.pos.x + 1.2, e.pos.z + 0.4);
     spawnPickup('med', e.pos.x - 1.2, e.pos.z + 0.4);
+    G.items[pick(['bomb', 'shield', 'rage'])]++;
+    updateItemsHUD();
     var next = nextLockedSword();
     if (next) spawnPickup(next.key, e.pos.x, e.pos.z + 1.6);
     SFX3D.play('victory');
@@ -2711,7 +2952,7 @@
 
   function switchWeapon(i) {
     if (i === G.widx || !WEAPONS[i]) return;
-    if (!WEAPONS[i].owned) { toast('این شمشیر را هنوز پیدا نکردی — قرارداد شکار یا جعبهٔ مناطق'); return; }
+    if (!WEAPONS[i].owned) { toast('این شمشیر را هنوز پیدا نکردی — قرارداد شکار و شکارچی‌ها'); return; }
     G.widx = i;
     G.wlvl = WEAPONS[i].tier;
     G.reloading = 0;
@@ -3415,6 +3656,13 @@
       if (!e.group.visible) e.group.visible = true;
       var nx = dx / dist, nz = dz / dist;
       var spd = e.def.spd * (e.elite ? 1.07 : 1) * (e.leader ? 1.08 : 1) * (1 + 0.1 * (G.nightK || 0));
+      if (e.slowT > 0) { e.slowT -= dt; spd *= 0.5; }
+      if (e.burnT > 0) {
+        e.burnT -= dt;
+        e.hp -= dt * 7;
+        if (Math.random() < dt * 9) emit(e.pos.x + rand(-0.4, 0.4), e.pos.y + rand(0.4, e.def.h), e.pos.z + rand(-0.4, 0.4), 1, 0xff8a2a, 1.2, 0.5, -2);
+        if (e.hp <= 0) { killEnemy(e, null); continue; }
+      }
       if (e.routed > 0) { e.routed -= dt; spd *= 0.4; e.cd = Math.max(e.cd, 1.1); }
       if (e.stagger > 0) { e.stagger -= dt; spd *= 0.12; }
       e.age += dt;
@@ -3870,6 +4118,7 @@
   function hurtPlayer(amount, from, by) {
     if (G.over || !G.running || G.down || G.falling || G.invuln > 0) return;
     amount *= (G.dmgTaken || 1);
+    if (G.shieldT > 0) amount *= 0.45;   /* a ward eats more than half of it */
     /* remembered so the pawn that finishes the contract is paid for it */
     if (by && !by.dead) { G.lastHitBy = by; G.lastHitByAt = G.t; }
     G.hp -= amount;
@@ -3991,8 +4240,18 @@
     camera.rotation.y = P.yaw;
     camera.rotation.x = P.pitch;
     camera.rotation.z = Math.sin(P.bobT) * 0.008 * Math.min(1, hs / 6) + G.roll;
+    /* punch: the camera takes the hit with you, forward and up a hair */
+    if (G.punch > 0) {
+      G.punch = Math.max(0, G.punch - dt * 3.2);
+      var pf = G.punch * 0.35;
+      camera.position.x += -Math.sin(P.yaw) * pf;
+      camera.position.z += -Math.cos(P.yaw) * pf;
+      camera.position.y += pf * 0.3;
+      camera.rotation.x += pf * 0.35;
+      camera.rotation.z += rand(-1, 1) * pf * 0.06;
+    }
 
-    var targetFov = G.aim ? 48 : 74;
+    var targetFov = G.aim ? 48 : 74 - G.punch * 9;
     if (Math.abs(camera.fov - targetFov) > 0.05) {
       camera.fov = lerp(camera.fov, targetFov, Math.min(1, dt * 12));
       camera.updateProjectionMatrix();
@@ -4141,6 +4400,16 @@
       updateAmmoHUD();
       return true;
     }
+    if (p.kind === 'bomb' || p.kind === 'shield' || p.kind === 'rage') {
+      var cap = 9;
+      if ((G.items[p.kind] || 0) >= cap) { toast(ITEM_NAME[p.kind] + ' پُر است'); return false; }
+      G.items[p.kind] = (G.items[p.kind] || 0) + 1;
+      G.looted++;
+      SFX3D.play('pickup');
+      showBanner('شیء برداشته شد', ITEM_NAME[p.kind] + ' · ' + fa(G.items[p.kind]), 1200);
+      updateItemsHUD();
+      return true;
+    }
     var wi = weaponByKey(p.kind);
     if (wi >= 0) {
       var nw = WEAPONS[wi];
@@ -4278,6 +4547,8 @@
         dd.querySelector('i').style.transform = 'rotate(' + (da * 180 / Math.PI).toFixed(0) + 'deg)';
       } else dd.classList.add('hidden');
     }
+
+    updateItemsHUD();
 
     var bh = $('benchHint');
     if (bh) {
@@ -4464,6 +4735,9 @@
     G.hp = G.maxHp;
     G.kills = 0;
     G.parts = 0;
+    G.items = { bomb: 0, shield: 0, rage: 0 };
+    G.shieldT = 0;
+    G.rageT = 0;
     G.upg = { dmg: 0, reach: 0, speed: 0 };
     G.down = false;
     G.falling = false;
@@ -4529,6 +4803,7 @@
     for (var i = 0; i < rows.length; i++) {
       var id = rows[i].getAttribute('data-buy');
       if (id === 'close') continue;
+      if (id === 'kit') { rows[i].classList.toggle('off', G.parts < 3); continue; }
       var u = null;
       for (var k = 0; k < UPGRADES.length; k++) if (UPGRADES[k].id === id) u = UPGRADES[k];
       if (!u) continue;
@@ -4540,6 +4815,19 @@
   }
   function benchBuy(id) {
     if (!G.benchOpen) return;
+    if (id === 'kit') {
+      if (G.parts < 3) { toast('قطعه کافی نیست · ' + fa(G.parts) + '/۳'); return; }
+      G.parts -= 3;
+      var kk = pick(['bomb', 'shield', 'rage']);
+      G.items[kk] = Math.min(9, (G.items[kk] || 0) + 1);
+      showBanner('بستهٔ تجهیزات', ITEM_NAME[kk] + ' · ' + fa(G.items[kk]), 1500);
+      SFX3D.play('equip');
+      updateItemsHUD();
+      updateBenchUI();
+      updateHUD(true);
+      saveRun();
+      return;
+    }
     if (id === 'heal') {
       if (G.hp >= G.maxHp) { toast('جان‌ت پُر است'); return; }
       if (G.parts < 2) { toast('قطعه کافی نیست · ' + fa(G.parts) + '/۲'); return; }
@@ -4749,6 +5037,9 @@
   }
 
   function update(dt) {
+    /* hit-stop: for a few hundredths of a second the whole island slows down
+       around the impact. This is most of what makes a cut feel heavy. */
+    if (G.hitstop > 0) { G.hitstop -= dt; dt *= 0.14; }
     G.t += dt;
     if (G.down) updateDown(dt);
     else updatePlayer(dt);
@@ -4786,6 +5077,8 @@
       if (G.bannerT <= 0) $('banner').classList.remove('show');
     }
     if (G.invuln > 0) G.invuln -= dt;
+    if (G.shieldT > 0) G.shieldT -= dt;
+    if (G.rageT > 0) G.rageT -= dt;
     updateHUD();
     SFX3D.listener(camera);
     moon.position.set(P.pos.x - 70, P.pos.y + 95, P.pos.z + 55);
@@ -4841,6 +5134,7 @@
     camera.position.set(P.pos.x, P.pos.y + EYE, P.pos.z);
     camera.rotation.y = P.yaw;
     updateAmmoHUD();
+    updateItemsHUD();
     updateHUD(true);
     G.last = performance.now();
     requestAnimationFrame(loop);

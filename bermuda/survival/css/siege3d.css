@@ -56,6 +56,36 @@ a{color:inherit}
 .hud-top .chip{background:rgba(5,15,24,.74);border-color:rgba(120,200,230,.22)}
 .ammo span,.ammo em,.ammo b,.ammo div{text-shadow:0 1px 3px rgba(0,0,0,.9)}
 .banner span{text-shadow:0 1px 4px rgba(0,0,0,.9)}
+
+/* ---------------- items: three slots under the thumbs ---------------- */
+.items{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + var(--safe-b));
+  display:flex;gap:8px;z-index:32;pointer-events:auto;
+}
+.items .item{
+  position:relative;width:clamp(46px,10.5vmin,54px);height:clamp(46px,10.5vmin,54px);
+  border-radius:14px;border:1px solid rgba(120,200,230,.3);padding:0;
+  background:radial-gradient(circle at 50% 28%,rgba(16,40,56,.94),rgba(6,14,22,.88));
+  color:#dff4ff;font:400 clamp(17px,4.2vmin,21px)/1 system-ui,sans-serif;
+  display:grid;place-items:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.45),inset 0 0 18px rgba(120,200,230,.08);
+  transition:transform .08s ease,box-shadow .12s ease,border-color .12s ease;
+}
+.items .item:active{transform:scale(.92)}
+.items .item b{
+  position:absolute;right:-4px;top:-6px;min-width:18px;height:18px;padding:0 4px;
+  border-radius:9px;background:#0d2230;border:1px solid rgba(120,200,230,.4);
+  font:700 10px/17px system-ui,sans-serif;color:#cfe9f6;text-align:center;
+}
+.items .item[data-it="bomb"]{color:#ffbe6e;border-color:rgba(255,150,60,.36)}
+.items .item[data-it="shield"]{color:#8ff0ff;border-color:rgba(120,220,255,.36)}
+.items .item[data-it="rage"]{color:#ff7d8c;border-color:rgba(255,110,130,.36)}
+.items .item.off{opacity:.38}
+.items .item.on{border-color:#8ff0ff;box-shadow:0 0 20px rgba(143,240,255,.55)}
+/* on a phone the bottom centre belongs to the control arc: lift the bar into
+   the gap above the joystick so a thumb never fights a bomb */
+body.touch-mode .items{bottom:calc(196px + var(--safe-b));gap:10px}
+@media (max-height:430px){.items{display:none}}
 .chip small{text-shadow:0 1px 3px rgba(0,0,0,.85)}
 .chip b{text-shadow:0 1px 3px rgba(0,0,0,.85)}
 .chip small{color:var(--dim);font-size:10px}
