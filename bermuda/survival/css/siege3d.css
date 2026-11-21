@@ -58,6 +58,17 @@ a{color:inherit}
 .hud-top .chip{background:rgba(5,15,24,.74);border-color:rgba(120,200,230,.22)}
 .ammo span,.ammo em,.ammo b,.ammo div{text-shadow:0 1px 3px rgba(0,0,0,.9)}
 .banner span{text-shadow:0 1px 4px rgba(0,0,0,.9)}
+/* a game, not a dashboard: the banner is a quiet lower-third line, not a
+   centred headline competing with the world */
+/* no panel behind the banner: type over the world, with a shadow doing the
+   work. A translucent bar across the sky is exactly the "UI slapped on a
+   screenshot" look we are trying to lose. */
+.banner{background:none;border:0;box-shadow:none}
+.banner b{font-size:16px;letter-spacing:.02em;font-weight:800;color:#f3e8d2;text-shadow:0 1px 2px rgba(0,0,0,.9),0 4px 16px rgba(0,0,0,.85)}
+.banner span{font-size:10.5px;letter-spacing:.01em;color:#e0d2b6;margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,.95)}
+.chip{border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.32)}
+.hud-top .chip{background:rgba(12,11,9,.58);border-color:rgba(216,201,163,.16)}
+#tip{opacity:.72}
 
 /* ---------------- items: three slots under the thumbs ---------------- */
 .items{
@@ -333,10 +344,21 @@ body.touch-mode{
 #touch .main b{position:absolute;bottom:15%;left:0;right:0;text-align:center;font:700 10px/1 system-ui,sans-serif;letter-spacing:.18em;color:rgba(255,225,230,.85)}
 #touch .main:active,#touch .main.hit{background:radial-gradient(circle at 50% 36%,rgba(158,52,66,.8),rgba(14,10,18,.9));transform:scale(.95)}
 
-/* right thumb: one cut under it, two tools within a short flick. Nothing else. */
-#touch #tStrike{right:calc(18px + var(--safe-r));bottom:calc(26px + var(--safe-b))}
-#touch #tSpin{right:calc(26px + var(--safe-r));bottom:calc(26px + var(--safe-b) + var(--strike) + 14px)}
-#touch #tSprint{right:calc(18px + var(--safe-r) + var(--strike) + 14px);bottom:calc(44px + var(--safe-b))}
+/* right thumb: three cuts it can tell apart by feel alone — light under the
+   thumb, heavy beside it, the power art above. Sprint is furthest out, where
+   the hand lands without thinking. */
+#touch #tStrike{right:calc(16px + var(--safe-r));bottom:calc(22px + var(--safe-b))}
+#touch #tHeavy{right:calc(16px + var(--safe-r) + var(--strike) + 10px);bottom:calc(22px + var(--safe-b))}
+#touch #tSprint{right:calc(16px + var(--safe-r) + var(--strike) + var(--tool) + 20px);bottom:calc(30px + var(--safe-b))}
+#touch #tPower{right:calc(16px + var(--safe-r) + var(--strike) * .34);bottom:calc(22px + var(--safe-b) + var(--strike) + 12px)}
+#touch .mid i{display:block;width:14px;height:14px;margin:0 auto 3px}
+#touch .mid b{display:block;font:700 8.5px/1 system-ui,sans-serif;letter-spacing:.06em;color:rgba(255,236,206,.8)}
+#touch .heavy{color:#ffd4a0;border-color:rgba(255,190,120,.42)}
+#touch .heavy i{width:2px;height:20px;border-radius:2px;background:linear-gradient(180deg,#fff0d8,#e8a95c);transform:rotate(-22deg);box-shadow:0 0 10px rgba(255,196,120,.6)}
+#touch .power{color:#ffd9e0;border-color:rgba(255,140,160,.45)}
+#touch .power i{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle,#fff,#ff9fae 60%,transparent 72%);box-shadow:0 0 12px rgba(255,140,160,.8)}
+#touch .power.cool{opacity:.5;border-color:rgba(255,255,255,.18)}
+#touch .power.ready{box-shadow:0 0 18px rgba(255,150,168,.35)}
 .wslot.locked{opacity:.38}
 .wslots{pointer-events:auto}
 .wslot{cursor:pointer}

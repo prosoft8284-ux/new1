@@ -131,6 +131,8 @@
     neural: { hp: 62, spd: 2.5, dmg: 10, r: 0.66, h: 1.85, color: 0x6fd8ff, glow: 0x1d6a92, ranged: true, name: 'عصب‌زن' },
     bomber: { hp: 46, spd: 3.6, dmg: 30, r: 0.66, h: 1.5, color: 0xffc46a, glow: 0x8a4a10, explode: true, name: 'بمب‌گذار انتحاری' },
     brute: { hp: 190, spd: 2.3, dmg: 22, r: 1.0, h: 2.6, color: 0xa87cff, glow: 0x46228a, charge: true, name: 'غول زره‌پوش' },
+    /* the blood-avenger: a hunter's kin, in the dead hunter's colours */
+    avenger: { hp: 215, spd: 3.6, dmg: 24, r: 0.86, h: 2.15, color: 0xff5b6e, glow: 0x6a1020, name: 'خون‌خواه' },
     stalker: { hp: 82, spd: 3.6, dmg: 24, r: 0.55, h: 2.0, color: 0x3b2c56, glow: 0x1a0e30, name: 'شکارچی شب' }
   };
 
@@ -151,7 +153,7 @@
     props: [],
     meleeT: 0, benchOpen: false,
     /* blade combat, contracts and the sky-return penalty */
-    stam: 5, stamMax: 5, swingT: 9, swingHeavy: false, lastSwing: -9,
+    stam: 100, stamMax: 100, swingT: 9, swingHeavy: false, lastSwing: -9, powerT: 0,
     down: false, downT: 0, falling: false, invuln: 0, deaths: 0,
     bounty: null, bountyNo: 0, bountyKills: 0, bountyT: 0, bountyDelay: 0, looted: 0,
     roster: [], hunterKills: 0,
@@ -205,7 +207,7 @@
   renderer.shadowMap.type = T.PCFSoftShadowMap;
 
   var scene = new T.Scene();
-  scene.fog = new T.Fog(0x8fa9a4, 70, 620);
+  scene.fog = new T.Fog(0x8fa9a4, 110, 760);
   var camera = new T.PerspectiveCamera(74, window.innerWidth / window.innerHeight, 0.08, 1900);
   camera.rotation.order = 'YXZ';
   scene.add(camera);
@@ -297,13 +299,39 @@
         ' gl_FragColor = vec4(s, 1.0); }'
     });
 
+    /* The composite is the grade: a filmic shoulder so highlights roll off
+       instead of clipping, teal shadows against warm highs, a restrained
+       vignette and a hair of grain. Flat linear output is what makes cheap
+       renders read as "generated"; this is the difference between a screenshot
+       of geometry and a frame from a game. */
     var compMat = new T.ShaderMaterial({
-      uniforms: { tScene: { value: null }, tBloom: { value: null }, strength: { value: 1.05 } },
+      uniforms: {
+        tScene: { value: null }, tBloom: { value: null },
+        strength: { value: 0.42 }, time: { value: 0 },
+        res: { value: new T.Vector2(1, 1) }
+      },
       vertexShader: VS,
-      fragmentShader: 'uniform sampler2D tScene; uniform sampler2D tBloom; uniform float strength; varying vec2 vUv;' +
-        'vec3 lin2srgb(vec3 c){ return mix(c * 12.92, 1.055 * pow(c, vec3(1.0 / 2.4)) - 0.055, step(vec3(0.0031308), c)); }' +
-        'void main(){ vec3 c = texture2D(tScene, vUv).rgb;' +
+      fragmentShader: 'uniform sampler2D tScene; uniform sampler2D tBloom; uniform float strength;' +
+        'uniform float time; uniform vec2 res; varying vec2 vUv;' +
+        'vec3 lin2srgb(vec3 c){ return mix(c * 12.92, 1.055 * pow(max(c, vec3(0.0)), vec3(1.0 / 2.4)) - 0.055, step(vec3(0.0031308), c)); }' +
+        'float hash(vec2 p){ return fract(sin(dot(p, vec2(41.3, 289.1))) * 43758.5453); }' +
+        'void main(){' +
+        ' vec3 c = texture2D(tScene, vUv).rgb;' +
         ' c += texture2D(tBloom, vUv).rgb * strength;' +
+        ' c *= 1.04;' +
+        /* ACES-style shoulder */
+        ' c = (c * (2.51 * c + 0.03)) / (c * (2.43 * c + 0.59) + 0.14);' +
+        /* grade: cool the shade, warm the light, keep the greens alive */
+        ' float l = dot(c, vec3(0.2126, 0.7152, 0.0722));' +
+        ' c = mix(vec3(l), c, 1.08);' +
+        ' c *= mix(vec3(0.9, 0.97, 1.06), vec3(1.06, 1.0, 0.92), smoothstep(0.12, 0.82, l));' +
+        ' c = pow(max(c, vec3(0.0)), vec3(0.96));' +
+        /* vignette: the eye is led to the centre of the frame */
+        ' vec2 q = vUv - 0.5;' +
+        ' float vig = smoothstep(0.92, 0.3, length(q * vec2(1.06, 1.0)) * 1.22);' +
+        ' c *= mix(0.74, 1.0, vig);' +
+        /* grain, 1.2%: enough to break banding in the sky gradient */
+        ' c += (hash(vUv * res + fract(time) * 31.0) - 0.5) * 0.012;' +
         ' gl_FragColor = vec4(lin2srgb(clamp(c, 0.0, 1.0)), 1.0); }'
     });
 
@@ -347,6 +375,8 @@
 
         compMat.uniforms.tScene.value = sceneRT.texture;
         compMat.uniforms.tBloom.value = bloomA.texture;
+        compMat.uniforms.res.value.set(size.x, size.y);
+        compMat.uniforms.time.value = (compMat.uniforms.time.value + 0.016) % 1000;
         blit(compMat, null);
       }
     };
@@ -401,7 +431,7 @@
   }
 
   /* --------------------------------------------------------------------- sky */
-  var skyMat = null, starField = null, moonSprite = null;
+  var skyMat = null, starField = null, moonSprite = null, sunSprite = null, clouds = null, cloudMat = null;
   (function buildSky() {
     skyMat = new T.ShaderMaterial({
       side: T.BackSide,
@@ -455,7 +485,142 @@
     moonSprite.position.set(-520, 360, -740);
     moonSprite.scale.set(230, 230, 1);
     scene.add(moonSprite);
+
+    /* the sun is a place in the sky, not just a light vector */
+    var sc = document.createElement('canvas');
+    sc.width = sc.height = 128;
+    var sctx = sc.getContext('2d');
+    var sgr = sctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    sgr.addColorStop(0, 'rgba(255,252,240,1)');
+    sgr.addColorStop(0.16, 'rgba(255,240,205,.92)');
+    sgr.addColorStop(0.42, 'rgba(255,214,160,.2)');
+    sgr.addColorStop(1, 'rgba(255,190,120,0)');
+    sctx.fillStyle = sgr;
+    sctx.fillRect(0, 0, 128, 128);
+    sunSprite = new T.Sprite(new T.SpriteMaterial({
+      map: new T.CanvasTexture(sc), transparent: true, blending: T.AdditiveBlending,
+      depthWrite: false, depthTest: false, fog: false
+    }));
+    sunSprite.scale.set(430, 430, 1);
+    sunSprite.renderOrder = -2;
+    scene.add(sunSprite);
+
+    /* a soft cloud bank: one plane, one canvas, drifting over the island */
+    var cc = document.createElement('canvas');
+    cc.width = 256; cc.height = 128;
+    var cctx = cc.getContext('2d');
+    cctx.clearRect(0, 0, 256, 128);
+    for (var ci = 0; ci < 34; ci++) {
+      var cx = Math.random() * 256, cy = 44 + Math.random() * 44, rr = 16 + Math.random() * 36;
+      var cgr = cctx.createRadialGradient(cx, cy, 0, cx, cy, rr);
+      cgr.addColorStop(0, 'rgba(255,255,255,' + (0.07 + Math.random() * 0.12).toFixed(3) + ')');
+      cgr.addColorStop(1, 'rgba(255,255,255,0)');
+      cctx.fillStyle = cgr;
+      cctx.beginPath();
+      cctx.arc(cx, cy, rr, 0, 6.283);
+      cctx.fill();
+    }
+    var cloudTex = new T.CanvasTexture(cc);
+    cloudTex.wrapS = cloudTex.wrapT = T.RepeatWrapping;
+    cloudMat = new T.SpriteMaterial({
+      map: cloudTex, transparent: true, depthWrite: false, opacity: 0.75, fog: false, depthTest: false
+    });
+    /* billboards, not a ceiling: a sheet of cloud seen edge-on does nothing */
+    clouds = new T.Group();
+    for (var cbi = 0; cbi < 6; cbi++) {
+      var cs = new T.Sprite(cloudMat);
+      var ca = (cbi / 6) * 6.283 + Math.random() * 0.6;
+      var cr = 620 + Math.random() * 260;
+      cs.position.set(Math.cos(ca) * cr, 150 + Math.random() * 170, Math.sin(ca) * cr);
+      var cw = 420 + Math.random() * 380;
+      cs.scale.set(cw, cw * 0.42, 1);
+      cs.renderOrder = -1;
+      clouds.add(cs);
+    }
+    scene.add(clouds);
+    scene.userData.cloudTex = cloudTex;
   })();
+
+  /* ------------------------------------------------------------------ tufts
+     Bare ground is the fastest way to read as a prototype. A few thousand
+     instanced blades cost one draw call and give the sand a texture the eye
+     can measure distance against. */
+  var tuftMesh = null;
+  function seedTufts() {
+    var N = IS_TOUCH ? 900 : 1900;
+    var posArr = [], norArr = [], idxArr = [], v = 0;
+    /* three crossed blades per tuft */
+    for (var b = 0; b < 3; b++) {
+      var a = (b / 3) * Math.PI;
+      var dx = Math.cos(a), dz = Math.sin(a);
+      var w = 0.09;
+      posArr.push(-dx * w, 0, -dz * w, dx * w, 0, dz * w, dx * 0.2, 0.95, dz * 0.2,
+                  -dx * w, 0, -dz * w, dx * 0.2, 0.95, dz * 0.2, -dx * 0.2, 0.66, -dz * 0.2);
+      for (var n = 0; n < 6; n++) norArr.push(0, 1, 0);
+      idxArr.push(v, v + 1, v + 2, v + 3, v + 4, v + 5);
+      v += 6;
+    }
+    var geo = new T.BufferGeometry();
+    geo.setAttribute('position', new T.Float32BufferAttribute(posArr, 3));
+    geo.setAttribute('normal', new T.Float32BufferAttribute(norArr, 3));
+    geo.setIndex(idxArr);
+    var mat = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 1, metalness: 0, side: T.DoubleSide });
+    var mesh = new T.InstancedMesh(geo, mat, N);
+    mesh.instanceMatrix.setUsage(T.StaticDrawUsage);
+    var dummy = new T.Object3D();
+    var col = new T.Color();
+    var placed = 0, tries = 0;
+    while (placed < N && tries < N * 6) {
+      tries++;
+      var ang = Math.random() * 6.283, rad = Math.sqrt(Math.random()) * 210 * WS;
+      var x = Math.cos(ang) * rad, z = Math.sin(ang) * rad;
+      var y = heightAt(x, z);
+      if (y < 0.85) continue;
+      dummy.position.set(x, y - 0.03, z);
+      dummy.rotation.set(0, Math.random() * 6.283, 0);
+      var s = 0.7 + Math.random() * 0.9;
+      dummy.scale.set(s, s * (0.8 + Math.random() * 0.5), s);
+      dummy.updateMatrix();
+      mesh.setMatrixAt(placed, dummy.matrix);
+      col.setHSL(0.19 + Math.random() * 0.08, 0.3 + Math.random() * 0.18, 0.26 + Math.random() * 0.14);
+      mesh.setColorAt(placed, col);
+      placed++;
+    }
+    mesh.count = placed;
+    mesh.castShadow = false;
+    mesh.receiveShadow = true;
+    mesh.frustumCulled = true;
+    scene.add(mesh);
+    tuftMesh = mesh;
+
+    /* shrubs: the island was grass, rocks and naked trunks, which reads as an
+       unfinished heightmap. Low-poly bushes fill the midground in one call. */
+    var NB = IS_TOUCH ? 420 : 900;
+    var bgeo = new T.IcosahedronGeometry(0.62, 0);
+    var bmat = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 0.96, metalness: 0, flatShading: true });
+    var bushes = new T.InstancedMesh(bgeo, bmat, NB);
+    var bp = 0, bt = 0;
+    while (bp < NB && bt < NB * 8) {
+      bt++;
+      var ba = Math.random() * 6.283, br = Math.sqrt(Math.random()) * 220 * WS;
+      var bx = Math.cos(ba) * br, bz = Math.sin(ba) * br;
+      var by = heightAt(bx, bz);
+      if (by < 1.0) continue;
+      var bs = 0.7 + Math.random() * 1.7;
+      dummy.position.set(bx, by + bs * 0.34, bz);
+      dummy.rotation.set(Math.random() * 0.3, Math.random() * 6.283, Math.random() * 0.3);
+      dummy.scale.set(bs, bs * (0.55 + Math.random() * 0.35), bs);
+      dummy.updateMatrix();
+      bushes.setMatrixAt(bp, dummy.matrix);
+      col.setHSL(0.2 + Math.random() * 0.09, 0.26 + Math.random() * 0.2, 0.17 + Math.random() * 0.12);
+      bushes.setColorAt(bp, col);
+      bp++;
+    }
+    bushes.count = bp;
+    bushes.castShadow = true;
+    bushes.receiveShadow = true;
+    scene.add(bushes);
+  }
 
   /* ----------------------------------------------------------------- terrain */
   var terrain;
@@ -495,6 +660,7 @@
     terrain = new T.Mesh(geo, mat);
     terrain.receiveShadow = true;
     scene.add(terrain);
+    seedTufts();
 
     /* photoscanned CC0 ground detail (diffuse + normal) multiplied over the
        vertex-coloured biomes, so sand, grass and rock all get real grain */
@@ -1092,6 +1258,9 @@
     });
     if (glowK) { steel.emissive = new T.Color(glowCol); steel.emissiveIntensity = glowK; }
     else { steel.emissive = new T.Color(0x243040); steel.emissiveIntensity = 0.35; }
+    /* a working blade, not a mirror: darker steel keeps the viewmodel from
+       reading as a white plank in the lower third of the screen */
+    steel.color.multiplyScalar(0.82);
     var brass = new T.MeshStandardMaterial({
       color: guardCol, metalness: 0.75, roughness: 0.38, flatShading: true, envMapIntensity: 1.1
     });
@@ -1313,7 +1482,7 @@
   var guns = WEAPONS.map(function (w) { return buildSword(w.key); });
   guns.forEach(function (g, i) {
     g.position.set(IS_TOUCH ? 0.02 : 0.24, IS_TOUCH ? -0.37 : -0.44, IS_TOUCH ? -0.52 : -0.62);
-    g.scale.setScalar(IS_TOUCH ? 0.62 : 0.6);
+    g.scale.setScalar(IS_TOUCH ? 0.52 : 0.58);
     g.rotation.set(-0.06, IS_TOUCH ? 0.55 : 0.3, IS_TOUCH ? 0.2 : 0.42);
     g.visible = i === 0;
     camera.add(g);
@@ -1670,9 +1839,9 @@
       if (G.combo > G.comboBest) G.comboBest = G.combo;
       if (e.bounty) bountyCleared(e);
       if (G.kills % 15 === 0) {
-        G.stamMax = Math.min(9, G.stamMax + 1);
+        G.stamMax = Math.min(140, G.stamMax + 10);
         G.stam = G.stamMax;
-        showBanner('نفسِ بلندتر', 'ظرفیت ضربه‌ها شد ' + fa(G.stamMax), 1700);
+        showBanner('نفسِ بلندتر', 'ظرفیت نفس شد ' + fa(Math.round(G.stamMax)), 1700);
         SFX3D.play('wave');
       }
     }
@@ -1683,6 +1852,8 @@
     if (e.group.userData.bar) e.group.userData.bar.visible = false;
     /* a named hunter is not gone: the sky owes us ten seconds */
     if (e.hunterDef && e.slot) {
+      /* someone who loved them takes up the blade */
+      if (!botKill && !e.vengeance) enqueueAvenger(e);
       e.slot.e = null;
       e.slot.timer = HUNTER_RESPAWN;
       e.slot.deaths++;
@@ -1909,6 +2080,7 @@
     if (e.code === 'KeyX') useItem('shield');
     if (e.code === 'KeyC') useItem('rage');
     if (e.code === 'KeyF') tryMelee();
+    if (e.code === 'KeyV') bladePower();
     if (e.code === 'KeyE') { if (G.benchOpen) closeBench(); else openBench(); }
     if (e.code === 'Escape') { if (G.running && !G.paused) pauseGame(); }
     if (['Space', 'ArrowUp', 'ArrowDown', 'Tab'].indexOf(e.code) >= 0) e.preventDefault();
@@ -2024,8 +2196,23 @@
       strike.addEventListener('pointercancel', function (e) { e.stopPropagation(); });
       strike.addEventListener('contextmenu', function (e) { e.preventDefault(); });
     }
-    var spin = $('tSpin');
-    if (spin) spin.addEventListener('pointerdown', function (e) { e.preventDefault(); e.stopPropagation(); tryMelee(); });
+    /* three cuts, three commitments: light is free, heavy spends breath,
+       the power art spends a lungful and then needs nine seconds */
+    function wireCut(id, fn) {
+      var el = $(id);
+      if (!el) return;
+      el.addEventListener('pointerdown', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        el.classList.add('hit');
+        setTimeout(function () { el.classList.remove('hit'); }, 110);
+        fn();
+      });
+      el.addEventListener('pointerup', function (e) { e.preventDefault(); e.stopPropagation(); });
+      el.addEventListener('pointercancel', function (e) { e.stopPropagation(); });
+      el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    }
+    wireCut('tHeavy', tryMelee);
+    wireCut('tPower', bladePower);
     /* the item bar: one tap, one use, nothing to open first */
     var itemBar = $('items');
     if (itemBar) {
@@ -2204,7 +2391,9 @@
       reach: w.reach + 0.12 * (G.upg.reach || 0) + (heavy ? 0.3 : 0),
       arc: Math.cos(heavy ? 0.5 : w.arc),
       dmg: w.dmg * (heavy ? 2.1 : 1),
-      cost: heavy ? 2 : 1
+      /* a light cut is free: the arm, not a meter, is what limits it. Breath
+         is only spent on the two decisions that commit the whole body. */
+      cost: heavy ? 30 : 0
     };
   }
 
@@ -2221,7 +2410,7 @@
     if (G.t - G.lastSwing < rate) return;
     var st = bladeStats(heavy);
     if (G.stam < st.cost) {
-      if (G.t - (G.emptyT || -9) > 0.4) { SFX3D.play('empty'); G.emptyT = G.t; toast('نفس کم است — یک لحظه صبر کن یا غارت کن'); }
+      if (G.t - (G.emptyT || -9) > 0.4) { SFX3D.play('empty'); G.emptyT = G.t; toast('نفس برای ضربهٔ سنگین کم است — ' + Math.ceil(G.stam) + '/30'); }
       return;
     }
     /* a rage draught turns three cuts into a sentence the island remembers */
@@ -2279,6 +2468,8 @@
       /* impact weight: a short freeze of the world, then a camera punch */
       G.hitstop = Math.max(G.hitstop, heavy ? 0.11 : (finisher ? 0.08 : (tr === 'crush' ? 0.09 : 0.045)));
       G.punch = Math.max(G.punch, heavy ? 0.5 : (finisher ? 0.38 : 0.22));
+      /* steel meeting steel: the heavy cut rings when it does not kill */
+      if (heavy && !he.dead) SFX3D.play('parry', he.pos);
       if ((heavy || finisher || tr === 'crush') && !he.dead) {
         he.stagger = Math.max(he.stagger, heavy ? 0.75 : 0.5);
         var push = heavy ? 1.0 : (tr === 'crush' ? 1.3 : 0.6);
@@ -2383,6 +2574,47 @@
     var before = G.kills;
     swingBlade(true);
     if (G.kills > before) saveRun();
+  }
+
+  /* ------------------------------------------------------- power art (V)
+     The third button: one full turn of the body that empties the lungs. It
+     costs 45 breath and is ready again after nine seconds, and everything
+     inside four metres is thrown off its feet. */
+  var POWER_COST = 45, POWER_CD = 9;
+  function bladePower() {
+    if (!G.running || G.paused || G.over || G.down) return;
+    if (G.powerT > 0) { toast('قدرت آماده نیست · ' + Math.ceil(G.powerT) + ' ثانیه'); return; }
+    if (G.stam < POWER_COST) { SFX3D.play('empty'); toast('نفس کافی نیست · ' + Math.ceil(G.stam) + '/' + POWER_COST); return; }
+    G.stam -= POWER_COST;
+    G.powerT = POWER_CD;
+    G.lastSwing = G.t;
+    G.swingT = 0;
+    G.swingHeavy = true;
+    G.swingKind = 3;
+    G.recoil = 2.1;
+    G.shake = Math.min(1.6, G.shake + 0.9);
+    SFX3D.play('swingBig');
+    SFX3D.play('parry');
+    var hits = 0;
+    for (var i = G.enemies.length - 1; i >= 0; i--) {
+      var e = G.enemies[i];
+      if (e.dead) continue;
+      var d = Math.hypot(e.pos.x - P.pos.x, e.pos.z - P.pos.z);
+      if (d > 4.4 + e.def.r) continue;
+      var pt = new T.Vector3(e.pos.x, e.pos.y + e.def.h * 0.55, e.pos.z);
+      damageEnemy(e, WEAPONS[G.widx].dmg * 2.4, pt, false);
+      if (!e.dead) {
+        e.stagger = Math.max(e.stagger, 1.05);
+        e.pos.x += (e.pos.x - P.pos.x) / Math.max(0.01, d) * 1.5;
+        e.pos.z += (e.pos.z - P.pos.z) / Math.max(0.01, d) * 1.5;
+      }
+      emit(pt.x, pt.y, pt.z, 14, 0xffd166, 7, 0.5, 10);
+      hits++;
+    }
+    slashWave(0xffd166, P.pos, 4.2);
+    G.hitstop = Math.max(G.hitstop, 0.12);
+    if (hits) showHitmark(false);
+    updateAmmoHUD();
   }
 
   /* ------------------------------------------------------- bounty contracts
@@ -3418,6 +3650,59 @@
     }
   }
 
+  /* ---------------------------------------------------------- blood revenge
+     A named hunter used to come back from the sky as the same stranger, which
+     made a kill feel like a number. Now the island remembers: a few seconds
+     after a hunter falls, someone who loved them walks in wearing the dead
+     hunter's colour and name, and they only have one thing on their mind. */
+  function enqueueAvenger(e) {
+    if (!G.revenge) G.revenge = [];
+    for (var i = 0; i < G.revenge.length; i++) if (G.revenge[i].name === e.name) return;
+    G.revenge.push({
+      name: e.name,
+      accent: (e.hunterDef && e.hunterDef.accent) || 0xff5b6e,
+      at: G.t + rand(7, 12)
+    });
+    showBanner('خون‌خواه بیدار شد', 'کسی برای ' + e.name + ' تیغ برداشت', 2100);
+  }
+
+  function updateRevenge(dt) {
+    if (!G.revenge || !G.revenge.length) return;
+    for (var i = G.revenge.length - 1; i >= 0; i--) {
+      var r = G.revenge[i];
+      if (G.t < r.at) continue;
+      var a = rand(0, 6.283), dist = rand(26, 38);
+      var x = P.pos.x + Math.cos(a) * dist, z = P.pos.z + Math.sin(a) * dist;
+      var y = heightAt(x, z);
+      if (y < 1.2) continue;
+      var av = spawnEnemy('avenger', x, z, false, false);
+      if (!av) { G.revenge.splice(i, 1); continue; }
+      av.vengeance = true;
+      av.name = r.name + ' · خون‌خواه';
+      av.pro = true;
+      av.poise = true;
+      av.foes = true;
+      av.maxHp = Math.round(av.maxHp * 1.45);
+      av.hp = av.maxHp;
+      av.aggro = true;
+      av.aggroT = 1e9;
+      av.home = { x: x, z: z };
+      upgradeBot(av, 4);
+      /* the dead hunter's colour, worn as a ring under the feet */
+      var ring = new T.Mesh(
+        new T.TorusGeometry(av.def.r * 1.5, 0.05, 6, 26),
+        new T.MeshBasicMaterial({ color: r.accent, transparent: true, opacity: 0.72, blending: T.AdditiveBlending, depthWrite: false })
+      );
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = 0.12;
+      av.group.add(ring);
+      av.proRing = ring;
+      G.revenge.splice(i, 1);
+      showBanner('خون‌خواه رسید · ' + r.name, 'برای انتقام آمده — دنبال تو می‌گردد', 2500);
+      SFX3D.play('growl', { x: x, y: y + 1, z: z });
+    }
+  }
+
   function seedZones() {
     /* camp props are instanced: restart their counters so a resume rebuild
        does not leave stale tents standing */
@@ -3684,6 +3969,9 @@
 
       var dx = p.x - e.pos.x, dz = p.z - e.pos.z;
       var dist = Math.hypot(dx, dz) || 0.001;
+      /* a blood-avenger never calms down: the whole point of the grudge is
+         that this one keeps coming until one of you is on the sand */
+      if (e.vengeance && !e.aggro) { e.aggro = true; e.aggroT = 1e9; e.noticeT = 0; }
       /* a huge island on a phone: garrisons nobody is near keep their post
          without paying for animation, pathing or separation. A phone culls
          sooner than the desktop, at a range the fog already hides. */
@@ -3997,6 +4285,10 @@
         ud.view.setState(st, 0.15);
         ud.view.speed(rate);
         ud.view.tick(dt);
+      } else if (ud.raider && ud.raider.pose) {
+        /* hand-built skeleton: hips, spine, chest, neck, head, clavicles,
+           two arms and two legs, all posed by the raider module */
+        ud.raider.pose(e, dt);
       } else {
         /* procedural rig: a real walk cycle instead of two legs on one sine */
         var sp = clamp(Math.hypot(e.pos.x - e.px, e.pos.z - e.pz) / Math.max(dt, 0.0001) / 4, 0, 1.2);
@@ -4277,7 +4569,16 @@
     P.bobT += dt * hs * 1.55;
     if (P.onGround && hs > 0.6) {
       G.stepT -= dt * hs / 5.3;
-      if (G.stepT <= 0) { G.stepT = 0.5; SFX3D.play('step'); }
+      if (G.stepT <= 0) {
+        G.stepT = P.sprint ? 0.34 : 0.5;
+        /* sand in the open, stone on the ridges, planks inside a camp */
+        var underCamp = false;
+        for (var ci = 0; ci < ZONES.length; ci++) {
+          var zz = ZONES[ci];
+          if (Math.hypot(P.pos.x - zz.x, P.pos.z - zz.z) < zz.r * 0.85) { underCamp = true; break; }
+        }
+        SFX3D.play('foot', null, underCamp ? 'wood' : (P.pos.y > 12 ? 'stone' : 'sand'));
+      }
     }
 
     /* survival: the island only patches you up to a point, and only in peace */
@@ -4321,12 +4622,22 @@
     var w = WEAPONS[G.widx];
     var gun = guns[G.widx];
 
-    /* breath comes back only between swings: spam is punished, patience pays */
+    /* Breath: a light cut costs nothing, so the meter is never a stutter
+       between the player and a swing. It drains on purpose - heavy cuts,
+       the power art, sprinting - and comes back quickly once the blade is
+       still: slower while you are moving, fastest when you stand your ground. */
     if (G.swingT < 2) G.swingT += dt;
-    if (G.t - G.lastSwing > 0.62 && G.stam < G.stamMax) {
-      G.stam = Math.min(G.stamMax, G.stam + dt * 1.6);
+    if (G.powerT > 0) G.powerT = Math.max(0, G.powerT - dt);
+    if (G.t - G.lastSwing > 0.45 && G.stam < G.stamMax) {
+      var movingNow = Math.hypot(P.vel.x, P.vel.z) > 1.6;
+      var sprintNow = P.sprint && Math.hypot(P.vel.x, P.vel.z) > 3.4;
+      if (!sprintNow) G.stam = Math.min(G.stamMax, G.stam + dt * (movingNow ? 15 : 27));
     }
-    setText($('reloadTxt'), G.stam < 1 ? 'نفس کم است — یک لحظه صبر کن' : (w.tier >= 3 ? 'تیغهٔ ارتقا‌یافته' : ''));
+    setText($('reloadTxt'), G.powerT > 0
+      ? 'قدرت · ' + Math.ceil(G.powerT) + ' ثانیه'
+      : (G.stam < 30 ? 'نفس برای ضربهٔ سنگین کم است' : (w.tier >= 3 ? 'تیغهٔ ارتقا‌یافته' : 'قدرت · V آماده')));
+    /* low health is audible, not just a red bar */
+    if (G.hp < G.maxHp * 0.34 && G.t - (G.breathT || -9) > 2.3) { G.breathT = G.t; SFX3D.play('breath'); }
 
     G.recoil = Math.max(0, G.recoil - dt * 7);
     G.bloom = Math.max(0, G.bloom - dt * 3.6);
@@ -4453,7 +4764,7 @@
     if (p.kind === 'stam' || p.kind === 'ammo') {
       /* breath is the blade's ammunition: never waste it at a full tank */
       if (G.stam >= G.stamMax - 0.01) { toast('نفس‌ت پُر است — برای بعد بگذار'); return false; }
-      var gain = Math.min(G.stamMax, G.stam + 3);
+      var gain = Math.min(G.stamMax, G.stam + 30);
       var got = Math.round((gain - G.stam) * 10) / 10;
       G.stam = gain;
       G.looted++;
@@ -4509,14 +4820,12 @@
 
   function updateAmmoHUD() {
     var w = WEAPONS[G.widx];
-    var stam = Math.round(G.stam * 10) / 10;
-    var stamTxt = Math.abs(stam - Math.round(stam)) < 0.05 ? String(Math.round(stam)) : stam.toFixed(1);
-    setText($('ammoTxt'), fa(stamTxt));
-    setText($('ammoRes'), fa(G.stamMax));
+    setText($('ammoTxt'), fa(Math.round(G.stam)));
+    setText($('ammoRes'), fa(Math.round(G.stamMax)));
     setText($('wName'), w.name);
     var box = $('ammoTxt');
-    if (G.stam < 1) box.style.color = '#ff5b6e';
-    else if (G.stam < 2) box.style.color = '#ffcf6a';
+    if (G.stam < 30) box.style.color = '#c0563c';
+    else if (G.stam < 60) box.style.color = '#d9a94e';
     else box.style.color = '';
     updateSlots();
   }
@@ -4793,7 +5102,7 @@
     G.dmgTaken = d.dmg;
     G.diffExtra = d.extra;
     WEAPONS[0].owned = true;
-    G.stamMax = Math.max(4, Math.round(5 * d.res));
+    G.stamMax = 100 + Math.round(10 * d.res);
     G.stam = G.stamMax;
     try { SAVE.set('diff', G.diff); } catch (e) {}
     var btns = document.querySelectorAll('#diffRow button');
@@ -4854,6 +5163,8 @@
     G.upg = o.upg || { dmg: 0, mag: 0, reload: 0 };
     G.cycle = o.cycle || 0.12;
     G.stamMax = o.stamMax || G.stamMax;
+    /* old saves stored breath as a handful of pips: lift them to the meter */
+    if (G.stamMax < 20) { G.stamMax = 100; G.stam = 100; }
     G.stam = o.stam == null ? G.stamMax : clamp(o.stam, 0, G.stamMax);
     G.deaths = o.dth || 0;
     G.bountyNo = o.ct || 0;
@@ -5182,6 +5493,20 @@
     }
     if (starField) starField.material.opacity = clamp(k * 0.95, 0, 0.9);
     if (moonSprite) moonSprite.material.opacity = clamp(0.35 + k * 0.65, 0, 1);
+    /* the sun follows the camera across the sky dome, and the cloud bank
+       drifts slowly enough that you notice it only when you stop moving */
+    if (sunSprite) {
+      var sdir = moon.position.clone().normalize();
+      sunSprite.position.copy(camera.position).addScaledVector(sdir, 900);
+      sunSprite.material.opacity = 0.22 + day * 0.78;
+      sunSprite.material.color.setRGB(1, 0.95 - k * 0.25, 0.86 - k * 0.4);
+    }
+    if (cloudMat) {
+      var ctex = scene.userData.cloudTex;
+      if (ctex) { ctex.offset.x += dt * 0.0038; ctex.offset.y += dt * 0.0011; }
+      cloudMat.opacity = 0.42 + day * 0.34;
+      cloudMat.color.setRGB(0.94 + day * 0.06, 0.93 + day * 0.05, 0.95 - day * 0.02);
+    }
     moon.color.setRGB(0.86 + day * 0.14, 0.78 + day * 0.16, 0.66 + day * 0.16);
     hemi.color.setRGB(0.60 + day * 0.18, 0.68 + day * 0.16, 0.80 + day * 0.12);
     /* warm sand bounces up into the trunks instead of dyeing them magenta */
@@ -5213,6 +5538,7 @@
     updateWaves(dt);
     updateFeuds(dt);
     updateHunters(dt);
+    updateRevenge(dt);
     updateHazards(dt);
     atmosphere(dt);
     if (G.meleeT > 0) G.meleeT -= dt;
@@ -5228,6 +5554,28 @@
       }
       G.threat = clamp(agg / 4, 0, 1);
       try { SFX3D.threat(G.threat); } catch (e) {}
+      /* the ear knows where you are before the eyes do: a camp is a murmur
+         of voices, the ridge is wind and the shoreline is surf */
+      var bestCamp = 0;
+      for (var zi2 = 0; zi2 < ZONES.length; zi2++) {
+        var dz2 = Math.hypot(P.pos.x - ZONES[zi2].x, P.pos.z - ZONES[zi2].z);
+        var k2 = clamp(1 - (dz2 - 12) / 55, 0, 1);
+        if (k2 > bestCamp) bestCamp = k2;
+      }
+      try {
+        SFX3D.camp(bestCamp);
+        SFX3D.weather(0.45 + Math.min(1, G.storm / 12) * 0.8 + G.nightK * 0.25, 0.55 + G.storm * 0.02);
+      } catch (e) {}
+    }
+    /* the power button shows its own readiness */
+    var pwBtn = $('tPower');
+    if (pwBtn) {
+      var pReady = G.powerT <= 0;
+      if (pwBtn._ready !== pReady) {
+        pwBtn._ready = pReady;
+        pwBtn.classList.toggle('cool', !pReady);
+        pwBtn.classList.toggle('ready', pReady);
+      }
     }
     if (G.comboT > 0) {
       G.comboT -= dt;
@@ -5330,7 +5678,7 @@
     start: startGame, pause: pauseGame, resume: resumeGame,
     heightAt: heightAt, spawn: spawnEnemy, fire: tryFire,
     traceT: traceT, blockers: blockers, zones: ZONES,
-    melee: tryMelee, bench: openBench, closeBench: closeBench, buy: benchBuy,
+    melee: tryMelee, power: bladePower, bench: openBench, closeBench: closeBench, buy: benchBuy,
     difficulty: setDifficulty, saveRun: saveRun, readRun: readRun,
     explode: explodeBarrel, hazards: { barrels: G.barrels, traps: G.traps },
     hurt: hurtPlayer, damage: damageEnemy, kill: killEnemy, step: update, hud: updateHUD, props: G.props,

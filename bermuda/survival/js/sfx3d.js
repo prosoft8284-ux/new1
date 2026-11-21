@@ -178,6 +178,38 @@ window.SFX3D = (function () {
       noise(o, t, 0.06, 'lowpass', 900, 400, 1.2, 0.08);
       tone(o, t, 'sine', 90, 60, 0.06, 0.05);
     },
+    /* boots on three different grounds. Each variant is a different grain:
+       dry sand crunches, rock clicks, wet planks squelch. */
+    foot: function (o, t, surface) {
+      var s = surface || 'sand';
+      var v = Math.random();
+      if (s === 'wood') {
+        noise(o, t, 0.07, 'lowpass', v < 0.5 ? 1100 : 820, 260, 1.1, 0.1);
+        tone(o, t, 'sine', v < 0.5 ? 128 : 104, 62, 0.09, 0.07);
+        noise(o, t + 0.02, 0.03, 'bandpass', 2600, 1800, 3, 0.035);
+      } else if (s === 'stone') {
+        noise(o, t, 0.045, 'bandpass', v < 0.5 ? 2200 : 1700, 900, 2.2, 0.085);
+        noise(o, t, 0.02, 'highpass', 4200, 3200, 2, 0.05);
+        tone(o, t, 'triangle', 320, 170, 0.035, 0.03);
+      } else {
+        noise(o, t, 0.09, 'bandpass', v < 0.5 ? 1500 : 1150, 420, 0.9, 0.075);
+        noise(o, t + 0.012, 0.06, 'lowpass', 700, 240, 0.8, 0.05);
+      }
+    },
+    /* a blade turned aside: a short bell that dies fast, no pitch sweep */
+    parry: function (o, t) {
+      tone(o, t, 'triangle', 2480, 2320, 0.5, 0.055);
+      tone(o, t + 0.004, 'sine', 3720, 3600, 0.34, 0.035);
+      tone(o, t + 0.002, 'sine', 1180, 1100, 0.42, 0.03);
+      noise(o, t, 0.05, 'highpass', 5200, 3400, 2, 0.16);
+    },
+    /* winded, hurt: an inhale that catches, then a short exhale */
+    breath: function (o, t) {
+      noise(o, t, 0.34, 'bandpass', 620, 340, 1.6, 0.09);
+      noise(o, t + 0.06, 0.18, 'bandpass', 1500, 900, 2.4, 0.05);
+      noise(o, t + 0.42, 0.4, 'bandpass', 420, 260, 1.2, 0.075);
+      tone(o, t + 0.44, 'sine', 118, 96, 0.3, 0.035);
+    },
     victory: function (o, t) {
       [523, 659, 784, 1046].forEach(function (f, i) {
         tone(o, t + i * 0.14, 'triangle', f, f, 0.55, 0.14);
@@ -262,7 +294,50 @@ window.SFX3D = (function () {
       tOscGain.connect(tFilter);
       tOsc.start();
 
-      ambience = { bed: bed, gain: g, droneGain: droneGain, oscs: oscs, threatGain: threatGain, threatOsc: tOsc };
+      /* wind: band-passed noise with a filter that wanders, so the gust has
+         a shape instead of a hiss */
+      var wind = ctx.createBufferSource();
+      wind.buffer = noiseBuf; wind.loop = true; wind.playbackRate.value = 0.8;
+      var wbp = ctx.createBiquadFilter();
+      wbp.type = 'bandpass'; wbp.frequency.value = 430; wbp.Q.value = 0.75;
+      var wg = ctx.createGain(); wg.gain.value = 0.0001;
+      wind.connect(wbp); wbp.connect(wg); wg.connect(master); wind.start();
+      wg.gain.linearRampToValueAtTime(0.028, ctx.currentTime + 5);
+      var wLfo = ctx.createOscillator();
+      wLfo.frequency.value = 0.063;
+      var wLfoGain = ctx.createGain(); wLfoGain.gain.value = 240;
+      wLfo.connect(wLfoGain); wLfoGain.connect(wbp.frequency); wLfo.start();
+
+      /* surf: very low noise, gain swung by a slow swell */
+      var surf = ctx.createBufferSource();
+      surf.buffer = noiseBuf; surf.loop = true; surf.playbackRate.value = 0.55;
+      var slp = ctx.createBiquadFilter();
+      slp.type = 'lowpass'; slp.frequency.value = 520; slp.Q.value = 0.5;
+      var sg = ctx.createGain(); sg.gain.value = 0.0001;
+      surf.connect(slp); slp.connect(sg); sg.connect(master); surf.start();
+      sg.gain.linearRampToValueAtTime(0.026, ctx.currentTime + 4);
+      var swell = ctx.createOscillator();
+      swell.frequency.value = 0.093;
+      var swellGain = ctx.createGain(); swellGain.gain.value = 0.017;
+      swell.connect(swellGain); swellGain.connect(sg.gain); swell.start();
+
+      /* a camp's murmur: voices too far away to make out, pulsing */
+      var mur = ctx.createBufferSource();
+      mur.buffer = noiseBuf; mur.loop = true; mur.playbackRate.value = 1.4;
+      var mbp = ctx.createBiquadFilter();
+      mbp.type = 'bandpass'; mbp.frequency.value = 760; mbp.Q.value = 1.1;
+      var mg = ctx.createGain(); mg.gain.value = 0.0001;
+      mur.connect(mbp); mbp.connect(mg); mg.connect(master); mur.start();
+      var mAm = ctx.createOscillator();
+      mAm.frequency.value = 4.1;
+      var mAmGain = ctx.createGain(); mAmGain.gain.value = 0.014;
+      mAm.connect(mAmGain); mAmGain.connect(mg.gain); mAm.start();
+
+      ambience = {
+        bed: bed, gain: g, droneGain: droneGain, oscs: oscs,
+        threatGain: threatGain, threatOsc: tOsc,
+        windGain: wg, surfGain: sg, murGain: mg, swallow: sg
+      };
     } catch (e) {}
   }
 
@@ -271,6 +346,21 @@ window.SFX3D = (function () {
     init: init,
     unlock: unlock,
     ambient: startAmbient,
+    /* 0 = open shoreline, 1 = standing in the middle of a camp */
+    camp: function (v) {
+      if (!ready || !ambience || !ambience.murGain) return;
+      try {
+        ambience.murGain.gain.setTargetAtTime(0.0001 + Math.max(0, Math.min(1, v || 0)) * 0.05, ctx.currentTime, 0.6);
+      } catch (e) {}
+    },
+    /* the ocean and the wind answer the weather and the time of day */
+    weather: function (wind, surf) {
+      if (!ready || !ambience) return;
+      try {
+        if (ambience.windGain) ambience.windGain.gain.setTargetAtTime(0.0001 + Math.max(0, Math.min(1.5, wind)) * 0.03, ctx.currentTime, 1.2);
+        if (ambience.surfGain) ambience.surfGain.gain.setTargetAtTime(0.0001 + Math.max(0, Math.min(1.5, surf)) * 0.03, ctx.currentTime, 1.6);
+      } catch (e) {}
+    },
     /* 0 = calm island, 1 = a whole camp on your heels */
     threat: function (v) {
       if (!ready || !ambience || !ambience.threatGain) return;
@@ -302,11 +392,11 @@ window.SFX3D = (function () {
         l.setOrientation(f.x, f.y, f.z, u.x, u.y, u.z);
       }
     },
-    play: function (kind, pos) {
+    play: function (kind, pos, variant) {
       init();
       var fn = FX[kind];
       if (!fn) return;
-      voice(pos || null, function (o, t) { fn(o, t); });
+      voice(pos || null, function (o, t) { fn(o, t, variant); });
     }
   };
 })();
