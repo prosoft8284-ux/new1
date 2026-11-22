@@ -240,10 +240,12 @@
       m.rotation.set(rx || 0, ry || 0, 0);
       envScene.add(m);
     }
-    panel(28, 44, 0xd9c2ff, -34, 14, 0, Math.PI / 2);
-    panel(20, 28, 0x8f5cff, 32, 8, 14, -Math.PI / 2.4);
-    panel(14, 14, 0xfff4e2, 10, 36, -26, 0);
-    panel(44, 3, 0xb56bff, 0, 4, 34, Math.PI);
+    /* the reflection probe was still painting violet streaks on the sea:
+       these panels are sky, sun, sand and a cool sea edge now */
+    panel(28, 44, 0xdbe7ee, -34, 14, 0, Math.PI / 2);
+    panel(20, 28, 0x9fb8c6, 32, 8, 14, -Math.PI / 2.4);
+    panel(14, 14, 0xfff2dc, 10, 36, -26, 0);
+    panel(44, 3, 0xc8b795, 0, 4, 34, Math.PI);
 
     var target = pm.fromScene(envScene, 0.03);
     scene.environment = target.texture;
@@ -547,7 +549,10 @@
      can measure distance against. */
   var tuftMesh = null;
   function seedTufts() {
-    var N = IS_TOUCH ? 900 : 1900;
+    /* 900 tufts spread over a 714 m disc left the ground bare where the player
+       actually walks: the island is only ~340 m across, so most of that disc
+       was rejected sea. Sample the land itself and spend the budget there. */
+    var N = IS_TOUCH ? 2600 : 5200;
     var posArr = [], norArr = [], idxArr = [], v = 0;
     /* three crossed blades per tuft */
     for (var b = 0; b < 3; b++) {
@@ -572,7 +577,7 @@
     var placed = 0, tries = 0;
     while (placed < N && tries < N * 6) {
       tries++;
-      var ang = Math.random() * 6.283, rad = Math.sqrt(Math.random()) * 210 * WS;
+      var ang = Math.random() * 6.283, rad = Math.sqrt(Math.random()) * ISLE_R * 0.99;
       var x = Math.cos(ang) * rad, z = Math.sin(ang) * rad;
       var y = heightAt(x, z);
       if (y < 0.85) continue;
@@ -635,8 +640,8 @@
     geo.computeVertexNormals();
     var norm = geo.attributes.normal;
     var colors = new Float32Array(pos.count * 3);
-    var cSandWet = new T.Color(0x7d6c48);
-    var cSand = new T.Color(0xcbb684);
+    var cSandWet = new T.Color(0x8b7a58);
+    var cSand = new T.Color(0xd7c59d);
     var cGrass = new T.Color(0x2e6038);
     var cGrass2 = new T.Color(0x163a24);
     var cRock = new T.Color(0x66645f);
@@ -720,13 +725,84 @@
     var water = new T.Mesh(
       new T.PlaneGeometry(2600, 2600, 1, 1),
       new T.MeshStandardMaterial({
-        color: 0x11607b, transparent: true, opacity: 0.9,
-        roughness: 0.14, metalness: 0.6
+        color: 0x1b6274, transparent: true, opacity: 0.93,
+        roughness: 0.18, metalness: 0.28
       })
     );
     water.rotation.x = -Math.PI / 2;
     water.position.y = -0.06;
     scene.add(water);
+  })();
+
+  /* --------------------------------------------------------------- shoreline
+     A beach reads as a beach because of its tide line: foam sitting exactly
+     where the sand meets the water, creeping in and out on its own. The
+     contour is found by marching a ray out from the island centre until the
+     ground drops under the waterline, then a ribbon is laid along it. */
+  var tideMesh = null, tideMesh2 = null;
+  (function seedTide() {
+    var N = 260, inner = [], outer = [];
+    for (var i = 0; i < N; i++) {
+      var a = i / N * 6.283;
+      var lo = 18, hi = ISLE_R * 1.3;
+      for (var k = 0; k < 26; k++) {
+        var mid = (lo + hi) * 0.5;
+        if (heightAt(Math.cos(a) * mid, Math.sin(a) * mid) > 0.05) lo = mid; else hi = mid;
+      }
+      var ca = Math.cos(a), sa = Math.sin(a);
+      inner.push([ca * (lo - 0.45), sa * (lo - 0.45)]);
+      outer.push([ca * (lo + 1.7), sa * (lo + 1.7)]);
+    }
+    var pos = [], idx = [];
+    for (var i2 = 0; i2 < N; i2++) {
+      var p = inner[i2], q = outer[i2];
+      pos.push(p[0], 0, p[1], q[0], 0, q[1]);
+    }
+    for (var i3 = 0; i3 < N; i3++) {
+      var a0 = i3 * 2, b0 = ((i3 + 1) % N) * 2;
+      idx.push(a0, b0, a0 + 1, a0 + 1, b0, b0 + 1);
+    }
+    var g = new T.BufferGeometry();
+    g.setAttribute('position', new T.Float32BufferAttribute(pos, 3));
+    g.setIndex(idx);
+    g.computeVertexNormals();
+    /* additive, not alpha: white foam should brighten the water, never turn
+       it into a grey concrete band */
+    var m = new T.MeshBasicMaterial({
+      color: 0xfffdf4, transparent: true, opacity: 0.5, depthWrite: false,
+      side: T.DoubleSide, blending: T.AdditiveBlending
+    });
+    tideMesh = new T.Mesh(g, m);
+    tideMesh.position.y = 0.08;
+    tideMesh.renderOrder = 2;
+    scene.add(tideMesh);
+
+    /* a second, thinner line just outside the first: the sea leaves two marks
+       on wet sand, and one hard band reads as a painted stripe */
+    var pos2 = [], idx2 = [];
+    for (var i4 = 0; i4 < N; i4++) {
+      var p2 = inner[i4], q2 = outer[i4];
+      var mx = (p2[0] + q2[0]) * 0.5, mz = (p2[1] + q2[1]) * 0.5;
+      var dxs = q2[0] - p2[0], dzs = q2[1] - p2[1];
+      var dl = Math.hypot(dxs, dzs) || 1;
+      var nx2 = -dzs / dl * 0.35, nz2 = dxs / dl * 0.35;
+      pos2.push(mx + nx2, 0, mz + nz2, mx - nx2, 0, mz - nz2);
+    }
+    for (var i5 = 0; i5 < N; i5++) {
+      var a1 = i5 * 2, b1 = ((i5 + 1) % N) * 2;
+      idx2.push(a1, b1, a1 + 1, a1 + 1, b1, b1 + 1);
+    }
+    var g2 = new T.BufferGeometry();
+    g2.setAttribute('position', new T.Float32BufferAttribute(pos2, 3));
+    g2.setIndex(idx2);
+    g2.computeVertexNormals();
+    tideMesh2 = new T.Mesh(g2, new T.MeshBasicMaterial({
+      color: 0xfffdf4, transparent: true, opacity: 0.3, depthWrite: false,
+      side: T.DoubleSide, blending: T.AdditiveBlending
+    }));
+    tideMesh2.position.y = 0.06;
+    tideMesh2.renderOrder = 2;
+    scene.add(tideMesh2);
   })();
 
   /* ------------------------------------------------------------------- props */
@@ -741,28 +817,62 @@
       var h = heightAt(x, z);
       if (h < 1.3 || h > 26) continue;
       if (Math.hypot(x - SPAWN.x, z - SPAWN.z) < 9) continue;
-      spots.push({ x: x, z: z, h: h, H: rand(3.8, 6.4), ry: rand(0, 6.283), tilt: rand(-0.09, 0.09) });
+      spots.push({
+        x: x, z: z, h: h, H: rand(3.6, 7.2), ry: rand(0, 6.283),
+        tilt: rand(-0.1, 0.1), bend: (Math.random() * 3) | 0
+      });
     }
 
-    var trunkGeo = new T.CylinderGeometry(0.13, 0.3, 1, 7, 1);
-    trunkGeo.translate(0, 0.5, 0);
+    /* One trunk geometry per lean. A straight cylinder reads as a pole; a
+       palm leans, tapers hard and keeps its rings, so the silhouette from the
+       beach says "palm" before the fronds resolve. */
+    function makeTrunk(lean) {
+      var seg = 8, sides = 7, pos = [], nor = [], idx = [];
+      for (var i = 0; i <= seg; i++) {
+        var t = i / seg;
+        var off = lean * t * t;
+        var r = 0.3 * (1 - t * 0.66) * (1 + Math.sin(t * 9) * 0.03);
+        for (var s = 0; s < sides; s++) {
+          var ang = s / sides * 6.283;
+          pos.push(Math.cos(ang) * r + off, t, Math.sin(ang) * r);
+          nor.push(Math.cos(ang), 0.08, Math.sin(ang));
+        }
+      }
+      for (var i2 = 0; i2 < seg; i2++) {
+        for (var s2 = 0; s2 < sides; s2++) {
+          var a2 = i2 * sides + s2, b2 = i2 * sides + (s2 + 1) % sides;
+          idx.push(a2, a2 + sides, b2, b2, a2 + sides, b2 + sides);
+        }
+      }
+      var g = new T.BufferGeometry();
+      g.setAttribute('position', new T.Float32BufferAttribute(pos, 3));
+      g.setAttribute('normal', new T.Float32BufferAttribute(nor, 3));
+      g.setIndex(idx);
+      return g;
+    }
     var trunkMat = new T.MeshStandardMaterial({ color: 0x6d5539, roughness: 0.95, flatShading: true });
-    var trunks = new T.InstancedMesh(trunkGeo, trunkMat, spots.length);
-    trunks.castShadow = true;
+    var trunks = [makeTrunk(0.12), makeTrunk(0.85), makeTrunk(-0.8)].map(function (g) {
+      var m = new T.InstancedMesh(g, trunkMat, spots.length);
+      m.castShadow = true;
+      m.count = 0;
+      return m;
+    });
 
-    /* an arched, tapered palm frond: a drooping ribbon that keeps a readable
-       silhouette from below, above and the side, unlike a flat box */
+    /* a folded frond: a V-section leaf with leaflet taper and a real droop,
+       so it catches light along the spine instead of reading as a flat card */
     var frondGeo = (function () {
-      var N = 7, L = 3.3, pos = [], idx = [];
+      var N = 9, L = 4.6, pos = [], idx = [];
       for (var i = 0; i <= N; i++) {
-        var t = i / N, x = t * L;
-        var w = 0.5 * (1 - t * 0.9);
-        var y = -0.8 * t * t;
-        pos.push(x, y, -w, x, y + 0.015, w);
+        var t = i / N;
+        var x = t * L;
+        var w = 0.72 * (1 - t * 0.93) * (0.5 + 0.5 * Math.sin(Math.PI * Math.min(1, t * 1.7)));
+        var droop = -1.25 * t * t * t - 0.22 * t;
+        pos.push(x, droop, -w, x, droop - 0.12 * w, 0, x, droop, w);
       }
       for (var s = 0; s < N; s++) {
-        var a = s * 2;
-        idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2);
+        var a = s * 3;
+        idx.push(a, a + 1, a + 4, a, a + 4, a + 3);
+        idx.push(a + 1, a + 2, a + 5, a + 1, a + 5, a + 4);
       }
       var g = new T.BufferGeometry();
       g.setAttribute('position', new T.Float32BufferAttribute(pos, 3));
@@ -774,7 +884,7 @@
       color: 0xffffff, roughness: 0.86, side: T.DoubleSide,
       emissive: 0x0a2410, emissiveIntensity: 0.2
     });
-    var fronds = new T.InstancedMesh(frondGeo, frondMat, spots.length * N_FROND);
+    var fronds = new T.InstancedMesh(frondGeo, frondMat, spots.length * (N_FROND + 2));
     var frondCol = new T.Color();
     fronds.castShadow = true;
 
@@ -788,35 +898,68 @@
     var fIdx = 0;
 
     spots.forEach(function (s, i) {
+      var lean = [0.12, 0.85, -0.8][s.bend];
+      var mesh = trunks[s.bend];
       dummy.position.set(s.x, s.h - 0.1, s.z);
       dummy.rotation.set(s.tilt, s.ry, s.tilt * 0.8);
-      dummy.scale.set(0.9 + s.H * 0.035, s.H, 0.9 + s.H * 0.035);
+      var girth = 0.95 + s.H * 0.04;
+      dummy.scale.set(girth, s.H, girth);
       dummy.updateMatrix();
-      trunks.setMatrixAt(i, dummy.matrix);
+      mesh.setMatrixAt(mesh.count++, dummy.matrix);
       q.setFromEuler(new T.Euler(s.tilt, s.ry, s.tilt * 0.8));
 
-      top.set(0, 1, 0).applyMatrix4(dummy.matrix);
-      for (var f = 0; f < N_FROND; f++) {
-        eul.set(rand(-0.1, 0.1), s.ry + f * (Math.PI * 2 / N_FROND) + rand(-0.12, 0.12), rand(-0.06, 0.12));
+      /* the crown sits at the top of the *leaned* trunk, not at x=0 */
+      top.set(lean * Math.cos(s.ry), 1, -lean * Math.sin(s.ry)).applyMatrix4(dummy.matrix);
+
+      /* two layers: a long drooping skirt and a shorter upright crown, so the
+         head has depth instead of one flat star */
+      var layers = [
+        { n: Math.round(N_FROND * 0.62), len: rand(1.0, 1.18), pitch: rand(0.28, 0.5), light: 0.3 },
+        { n: N_FROND - Math.round(N_FROND * 0.62), len: rand(0.7, 0.86), pitch: rand(-0.18, 0.08), light: 0.4 }
+      ];
+      var ff = 0;
+      layers.forEach(function (lay) {
+        for (var k = 0; k < lay.n; k++) {
+          var ang = s.ry + (k / lay.n) * 6.283 + rand(-0.16, 0.16);
+          eul.set(lay.pitch + rand(-0.1, 0.1), ang, rand(-0.08, 0.08));
+          qb.setFromEuler(eul);
+          dummy.position.copy(top);
+          dummy.quaternion.copy(qb);
+          dummy.scale.set(lay.len * rand(0.9, 1.1), lay.len, lay.len * rand(0.9, 1.1));
+          dummy.updateMatrix();
+          fronds.setMatrixAt(fIdx, dummy.matrix);
+          frondCol.setHSL(0.27 + rand(-0.03, 0.035), 0.4 + rand(0, 0.16), lay.light + rand(-0.05, 0.07));
+          fronds.setColorAt(fIdx, frondCol);
+          fIdx++;
+          ff++;
+        }
+      });
+      /* a couple of dead brown fronds hanging under the crown */
+      for (var d2 = 0; d2 < 2; d2++) {
+        eul.set(rand(0.9, 1.3), s.ry + rand(0, 6.283), rand(-0.2, 0.2));
         qb.setFromEuler(eul);
         dummy.position.copy(top);
         dummy.quaternion.copy(qb);
-        var fs2 = rand(0.82, 1.12);
-        dummy.scale.set(fs2, 1, rand(0.85, 1.15));
+        var dl = rand(0.55, 0.75);
+        dummy.scale.set(dl, dl, dl);
         dummy.updateMatrix();
-        fronds.setMatrixAt(fIdx, dummy.matrix);
-        frondCol.setHSL(0.29 + rand(-0.03, 0.03), 0.45 + rand(0, 0.12), 0.3 + rand(0, 0.09));
-        fronds.setColorAt(fIdx, frondCol);
-        fIdx++;
+        if (fIdx < fronds.count) {
+          fronds.setMatrixAt(fIdx, dummy.matrix);
+          frondCol.setHSL(0.09, 0.34, 0.19 + rand(0, 0.06));
+          fronds.setColorAt(fIdx, frondCol);
+          fIdx++;
+        }
       }
-      var trunkR = 0.3 * (0.9 + s.H * 0.035);
+      var trunkR = 0.3 * girth;
       colliders.push({ x: s.x, z: s.z, r: trunkR + 0.08 });
       blockers.push({ x: s.x, z: s.z, r: trunkR, y0: s.h - 0.4, y1: s.h + s.H * 0.94 });
     });
-    trunks.instanceMatrix.needsUpdate = true;
+    trunks.forEach(function (m) { m.instanceMatrix.needsUpdate = true; });
+    fronds.count = fIdx;
     fronds.instanceMatrix.needsUpdate = true;
     if (fronds.instanceColor) fronds.instanceColor.needsUpdate = true;
-    scene.add(trunks, fronds);
+    trunks.forEach(function (m) { scene.add(m); });
+    scene.add(fronds);
 
     /* rocks ------------------------------------------------------------- */
     var rockGeo = new T.IcosahedronGeometry(1, 0);
@@ -825,20 +968,28 @@
     var rocks = new T.InstancedMesh(rockGeo, rockMat, N_ROCK);
     rocks.castShadow = true;
     rocks.receiveShadow = true;
+    /* Rocks follow the land, not a uniform sprinkle: rounded boulders sit on
+       the shoreline, shards lie on the slopes, and the ridge keeps the big
+       broken teeth. Placement is rejected unless it lands in its own band. */
     var ri = 0, rg = 0;
-    while (ri < N_ROCK && rg++ < 32000) {
-      var ra = rand(0, 6.283), rr = Math.sqrt(Math.random()) * ISLE_R * 0.96;
+    while (ri < N_ROCK && rg++ < 46000) {
+      var ra = rand(0, 6.283), rr = Math.sqrt(Math.random()) * ISLE_R * 1.02;
       var rx = Math.cos(ra) * rr, rz = Math.sin(ra) * rr;
       var rh = heightAt(rx, rz);
-      if (rh < -0.6) continue;
+      if (rh < -1.1) continue;
       if (Math.hypot(rx - SPAWN.x, rz - SPAWN.z) < 10) continue;
-      var sc = rand(0.35, 1.7);
+      var band = rh < 2.4 ? 0 : (rh < 12 ? 1 : 2);
+      var pick = Math.random();
+      var want = pick < 0.34 ? 0 : (pick < 0.72 ? 1 : 2);
+      if (band !== want && Math.random() > 0.22) continue;
+      var sc = band === 0 ? rand(0.45, 2.1) : (band === 1 ? rand(0.3, 1.5) : rand(0.7, 2.5));
       dummy.position.set(rx, rh + sc * 0.32, rz);
       dummy.rotation.set(rand(0, 3), rand(0, 3), rand(0, 3));
       dummy.scale.set(sc, sc * rand(0.6, 1.1), sc);
       dummy.updateMatrix();
       rocks.setMatrixAt(ri, dummy.matrix);
-      tmpCol.setHSL(0.09 + rand(-0.03, 0.03), 0.07 + rand(0, 0.06), 0.17 + rand(0, 0.11));
+      /* wet stones near the water read darker, dry ones lighter */
+      tmpCol.setHSL(0.09 + rand(-0.03, 0.03), 0.07 + rand(0, 0.06), (band === 0 ? 0.12 : 0.19) + rand(0, 0.1));
       rocks.setColorAt(ri, tmpCol);
       if (sc > 0.8) {
         colliders.push({ x: rx, z: rz, r: sc * 0.75 });
@@ -856,14 +1007,19 @@
     var bushMat = new T.MeshStandardMaterial({ color: 0xffffff, roughness: 0.95, flatShading: true });
     var bushes = new T.InstancedMesh(bushGeo, bushMat, N_BUSH);
     bushes.castShadow = true;
+    /* Shrubs grow in stands behind the beach, never on the open sand and never
+       on the wind-scoured ridge. A low-frequency mask turns the scatter into
+       clumps, which is the difference between a forest and confetti. */
     var bi = 0, bg = 0;
-    while (bi < N_BUSH && bg++ < 44000) {
-      var ba = rand(0, 6.283), br = Math.sqrt(Math.random()) * ISLE_R * 0.95;
+    while (bi < N_BUSH && bg++ < 64000) {
+      var ba = rand(0, 6.283), br = Math.sqrt(Math.random()) * ISLE_R * 0.97;
       var bx = Math.cos(ba) * br, bz = Math.sin(ba) * br;
       var bh = heightAt(bx, bz);
-      if (bh < 0.9) continue;
+      if (bh < 1.5 || bh > 14) continue;
+      var clump = fbm(bx * 0.035 + 11, bz * 0.035 + 5);
+      if (clump < 0.4) continue;
       if (Math.hypot(bx - SPAWN.x, bz - SPAWN.z) < 12) continue;
-      var bs = rand(0.32, 0.9);
+      var bs = rand(0.3, 1.0) * (0.7 + clump * 0.7);
       dummy.position.set(bx, bh + bs * 0.28, bz);
       dummy.rotation.set(0, rand(0, 6.28), 0);
       dummy.scale.set(bs * 1.3, bs * 0.8, bs * 1.3);
@@ -5517,6 +5673,18 @@
       cloudMat.opacity = 0.42 + day * 0.34;
       cloudMat.color.setRGB(0.94 + day * 0.06, 0.93 + day * 0.05, 0.95 - day * 0.02);
     }
+    if (tideMesh) {
+      /* the water breathes in and out a few centimetres: enough that the foam
+         line is visibly alive when you stand on the sand */
+      var tide = Math.sin(G.t * 0.42);
+      tideMesh.position.y = 0.07 + tide * 0.05;
+      tideMesh.material.opacity = 0.3 + 0.26 * (0.5 + 0.5 * tide);
+      if (tideMesh2) {
+        var tide2 = Math.sin(G.t * 0.42 - 1.1);
+        tideMesh2.position.y = 0.06 + tide2 * 0.04;
+        tideMesh2.material.opacity = 0.16 + 0.18 * (0.5 + 0.5 * tide2);
+      }
+    }
     moon.color.setRGB(0.86 + day * 0.14, 0.78 + day * 0.16, 0.66 + day * 0.16);
     hemi.color.setRGB(0.60 + day * 0.18, 0.68 + day * 0.16, 0.80 + day * 0.12);
     /* warm sand bounces up into the trunks instead of dyeing them magenta */
@@ -5693,6 +5861,21 @@
     explode: explodeBarrel, hazards: { barrels: G.barrels, traps: G.traps },
     hurt: hurtPlayer, damage: damageEnemy, kill: killEnemy, step: update, hud: updateHUD, props: G.props,
     camera: camera, scene: scene, renderer: renderer
+  };
+
+  /* ----------------------------------------------------- android shell hooks
+     The APK's Activity calls these instead of killing the app blindly. Back
+     closes what is on top (bench, then pause) before the OS is allowed to
+     leave; hiding the app pauses the run, so a phone in a pocket does not keep
+     simulating a fight behind the lock screen. */
+  window.__onBack = function () {
+    if (G.benchOpen) { closeBench(); return true; }
+    if (G.paused) { resumeGame(); return true; }
+    if (G.running && !G.over) { pauseGame(); return true; }
+    return false;
+  };
+  window.__onHide = function () {
+    if (G.running && !G.over && !G.paused) pauseGame();
   };
 
   requestAnimationFrame(function () { setTimeout(boot, 40); });
