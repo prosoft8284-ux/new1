@@ -85,18 +85,18 @@
    ✎ تحلیل: Deviance رفتار یا باوری است که هنجارهای مهم اجتماعی را نقض می‌کند؛ همیشه به معنای جرم نیست.
 
 ۱۱) «bureaucracy» در جامعه‌شناسی وبر چه معنایی دارد؟
-   ۱. دموکراسی مستقیم
+   ۱. دموکراسی مستقیم ، که با سازمان اداری عقلانی نسبتی ندارد
    ۲. دیوان‌سالاری و سازمان اداری مبتنی بر قواعد
-   ۳. نظام ارباب‌رعیتی
-   ۴. اقتصاد بازار آزاد
+   ۳. نظام ارباب‌رعیتی ، نظمی سنتی که وبر آن را نقطهٔ مقابل بوروکراسی می‌داند
+   ۴. اقتصاد بازار آزاد ، که به سازوکار بازار اشاره دارد نه به سازمان اداری
    ✔ کلید: گزینه ۲
    ✎ تحلیل: Bureaucracy سازمانی است با سلسله‌مراتب، قواعد مکتوب، تخصص و غیرشخصی‌بودن روابط؛ وبر آن را تجسم عقلانی‌شدن حقوقی می‌دانست.
 
 ۱۲) «charisma» در تیپ‌شناسی اقتدار وبر به چه معناست؟
-   ۱. قدرت قانونی مقام اداری
-   ۲. ثروت موروثی خانواده
+   ۱. قدرت قانونی مقام اداری ، که به اقتدار عقلانی-قانونی تعلق دارد
+   ۲. ثروت موروثی خانواده ، که مبنای اقتدار سنتی است نه کاریزمایی
    ۳. جاذبه و ویژگی استثنایی رهبر که مبنای اطاعت است
-   ۴. زور فیزیکی دولت
+   ۴. زور فیزیکی دولت ، که در تیپ‌شناسی وبر جای اقتدار ندارد
    ✔ کلید: گزینه ۳
    ✎ تحلیل: Charisma ویژگی فوق‌عادی و الهام‌بخش شخصیت رهبر است که پیروان را بدون قاعده و مقام رسمی به اطاعت وامی‌دارد.
 
@@ -109,12 +109,12 @@
    ✎ تحلیل: Alienation جدایی کارگر از محصول و فرایند کار و از ماهیت انسانی خویش است؛ در فارسی «از خودبیگانگی» ترجمه شده است.
 
 ۱۴) تفاوت «Gemeinschaft» و «Gesellschaft» در اندیشه تونیس چیست؟
-   ۱. اجتماع سنتی با روابط شخصی در برابر جامعه مدرن با روابط ابزاری
-   ۲. دو نوع خانواده گسترده
-   ۳. دو نوع نظام سیاسی
-   ۴. دو مرحله رشد اقتصادی
+   ۱. traditional community with personal ties versus modern society with instrumental ties
+   ۲. two types of extended family organisation in rural areas
+   ۳. two types of political system, democratic and authoritarian
+   ۴. two stages of economic growth in industrialisation
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: Gemeinschaft (community) بر صمیمیت و خویشاوندی و Gesellschaft (society) بر قرارداد و منافع عقلانی استوار است.
+   ✎ تحلیل: Gemeinschaft (community) بر صمیمیت و خویشاوندی و Gesellschaft (society) بر قرارداد و منافع عقلانی استوار است. خانوادهٔ گسترده، نظام سیاسی و مراحل رشد اقتصادی، سه حوزهٔ دیگرند که تونیس با این دو مفهوم تحلیل نمی‌کند.
 
 ۱۵) «reference group» چه معنایی دارد؟
    ۱. گروه اقلیت
@@ -133,20 +133,20 @@
    ✎ تحلیل: کولی معتقد بود خود، بازتاب تصور ما از داوری دیگران است؛ همانند تصویری که در آینه می‌بینیم.
 
 ۱۷) «paradigm» در فلسفه علوم اجتماعی چه معنایی دارد؟
-   ۱. یک نوع پرسشنامه
-   ۲. یک نظریه خاص درباره خانواده
-   ۳. یک روش آماری
+   ۱. یک نوع پرسشنامهٔ استاندارد برای گردآوری داده‌های پیمایشی
+   ۲. یک نظریهٔ خاص دربارهٔ ساختار خانواده و نقش‌های جنسیتی
+   ۳. یک روش آماری برای تحلیل واریانس میان گروه‌های چندگانه
    ۴. الگوواره یا چارچوب نظری مسلط برای طرح پرسش و پژوهش
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: Paradigm (به‌ویژه در معنای کوهنی) مجموعه مفروضات، مفاهیم و معیارهای مشروعیت‌بخش دانش در یک دوره است.
+   ✎ تحلیل: پارادایم، به‌ویژه در معنای کوهنی، مجموعهٔ مفروضات، مفاهیم و معیارهای مشروعیت دانش در یک دوره است که تعیین می‌کند چه پرسشی شایستهٔ پژوهش است. پرسشنامه، نظریهٔ خانواده و روش آماری همه درون یک پارادایم جای می‌گیرند و خودِ آن نیستند.
 
 ۱۸) «hypothesis» در پژوهش تجربی چیست؟
-   ۱. فرضیه؛ گزاره‌ای آزمون‌پذیر درباره رابطه متغیرها
-   ۲. نتیجه قطعی پژوهش
-   ۳. روش گردآوری داده
-   ۴. جامعه آماری
+   ۱. فرضیه؛ گزاره‌ای آزمون‌پذیر دربارهٔ رابطهٔ متغیرها
+   ۲. نتیجهٔ قطعی پژوهش و جمع‌بندی نهایی یافته‌ها
+   ۳. روش گردآوری داده و ابزار سنجش متغیرها
+   ۴. جامعهٔ آماری و چارچوب نمونه‌گیری پژوهش
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: Hypothesis گزاره‌ای است که رابطه میان متغیرها را به‌صورت آزمون‌پذیر بیان می‌کند و باید با داده سنجیده شود.
+   ✎ تحلیل: فرضیه گزاره‌ای است که رابطهٔ میان متغیرها را بیان می‌کند و با داده آزموده می‌شود؛ آزمون‌پذیری، معیار اصلی آن است. نتیجه، روش و جامعهٔ آماری، سه جزء دیگر پژوهش‌اند.
 
 ۱۹) «dependent variable» معادل کدام اصطلاح است؟
    ۱. متغیر مستقل
@@ -165,12 +165,12 @@
    ✎ تحلیل: Ethnography توصیف عمیق شیوه زندگی و فرهنگ یک گروه از راه حضور طولانی در میدان و مشاهده و مصاحبه است.
 
 ۲۱) در متن «Qualitative methods explore meaning rather than measure quantities»، منظور چیست؟
-   ۱. روش‌های کیفی بی‌ارزش‌اند
-   ۲. روش‌های کیفی جای آمار را می‌گیرند
-   ۳. روش‌های کیفی فقط کمیت‌ها را اندازه می‌گیرند
+   ۱. روش‌های کیفی بی‌ارزش‌اند و در پژوهش اجتماعی کاربرد ندارند
+   ۲. روش‌های کیفی جای آمار را می‌گیرند و تحلیل کمی را حذف می‌کنند
+   ۳. روش‌های کیفی فقط کمیت‌ها را با دقت بیشتری اندازه می‌گیرند
    ۴. روش‌های کیفی به جای اندازه‌گیری کمیت، به کاوش معنا می‌پردازند
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: rather than به معنای «به‌جای» است؛ جمله بر تفاوت بنیادی رویکرد کیفی (کاوش معنا) با رویکرد کمّی (سنجش مقدار) تأکید دارد.
+   ✎ تحلیل: منظور متن این است که روش کیفی به‌جای شمارش کمیت، معنا و تفسیر کنشگران را می‌کاود؛ پس نه بی‌ارزش است، نه جای آمار را می‌گیرد و نه کمیت‌ها را اندازه می‌گیرد. این جمله تمایز بنیادی دو رویکرد را بیان می‌کند، نه برتری یکی بر دیگری.
 
 ۲۲) «social institution» چه معنایی دارد؟
    ۱. نهاد اجتماعی
@@ -181,12 +181,12 @@
    ✎ تحلیل: Social institution الگوهای پایدار کنش و انتظارات سازمان‌یافته مانند خانواده، آموزش، دین و اقتصاد است.
 
 ۲۳) اصطلاح «subculture» به چه گروهی اشاره دارد؟
-   ۱. فرهنگ غالب جامعه
+   ۱. فرهنگ غالب جامعه که همهٔ گروه‌ها در آن شریک‌اند
    ۲. خرده‌فرهنگ؛ گروهی با ارزش‌ها و سبک زندگی متمایز درون فرهنگ بزرگ‌تر
-   ۳. فرهنگ وارداتی
-   ۴. فرهنگ سازمانی دولتی
+   ۳. فرهنگ وارداتی که از جامعه‌ای دیگر به‌طور کامل پذیرفته می‌شود
+   ۴. فرهنگ سازمانی دولتی که در نهادهای عمومی رواج دارد
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: Subculture بخشی از جامعه است که ضمن اشتراک در فرهنگ کلی، الگوهای فرهنگی ویژه خود را دارد و لزوماً مخالف فرهنگ غالب نیست.
+   ✎ تحلیل: Subculture بخشی از جامعه است که ضمن اشتراک در فرهنگ کلی، الگوهای فرهنگی ویژه خود را دارد و لزوماً مخالف فرهنگ غالب نیست. فرهنگ غالب، فرهنگ وارداتی و فرهنگ سازمانی، سه مفهوم دیگرند.
 
 ۲۴) عبارت «the wealth of nations depends on social capital as much as on physical capital» بر چه نکته‌ای تأکید دارد؟
    ۱. بی‌اهمیتی سرمایه فیزیکی
@@ -197,36 +197,36 @@
    ✎ تحلیل: as much as به معنای «به همان اندازه» است؛ جمله می‌گوید سرمایه اجتماعی (اعتماد و شبکه‌ها) به اندازه سرمایه فیزیکی در توسعه اهمیت دارد.
 
 ۲۵) «operationalization» در پژوهش چه معنایی دارد؟
-   ۱. انتشار نتایج
-   ۲. نمونه‌گیری تصادفی
-   ۳. نظریه‌پردازی انتزاعی
+   ۱. انتشار نتایج ، مرحله‌ای پس از تحلیل و بی‌ارتباط با سنجش مفهوم
+   ۲. نمونه‌گیری تصادفی ، تصمیمی در طراحی نمونه نه در تعریف مفهوم
+   ۳. نظریه‌پردازی انتزاعی ، نقطه‌ای که عملیاتی‌سازی از آن آغاز می‌شود
    ۴. عملیاتی‌سازی؛ تعریف مفهوم به‌صورت قابل سنجش
    ✔ کلید: گزینه ۴
    ✎ تحلیل: Operationalization فرایند تبدیل مفاهیم انتزاعی به شاخص‌ها و متغیرهای قابل اندازه‌گیری است.
 — بخش ۲: واژگان تخصصی و عمومی —
 ۲۶) واژه «bias» در پژوهش به چه معناست؟
    ۱. سوگیری یا انحراف نظام‌مند در طراحی، نمونه یا سنجش
-   ۲. دقت اندازه‌گیری
-   ۳. حجم نمونه
-   ۴. تحلیل ثانویه داده‌ها
+   ۲. دقت اندازه‌گیری و نزدیکی به مقدار واقعی
+   ۳. حجم نمونه و توان آماری مطالعه
+   ۴. تحلیل ثانویه داده‌های موجود
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: Bias خطای نظام‌مند (نه تصادفی) است که نتیجه را به‌طور یک‌سویه منحرف می‌کند؛ مانند سوگیری انتخاب یا سوگیری پاسخ.
+   ✎ تحلیل: سوگیری انحراف نظام‌مند و یک‌جهته است، نه خطای تصادفی؛ به همین دلیل با افزایش نمونه از میان نمی‌رود. دقت، حجم نمونه و تحلیل ثانویه، سه مفهوم دیگرند.
 
 ۲۷) صفت «robust» در توصیف یافته‌های آماری چه معنایی دارد؟
-   ۱. متناقض و نامعتبر
-   ۲. استوار و پایدار در برابر تغییر مفروضات یا حذف بخشی از داده
-   ۳. ناقص و اولیه
-   ۴. وابسته به حجم نمونه بزرگ
+   ۱. contradictory and therefore invalid as evidence
+   ۲. stable and holding up under changes in assumptions or data
+   ۳. incomplete and based on a preliminary pilot study
+   ۴. dependent on a very large sample to be meaningful
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: یافته robust است اگر با تغییر روش برآورد، حذف داده‌های پرت یا افزودن متغیرها پابرجا بماند؛ نشانه اتکاپذیری نتیجه است.
+   ✎ تحلیل: یافته robust است اگر با تغییر روش برآورد، حذف داده‌های پرت یا افزودن متغیرها پابرجا بماند؛ نشانهٔ اتکاپذیری نتیجه است. متناقض، ناقص و وابسته به نمونهٔ بزرگ، سه معنای متفاوت‌اند.
 
 ۲۸) «prevalence» با «incidence» چه تفاوتی دارد؟
-   ۱. prevalence موارد جدید و incidence کل موارد است
-   ۲. هر دو یک معنا دارند
+   ۱. prevalence موارد جدید و incidence کل موارد موجود در جامعه است
+   ۲. هر دو یک معنا دارند و تنها در متون بالینی متفاوت ترجمه می‌شوند
    ۳. prevalence نسبت موجود در یک مقطع و incidence موارد جدید در یک دوره است
-   ۴. prevalence ویژه بیماری‌های واگیر است
+   ۴. prevalence ویژه بیماری‌های واگیر است و incidence ویژه بیماری‌های مزمن
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: شیوع (prevalence) سهم کل موارد موجود و بروز (incidence) شمار موارد تازه در بازه زمانی مشخص است؛ در مطالعات سلامت بسیار پرکاربردند.
+   ✎ تحلیل: شیوع (prevalence) سهم کل موارد موجود در یک مقطع زمانی است و بروز (incidence) شمار موارد تازه در یک دوره؛ به همین دلیل بیماری‌های مزمن شیوع بالا اما بروز پایین دارند. افزایش شیوع می‌تواند نتیجهٔ بقای طولانی‌تر باشد، نه بروز بیشتر.
 
 ۲۹) «cohort study» چه نوع مطالعه‌ای است؟
    ۱. مطالعه مقطعی از یک محله
@@ -270,19 +270,19 @@
 
 ۳۴) «sampling frame» یعنی چه؟
    ۱. فهرست یا منبعی که واحدهای جامعه برای نمونه‌گیری از آن انتخاب می‌شوند
-   ۲. جدول تعیین حجم نمونه
-   ۳. پرسشنامه استاندارد
-   ۴. نرم‌افزار تحلیل داده
+   ۲. جدول تعیین حجم نمونه بر پایهٔ سطح اطمینان و خطای مجاز
+   ۳. پرسشنامهٔ استانداردشده‌ای که برای همهٔ پاسخگویان یکسان است
+   ۴. نرم‌افزاری که داده‌های گردآوری‌شده را تحلیل و پاکسازی می‌کند
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: چارچوب نمونه‌گیری (مثلاً فهرست خانوارها یا شماره‌های تلفن) پایه انتخاب نمونه است؛ نبود آن منشأ خطای پوشش می‌شود.
+   ✎ تحلیل: چارچوب نمونه‌گیری (مثلاً فهرست خانوارها یا شماره‌های تلفن) پایهٔ انتخاب نمونه است؛ نبود آن منشأ خطای پوشش می‌شود. حجم نمونه، ابزار گردآوری و نرم‌افزار تحلیل، سه چیز دیگرند.
 
 ۳۵) «confounding variable» چه متغیری است؟
-   ۱. متغیری که پژوهشگر دست‌کاری می‌کند
-   ۲. متغیری که با هر دو متغیر مستقل و وابسته مرتبط است و رابطه را مخدوش می‌کند
-   ۳. متغیری که همیشه کیفی است
-   ۴. متغیری که در پرسشنامه فراموش شده است
+   ۱. a variable that the researcher deliberately manipulates in an experiment
+   ۲. a variable related to both the independent and dependent variable, distorting the relation
+   ۳. a variable that is always qualitative and cannot be measured
+   ۴. a variable that was left out of the questionnaire by mistake
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: متغیر مخدوش، عامل سوم پنهان است؛ اگر کنترل نشود، همبستگی مشاهده‌شده می‌تواند کاذب باشد.
+   ✎ تحلیل: متغیر مخدوش، عامل سوم پنهان است؛ اگر کنترل نشود، همبستگی مشاهده‌شده می‌تواند کاذب باشد. متغیر دست‌کاری‌شده همان متغیر مستقل است و کیفی‌بودن یا جاافتادن از پرسشنامه، تعریف مخدوش‌کننده نیست.
 
 ۳۶) «longitudinal study» چه ویژگی دارد؟
    ۱. نمونه در هر موج کاملاً عوض می‌شود
@@ -301,52 +301,52 @@
    ✎ تحلیل: داده مقطعی تصویری از جامعه در یک زمان است؛ امکان مقایسه گروه‌ها را می‌دهد اما ترتیب زمانی و علیت را به‌سادگی اثبات نمی‌کند.
 
 ۳۸) واژه «stigma» در جامعه‌شناسی چه معنایی دارد؟
-   ۱. داغ ننگ؛ ویژگی‌ای که هویت فرد را مخدوش و او را از پذیرش اجتماعی محروم می‌کند
-   ۲. نشان افتخار و منزلت
-   ۳. برچسب رسمی سازمان
-   ۴. نماد ثروت
+   ۱. داغ ننگ؛ ویژگی‌ای که هویت فرد را مخدوش و او را از پذیرش محروم می‌کند
+   ۲. نشان افتخار و منزلت که فرد را در سلسله‌مراتب اجتماعی بالا می‌برد
+   ۳. برچسب رسمی سازمان که برای شناسایی اداری افراد صادر می‌شود
+   ۴. نماد ثروت و پایگاه اقتصادی که در سبک زندگی فرد دیده می‌شود
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: استیگما (گافمن) ویژگی‌ای است که فرد را «دارای هویت خراب‌شده» می‌کند و او را به مدیریت impression و پنهان‌کاری وامی‌دارد.
+   ✎ تحلیل: استیگما (گافمن) ویژگی‌ای است که فرد را «دارای هویت خراب‌شده» می‌کند و او را به مدیریت impression و پنهان‌کاری وامی‌دارد. سه گزینهٔ دیگر نشانهٔ منزلت، برچسب اداری و نماد پایگاه‌اند و بار منفی و طردکنندهٔ استیگما را ندارند.
 
 ۳۹) «norm» در جامعه‌شناسی معادل کدام مفهوم است؟
-   ۱. ارزش آرمانی
+   ۱. ارزش آرمانی ، که به آرمان‌های مطلوب اشاره دارد نه به قاعدهٔ رفتاری
    ۲. هنجار؛ قاعده رفتاری مشترک با ضمانت اجتماعی
-   ۳. قانون رسمی نوشته‌شده
-   ۴. نماد فرهنگی
+   ۳. قانون رسمی نوشته‌شده ، که تنها بخشی از هنجارها با ضمانت حقوقی است
+   ۴. نماد فرهنگی ، که معنایی نمادین دارد نه الزام رفتاری
    ✔ کلید: گزینه ۲
    ✎ تحلیل: Norn قاعده‌ای است که رفتار مناسب را در موقعیت‌های معین تعیین می‌کند؛ بخشی از آن به قانون رسمی تبدیل می‌شود و بخشی غیررسمی می‌ماند.
 
 ۴۰) «legitimation» در نظریه برگر و لاکمن چه نقشی دارد؟
-   ۱. تغییر انقلابی ساختار
-   ۲. نمونه‌گیری از گروه‌های پنهان
+   ۱. تغییر انقلابی ساختار و براندازی نظم موجود
+   ۲. نمونه‌گیری از گروه‌های پنهان و دشوار
    ۳. توجیه و مشروع‌جلوه‌دادن نظم اجتماعی موجود برای نسل جدید
    ۴. سنجش نگرش با مقیاس لیکرت
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: مشروعیت‌بخشی با زبان، دین، نظریه و آیین، جهان اجتماعی ساخته‌شده را بدیهی و موجه نشان می‌دهد و از فروپاشی آن جلوگیری می‌کند.
+   ✎ تحلیل: برگر و لاکمن مشروعیت‌سازی را فرایندی می‌دانند که نظم اجتماعی موجود را برای نسل جدید توجیه و موجه می‌کند و از این راه جهان نهادی را پایدار نگه می‌دارد. تغییر انقلابی، نمونه‌گیری از گروه‌های پنهان و سنجش نگرش، سه موضوع بی‌ربط‌اند. نکته: مشروعیت‌سازی سازوکار «نگهداشت» نظم است، نه براندازی آن.
 
 ۴۱) «ideology» در کاربرد انتقادی مارکسی چه معنایی دارد؟
-   ۱. مجموع آمارهای رسمی
-   ۲. روش تحلیل داده‌های کیفی
-   ۳. نظام حقوقی بی‌طرف
-   ۴. نظام اندیشه‌ای که منافع طبقه حاکم را پنهان و طبیعی جلوه می‌دهد
+   ۱. the body of official statistics produced by state agencies
+   ۲. a qualitative method for analysing interview data
+   ۳. a neutral legal system that treats all groups equally
+   ۴. a system of ideas that hides and naturalises ruling-class interests
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: در این کاربرد، ایدئولوژی نه هر باور بلکه اندیشه‌ای است که روابط سلطه را بازتولید و پنهان می‌کند؛ مفهوم «آگاهی کاذب» به همین اشاره دارد.
+   ✎ تحلیل: در این کاربرد، ایدئولوژی نه هر باور بلکه اندیشه‌ای است که روابط سلطه را بازتولید و پنهان می‌کند؛ مفهوم «آگاهی کاذب» به همین اشاره دارد. آمار رسمی، روش کیفی و نظام حقوقی، سه معنای دیگرند و بار انتقادی مفهوم را ندارند.
 
 ۴۲) «rationalization» در اندیشه وبر به چه فرایندی اشاره دارد؟
    ۱. گسترش عقلانیت ابزاری، محاسبه و قاعده‌مندی در نهادها و کنش
-   ۲. افزایش احساسات و سنت‌گرایی
-   ۳. کاهش نقش سازمان‌ها
-   ۴. خصوصی‌سازی اقتصاد
+   ۲. افزایش احساسات و بازگشت به سنت‌گرایی در زندگی روزمره
+   ۳. کاهش نقش سازمان‌ها و بازگشت به روابط شخصی و محلی
+   ۴. خصوصی‌سازی اقتصاد و واگذاری بنگاه‌ها به بخش خصوصی
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: عقلانی‌شدن، جهان را از جادو و سنت می‌زداید و آن را به قلمرو محاسبه، قواعد و دیوان‌سالاری تبدیل می‌کند؛ پیامد آن «قفس آهنین» است.
+   ✎ تحلیل: عقلانی‌شدن در وبر یعنی گسترش محاسبه، قاعده و عقلانیت ابزاری در کنش و نهادها، با پیامد «قفس آهنین» بوروکراسی. احساس‌گرایی، کوچک‌شدن سازمان‌ها و خصوصی‌سازی، سه فرایند دیگرند.
 
 ۴۳) «secularization» معادل کدام مفهوم است؟
-   ۱. تقدیس دولت
-   ۲. سکولاریزاسیون؛ کاهش نفوذ دین در سپهرهای عمومی و تنظیم عقلانی-دنیوی زندگی
-   ۳. بنیادگرایی دینی
-   ۴. افزایش مناسک مذهبی
+   ۱. تقدیس دولت و گسترش مناسک دینی در نهادهای عمومی
+   ۲. کاهش نفوذ دین در سپهرهای عمومی و تنظیم عقلانی-دنیوی زندگی
+   ۳. بنیادگرایی دینی و بازگشت به متن مقدس در سیاست
+   ۴. افزایش مناسک مذهبی و مشارکت مردم در آیین‌های جمعی
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: سکولاریزاسیون جدایی نهادهای آموزش، حقوق و سیاست از اقتدار دینی است، نه لزوماً از میان رفتن باورهای شخصی افراد.
+   ✎ تحلیل: سکولاریزاسیون جدایی نهادهای آموزش، حقوق و سیاست از اقتدار دینی است، نه لزوماً از میان رفتن باورهای شخصی افراد. تقدیس دولت، بنیادگرایی و افزایش مناسک، سه معنای مخالف یا متفاوت‌اند.
 
 ۴۴) عبارت «upward mobility» به چه معناست؟
    ۱. تحرک شغلی افقی
@@ -357,9 +357,9 @@
    ✎ تحلیل: Upward به معنای «به سمت بالا» است؛ تحرک صعودی یعنی رسیدن به جایگاه بالاتر در سلسله‌مراتب منزلت و منابع.
 
 ۴۵) اصل «reciprocity» در نظریه تبادل و سرمایه اجتماعی چه معنایی دارد؟
-   ۱. انزوای اجتماعی
-   ۲. انتقال یک‌سویه منابع
-   ۳. رقابت بی‌قاعده
+   ۱. انزوای اجتماعی ، وضعیتی که نقیض منطق عمل متقابل است
+   ۲. انتقال یک‌سویه منابع ، در حالی که اصل تقابل بر پاسخ دوطرفه استوار است
+   ۳. رقابت بی‌قاعده ، رفتاری که با هنجار پاسخ متقابل سازگار نیست
    ۴. عمل متقابل؛ انتظار پاسخ در برابر لطف یا خدمت
    ✔ کلید: گزینه ۴
    ✎ تحلیل: هنجار عمل متقابل، اعتماد و همکاری را ممکن می‌کند و بنیان شبکه‌های تعهد متقابل در سرمایه اجتماعی است.
@@ -407,11 +407,11 @@
 
 ۵۱) «account for» در جمله «Class explains only part of the variation; ethnicity also accounts for differences» چه معنایی دارد؟
    ۱. توضیح دادن یا تبیین کردن بخشی از تغییرات
-   ۲. جایگزین کردن
-   ۳. شمارش کردن
-   ۴. انکار کردن
+   ۲. جایگزین کردن یک متغیر با متغیر دیگر در مدل رگرسیون
+   ۳. شمردن تعداد مشاهده‌ها و محاسبهٔ فراوانی هر مقوله
+   ۴. انکار کردن رابطهٔ مشاهده‌شده و رد فرضیهٔ پژوهش
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: account for در متون آماری یعنی «تبیین کردن سهمی از واریانس»؛ همین تعبیر در تفسیر R² و تحلیل چندمتغیره رایج است.
+   ✎ تحلیل: «account for» در متون آماری یعنی تبیین کردن سهمی از تغییرات؛ همین تعبیر در تفسیر R² و تحلیل چندمتغیره رایج است. معنای آن جایگزینی، شمارش یا انکار نیست و برگردان درست آن در گزارش نتایج تعیین‌کننده است.
 
 ۵۲) «attribute X to Y» چه معنایی دارد؟
    ۱. X را از Y جدا کردن
@@ -510,37 +510,37 @@
    ✎ تحلیل: ساختار as … as در این جمله بر هم‌ارزی سقف کیفیت پژوهش و داده دلالت دارد؛ داده ضعیف، تحلیل قوی را بی‌اثر می‌کند.
 
 ۶۴) «to hold constant» در توصیف روش پژوهش چه معنایی دارد؟
-   ۱. تغییر دادن متغیر مستقل
+   ۱. تغییر دادن متغیر مستقل ، یعنی نقطهٔ مقابل ثابت نگه‌داشتن یک عامل
    ۲. ثابت نگه‌داشتن یک عامل برای بررسی اثر عوامل دیگر
-   ۳. حذف کامل متغیر از مطالعه
-   ۴. افزایش حجم نمونه
+   ۳. حذف کامل متغیر از مطالعه ، که با کنترل آماری در مدل تفاوت دارد
+   ۴. افزایش حجم نمونه ، اقدامی که به کنترل متغیر مربوط نیست
    ✔ کلید: گزینه ۲
    ✎ تحلیل: در تحلیل چندمتغیره، «ثابت نگه‌داشتن» به معنای کنترل آماری اثر متغیر سوم است تا رابطه اصلی روشن شود.
 
 ۶۵) «The results should be interpreted with caution» چه توصیه‌ای است؟
-   ۱. نتایج کاملاً نادرست‌اند
-   ۲. نتایج باید فوراً منتشر شوند
+   ۱. نتایج کاملاً نادرست‌اند و نباید به آن‌ها استناد کرد
+   ۲. نتایج باید فوراً و بدون بررسی بیشتر منتشر شوند
    ۳. نتایج با احتیاط تفسیر شوند، به‌دلیل محدودیت‌های روش یا داده
-   ۴. نیازی به تفسیر ندارند
+   ۴. نیازی به تفسیر ندارند و خودشان گویا هستند
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: این عبارت در بخش بحث مقالات، هشدار درباره تعمیم‌پذیری و محدودیت‌هاست نه رد یافته‌ها.
+   ✎ تحلیل: این عبارت در بخش محدودیت‌ها می‌آید و خواننده را به دامنهٔ اعتبار یافته‌ها و شرایط تعمیم توجه می‌دهد، نه به بی‌اعتباری کامل آن. بی‌ارزش دانستن، انتشار شتاب‌زده و بی‌نیازی از تفسیر، سه برداشت نادرست‌اند.
 
 — بخش ۴: واژگان تخصصی و عمومی —
 ۶۶) A «spurious» correlation is one that:
-   ۱. is statistically significant
+   ۱. is statistically significant , which says nothing about a hidden third variable
    ۲. appears strong but is produced by a third factor
-   ۳. is negative and weak
-   ۴. cannot be measured
+   ۳. is negative and weak , which describes strength and direction rather than confounding
+   ۴. cannot be measured , which is a claim about measurement, not about confounding
    ✔ کلید: گزینه ۲
    ✎ تحلیل: همبستگی کاذب ممکن است قوی باشد اما علّی نباشد؛ متغیر مخدوش، منشأ اصلی آن است.
 
 ۶۷) A «confounding» variable:
-   ۱. is always the dependent variable
-   ۲. has no effect on the results
+   ۱. is always the dependent variable of the study
+   ۲. has no effect on the observed results
    ۳. distorts the observed relation between two other variables
-   ۴. is a measurement error
+   ۴. is a measurement error of the outcome variable
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: متغیر مخدوش هم با مستقل و هم با وابسته مرتبط است و اثر را جابه‌جا می‌کند؛ کنترل آن با طرح یا مدل انجام می‌شود.
+   ✎ تحلیل: متغیر مخدوش‌کننده با هر دو متغیر مستقل و وابسته مرتبط است و رابطهٔ مشاهده‌شده را تحریف می‌کند. متغیر وابسته، بی‌اثری و خطای اندازه‌گیری، سه تعریف نادرست‌اند. نکته: کنترل مخدوش‌کننده با تصادفی‌سازی یا کنترل آماری انجام می‌شود.
 
 ۶۸) «Bias» in research refers to:
    ۱. random fluctuation of a sample
@@ -584,32 +584,32 @@
 
 ۷۳) «Hegemony» in Gramsci’s theory means:
    ۱. domination secured through consent and cultural leadership
-   ۲. rule by pure physical force
-   ۳. economic ownership of factories
-   ۴. legal equality of citizens
+   ۲. rule by pure physical force and coercion
+   ۳. economic ownership of factories and capital
+   ۴. legal equality of citizens before the law
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: هژمونی رهبری فرهنگی است که سلطه را از راه رضایت بازتولید می‌کند؛ جامعه مدنی و روشنفکران در آن نقش دارند.
+   ✎ تحلیل: در نظریهٔ گرامشی، هژمونی سلطه‌ای است که با رضایت و رهبری فرهنگی به دست می‌آید، نه فقط با زور. حکومت با زور محض، مالکیت اقتصادی و برابری حقوقی، سه مفهوم دیگرند. نکته: تقابل کلیدی گرامشی «رضایت در برابر زور» است.
 
 ۷۴) A «discourse» in Foucault’s sense is:
-   ۱. a casual conversation
+   ۱. a casual conversation between two or more people
    ۲. a system of statements that defines what can be said and known
-   ۳. a statistical distribution
-   ۴. a legal contract
+   ۳. a statistical distribution of responses in a survey
+   ۴. a legal contract between the state and citizens
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: گفتمان قواعد تولید گزاره و مرزهای دانش و صدق را تعیین می‌کند؛ قدرت در همین قواعد عمل می‌کند.
+   ✎ تحلیل: گفتمان قواعد تولید گزاره و مرزهای دانش و صدق را تعیین می‌کند؛ قدرت در همین قواعد عمل می‌کند. گفت‌وگوی روزمره، توزیع آماری و قرارداد حقوقی، سه معنای دیگرند.
 
 ۷۵) «Habitus» in Bourdieu refers to:
-   ۱. a formal rule of an institution
-   ۲. an economic capital
+   ۱. a formal rule of an institution rather than a durable disposition of the agent
+   ۲. an economic capital which is a different form of capital
    ۳. durable dispositions acquired through socialization
-   ۴. a survey sampling frame
+   ۴. a survey sampling frame which concerns sampling rather than embodied disposition
    ✔ کلید: گزینه ۳
    ✎ تحلیل: عادت‌واره ساختارهای درونی‌شده‌ای است که کنش را بدون محاسبه آگاهانه جهت می‌دهد؛ حلقه واسط ساختار و عمل است.
 
 ۷۶) «Reflexivity» in qualitative research means:
-   ۱. repeating the analysis twice
-   ۲. avoiding any personal involvement
-   ۳. using only closed questions
+   ۱. repeating the analysis twice which concerns reliability rather than the researcher's position
+   ۲. avoiding any personal involvement which is the opposite of examining one's own position
+   ۳. using only closed questions which concerns instrument design rather than the researcher
    ۴. examining how the researcher’s position shapes the study
    ✔ کلید: گزینه ۴
    ✎ تحلیل: بازتابندگی، اثر موقعیت، پیش‌فرض و رابطه پژوهشگر با میدان را بخشی از تحلیل می‌کند.
@@ -631,20 +631,20 @@
    ✎ تحلیل: عرفی‌شدن به کاهش نقش نهاد دین در حوزه‌های عمومی و خصوصی اشاره دارد؛ تنها جدایی حقوقی نیست.
 
 ۷۹) A «meritocracy» is a system in which:
-   ۱. rewards depend on family background
-   ۲. all rewards are equal
+   ۱. rewards depend mainly on family background and inherited status
+   ۲. all members of society receive equal rewards regardless of effort
    ۳. rewards are allocated according to achievement and ability
-   ۴. rewards are decided by lot
+   ۴. rewards are decided by lot, rotation or seniority rather than merit
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: شایسته‌سالاری بر تحرک مبتنی بر دستاورد تأکید دارد؛ نقدها بر نابرابری فرصت پیش از رقابت متمرکزند.
+   ✎ تحلیل: In a meritocracy, position and reward are supposed to follow achievement and ability rather than inherited status; the classic critique is that opportunities before the race are unequal, so merit itself reflects advantage. Lotteries, seniority and equal rewards belong to other allocation principles.
 
 ۸۰) «Solidarity» in Durkheim’s typology:
-   ۱. always mechanical
-   ۲. always organic
-   ۳. unrelated to division of labour
-   ۴. mechanical in simple societies and organic in differentiated ones
+   ۱. it is always mechanical, whatever the division of labour
+   ۲. it is always organic, whatever the division of labour
+   ۳. it is unrelated to the division of labour and to social structure
+   ۴. it is mechanical in simple societies and organic in differentiated ones
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: همبستگی مکانیکی بر شباهت و وجدان جمعی استوار است و همبستگی ارگانیک بر وابستگی متقابل ناشی از تقسیم کار.
+   ✎ تحلیل: همبستگی مکانیکی بر شباهت و وجدان جمعی استوار است و همبستگی ارگانیک بر وابستگی متقابل ناشی از تقسیم کار. «همیشه مکانیکی» و «همیشه ارگانیک» هر دو تعمیم نادرست‌اند و بی‌ربط دانستن آن به تقسیم کار، منطق دورکیم را وارونه می‌کند.
 
 ۸۱) The «bourgeoisie» in Marxist theory refers to:
    ۱. owners of the means of production
@@ -663,28 +663,28 @@
    ✎ تحلیل: پرولتاریا نیروی کار خود را برای بقا می‌فروشد و از محصول کار خود بیگانه می‌شود.
 
 ۸۳) A «paradigm» in Kuhn’s sense is:
-   ۱. a single hypothesis
-   ۲. a statistical test
+   ۱. a single hypothesis that is tested in one study
+   ۲. a statistical test used to compare group means
    ۳. a shared framework of assumptions and methods guiding research
-   ۴. a sample of respondents
+   ۴. a sample of respondents selected for a survey
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: پارادایم شامل مفروضات، نمونه‌های الگو و معیارهای حل مسئله است؛ تغییر آن «انقلاب علمی» خوانده می‌شود.
+   ✎ تحلیل: پارادایم شامل مفروضات، نمونه‌های الگو و معیارهای حل مسئله است؛ تغییر آن «انقلاب علمی» خوانده می‌شود. یک فرضیه، یک آزمون آماری و یک نمونه، سه چیز دیگرند و مقیاس پارادایم را ندارند.
 
 ۸۴) An «indicator» in social research is:
-   ۱. the research question
-   ۲. the sampling error
-   ۳. the conclusion of a study
+   ۱. the research question that guides the study rather than measuring a concept
+   ۲. the sampling error which concerns sampling rather than measurement
+   ۳. the conclusion of a study which comes at the end rather than in measurement
    ۴. an observable measure used to represent a concept
    ✔ کلید: گزینه ۴
    ✎ تحلیل: شاخص، مفهوم انتزاعی را قابل مشاهده و سنجش می‌کند؛ اعتبار شاخص به تناسب آن با مفهوم بستگی دارد.
 
 ۸۵) To «generalize» findings means to:
    ۱. extend conclusions beyond the studied sample with justification
-   ۲. repeat the study in the same sample
-   ۳. report only descriptive statistics
-   ۴. avoid any inference
+   ۲. repeat the study in the same sample to confirm the results
+   ۳. report only descriptive statistics and avoid inference
+   ۴. avoid any inference and limit claims to direct observations
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: تعمیم با نمایندگی نمونه و شناخت محدودیت‌ها توجیه می‌شود؛ تعمیم بی‌پشتوانه، خطای رایج است.
+   ✎ تحلیل: تعمیم یعنی گسترش نتیجه‌ها از نمونهٔ مطالعه‌شده به جامعه، به شرط آنکه نمونه نماینده و منطق استنباط روشن باشد. تکرار در همان نمونه، محدودشدن به آمار توصیفی و پرهیز کامل از استنباط، سه کار دیگرند. نکته: تعمیم نیازمند توجیه است، نه صرف تکرار.
 
 — بخش ۵: واژگان سطح بالا —
 ۸۶) To «substantiate» a claim is to:
@@ -785,52 +785,52 @@
 
 — بخش ۶: واژگان تخصصی تکمیلی —
 ۹۸) «Triangulation» in research means:
-   ۱. testing three hypotheses
-   ۲. using three researchers only
+   ۱. testing three separate hypotheses in one study
+   ۲. using three researchers in the same project
    ۳. combining multiple sources or methods to strengthen inference
-   ۴. dividing a sample into three
+   ۴. dividing the sample into three equal parts
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: هم‌گرایی شواهد از منابع مختلف، اعتبار استنباط را بالا می‌برد.
+   ✎ تحلیل: Triangulation means approaching the same question with different data sources, methods or researchers so that conclusions are not dependent on one instrument. The number three is incidental; the point is convergence of independent evidence.
 
 ۹۹) «Reflexivity» refers to:
-   ۱. sampling randomly
-   ۲. coding twice
-   ۳. repeating a study
+   ۱. sampling randomly from a complete list
+   ۲. coding the same text twice
+   ۳. repeating a study in another setting
    ۴. examining how the researcher shapes the findings
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: بازتابندگی، آگاهی از موقعیت پژوهشگر در تولید دانش است.
+   ✎ تحلیل: Reflexivity is awareness of the researcher's own position, assumptions and influence on the data and interpretation. Random sampling, double coding and replication are three different safeguards.
 
 ۱۰۰) «Anonymity» differs from «confidentiality» in that:
    ۱. identity is unknown to the researcher, not merely withheld from publication
-   ۲. both mean the same
-   ۳. confidentiality means no data
-   ۴. anonymity applies only to surveys
+   ۲. both terms mean exactly the same thing in research ethics
+   ۳. confidentiality means that no data are collected at all
+   ۴. anonymity applies only to large postal surveys
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: محرمانگی یعنی دانستن اما افشانکردن؛ ناشناسی یعنی ندانستن هویت.
+   ✎ تحلیل: محرمانگی یعنی پژوهشگر هویت را می‌داند اما آن را افشا نمی‌کند؛ ناشناسی یعنی هویت از خود پژوهشگر هم پنهان است. یکی‌دانستن این دو، و محدود دانستن ناشناسی به یک نوع پیمایش، هر دو نادرست‌اند.
 
 ۱۰۱) A «proxy variable» is:
-   ۱. a control variable
+   ۱. a control variable held constant in the analysis
    ۲. an indirect measure standing in for an unobserved concept
-   ۳. an error term
-   ۴. a sampling weight
+   ۳. the error term of a regression model
+   ۴. a sampling weight applied to each case
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: متغیر جانشین با خطای اندازه‌گیری بیشتری همراه است.
+   ✎ تحلیل: متغیر جانشین با خطای اندازه‌گیری بیشتری همراه است. متغیر کنترل، جملهٔ خطا و وزن نمونه‌گیری، سه نقش دیگر در طرح پژوهش‌اند و متغیر جانشین نیستند.
 
 ۱۰۲) «Robustness checks» are used to:
-   ۱. increase sample size
-   ۲. eliminate outliers
+   ۱. increase the sample size before analysis
+   ۲. eliminate outliers from the dataset
    ۳. test whether results hold under alternative assumptions
-   ۴. compute p-values
+   ۴. compute exact p-values for each coefficient
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: robustness checks آزمون‌های حساسیت‌اند: آیا نتیجه با مفروضات و مشخصه‌های بدیل هم برقرار می‌ماند؟
+   ✎ تحلیل: Robustness checks re-run the analysis with different specifications, measures or subsamples to see whether the finding survives. Adding cases, dropping outliers or computing p-values are single steps, not robustness testing.
 
 ۱۰۳) A «spurious» relationship is one that:
-   ۱. is statistically significant
-   ۲. is very strong
-   ۳. is replicated
+   ۱. is statistically significant at the conventional level
+   ۲. is very strong and consistent across subgroups
+   ۳. has been replicated in an independent sample
    ۴. appears causal but is produced by a third factor
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: کنترل مخدوش‌کننده، آزمون اصلی در برابر رابطهٔ کاذب است.
+   ✎ تحلیل: A spurious relationship looks causal but is generated by a third variable that influences both; controlling for that confounder is the standard test. Significance, strength and replication do not rule out confounding, which is why replication alone cannot establish causality.
 
 ۱۰۴) «Ceteris paribus» means:
    ۱. holding other things constant
@@ -841,12 +841,12 @@
    ✎ تحلیل: این فرض، تفسیر اثر یک متغیر را ممکن می‌کند.
 
 ۱۰۵) «Endogeneity» is commonly addressed by:
-   ۱. larger samples only
+   ۱. collecting larger samples without changing the design
    ۲. instrumental variables or experimental designs
-   ۳. deleting outliers
-   ۴. using means
+   ۳. deleting outliers from the dataset
+   ۴. using simple means instead of regression
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: ابزار معتبر باید با متغیر درون‌زا مرتبط و با خطا ناهمبسته باشد.
+   ✎ تحلیل: درون‌زایی وقتی رخ می‌دهد که متغیر تبیینی با خطای مدل یا با متغیر حذف‌شده مرتبط باشد؛ راه‌حل رایج، متغیر ابزاری یا طرح آزمایشی است. بزرگ‌کردن نمونه، حذف داده‌های پرت و استفاده از میانگین، سه راه‌حل نادرست‌اند. نکته: درون‌زایی مسئلهٔ «شناسایی» است، نه حجم نمونه.
 
 ۱۰۶) «Mediation» refers to:
    ۱. a variable changing the strength of an effect
@@ -857,26 +857,26 @@
    ✎ تحلیل: میانجی، سازوکار را توضیح می‌دهد؛ تعدیل‌گر شدت را تغییر می‌دهد.
 
 ۱۰۷) «Moderation» refers to:
-   ۱. a sampling frame
-   ۲. a variable that transmits an effect
-   ۳. a confounding factor
+   ۱. a sampling frame used to select respondents
+   ۲. a variable that transmits the effect of another variable
+   ۳. a confounding factor that biases the observed relation
    ۴. a variable that changes the direction or strength of a relation
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: moderation یعنی متغیری جهت یا شدت رابطه را تغییر می‌دهد و صورت آماری آن اثر تعاملی است؛ mediation اثر را منتقل می‌کند.
+   ✎ تحلیل: moderation یعنی متغیری جهت یا شدت رابطه را تغییر می‌دهد و صورت آماری آن اثر تعاملی است؛ mediation اثر را منتقل می‌کند. چارچوب نمونه‌گیری و مخدوش‌کننده هم دو نقش دیگرند.
 
 ۱۰۸) «Oversampling» is used to:
    ۱. ensure enough cases from small subgroups
-   ۲. reduce cost
-   ۳. avoid weighting
-   ۴. increase bias
+   ۲. reduce cost which oversampling usually increases rather than reduces
+   ۳. avoid weighting while oversampling in fact requires weights
+   ۴. increase bias which is a cost of ignoring it rather than its purpose
    ✔ کلید: گزینه ۱
    ✎ تحلیل: بدون وزن‌دهی، نمونهٔ بزرگ‌نمایی‌شده نتایج را جهت می‌دهد.
 
 ۱۰۹) «Attrition bias» arises when:
-   ۱. sample size is large
+   ۱. sample size is large and does not by itself create attrition bias
    ۲. dropout is related to the outcome being studied
-   ۳. questions are closed
-   ۴. coding is manual
+   ۳. questions are closed which concerns item format rather than who leaves the panel
+   ۴. coding is manual which concerns coding rather than who leaves the panel
    ✔ کلید: گزینه ۲
    ✎ تحلیل: ریزش غیرتصادفی، ترکیب نمونه را تغییر می‌دهد.
 
@@ -905,20 +905,20 @@
    ✎ تحلیل: عملیاتی‌سازی، مفهوم انتزاعی را به شاخص قابل مشاهده تبدیل می‌کند.
 
 ۱۱۳) «Construct validity» concerns whether:
-   ۱. coding is reliable
+   ۱. the coding scheme is applied consistently by two coders
    ۲. an instrument measures the intended theoretical concept
-   ۳. sample is random
-   ۴. results generalize
+   ۳. the sample is drawn randomly from a complete list
+   ۴. the results can be generalized to other populations
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: روایی سازه با شواهد همگرا و واگرا ارزیابی می‌شود.
+   ✎ تحلیل: Construct validity asks whether the instrument actually captures the concept it claims to measure, not something adjacent. Coder agreement is reliability, random sampling is a design feature and generalizability is external validity.
 
 ۱۱۴) «Inter-coder reliability» is important when:
-   ۱. data are numeric
-   ۲. sample is large
+   ۱. data are numeric and measured on an interval scale
+   ۲. the sample is large and drawn randomly from a population
    ۳. qualitative data are coded by more than one person
-   ۴. design is experimental
+   ۴. the design is experimental with random assignment
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: توافق کدگذاران، تکرارپذیری تفسیر را نشان می‌دهد.
+   ✎ تحلیل: پایایی بین‌کدگذار وقتی معنا دارد که دادهٔ کیفی (متن، مصاحبه، مشاهده) را بیش از یک نفر کد کند و بدانیم کدهایشان تا چه حد هم‌خوان است. دادهٔ عددی، نمونهٔ بزرگ و طرح آزمایشی، سه شرط دیگرند که به این موضوع مربوط نیستند. نکته: شاخص رایج آن کاپای کوهن است.
 
 ۱۱۵) «Saturation» refers to the point at which:
    ۱. coding is complete
@@ -937,12 +937,12 @@
    ✎ تحلیل: گروه کنترل، تغییر بدون مداخله را نشان می‌دهد.
 
 ۱۱۷) «Confounding» means that a third factor:
-   ۱. reduces measurement error
+   ۱. removes measurement error from the analysis
    ۲. distorts the observed relation between two variables
-   ۳. increases sample size
-   ۴. strengthens reliability
+   ۳. increases the effective size of the sample
+   ۴. improves the reliability of the instrument
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: تصادفی‌سازی یا کنترل آماری، پاسخ به مخدوش‌شدن است.
+   ✎ تحلیل: A confounder is a third variable related to both the exposure and the outcome, so it distorts the observed relation and can create an effect that is not there or hide one that is. Randomization or statistical adjustment is the standard remedy; it never removes measurement error or increases sample size.
 
 ۱۱۸) «Generalizability» depends mainly on:
    ۱. the number of variables
@@ -963,27 +963,27 @@
 
 ۱۲۰) «Coverage error» arises when:
    ۱. some members of the population cannot be selected
-   ۲. questions are too long
-   ۳. data are missing
-   ۴. coders disagree
+   ۲. questions are too long and respondents skip them
+   ۳. data are missing for some units after collection
+   ۴. coders disagree about how to classify answers
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: فهرست ناقص، بخشی از جامعه را از انتخاب محروم می‌کند.
+   ✎ تحلیل: خطای پوشش وقتی رخ می‌دهد که بخشی از جامعهٔ هدف اصلاً امکان انتخاب در چارچوب نمونه‌گیری را نداشته باشد؛ نتیجه، نمونه‌ای غیرنماینده است. گویهٔ بلند، دادهٔ گمشده و اختلاف کدگذاران، سه خطای دیگرند. نکته: خطای پوشش به «چارچوب نمونه‌گیری» مربوط است، نه پاسخ‌دهی.
 
 ۱۲۱) «Non-response bias» occurs when:
-   ۱. questions are closed
+   ۱. the questions are closed rather than open
    ۲. those who respond differ systematically from those who do not
-   ۳. the design is experimental
-   ۴. the sample is too small
+   ۳. the design is experimental rather than survey
+   ۴. the sample is smaller than planned
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: پیگیری و وزن‌دهی، پاسخ‌های رایج به آن است.
+   ✎ تحلیل: Non-response bias is about who stays out, not how many stay out: if responders differ systematically from non-responders, the estimate is skewed. Small samples raise variance; they do not by themselves create this bias.
 
 ۱۲۲) A «Likert scale» measures:
-   ۱. frequency of behaviour only
-   ۲. exact income
+   ۱. the frequency of a behaviour during a fixed period
+   ۲. the exact income of a household in a month
    ۳. degree of agreement along an ordered continuum
-   ۴. network ties
+   ۴. the number of network ties a person reports
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: فاصلهٔ گزینه‌ها در تحلیل، مفروضی است که باید توجیه شود.
+   ✎ تحلیل: A Likert scale places agreement on an ordered continuum, usually from strongly disagree to strongly agree, and the items are combined into a single score. Treating the distances between the points as equal is an assumption that must be justified; the scale does not measure income, frequency or network ties.
 
 ۱۲۳) A «leading question» is one that:
    ۱. is double-barrelled
@@ -1002,60 +1002,60 @@
    ✎ تحلیل: پرسش دووجهی دو موضوع را هم‌زمان می‌پرسد، پس پاسخ‌دهنده نمی‌داند به کدام بخش پاسخ داده و تفسیر پاسخ ممکن نیست.
 
 ۱۲۵) «Informed consent» requires:
-   ۱. institutional approval only
+   ۱. institutional approval from an ethics committee alone
    ۲. adequate information, voluntariness and capacity
-   ۳. signature only
-   ۴. payment
+   ۳. the participant's signature on a consent form only
+   ۴. a payment or incentive given before the study begins
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: رضایت آگاهانه سه شرط دارد: اطلاعات کافی، اختیاری بودن و اهلیت؛ امضا به‌تنهایی ضامن رضایت نیست.
+   ✎ تحلیل: Informed consent requires three elements: adequate information about the study, voluntary participation free of coercion, and the capacity to decide. Committee approval, a signature or a payment each covers only one part and cannot substitute for the whole.
 
 ۱۲۶) «Debriefing» means:
-   ۱. coding the data
-   ۲. cleaning the sample
+   ۱. coding the open answers into categories
+   ۲. cleaning the sample of incomplete responses
    ۳. explaining the study to participants afterwards
-   ۴. writing the abstract
+   ۴. writing the abstract for the final report
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: در پژوهش با فریب، بازگویی پس از مطالعه الزامی است.
+   ✎ تحلیل: Debriefing means explaining the purpose, the procedures and any deception to participants after data collection, and giving them the chance to withdraw their data. Coding, data cleaning and abstract writing are later analysis tasks and involve no disclosure to participants.
 
 ۱۲۷) «Hawthorne effect» refers to:
-   ۱. publication bias
-   ۲. coding drift
-   ۳. sampling error
-   ۴. behaviour change because people know they are observed
+   ۱. the tendency of journals to publish only positive results
+   ۲. a drift in coding categories during content analysis
+   ۳. the error that arises from a small and biased sample
+   ۴. behaviour change because people know they are being observed
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: آگاهی از مشاهده، اعتبار درونی را تهدید می‌کند.
+   ✎ تحلیل: آگاهی از مشاهده، اعتبار درونی را تهدید می‌کند. سوگیری انتشار، رانش کدگذاری و خطای نمونه، سه خطای دیگرند و به اثر هاثورن مربوط نیستند.
 
 ۱۲۸) «Demand characteristics» are:
    ۱. cues that lead participants to infer the expected response
-   ۲. sample requirements
-   ۳. budget constraints
-   ۴. coding rules
+   ۲. the sample size requirements of a survey design
+   ۳. the budget constraints of a research project
+   ۴. the coding rules used in content analysis
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: demand characteristics نشانه‌هایی‌اند که آزمودنی از آن‌ها پاسخ مورد انتظار را حدس می‌زند؛ کورسازی این اثر را مهار می‌کند.
+   ✎ تحلیل: demand characteristics نشانه‌هایی‌اند که آزمودنی از آن‌ها پاسخ مورد انتظار را حدس می‌زند؛ کورسازی این اثر را مهار می‌کند. حجم نمونه، بودجه و قواعد کدگذاری، سه موضوع دیگرند و به سوگیری پاسخ مربوط نیستند.
 
 ۱۲۹) A «pilot study» is conducted to:
-   ۱. test the main hypothesis
+   ۱. test the main hypothesis which the main study rather than the pilot is for
    ۲. test procedures and instruments on a small scale
-   ۳. publish early results
-   ۴. train coders only
+   ۳. publish early results which a pilot is not designed to do
+   ۴. train coders only which is only one possible purpose of a pilot
    ✔ کلید: گزینه ۲
    ✎ تحلیل: پیش‌آزمون، خطاهای طراحی را پیش از اجرای اصلی آشکار می‌کند.
 
 ۱۳۰) «Face validity» refers to:
-   ۱. internal consistency
-   ۲. sample representativeness
+   ۱. internal consistency among the items of a scale
+   ۲. representativeness of the sample for the population
    ۳. whether an instrument appears to measure the concept
-   ۴. statistical power
+   ۴. statistical power of the planned test
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ضعیف‌ترین شکل روایی و وابسته به داوری است.
+   ✎ تحلیل: اعتبار صوری به این می‌پردازد که ابزار در نگاه اول و ظاهری، سازهٔ مورد نظر را می‌سنجد یا نه. همسانی درونی، نمایندگی نمونه و توان آماری، سه مفهوم دیگرند. نکته: اعتبار صوری سطحی است و با اعتبار محتوایی که داوری نظام‌مند متخصصان است اشتباه نشود.
 
 ۱۳۱) «Test-retest reliability» assesses:
-   ۱. predictive power
-   ۲. content coverage
-   ۳. internal consistency
+   ۱. predictive power against an external criterion
+   ۲. content coverage of the full conceptual domain
+   ۳. internal consistency among scale items
    ۴. stability of scores over repeated administration
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: فاصلهٔ زمانی، تعیین‌کنندهٔ تفسیر آن است.
+   ✎ تحلیل: پایایی آزمون-بازآزمون ثبات نمره‌ها را در اجرای مکرر یک ابزار می‌سنجد: اگر فاصله کوتاه باشد، نمره‌ها باید نزدیک به هم بمانند. توان پیش‌بین، پوشش محتوا و همسانی درونی، سه نوع اعتبار یا پایایی دیگرند. نکته: آزمون-بازآزمون پایایی «ثبات زمانی» است، نه همسانی درونی.
 
 ۱۳۲) «Unit non-response» means:
    ۱. the whole questionnaire was not returned
@@ -1066,28 +1066,28 @@
    ✎ تحلیل: unit non-response یعنی کل پرسشنامه برنگشته است؛ با item non-response که فقط یک گویه بی‌پاسخ مانده فرق دارد.
 
 ۱۳۳) «Weighting» adjusts for:
-   ۱. confounding
+   ۱. confounding by unmeasured variables
    ۲. unequal selection probabilities and non-response
-   ۳. measurement error
-   ۴. endogeneity
+   ۳. measurement error in the instrument
+   ۴. endogeneity between predictors
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: وزن‌های بزرگ، واریانس برآورد را افزایش می‌دهند.
+   ✎ تحلیل: Weights give more influence to cases that were less likely to be selected or to respond, so the sample matches the population. Confounding, measurement error and endogeneity are handled by design or modelling, not by weighting.
 
 ۱۳۴) «Imputation» is used to:
-   ۱. delete cases
-   ۲. recode variables
+   ۱. delete incomplete cases before analysis
+   ۲. recode variables into fewer categories
    ۳. fill in missing values using observed information
-   ۴. weight the sample
+   ۴. weight the sample to match population totals
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: چنداستنادی، عدم قطعیت را در برآورد وارد می‌کند.
+   ✎ تحلیل: Imputation replaces missing values with estimates built from the observed data, preserving sample size when deletion would lose too much. Deleting cases, recoding and weighting are three different procedures with different aims.
 
 ۱۳۵) «Sensitivity analysis» tests:
    ۱. how large the sample is
-   ۲. how reliable coders are
+   ۲. how reliably two coders agree on categories
    ۳. how long the survey takes
    ۴. how conclusions change under alternative specifications
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: پایداری نتیجه، اعتماد به یافته را افزایش می‌دهد.
+   ✎ تحلیل: Sensitivity analysis re-estimates results under different assumptions, measures or model choices to see whether conclusions hold. Sample size, coder agreement and survey length belong to design and reliability, not to sensitivity testing.
 
 ۱۳۶) A «null result» means:
    ۱. no statistically detectable effect was found
@@ -1106,12 +1106,12 @@
    ✎ تحلیل: سوگیری انتشار یعنی مطالعات با یافته معنادار بیشتر منتشر می‌شوند؛ نمودار قیفی ابزار تشخیص آن است.
 
 ۱۳۸) «Preregistration» improves:
-   ۱. response rate
-   ۲. sample size
+   ۱. the response rate of a survey
+   ۲. the size of the sample collected
    ۳. transparency about hypotheses and analyses
-   ۴. coding speed
+   ۴. the speed of coding qualitative data
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ثبت پیشینی، اختیار تحلیل پس از دیدن داده را محدود می‌کند.
+   ✎ تحلیل: Preregistration records hypotheses and analysis plans before data collection, so readers can tell planned tests from post hoc ones. Response rate, sample size and coding speed are unrelated to this function.
 
 — بخش ۸: واژگان و ساختار پایانی —
 ۱۳۹) «Deterrence» refers to:
@@ -1139,12 +1139,12 @@
    ✎ تحلیل: تاب‌آوری، ترکیبی از جذب، سازگاری و تحول است.
 
 ۱۴۲) «Precarity» describes:
-   ۱. high income
-   ۲. long-term contracts
-   ۳. strong union membership
-   ۴. insecure and unstable employment and life conditions
+   ۱. steady income with full benefits and long-term job security guarantees
+   ۲. permanent employment contracts protected by strong union agreements
+   ۳. stable membership in occupational associations, guilds and professional bodies
+   ۴. insecure and unstable employment along with precarious life conditions
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: ناپایداری شغلی و مسکن، هستهٔ این مفهوم است.
+   ✎ تحلیل: Precarity به وضعیت شغلی و زیستی ناپایدار و بی‌ثبات اشاره دارد: قراردادهای موقت، درآمد نامطمئن و نبود پشتوانهٔ نهادی. درآمد ثابت با مزایا، قرارداد دائمی و عضویت پایدار صنفی، سه وضعیت مقابل آن‌اند. نکته: precarity در ادبیات کار، نقطهٔ مقابل امنیت شغلی است.
 
 ۱۴۳) «Austerity» policies typically involve:
    ۱. cuts in public spending
@@ -1308,11 +1308,11 @@
 
 ۱۶۳) کدام جمع‌بندی درست است؟
    ۱. خواندن دقیق متن علمی نیازمند توجه به روش، محدودیت و بافت است
-   ۲. هر یافته قابل تعمیم جهانی است
-   ۳. واژگان تخصصی بی‌اهمیت است
-   ۴. تنها نتیجهٔ نهایی مهم است
+   ۲. هر یافتهٔ پژوهشی قابل تعمیم جهانی است و به بافت وابسته نیست
+   ۳. واژگان تخصصی بی‌اهمیت است و تنها پیام کلی متن مهم است
+   ۴. تنها نتیجهٔ نهایی مهم است و بخش روش قابل نادیده‌گرفتن
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: سواد علمی، ارزیابی روش و زمینه را شامل می‌شود.
+   ✎ تحلیل: درک یک متن علمی به روش، دامنهٔ نمونه، محدودیت‌ها و بافت تولید آن وابسته است؛ همین‌ها مرزهای اعتبار یافته را مشخص می‌کنند. تعمیم جهانی، بی‌اهمیتی واژگان و نادیده‌گرفتن روش، سه برداشت نادرست‌اند.
 
 — بخش ۹: واژگان آکادمیک و هم‌آیندها —
 ۱۶۴) معنای واژهٔ «coherent» در متن آکادمیک کدام است؟
@@ -1340,12 +1340,12 @@
    ✎ تحلیل: substantiate یعنی پشتوانهٔ مستند آوردن؛ پژوهشگر باید ادعای خود را با داده یا استدلال معتبر مستند کند.
 
 ۱۶۷) «confounding variable» چه معنایی دارد؟
-   ۱. متغیر مخدوش‌کننده که رابطهٔ ظاهری می‌سازد
-   ۲. متغیر وابسته
-   ۳. متغیر اسمی
-   ۴. متغیر ثابت
+   ۱. متغیر مخدوش‌کننده که با هر دو متغیر مرتبط است و رابطهٔ ظاهری می‌سازد
+   ۲. متغیر وابسته که پژوهشگر می‌خواهد پیش‌بینی کند
+   ۳. متغیر اسمی که تنها برای دسته‌بندی پاسخ‌ها به کار می‌رود
+   ۴. متغیر ثابت که در طول مطالعه تغییر نمی‌کند
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: این متغیر هم بر مستقل و هم بر وابسته اثر می‌گذارد و می‌تواند رابطه را جعلی نشان دهد؛ کنترل آن در طراحی پژوهش مهم است.
+   ✎ تحلیل: متغیر مخدوش‌کننده هم با متغیر مستقل و هم با وابسته مرتبط است و می‌تواند رابطه‌ای ظاهری بسازد که در واقع از آن متغیر سوم می‌آید. متغیر وابسته، متغیر اسمی و متغیر ثابت، سه مفهوم دیگرند. نکته: مهار مخدوش‌کننده به طرح پژوهش (تصادفی‌سازی یا کنترل آماری) بستگی دارد.
 
 ۱۶۸) معنای «prevalent» کدام است؟
    ۱. رایج و گسترده
@@ -1365,11 +1365,11 @@
 
 ۱۷۰) «robust findings» چه یافته‌هایی هستند؟
    ۱. یافته‌های مقاوم و پایدار در برابر تغییر شرایط تحلیل
-   ۲. یافته‌های ضعیف
-   ۳. یافته‌های توصیفی
-   ۴. یافته‌های تأییدنشده
+   ۲. یافته‌های ضعیف و غیرقابل اعتماد در تحلیل
+   ۳. یافته‌های توصیفی و بدون آزمون فرضیه
+   ۴. یافته‌های تأییدنشده و در انتظار بازبینی
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: robustness با تحلیل حساسیت سنجیده می‌شود؛ یافتهٔ مقاوم با تغییر مدل یا نمونه به‌هم نمی‌ریزد.
+   ✎ تحلیل: یافتهٔ مقاوم با تغییر جامعهٔ آماری، معیار سنجش یا مدل، همچنان برجا می‌ماند؛ همین پایداری، اعتماد به آن را بیشتر می‌کند. ضعف، توصیفی‌بودن و تأییدنشده‌بودن، سه معنای متفاوت‌اند.
 
 ۱۷۱) معنای «to attribute» در جملهٔ پژوهشی چیست؟
    ۱. نسبت دادن
@@ -1404,12 +1404,12 @@
    ✎ تحلیل: plausible بر پذیرفتنی بودن دلالت دارد نه اثبات؛ در نوشتار علمی برای بیان احتمال معقول به کار می‌رود.
 
 ۱۷۵) «to operationalize a concept» یعنی…
-   ۱. مفهوم را به شاخص‌های قابل اندازه‌گیری تبدیل کردن
-   ۲. مفهوم را حذف کردن
-   ۳. مفهوم را ترجمه کردن
-   ۴. مفهوم را نقل کردن
+   ۱. مفهوم را به شاخص‌ها و معرف‌های قابل اندازه‌گیری تبدیل کردن
+   ۲. مفهوم را از تحلیل حذف کردن و آن را غیرقابل سنجش دانستن
+   ۳. مفهوم را به زبان دیگر ترجمه کردن و معادل واژگانی آن را یافتن
+   ۴. مفهوم را از منبعی دیگر نقل کردن و بدون تغییر در پژوهش آوردن
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: عملیاتی‌سازی، پل میان نظریه و داده است؛ بدون آن، سنجش مفهوم مبهم می‌ماند.
+   ✎ تحلیل: عملیاتی‌سازی یعنی برگرداندن یک مفهوم انتزاعی به شاخص‌ها و معرف‌های قابل مشاهده و اندازه‌گیری، مثل سنجش سرمایهٔ اجتماعی با مشارکت مدنی و اعتماد. حذف مفهوم، ترجمهٔ واژگانی و نقل از منبع دیگر، سه کار دیگرند و هیچ‌یک مفهوم را قابل سنجش نمی‌کنند. نکته: پرسش کلیدی این است که «این مفهوم را با چه شاخصی می‌سنجیم؟»
 
 ۱۷۶) معنای «heterogeneous» کدام است؟
    ۱. ناهمگون
@@ -1437,19 +1437,19 @@
 
 ۱۷۹) معنای «to generalize findings» چیست؟
    ۱. تعمیم یافته‌ها به جامعه یا موقعیت‌های دیگر
-   ۲. خلاصه کردن مقاله
-   ۳. تکرار آزمایش
-   ۴. تغییر نمونه
+   ۲. خلاصه کردن مقاله در یک چکیدهٔ کوتاه برای خوانندگان
+   ۳. تکرار آزمایش در همان نمونه و همان شرایط اولیه
+   ۴. تغییر نمونه و انتخاب گروه تازه‌ای برای گردآوری داده
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: تعمیم‌پذیری به طراحی نمونه و زمینه وابسته است؛ یافتهٔ یک مطالعهٔ موردی را نمی‌توان بی‌قید به کل جامعه نسبت داد.
+   ✎ تحلیل: تعمیم یعنی نسبت دادن یافته‌های یک نمونه به جامعه یا موقعیت‌های دیگر، و تعمیم‌پذیری به طراحی نمونه و زمینه وابسته است. یافتهٔ یک مطالعهٔ موردی را نمی‌توان بی‌قید به کل جامعه نسبت داد؛ خلاصه‌سازی، تکرار و تغییر نمونه معنای این اصطلاح نیستند.
 
 ۱۸۰) «literature review» چه بخشی از پژوهش است؟
    ۱. مرور نظام‌مند پژوهش‌های پیشین برای تعیین شکاف دانش
-   ۲. فهرست منابع
-   ۳. نتیجه‌گیری
-   ۴. روش گردآوری داده
+   ۲. فهرست منابع و ارجاعات پایانی گزارش پژوهش
+   ۳. نتیجه‌گیری و جمع‌بندی یافته‌های اصلی پژوهش
+   ۴. روش گردآوری داده و تحلیل میدانی پژوهش
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: مرور ادبیات جایگاه پژوهش را مشخص می‌کند و از تکرار بی‌فایده جلوگیری می‌سازد؛ مرور ضعیف، پرسش پژوهش را بی‌جهت می‌کند.
+   ✎ تحلیل: مرور ادبیات نشان می‌دهد چه دانسته‌ایم و شکاف دانش کجاست، و همین شکاف، پرسش و سهم پژوهش را توجیه می‌کند. فهرست منابع، نتیجه‌گیری و بخش روش، سه بخش دیگرند.
 
 ۱۸۱) «to be consistent with» یعنی…
    ۱. سازگار بودن با
@@ -1493,11 +1493,11 @@
 
 ۱۸۶) «sampling bias» چه معنایی دارد؟
    ۱. سوگیری در انتخاب نمونه که نتیجه را مخدوش می‌کند
-   ۲. خطای محاسبه
-   ۳. حجم نمونهٔ کم
-   ۴. خطای ورود داده
+   ۲. خطای محاسبه در تحلیل آماری داده‌ها
+   ۳. حجم نمونهٔ کم و خطای نمونه‌گیری بالا
+   ۴. خطای ورود داده در فایل تحلیل
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: اگر انتخاب نمونه نظام‌مند باشد، برآورد به سمت گروه‌های نمایندگی‌شده می‌رود؛ حجم زیاد هم این سوگیری را جبران نمی‌کند.
+   ✎ تحلیل: سوگیری نمونه‌گیری وقتی رخ می‌دهد که سازوکار انتخاب، گروهی را بیش از حد وارد یا حذف کند و نمونه نمایندهٔ جامعه نباشد. خطای محاسبه، حجم کم و خطای ورود داده، سه خطای دیگرند و با سوگیری انتخاب یکی نیستند.
 
 ۱۸۷) معنای «to account for» در متن علمی چیست؟
    ۱. توضیح دادن یا در نظر گرفتن
@@ -1557,9 +1557,9 @@
 
 ۱۹۴) «a nuanced argument» چه استدلالی است؟
    ۱. استدلالی با ظرافت و توجه به جزئیات و تفاوت‌ها
-   ۲. استدلالی ساده و یک‌خطی
-   ۳. استدلالی متناقض
-   ۴. استدلالی احساسی
+   ۲. استدلالی ساده و یک‌خطی ، یعنی نقطهٔ مقابل استدلال دارای ظرافت
+   ۳. استدلالی متناقض ، که ایراد منطقی است نه ویژگی ظرافت
+   ۴. استدلالی احساسی ، که به بار عاطفی اشاره دارد نه به دقت تحلیل
    ✔ کلید: گزینه ۱
    ✎ تحلیل: nuance به تفاوت‌های ظریف اشاره دارد؛ استدلال ظریف از تعمیم‌های خام پرهیز می‌کند و شرط‌ها را می‌بیند.
 
@@ -1589,19 +1589,19 @@
 
 ۱۹۸) «findings are inconclusive» چه معنایی دارد؟
    ۱. یافته‌ها قطعی نیستند و نتیجه‌گیری روشن نمی‌دهند
-   ۲. یافته‌ها قطعی‌اند
-   ۳. یافته‌ها منتشر شده‌اند
-   ۴. یافته‌ها تکرار شده‌اند
+   ۲. یافته‌ها قطعی‌اند ، که نقطهٔ مقابل inconclusive است
+   ۳. یافته‌ها منتشر شده‌اند ، که به وضعیت انتشار مربوط است نه به قطعیت نتیجه
+   ۴. یافته‌ها تکرار شده‌اند ، که با تکرارپذیری مرتبط است نه با روشن نبودن نتیجه
    ✔ کلید: گزینه ۱
    ✎ تحلیل: inconclusive نشان‌دهندهٔ نبود شواهد کافی یا نتایج متناقض است؛ گزارش صادقانهٔ آن بهتر از نتیجه‌گیری اغراق‌آمیز است.
 
 ۱۹۹) «a causal mechanism» چه چیزی است؟
    ۱. سازوکاری که توضیح می‌دهد چگونه علت به معلول می‌رسد
-   ۲. همبستگی دو متغیر
-   ۳. خطای اندازه‌گیری
-   ۴. نمونهٔ آماری
+   ۲. همبستگی دو متغیر در یک نمونهٔ بزرگ
+   ۳. خطای اندازه‌گیری ابزار سنجش
+   ۴. نمونهٔ آماری انتخاب‌شده از جامعه
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: شناخت سازوکار از همبستگی فراتر می‌رود؛ پژوهش کیفی و نظریه در آشکارکردن آن نقش دارند.
+   ✎ تحلیل: سازوکار علّی، زنجیرهٔ فرایندی است که رابطهٔ علت و معلول را توضیح می‌دهد و همبستگی را از تبیین جدا می‌کند. همبستگی، خطای اندازه‌گیری و نمونه، سه مفهوم دیگرند.
 
 ۲۰۰) معنای «to be embedded in» چیست؟
    ۱. نهفته و جای‌گرفته در بستری بزرگ‌تر
@@ -1621,19 +1621,19 @@
 
 ۲۰۲) «to narrow down the sample» یعنی…
    ۱. محدود و کوچک‌تر کردن نمونه بر پایهٔ معیارها
-   ۲. گسترش نمونه
-   ۳. حذف پرسشنامه
-   ۴. تغییر روش تحلیل
+   ۲. گسترش نمونه و افزودن گروه‌های تازه به مطالعه
+   ۳. حذف پرسشنامه و تغییر ابزار گردآوری داده
+   ۴. تغییر روش تحلیل و انتخاب آزمون آماری دیگر
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: محدودکردن نمونه با معیارهای ورود و خروج انجام می‌شود تا همگنی و تناسب با پرسش تأمین شود؛ محدودیت بیش از حد، تعمیم‌پذیری را کم می‌کند.
+   ✎ تحلیل: عبارت to narrow down the sample یعنی محدود و کوچک‌تر کردن نمونه بر پایهٔ معیارهای ورود و خروج تا گروه همگن و قابل مطالعه بماند. گسترش نمونه، حذف پرسشنامه و تغییر روش تحلیل، سه معنای نادرست‌اند. نکته: narrow down در روش پژوهش یعنی «باریک‌کردن دامنه و معیارها».
 
 ۲۰۳) جمع‌بندی واژگان آکادمیک کدام است؟
-   ۱. واژگان تخصصی باید در بافت جمله و همراه با هم‌آیندهای رایج آموخته شوند
-   ۲. حفظ فهرست واژه کافی است
-   ۳. ترجمهٔ تک‌واژه‌ای کافی است
-   ۴. واژگان در آزمون اهمیت ندارند
+   ۱. academic words should be learned in context and with their common collocations
+   ۲. memorising word lists without context is sufficient for the exam
+   ۳. word-by-word translation is enough for reading comprehension
+   ۴. vocabulary has little weight in the language section of the exam
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: یادگیری در بافت، معنا و کاربرد را هم‌زمان می‌سازد؛ همین روش برای درک مطلب و ترجمهٔ دقیق ضروری است.
+   ✎ تحلیل: یادگیری در بافت، معنا و کاربرد را هم‌زمان می‌سازد؛ همین روش برای درک مطلب و ترجمهٔ دقیق ضروری است. حفظ فهرست، ترجمهٔ تک‌واژه‌ای و کم‌اهمیت دانستن واژگان، سه توصیهٔ نادرست‌اند.
 ۲۰۴) Researchers must ___ a clear distinction between correlation and causation.
    ۱. do
    ۲. take
@@ -2295,12 +2295,12 @@
    ✎ تحلیل: تکرار پژوهش، هسته ارزیابی تکرارپذیری است؛ تکرار با داده و پژوهشگر مستقل ارزش بیشتری دارد.
 
 ۲۸۶) To «infer» something is to:
-   ۱. measure it precisely
-   ۲. deny it
-   ۳. conclude it from evidence rather than state it directly
-   ۴. guess randomly
+   ۱. to measure a quantity with precision and accuracy
+   ۲. to deny a claim that lacks direct evidence
+   ۳. to conclude something from evidence rather than state it directly
+   ۴. to guess an answer randomly when evidence is missing
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: استنباط، گذار از داده به گزاره فراتر از داده است و به همین دلیل به احتیاط روش‌شناختی نیاز دارد.
+   ✎ تحلیل: استنباط، گذار از داده به گزاره فراتر از داده است و به همین دلیل به احتیاط روش‌شناختی نیاز دارد. اندازه‌گیری دقیق، انکار و حدس تصادفی، سه کار دیگرند و هیچ‌یک استنباط نیستند.
 
 ۲۸۷) To «mitigate» a risk is to:
    ۱. ignore it
@@ -2327,10 +2327,10 @@
    ✎ تحلیل: ناهمگنی، تنوع ویژگی‌ها را نشان می‌دهد؛ همین، تعمیم‌پذیری را بالا و همسانی درون گروه را کم می‌کند.
 
 ۲۹۰) A «consensus» is:
-   ۱. a statistical test
-   ۲. a written contract
+   ۱. a statistical test rather than shared agreement among participants
+   ۲. a written contract which binds two parties rather than a group that agrees
    ۳. general agreement among participants or experts
-   ۴. a single expert opinion
+   ۴. a single expert opinion which is the opposite of agreement among many experts
    ✔ کلید: گزینه ۳
    ✎ تحلیل: اجماع در روش دلفی و داوری علمی، توافق جمعی است نه حقیقت مطلق.
 
@@ -2359,12 +2359,12 @@
    ✎ تحلیل: اثر تجمعی با تکرار و زمان انباشته می‌شود؛ همین، تحلیل طولی را ضروری می‌کند.
 
 ۲۹۴) A «proxy» variable is:
-   ۱. the dependent variable
-   ۲. a sampling error
-   ۳. an indirect measure standing in for a concept that cannot be observed directly
-   ۴. a control group
+   ۱. the dependent variable that the model is designed to explain
+   ۲. a sampling error that grows as the sample gets smaller
+   ۳. an indirect measure standing in for a concept that cannot be observed
+   ۴. a control group that receives no treatment in an experiment
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: متغیر جانشین باید توجیه نظری داشته باشد؛ انتخاب نامناسب آن، اعتبار سنجش را تهدید می‌کند.
+   ✎ تحلیل: متغیر جانشین باید توجیه نظری داشته باشد؛ انتخاب نامناسب آن، اعتبار سنجش را تهدید می‌کند. گزینه‌های دیگر سه نقش دیگر در طرح پژوهش‌اند: متغیر وابسته، خطای نمونه‌گیری و گروه گواه.
 
 ۲۹۵) ___ of the variance in income is explained by education alone.
    ۱. Many
@@ -2473,19 +2473,19 @@
 
 ۳۰۸) «Parsimony» in model building favours:
    ۱. the simplest model that explains the data adequately
-   ۲. the model with most variables
-   ۳. the largest sample
-   ۴. the highest R² always
+   ۲. the model that includes the largest number of variables
+   ۳. the model fitted to the largest available sample
+   ۴. the model with the highest R-squared in any sample
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: سادگی، تفسیرپذیری و تعمیم‌پذیری را افزایش می‌دهد.
+   ✎ تحلیل: Parsimony favours the simplest model that explains the data adequately, because extra parameters add variance and make interpretation and out-of-sample prediction worse. More variables, a bigger sample or the highest R² in the fitting sample do not make a model more parsimonious.
 
 ۳۰۹) To «confound» a relation is to:
-   ۱. confirm it
-   ۲. measure it
+   ۱. confirm it with additional evidence
+   ۲. measure it more precisely
    ۳. distort it by an uncontrolled third factor
-   ۴. publish it
+   ۴. publish it in a peer-reviewed journal
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: مخدوش‌شدن رابطه، خطر اصلی استنباط علّی از داده مشاهده‌ای است.
+   ✎ تحلیل: A confounder is a third variable linked to both the independent and dependent variable, so the observed relation is partly spurious. Confirming, measuring and publishing describe other steps of research, not this distortion.
 
 ۳۱۰) The «magnitude» of an effect is its:
    ۱. significance level
@@ -2497,11 +2497,11 @@
 
 ۳۱۱) «Prevalence» refers to:
    ۱. the proportion of existing cases at a point in time
-   ۲. the rate of new cases
-   ۳. the number of deaths
-   ۴. the sample size
+   ۲. the rate of new cases appearing over a period
+   ۳. the number of deaths in a population
+   ۴. the size of the sample drawn
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: شیوع با بروز متفاوت است؛ بروز به موارد تازه اشاره دارد.
+   ✎ تحلیل: Prevalence counts all existing cases at a given moment, whereas incidence counts new cases over a period. Deaths and sample size describe other quantities entirely.
 
 ۳۱۲) «Incidence» refers to:
    ۱. existing cases
@@ -2520,20 +2520,20 @@
    ✎ تحلیل: ریزش غیرتصادفی می‌تواند ترکیب نمونه را تغییر دهد.
 
 ۳۱۴) A «skewed» distribution is one that is:
-   ۱. perfectly symmetric
-   ۲. always normal
-   ۳. always bimodal
+   ۱. perfectly symmetric , which is the opposite of skewness
+   ۲. always normal , while a normal distribution is symmetric by definition
+   ۳. always bimodal , which describes two peaks rather than one long tail
    ۴. asymmetric with a longer tail on one side
    ✔ کلید: گزینه ۴
    ✎ تحلیل: جهت دنباله، علامت چولگی را تعیین می‌کند.
 
 ۳۱۵) «Heteroskedasticity» means:
    ۱. unequal variance of errors across values of a predictor
-   ۲. non-normal dependent variable
-   ۳. missing data
-   ۴. unequal sample sizes
+   ۲. a dependent variable that is not normally distributed
+   ۳. systematic missing values in one of the predictors
+   ۴. unequal group sizes in the two comparison samples
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: این وضعیت، خطای استاندارد ضرایب را نادرست می‌کند.
+   ✎ تحلیل: Heteroskedasticity means the spread of residuals changes with the level of a predictor; OLS estimates stay unbiased but standard errors become wrong, so inference needs robust or weighted methods. Non-normal outcomes, missing data and unequal group sizes are different problems and do not break the constant-variance assumption.
 
 ۳۱۶) «Multicollinearity» refers to:
    ۱. correlation between error terms
@@ -3243,12 +3243,12 @@
    ✎ تحلیل: گذشته کامل برای رخدادی به کار می‌رود که پیش از رخداد گذشتهٔ دیگری کامل شده است؛ نشانهٔ آن «by the time» است.
 
 ۴۰۴) تفاوت «will» و «be going to» در بیان آینده چیست؟
-   ۱. will برای تصمیم لحظه‌ای و پیش‌بینی و be going to برای قصد پیشین و شواهد حاضر
-   ۲. هیچ تفاوتی ندارند
-   ۳. will فقط برای گذشته است
-   ۴. be going to برای عادت به کار می‌رود
+   ۱. will برای تصمیم لحظه‌ای و پیش‌بینی و be going to برای قصد پیشین و شاهد حاضر
+   ۲. هیچ تفاوتی ندارند و در همهٔ بافت‌های آزمونی جای هم به کار می‌روند
+   ۳. will فقط برای گذشته است و be going to برای آیندهٔ دور
+   ۴. be going to برای عادت‌های تکراری و will برای برنامهٔ رسمی
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: این تمایز در آزمون‌ها رایج است: «Look at those clouds; it is going to rain» شاهد حاضر و «I will help you» تصمیم آنی است.
+   ✎ تحلیل: این تمایز در آزمون‌ها رایج است: «Look at those clouds; it is going to rain» شاهد حاضر و «I will help you» تصمیم آنی است. هیچ‌یک از این دو ساختار برای گذشته یا عادت تکراری به کار نمی‌رود.
 
 ۴۰۵) کدام جمله مجهول درست است؟
    ۱. The data were analyzed using SPSS.
@@ -3396,11 +3396,11 @@
 
 ۴۲۳) ساختار «It was Weber who...» چه نوع تأکیدی است؟
    ۱. جملهٔ شکافته (cleft) برای برجسته‌کردن یک عنصر
-   ۲. جملهٔ پرسشی
-   ۳. جملهٔ شرطی
-   ۴. جملهٔ مجهول
+   ۲. جملهٔ پرسشی برای گرفتن اطلاعات از مخاطب
+   ۳. جملهٔ شرطی برای بیان فرض و نتیجهٔ آن
+   ۴. جملهٔ مجهول برای پنهان‌کردن فاعل
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: cleft sentence بخشی از جمله را برجسته می‌کند؛ نمونهٔ دیگر «What matters is...» است.
+   ✎ تحلیل: ساختار «It was X who…» جمله را به دو بخش می‌شکند و عنصر مورد تأکید را در جایگاه برجسته می‌گذارد؛ به همین دلیل cleft نامیده می‌شود. پرسشی، شرطی و مجهول، سه ساختار دیگرند با کارکردهای متفاوت.
 
 ۴۲۴) کدام جمله وجه التزامی (subjunctive) درست دارد؟
    ۱. The committee recommended that the study be replicated.
@@ -3420,11 +3420,11 @@
 
 ۴۲۶) تفاوت «used to» و «be used to» چیست؟
    ۱. اولی عادت گذشته و دومی عادت‌کردن به چیزی در حال
-   ۲. یکی هستند
-   ۳. اولی آینده و دومی گذشته
-   ۴. دومی فقط برای اشیا است
+   ۲. هر دو یک معنا دارند و تنها در زمان فعل کمکی تفاوت می‌کنند
+   ۳. اولی به آینده اشاره دارد و دومی به گذشتهٔ دور
+   ۴. دومی فقط برای اشیا به‌کار می‌رود و برای افراد نادرست است
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «used to do» عادت گذشته و «be used to doing» خوگرفتن است؛ اشتباه این دو در آزمون‌ها رایج است.
+   ✎ تحلیل: «used to do» عادت گذشته است و «be used to doing» خوگرفتن به چیزی در زمان حال؛ اشتباه این دو در آزمون‌ها رایج است. تفاوت در ساختار و معناست، نه در زمان فعل کمکی یا نوع فاعل.
 
 ۴۲۷) «The project has been running ___ 2020.»
    ۱. since
@@ -3468,11 +3468,11 @@
 
 ۴۳۲) «nominalization» در نگارش آکادمیک چه کاری می‌کند؟
    ۱. فعل یا صفت را به اسم تبدیل می‌کند تا سبک رسمی‌تر شود
-   ۲. جمله را کوتاه می‌کند
-   ۳. فعل را حذف می‌کند
-   ۴. جمله را پرسشی می‌کند
+   ۲. جمله را کوتاه‌تر می‌کند و واژه‌های اضافی را حذف می‌کند
+   ۳. فعل را حذف می‌کند و جمله را به عبارت اسمی بی‌فعل بدل می‌سازد
+   ۴. جملهٔ خبری را به پرسشی تبدیل می‌کند تا خواننده را درگیر کند
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: مثلاً «we analyzed» به «the analysis of» تبدیل می‌شود؛ افراط در آن متن را مبهم و سنگین می‌کند، بنابراین باید متعادل باشد.
+   ✎ تحلیل: اسم‌سازی مانند «تحلیل» به‌جای «تحلیل کردن»، لحن رسمی می‌سازد اما کنشگر و عامل را پنهان می‌کند و جمله را مبهم می‌سازد. کوتاه‌سازی، حذف کامل فعل و پرسشی‌کردن، سه کارکرد دیگرند.
 
 ۴۳۳) کدام جمله ساختار موازی درست دارد؟
    ۱. The program aims to reduce poverty, improve education, and strengthen local institutions.
@@ -3524,11 +3524,11 @@
 
 ۴۳۹) جمع‌بندی دستور زبان کدام است؟
    ۱. دقت در زمان، تطابق و پیوند جمله‌ها، پایهٔ نگارش آکادمیک است
-   ۲. حفظ قاعده بدون تمرین کافی است
-   ۳. ترجمهٔ واژه‌به‌واژه کافی است
-   ۴. دستور در آزمون اهمیت ندارد
+   ۲. حفظ قاعده بدون تمرین کافی است و نوشتن را تضمین می‌کند
+   ۳. ترجمهٔ واژه‌به‌واژه کافی است و ساختار جمله اهمیتی ندارد
+   ۴. دستور در آزمون اهمیت ندارد و تنها واژگان سنجیده می‌شود
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: خطاهای دستوری معنای جمله را تغییر می‌دهند؛ تمرین در بافت متن، یادگیری قاعده را پایدار می‌کند.
+   ✎ تحلیل: در نگارش آکادمیک، دقت زمان فعل، تطابق و پیوند منطقی جمله‌ها معنا را می‌سازد؛ حفظ قاعده بدون تمرین کافی نیست. ترجمهٔ واژه‌به‌واژه و بی‌اهمیت‌دانستن دستور، دو برداشت نادرست‌اند.
 ۴۴۰) The committee recommended that the survey ___ before the deadline.
    ۱. is conducted
    ۲. be conducted
@@ -3702,12 +3702,12 @@
 متن ۱: «Durkheim argued that suicide rates are not merely individual tragedies but social facts shaped by levels of integration and regulation. Where integration is weak, egoistic suicide becomes more likely.»
 
 ۴۶۱) بر پایه متن، نرخ خودکشی از دید دورکیم چیست؟
-   ۱. واقعیتی اجتماعی که با میزان انسجام و نظم اجتماعی شکل می‌گیرد
-   ۲. نتیجه وراثت زیستی
-   ۳. پدیده‌ای اقتصادی صرف
-   ۴. امری کاملاً فردی و روانی
+   ۱. a social fact shaped by the level of integration and regulation
+   ۲. a result of biological inheritance and genetic predisposition
+   ۳. a purely economic phenomenon driven by income levels
+   ۴. a completely individual and psychological matter
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: عبارت «not merely individual tragedies but social facts» دقیقاً بر فراتر بودن از سطح فردی و وابستگی به انسجام و نظم اجتماعی تأکید دارد.
+   ✎ تحلیل: عبارت «not merely individual tragedies but social facts» دقیقاً بر فراتر بودن از سطح فردی و وابستگی به انسجام و نظم اجتماعی تأکید دارد. وراثت زیستی، عامل اقتصادی و امر فردی-روانی، سه خوانشی‌اند که متن صریحاً رد می‌کند.
 
 ۴۶۲) بر پایه متن، ضعف انسجام اجتماعی با کدام نوع خودکشی مرتبط است؟
    ۱. خودکشی فاتالیستی
@@ -3737,9 +3737,9 @@
 
 ۴۶۵) مثال متن چه نکته‌ای را نشان می‌دهد؟
    ۱. امکان ناهم‌خوانی میان منابع اقتصادی و منزلت اجتماعی
-   ۲. هم‌راستایی کامل طبقه و منزلت
-   ۳. بی‌اهمیتی شغل در منزلت
-   ۴. تعیین‌کنندگی مطلق ثروت
+   ۲. هم‌راستایی کامل طبقه و منزلت ، ادعایی که مثال متن آن را نقض می‌کند
+   ۳. بی‌اهمیتی شغل در منزلت ، در حالی که مثال بر نقش شغل در منزلت تأکید دارد
+   ۴. تعیین‌کنندگی مطلق ثروت ، در حالی که متن از ناهم‌خوانی منابع سخن می‌گوید
    ✔ کلید: گزینه ۱
    ✎ تحلیل: ترکیب «modest economic resources yet high status» بر همین ناهم‌خوانی دلالت دارد؛ همین نکته، سنجش چندبعدی قشربندی را ضروری می‌کند.
 
@@ -3853,10 +3853,10 @@
    ✎ تحلیل: yet همانند but تقابل را نشان می‌دهد؛ همین ساختار، تنش درونی تحلیل وبر از بوروکراسی را منتقل می‌کند.
 
 ۴۷۹) «iron cage» در متن استعاره از چیست؟
-   ۱. زندان‌های واقعی مدرن
+   ۱. زندان‌های واقعی مدرن ، برداشتی تحت‌اللفظی که استعارهٔ وبر را از دست می‌دهد
    ۲. نظام قواعد عقلانی که فرد را محصور و محدود می‌کند
-   ۳. قفس حیوانات در کشاورزی صناعی
-   ۴. ساختار خانواده
+   ۳. قفس حیوانات در کشاورزی صناعی ، معنایی کشاورزی که با عقلانی‌شدن نسبتی ندارد
+   ۴. ساختار خانواده ، در حالی که استعاره به نظام قواعد عقلانی اشاره دارد
    ✔ کلید: گزینه ۲
    ✎ تحلیل: استعاره «قفس آهنین» به محاصره انسان در نظام عقلانی‌شده و بی‌روح اشاره دارد؛ نه زندان فیزیکی.
 
@@ -3880,11 +3880,11 @@
 
 ۴۸۲) واژه «meritocratic» در متن به چه معناست؟
    ۱. شایسته‌سالار؛ نظامی که پاداش را بر پایه شایستگی ظاهری توزیع می‌کند
-   ۲. نظامی که بر پایه ارث عمل می‌کند
-   ۳. نظامی که تفاوت‌ها را کاملاً حذف می‌کند
-   ۴. نظامی که بازار آزاد را اولویت می‌دهد
+   ۲. نظامی که بر پایه ارث و خویشاوندی موقعیت‌ها را منتقل می‌کند
+   ۳. نظامی که تفاوت‌های طبقاتی را کاملاً حذف و یکسان‌سازی می‌کند
+   ۴. نظامی که بازار آزاد را بر هر معیار دیگری اولویت می‌دهد
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: متن می‌گوید نظام خود را شایسته‌سالار معرفی می‌کند در حالی که مزیت پنهان وجود دارد؛ همین تناقض، نکته بوردیو است.
+   ✎ تحلیل: meritocratic به نظام شایسته‌سالار اشاره دارد که پاداش و موقعیت را بر پایهٔ شایستگی (و در نقدها، شایستگی ظاهری و سنجیده‌شده) توزیع می‌کند. نظام مبتنی بر ارث، یکسان‌سازی کامل تفاوت‌ها و اولویت مطلق بازار، سه معنای نادرست‌اند. نکته: نقد جامعه‌شناختی شایسته‌سالاری بر «ظاهری‌بودن» سنجش شایستگی است.
 
 متن ۳: «A random sample allows researchers to estimate population parameters with known margins of error. If the sampling frame omits part of the population, however, the estimates may be biased regardless of sample size.»
 
@@ -4133,18 +4133,18 @@
    ✎ تحلیل: «displace» در بافت افزایش ارزش ملک، بیرون‌راندن ساکنان کم‌درآمد است.
 
 ۵۱۳) What is the critics’ main concern?
-   ۱. Gardens produce too much food
+   ۱. Gardens produce too much food for the neighbourhood
    ۲. Rising property values may push out the intended beneficiaries
-   ۳. Neighbourhood ties become weaker
-   ۴. Land agreements are too long
+   ۳. Neighbourhood ties become weaker over time
+   ۴. Land agreements are too long to be renewed
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: نقد اصلی، پیامد جانبی افزایش قیمت و جابه‌جایی گروه هدف است.
+   ✎ تحلیل: The critics warn that improving a neighbourhood can raise rents and prices, displacing the very residents the project aimed to help. Food output, weaker ties and contract length are secondary points, not the main worry.
 
 ۵۱۴) Which measure does the author suggest?
-   ۱. Removing all community gardens
-   ۲. Raising property values deliberately
+   ۱. Removing all community gardens , a step the author argues against
+   ۲. Raising property values deliberately , which the author treats as a threat rather than a remedy
    ۳. Combining gardens with rent protections and land agreements
-   ۴. Shortening neighbourhood ties
+   ۴. Shortening neighbourhood ties , which the passage presents as harmful rather than helpful
    ✔ کلید: گزینه ۳
    ✎ تحلیل: جمله پایانی متن صریحاً ترکیب باغ با حمایت اجاره و توافق بلندمدت زمین را پیشنهاد می‌کند.
 
@@ -4159,12 +4159,12 @@
    ✎ تحلیل: متن هم مزیت و هم زیان می‌آورد و نتیجه را به نوع کار، مدیریت و حضور گاه‌به‌گاه وابسته می‌داند.
 
 ۵۱۶) According to the passage, one source of higher productivity is:
-   ۱. saved commuting time and greater schedule control
-   ۲. longer working hours
-   ۳. more meetings
-   ۴. lower pay
+   ۱. saved commuting time and greater control over one's schedule
+   ۲. longer working hours and more frequent overtime shifts
+   ۳. more frequent team meetings and constant synchronization
+   ۴. lower wages and reduced benefits for employees
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: متن صریحاً صرفه‌جویی در رفت‌وآمد و کنترل برنامه را عامل می‌داند.
+   ✎ تحلیل: متن صرفه‌جویی در زمان رفت‌وآمد و کنترل بیشتر بر برنامهٔ کاری را از منابع بهره‌وری بالاتر می‌شمارد. ساعت کاری بیشتر، جلسه‌های پیوسته و دستمزد کمتر، سه عامل دیگرند که در متن منبع بهره‌وری ذکر نشده‌اند. نکته: در سؤال درک مطلب، پاسخ را از متن بگیرید نه از باور عمومی دربارهٔ دورکاری.
 
 ۵۱۷) The word «tacit» most nearly means:
    ۱. publicly available
@@ -4234,20 +4234,20 @@
 — بخش ۲۴: درک مطلب و ترجمه (تکمیل) —
 «Longitudinal surveys are expensive, yet they answer questions that cross-sectional data cannot. By following the same people, they separate change within individuals from differences between them. This distinction matters: a rise in average income may reflect either that everyone earned more or that low earners left the sample. The main threats are attrition and repeated measurement, which can bias estimates if ignored.»
 ۵۲۵) What advantage of longitudinal surveys does the passage emphasize?
-   ۱. Simpler analysis
-   ۲. Lower cost
-   ۳. Separating within-person change from between-person differences
-   ۴. Larger samples
+   ۱. it makes the statistical analysis simpler and faster to run
+   ۲. it lowers the cost of data collection for large samples
+   ۳. it separates within-person change from between-person differences
+   ۴. it guarantees larger samples than cross-sectional designs
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: متن همین تفکیک را دلیل اصلی استفاده از داده طولی می‌داند.
+   ✎ تحلیل: متن همین تفکیک را دلیل اصلی استفاده از داده طولی می‌دانست: پیگیری همان افراد، تغییر درون‌فردی را از تفاوت بین افراد جدا می‌کند. سادگی تحلیل، هزینه و حجم نمونه، مزیت‌های ذکرشده در متن نیستند.
 
 ۵۲۶) According to the passage, a rise in average income may result from:
-   ۱. inflation only
-   ۲. better measurement
-   ۳. larger households
+   ۱. inflation only, with no change in real earnings
+   ۲. better measurement of household income
+   ۳. larger households sharing the same income
    ۴. everyone earning more or low earners leaving the sample
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: متن دو تفسیر ممکن را در برابر هم می‌گذارد؛ همین، اهمیت تحلیل ریزش را نشان می‌دهد.
+   ✎ تحلیل: A rising average can come from genuine gains across the distribution or from composition change, when low earners drop out of the measured group. Inflation and measurement issues affect the level, not the direction of the average in this way.
 
 ۵۲۷) The word «attrition» in the passage means:
    ۱. loss of respondents over time
@@ -4299,12 +4299,12 @@
    ✎ تحلیل: validity یعنی سنجه همان مفهوم مورد نظر را بسنجد. ارزانی و آسانی اجرا معیارهای عملی‌اند، نه روایی.
 
 ۵۳۳) The passage suggests that researchers often face:
-   ۱. no constraints
-   ۲. only cost problems
+   ۱. no constraints on their design choices
+   ۲. only cost problems in data collection
    ۳. trade-offs among reliability, validity and feasibility
-   ۴. no need for indicators
+   ۴. no need for indicators in measurement
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: کلیدواژه پاراگراف «trade-off» است: پژوهشگر ناچار است بین پایایی، روایی و امکان‌پذیری توازن برقرار کند.
+   ✎ تحلیل: Improving reliability or validity usually costs time, money or access, so designs balance the three against feasibility. The passage stresses this tension rather than the absence of constraints or of measurement needs.
 
 ۵۳۴) The most precise measure may be rejected because it is:
    ۱. too short
@@ -4323,12 +4323,12 @@
    ✎ تحلیل: «stratified by» یعنی طبقه‌بندی بر پایه آن متغیرها.
 
 ۵۳۶) ترجمه درست: «Reported effects should be interpreted in light of measurement error.»
-   ۱. خطای اندازه‌گیری باید حذف شود.
+   ۱. خطای اندازه‌گیری باید پیش از گزارش از داده‌ها حذف شود.
    ۲. اثرهای گزارش‌شده باید با توجه به خطای اندازه‌گیری تفسیر شوند.
-   ۳. اثرها بدون توجه به خطا گزارش شوند.
-   ۴. اندازه‌گیری خطا را افزایش می‌دهد.
+   ۳. اثرها باید بدون توجه به خطای اندازه‌گیری و مستقل از آن گزارش شوند.
+   ۴. اندازه‌گیری خطا را افزایش می‌دهد و تفسیر اثرها را ناممکن می‌کند.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «in light of» یعنی «با در نظر گرفتن»؛ پس اثرهای گزارش‌شده باید با توجه به خطای اندازه‌گیری تفسیر شوند، نه اینکه خطا حذف یا نادیده گرفته شود.
+   ✎ تحلیل: «in light of» یعنی «با در نظر گرفتن»؛ پس اثرهای گزارش‌شده باید با توجه به خطای اندازه‌گیری تفسیر شوند، نه اینکه خطا حذف یا نادیده گرفته شود. حذف کامل خطا از داده‌ها در بسیاری از طرح‌ها ناممکن است و کاهش اعتبار تفسیر را به همراه دارد.
 
 ۵۳۷) ترجمه درست: «The study controlled for household size and income.»
    ۱. پژوهش اندازه خانوار را حذف کرد.
@@ -4339,12 +4339,12 @@
    ✎ تحلیل: «controlled for» کنترل آماری متغیر مخدوش است.
 
 ۵۳۸) ترجمه درست: «Interviewers were trained to avoid leading questions.»
-   ۱. مصاحبه‌گران پرسش‌های جهت‌دار نوشتند.
-   ۲. پرسش‌ها حذف شدند.
-   ۳. مصاحبه‌گران آموزش ندیدند.
+   ۱. مصاحبه‌گران پرسش‌های جهت‌دار برای پرسشگری نوشتند و به‌کار بردند.
+   ۲. پرسش‌های جهت‌دار از پرسشنامه حذف شدند و در تحلیل استفاده نشد.
+   ۳. مصاحبه‌گران برای مصاحبه آموزش ندیدند و پرسش‌های جهت‌دار پرسیدند.
    ۴. مصاحبه‌گران آموزش دیدند تا از پرسش‌های جهت‌دار پرهیز کنند.
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: پرسش جهت‌دار پاسخ را به سمت خاصی هدایت می‌کند.
+   ✎ تحلیل: «were trained to avoid» یعنی آموزش دیدند که پرهیز کنند؛ پس نه نوشتن پرسش جهت‌دار درست است و نه ندیدن آموزش. پرسش جهت‌دار پاسخ را به سمت خاصی هدایت می‌کند و در آموزش مصاحبه‌گر باید حذف شود.
 
 ۵۳۹) ترجمه درست: «Findings should not be generalized beyond the study population.»
    ۱. یافته‌ها را نباید فراتر از جامعه مطالعه تعمیم داد.
@@ -4381,10 +4381,10 @@
    ✎ تحلیل: پاداش الگوریتم به تعامل، محتوای تحریک‌کننده را برجسته می‌کند.
 
 ۵۴۳) The «feedback loop» described in the passage means that:
-   ۱. recommendations are random
+   ۱. recommendations are random , rather than shaped by earlier user behaviour
    ۲. user behaviour and displayed content shape each other
-   ۳. users stop using the platform
-   ۴. content is produced once
+   ۳. users stop using the platform , which describes disengagement rather than mutual shaping
+   ۴. content is produced once , which is the opposite of a loop
    ✔ کلید: گزینه ۲
    ✎ تحلیل: دادهٔ آموزش و نمایش، متقابلاً یکدیگر را تغییر می‌دهند.
 
@@ -4454,12 +4454,12 @@
    ✎ تحلیل: عدالت ترمیمی هدفش ترمیم آسیب از راه گفت‌وگو است، نه تشدید مجازات یا حذف قربانی از فرایند.
 
 ۵۵۲) Advocates claim that punishment alone:
-   ۱. satisfies victims
-   ۲. always deters crime
-   ۳. seldom changes behaviour and can deepen exclusion
-   ۴. reduces inequality
+   ۱. it satisfies victims and restores their trust
+   ۲. it always deters crime in every context
+   ۳. it seldom changes behaviour and can deepen exclusion
+   ۴. it reduces inequality between groups
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: متن همین استدلال را به مدافعان نسبت می‌دهد.
+   ✎ تحلیل: Advocates argue that punishment alone rarely changes behaviour and may deepen exclusion, so it must be paired with rehabilitation. Satisfying victims, universal deterrence and reducing inequality are claims the passage does not support.
 
 ۵۵۳) Critics' concern about victims is that they may:
    ۱. demand harsher punishment
@@ -4486,12 +4486,12 @@
    ✎ تحلیل: این یافته در برابر اثر modest بر تکرار جرم قرار می‌گیرد.
 
 ۵۵۶) «Facilitator» in this context is:
-   ۱. a police officer
-   ۲. a judge
+   ۱. a police officer who enforces the rules
+   ۲. a judge who decides the final outcome
    ۳. a neutral person guiding the conversation
-   ۴. a journalist
+   ۴. a journalist who reports the event
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: facilitator شخص بی‌طرفی است که گفت‌وگو را تسهیل می‌کند، نه پلیس، قاضی یا خبرنگار.
+   ✎ تحلیل: A facilitator is a neutral person who guides the conversation, keeps the discussion on topic and makes sure quieter participants are heard. They do not enforce rules, decide outcomes or report the event, so each of the other options names a different role.
 
 ۵۵۷) «Deepens exclusion» means:
    ۱. improves reintegration
@@ -4597,9 +4597,9 @@ Passage 2: Cities grow through migration, but migration alone does not explain u
 
 ۵۶۹) What is the central argument of the passage?
    ۱. Urban inequality depends on institutions as well as migration
-   ۲. Migration is the only cause of urban growth
-   ۳. Zoning rules are irrelevant
-   ۴. Cities are becoming more equal
+   ۲. Migration is the only cause of urban growth , a claim the passage explicitly qualifies
+   ۳. Zoning rules are irrelevant , while the passage treats rules as one institution that matters
+   ۴. Cities are becoming more equal , the opposite of what the passage suggests
    ✔ کلید: گزینه ۱
    ✎ تحلیل: متن می‌گوید مهاجرت به‌تنهایی نابرابری را توضیح نمی‌دهد و نهادها نقش تعیین‌کننده دارند.
 
@@ -4645,11 +4645,11 @@ Passage 2: Cities grow through migration, but migration alone does not explain u
 
 ۵۷۵) The author's purpose is to…
    ۱. explain the institutional roots of urban inequality
-   ۲. describe rural life
-   ۳. criticize migration
-   ۴. promote a specific city
+   ۲. describe rural life and agricultural change
+   ۳. criticize migration to large cities
+   ۴. promote a specific city as a model
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: متن ریشهٔ نهادی نابرابری شهری را توضیح می‌دهد و از توصیهٔ سیاستی مشخص پرهیز می‌کند.
+   ✎ تحلیل: هدف نویسنده تبیین ریشه‌های نهادی نابرابری شهری است؛ بقیهٔ گزینه‌ها موضوع‌هایی‌اند که در متن نقش فرعی دارند. توصیف زندگی روستایی، نقد مهاجرت و تبلیغ یک شهر خاص، سه هدف نادرست‌اند. نکته: در سؤال هدف نویسنده، فعل اصلی متن (explain, argue, compare) را پیدا کنید.
 
 ۵۷۶) The word "reinforced" implies that the two processes…
    ۱. strengthen each other
@@ -4753,11 +4753,11 @@ Passage 4: Although women's educational attainment has risen sharply in many cou
 
 ۵۸۸) The author's main purpose is to…
    ۱. explain persistent inequality despite educational gains
-   ۲. criticize women's education
-   ۳. describe family law
-   ۴. compare countries' GDP
+   ۲. criticize women's access to education
+   ۳. describe the details of family law
+   ۴. compare countries' GDP growth rates
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: متن سازوکارهای تداوم نابرابری را با وجود پیشرفت آموزشی توضیح می‌دهد.
+   ✎ تحلیل: هدف اصلی متن توضیح تداوم نابرابری با وجود افزایش دسترسی به آموزش است؛ همین تنش میان «پیشرفت آموزشی» و «ماندگاری نابرابری» محور مقاله است. نقد آموزش زنان، توصیف حقوق خانواده و مقایسهٔ رشد تولید ناخالص، سه هدف فرعی یا نادرست‌اند. نکته: در سؤال purpose، تضاد محوری متن را دنبال کنید.
 
 Passage 5: Environmental policies are often justified by future benefits, yet their costs are paid today. This temporal mismatch makes political support fragile: voters notice higher prices immediately, while the avoided damage remains statistical and distant. Consequently, compensation measures and clear communication are as important as the policy instrument itself.
 
@@ -4795,9 +4795,9 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
 
 ۵۹۳) The phrase "avoided damage" refers to…
    ۱. harm that does not occur because of the policy
-   ۲. damage that is ignored
-   ۳. cost of administration
-   ۴. statistical error
+   ۲. damage that is ignored , which is damage that occurs but is neglected
+   ۳. cost of administration , which is a budget item rather than an avoided harm
+   ۴. statistical error , which concerns estimation rather than policy effects
    ✔ کلید: گزینه ۱
    ✎ تحلیل: منفعت سیاست، آسیب پیشگیری‌شده است که ماهیتی آماری و دور دارد.
 
@@ -4810,12 +4810,12 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ✎ تحلیل: متن نشان می‌دهد پذیرش سیاسی به احساس هزینه و انصاف وابسته است، نه فقط کارایی فنی.
 
 ۵۹۵) جمع‌بندی درک مطلب کدام است؟
-   ۱. پاسخ‌ها را باید با ارجاع به جملهٔ متن و نه دانش پیشین تأیید کرد
-   ۲. حدس سریع کافی است
-   ۳. همهٔ گزینه‌ها معمولاً درست‌اند
-   ۴. متن را نباید کامل خواند
+   ۱. answers should be confirmed by referring to a sentence in the passage
+   ۲. fast guessing is enough because all options look similar
+   ۳. all options are usually correct in this type of question
+   ۴. the passage should not be read completely before answering
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: درک مطلب آزمونی، شواهد را از خود متن می‌گیرد؛ مرجع‌یابی جمله، دقت پاسخ را بالا می‌برد.
+   ✎ تحلیل: درک مطلب آزمونی، شواهد را از خود متن می‌گیرد؛ مرجع‌یابی جمله، دقت پاسخ را بالا می‌برد. حدس سریع، درست‌بودن همهٔ گزینه‌ها و نخواندن متن، سه راهبرد نادرست‌اند.
 — بخش ۲۷: کلوز تکمیلی —
 «Trust is difficult to build and easy to destroy. In surveys, generalized trust predicts cooperation, yet it is measured by a single question that respondents may interpret ___ (۴۶۱). Experimental games offer an alternative, but they too simplify social life. A reasonable strategy is to combine measures and to report their ___ (۴۶۲). Researchers should also avoid treating trust as a fixed trait; it varies with institutions and ___ (۴۶۳). Finally, declining response rates make comparisons over time ___ (۴۶۴), so weights and sensitivity checks are essential.»
 ۵۹۶) کدام گزینه جای خالی نخست را در پاراگراف بالا کامل می‌کند؟
@@ -4851,12 +4851,12 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ✎ تحلیل: نرخ پاسخ نزولی، مقایسهٔ زمانی را شکننده می‌کند.
 
 ۶۰۰) The paragraph mainly argues that trust should be:
-   ۱. treated as a fixed trait
-   ۲. ignored in surveys
-   ۳. measured by a single item
+   ۱. treated as a fixed personality trait
+   ۲. ignored in large social surveys
+   ۳. measured by a single survey item
    ۴. measured with multiple methods and interpreted carefully
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: جمع‌بندی پاراگراف، ترکیب سنجه‌ها و احتیاط تفسیری است.
+   ✎ تحلیل: The paragraph treats trust as a multi-dimensional and context-sensitive attitude, so a single item is inadequate. Fixed traits, ignoring trust and one-item measurement are the positions the text argues against.
 
 — بخش ۲۸: ترجمه، کلوز و اصطلاحات آزمونی —
 
@@ -4978,11 +4978,11 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
 
 ۶۱۵) ترجمهٔ «Respondents were asked to rate their satisfaction on a five-point scale.» کدام است؟
    ۱. از پاسخ‌دهندگان خواسته شد رضایت خود را در مقیاسی پنج‌درجه‌ای بسنجند.
-   ۲. پاسخ‌دهندگان رضایت خود را پنج بار اعلام کردند.
-   ۳. رضایت پاسخ‌دهندگان اندازه‌گیری نشد.
-   ۴. مقیاس رضایت پنج پاسخ‌دهنده داشت.
+   ۲. پاسخ‌دهندگان رضایت خود را پنج بار و در پنج نوبت اعلام کردند.
+   ۳. رضایت پاسخ‌دهندگان اندازه‌گیری نشد و پرسشی دربارهٔ آن مطرح نگردید.
+   ۴. مقیاس رضایت تنها پنج پاسخ‌دهنده داشت و برای بقیه به‌کار نرفت.
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: rate یعنی نمره دادن/سنجیدن و five-point scale یعنی مقیاس پنج‌درجه‌ای.
+   ✎ تحلیل: rate یعنی نمره دادن یا سنجیدن و five-point scale یعنی مقیاس پنج‌درجه‌ای؛ ترکیب آنها معنای سنجش رضایت روی مقیاس پنج‌درجه‌ای می‌دهد. تکرار پنج‌بارهٔ پرسش، اندازه‌نگرفتن رضایت و پنج پاسخ‌دهندهٔ مقیاس، ترجمه‌های نادرست واژه‌های کلیدی‌اند.
 
 ۶۱۶) ترجمهٔ «Correlation does not imply causation.» کدام است؟
    ۱. همبستگی به معنای علیت نیست.
@@ -5137,12 +5137,12 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ✎ تحلیل: administer a questionnaire یعنی اجرا کردن آن و in person یعنی حضوری؛ این ترکیب در روش تحقیق پرکاربرد است.
 
 ۶۳۵) جمع‌بندی بخش زبان کدام است؟
-   ۱. ترکیب واژگان آکادمیک، دقت دستوری و تمرین درک مطلب، بهترین آمادگی است
-   ۲. حفظ لغت بدون بافت کافی است
-   ۳. گرامر در آزمون اهمیت ندارد
-   ۴. ترجمهٔ واژه‌به‌واژه کافی است
+   ۱. academic vocabulary, grammatical accuracy and reading practice together
+   ۲. memorising isolated words without context is enough
+   ۳. grammar is not tested and can be ignored in preparation
+   ۴. word-by-word translation is the best strategy for the passage
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: آزمون زبان عمومی و تخصصی هر سه مهارت را می‌سنجد؛ تمرین منظم با متن واقعی، هر سه را هم‌زمان تقویت می‌کند.
+   ✎ تحلیل: آزمون زبان عمومی و تخصصی هر سه مهارت را می‌سنجد؛ تمرین منظم با متن واقعی، هر سه را هم‌زمان تقویت می‌کند. حفظ لغت بی‌بافت، نادیده‌گرفتن گرامر و ترجمهٔ واژه‌به‌واژه، سه راهبرد ناکارآمدند.
 
 — بخش ۲۹: ترجمه (تکمیلی) —
 ۶۳۶) ترجمه درست: «The questionnaire was piloted with twenty respondents before the main survey.»
@@ -5179,8 +5179,8 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
 
 ۶۴۰) ترجمه درست: «The author acknowledges the limitations of the design but defends its usefulness.»
    ۱. نویسنده طرح را کاملاً رد می‌کند.
-   ۲. نویسنده محدودیت‌های طرح را می‌پذیرد اما از سودمندی آن دفاع می‌کند.
+   ۲. نویسنده محدودیت‌ها را می‌پذیرد اما از سودمندی طرح دفاع می‌کند.
    ۳. نویسنده محدودیت‌ها را نادیده می‌گیرد.
    ۴. نویسنده تنها از محدودیت‌ها سخن می‌گوید.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: ساختار «acknowledges… but defends…» تقابل پذیرش محدودیت و دفاع از فایده را نشان می‌دهد.
+   ✎ تحلیل: ساختار جمله (acknowledges ... but defends) یعنی پذیرش محدودیت‌ها همراه با دفاع از سودمندی؛ گزینهٔ درست همین هر دو بخش را حفظ می‌کند. رد کامل طرح، نادیده‌گرفتن محدودیت‌ها و پرداختن تنها به محدودیت‌ها، سه ترجمهٔ نادرست‌اند. نکته: در ترجمه، حرف ربط (but) تعیین‌کننده است.

@@ -1,0 +1,104 @@
+{
+  "05-zaban.txt": [
+    {
+      "n": 51, "key": 1,
+      "options": [
+        "توضیح دادن یا تبیین کردن بخشی از تغییرات",
+        "جایگزین کردن یک متغیر با متغیر دیگر در مدل رگرسیون",
+        "شمردن تعداد مشاهده‌ها و محاسبهٔ فراوانی هر مقوله",
+        "انکار کردن رابطهٔ مشاهده‌شده و رد فرضیهٔ پژوهش"
+      ],
+      "exp": "«account for» در متون آماری یعنی تبیین کردن سهمی از تغییرات؛ همین تعبیر در تفسیر R² و تحلیل چندمتغیره رایج است. معنای آن جایگزینی، شمارش یا انکار نیست و برگردان درست آن در گزارش نتایج تعیین‌کننده است."
+    },
+    {
+      "n": 117, "key": 2,
+      "options": [
+        "removes measurement error from the analysis",
+        "distorts the observed relation between two variables",
+        "increases the effective size of the sample",
+        "improves the reliability of the instrument"
+      ],
+      "exp": "A confounder is a third variable related to both the exposure and the outcome, so it distorts the observed relation and can create an effect that is not there or hide one that is. Randomization or statistical adjustment is the standard remedy; it never removes measurement error or increases sample size."
+    },
+    {
+      "n": 122, "key": 3,
+      "options": [
+        "the frequency of a behaviour during a fixed period",
+        "the exact income of a household in a month",
+        "degree of agreement along an ordered continuum",
+        "the number of network ties a person reports"
+      ],
+      "exp": "A Likert scale places agreement on an ordered continuum, usually from strongly disagree to strongly agree, and the items are combined into a single score. Treating the distances between the points as equal is an assumption that must be justified; the scale does not measure income, frequency or network ties."
+    },
+    {
+      "n": 126, "key": 3,
+      "options": [
+        "coding the open answers into categories",
+        "cleaning the sample of incomplete responses",
+        "explaining the study to participants afterwards",
+        "writing the abstract for the final report"
+      ],
+      "exp": "Debriefing means explaining the purpose, the procedures and any deception to participants after data collection, and giving them the chance to withdraw their data. Coding, data cleaning and abstract writing are later analysis tasks and involve no disclosure to participants."
+    },
+    {
+      "n": 179, "key": 1,
+      "options": [
+        "تعمیم یافته‌ها به جامعه یا موقعیت‌های دیگر",
+        "خلاصه کردن مقاله در یک چکیدهٔ کوتاه برای خوانندگان",
+        "تکرار آزمایش در همان نمونه و همان شرایط اولیه",
+        "تغییر نمونه و انتخاب گروه تازه‌ای برای گردآوری داده"
+      ],
+      "exp": "تعمیم یعنی نسبت دادن یافته‌های یک نمونه به جامعه یا موقعیت‌های دیگر، و تعمیم‌پذیری به طراحی نمونه و زمینه وابسته است. یافتهٔ یک مطالعهٔ موردی را نمی‌توان بی‌قید به کل جامعه نسبت داد؛ خلاصه‌سازی، تکرار و تغییر نمونه معنای این اصطلاح نیستند."
+    },
+    {
+      "n": 308, "key": 1,
+      "options": [
+        "the simplest model that explains the data adequately",
+        "the model that includes the largest number of variables",
+        "the model fitted to the largest available sample",
+        "the model with the highest R-squared in any sample"
+      ],
+      "exp": "Parsimony favours the simplest model that explains the data adequately, because extra parameters add variance and make interpretation and out-of-sample prediction worse. More variables, a bigger sample or the highest R² in the fitting sample do not make a model more parsimonious."
+    },
+    {
+      "n": 426, "key": 1,
+      "options": [
+        "اولی عادت گذشته و دومی عادت‌کردن به چیزی در حال",
+        "هر دو یک معنا دارند و تنها در زمان فعل کمکی تفاوت می‌کنند",
+        "اولی به آینده اشاره دارد و دومی به گذشتهٔ دور",
+        "دومی فقط برای اشیا به‌کار می‌رود و برای افراد نادرست است"
+      ],
+      "exp": "«used to do» عادت گذشته است و «be used to doing» خوگرفتن به چیزی در زمان حال؛ اشتباه این دو در آزمون‌ها رایج است. تفاوت در ساختار و معناست، نه در زمان فعل کمکی یا نوع فاعل."
+    },
+    {
+      "n": 536, "key": 2,
+      "options": [
+        "خطای اندازه‌گیری باید پیش از گزارش از داده‌ها حذف شود.",
+        "اثرهای گزارش‌شده باید با توجه به خطای اندازه‌گیری تفسیر شوند.",
+        "اثرها باید بدون توجه به خطای اندازه‌گیری و مستقل از آن گزارش شوند.",
+        "اندازه‌گیری خطا را افزایش می‌دهد و تفسیر اثرها را ناممکن می‌کند."
+      ],
+      "exp": "«in light of» یعنی «با در نظر گرفتن»؛ پس اثرهای گزارش‌شده باید با توجه به خطای اندازه‌گیری تفسیر شوند، نه اینکه خطا حذف یا نادیده گرفته شود. حذف کامل خطا از داده‌ها در بسیاری از طرح‌ها ناممکن است و کاهش اعتبار تفسیر را به همراه دارد."
+    },
+    {
+      "n": 556, "key": 3,
+      "options": [
+        "a police officer who enforces the rules",
+        "a judge who decides the final outcome",
+        "a neutral person guiding the conversation",
+        "a journalist who reports the event"
+      ],
+      "exp": "A facilitator is a neutral person who guides the conversation, keeps the discussion on topic and makes sure quieter participants are heard. They do not enforce rules, decide outcomes or report the event, so each of the other options names a different role."
+    },
+    {
+      "n": 21, "key": 4,
+      "options": [
+        "روش‌های کیفی بی‌ارزش‌اند و در پژوهش اجتماعی کاربرد ندارند",
+        "روش‌های کیفی جای آمار را می‌گیرند و تحلیل کمی را حذف می‌کنند",
+        "روش‌های کیفی فقط کمیت‌ها را با دقت بیشتری اندازه می‌گیرند",
+        "روش‌های کیفی به جای اندازه‌گیری کمیت، به کاوش معنا می‌پردازند"
+      ],
+      "exp": "منظور متن این است که روش کیفی به‌جای شمارش کمیت، معنا و تفسیر کنشگران را می‌کاود؛ پس نه بی‌ارزش است، نه جای آمار را می‌گیرد و نه کمیت‌ها را اندازه می‌گیرد. این جمله تمایز بنیادی دو رویکرد را بیان می‌کند، نه برتری یکی بر دیگری."
+    }
+  ]
+}
