@@ -709,7 +709,7 @@
    ۳. confirm it with additional evidence
    ۴. contradict it
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «corroborate» تأیید با شواهد مستقل است، نه لزوماً تکرار عین مطالعه.
+   ✎ تحلیل: corroborate یعنی یافته را با شواهد مستقل تأیید کردن، نه لزوماً تکرار عین مطالعه؛ confirm it with additional evidence درست است. گزینه‌های دیگر رد، اندازه‌گیری یا خلاصه کردن یافته را می‌رسانند.
 
 ۸۹) To «attenuate» an effect is to:
    ۱. reverse it
@@ -733,7 +733,7 @@
    ۳. present almost everywhere
    ۴. legally restricted
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «ubiquitous» یعنی همه‌جا حاضر؛ مانند گوشی هوشمند در زندگی روزمره.
+   ✎ تحلیل: ubiquitous یعنی همه‌جا حاضر و فراگیر، مانند گوشی هوشمند در زندگی روزمره؛ present almost everywhere درست است. گزینه‌های دیگر کمیاب، گران یا تازه‌وارد بودن را می‌رسانند.
 
 ۹۲) A «salient» feature is:
    ۱. a hidden detail
@@ -1176,7 +1176,7 @@
    ۳. مصاحبه در اتاقی خصوصی انجام شد.
    ۴. مصاحبه‌گر اتاق را تغییر داد.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «was conducted» یعنی انجام شد؛ ترجمه: مصاحبه در اتاقی خصوصی انجام شد.
+   ✎ تحلیل: «was conducted» یعنی انجام شد؛ ترجمهٔ درست: مصاحبه در اتاقی خصوصی انجام شد. گزینه‌های دیگر فاعل، مکان یا زمان را جابه‌جا می‌کنند.
 
 ۱۴۷) ترجمه درست: «Ethical approval was obtained before data collection.»
    ۱. تأییدیهٔ اخلاقی پس از انتشار گرفته شد.
@@ -2155,7 +2155,7 @@
    ۳. very
    ۴. too
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «so + صفت + that» ساختار نتیجه است؛ «such» پیش از عبارت اسمی می‌آید.
+   ✎ تحلیل: ساختار نتیجه با «so + صفت + that» می‌آید: so large that it could not be ignored؛ «such» پیش از عبارت اسمی می‌آید. گزینه‌های دیگر قید یا حرف اضافهٔ نادرست را می‌آورند.
 
 ۲۶۹) It was ___ a complex design that few teams could replicate it.
    ۱. very
@@ -2228,7 +2228,7 @@
    ۳. To complete
    ۴. Having completed
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: عبارت فعلی مقدم «Having + p.p.» ترتیب زمانی دو عمل را بیان می‌کند.
+   ✎ تحلیل: عبارت فعلی مقدم «Having + p.p.» ترتیب زمانی دو عمل را بیان می‌کند: Having completed the interviews, she began coding. گزینه‌های دیگر زمان یا رابطهٔ سببی نادرست می‌سازند.
 
 ۲۷۸) The more carefully you code the data, ___ reliable the findings will be.
    ۱. more
@@ -2308,7 +2308,7 @@
    ۳. measure it
    ۴. reduce its severity or likelihood
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: کاهش خطر با مداخله یا بازطراحی رویه انجام می‌شود، نه با انکار آن.
+   ✎ تحلیل: mitigate یعنی شدت یا احتمال خطر را با مداخله یا بازطراحی رویه کم کردن؛ reduce its severity or likelihood درست است. گزینه‌های دیگر انکار، انتقال یا اندازه‌گیری خطر را می‌رسانند.
 
 ۲۸۸) To «adhere to» a protocol is to:
    ۱. publish it
@@ -2405,7 +2405,7 @@
    ۳. when
    ۴. where
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: ساختار تأکیدی «It was not until … that» زمان آغاز را برجسته می‌کند.
+   ✎ تحلیل: ساختار تأکیدی «It was not until … that» زمان آغاز را برجسته می‌کند: It was not until 1990 that the survey began؛ پس that درست است. گزینه‌های دیگر ربط یا قید نادرست را می‌آورند.
 
 ۳۰۰) She asked whether the data ___ anonymized before release.
    ۱. had been
@@ -2558,7 +2558,7 @@
    ۳. has been
    ۴. was
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: شرطی نوع سوم (had been + would have) گذشتهٔ خلاف واقع را بیان می‌کند.
+   ✎ تحلیل: شرطی نوع سوم با «had been + would have been» گذشتهٔ خلاف واقع را بیان می‌کند: If the hypothesis had been tested earlier… گزینه‌های دیگر زمان یا وجه نادرست را می‌آورند.
 
 ۳۱۹) The findings suggest that income ___ with education in this sample.
    ۱. is correlating
@@ -2606,7 +2606,7 @@
    ۳. Because
    ۴. Therefore
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «Although» به بند کامل وصل می‌شود؛ «Despite» به عبارت اسمی نیاز دارد.
+   ✎ تحلیل: «Although» به بند کامل وصل می‌شود: Although the results were preliminary…؛ «Despite» به عبارت اسمی نیاز دارد. گزینه‌های دیگر ساختار دو بند را نمی‌سازند.
 
 ۳۲۵) The questionnaire was designed ___ capture subtle differences in attitude.
    ۱. to
@@ -2766,7 +2766,7 @@
    ۳. as
    ۴. for
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «coded as» ترکیب استاندارد تعریف کد متغیر است: coded as 1 for yes.
+   ✎ تحلیل: ترکیب استاندارد تعریف کد متغیر «coded as» است: coded as 1 for yes and 0 for no؛ پس as درست است. گزینه‌های دیگر حرف اضافهٔ نادرست را می‌آورند.
 
 ۳۴۵) Comparatively ___ studies examine this group.
    ۱. fewer
@@ -2927,7 +2927,7 @@
    ۳. remain
    ۴. remaining
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: ساختار مطلق (absolute construction) با فاعل مستقل، فعل اصلی می‌خواهد.
+   ✎ تحلیل: ساختار مطلق «There being no control group» فاعل مستقل می‌سازد و بند اصلی فعل می‌خواهد: the causal claim remains weak. گزینه‌های دیگر صورت فعلی یا اسمی نادرست را می‌آورند.
 
 ۳۶۵) ___ the sample was small, the effect size was substantial.
    ۱. While
@@ -3007,7 +3007,7 @@
    ۳. seeking
    ۴. is seek
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: فاعل مفرد «the study» فعل مفرد می‌گیرد: seeks. «seek» شکل جمع است.
+   ✎ تحلیل: فاعل مفرد «the study» فعل مفرد می‌گیرد: The study seeks to explain؛ seek شکل جمع است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۳۷۵) Given ___ the response rate was low, the authors weighted the data.
    ۱. which
@@ -3560,7 +3560,7 @@
    ۳. must submit
    ۴. must be submitting
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: وجهی مجهول «must be + p.p.» الزام و مجهول را هم‌زمان بیان می‌کند.
+   ✎ تحلیل: الزام و مجهول هم‌زمان با «must be + p.p.» بیان می‌شود: All proposals must be submitted by Friday. گزینه‌های دیگر وجه یا ساختار مجهول را نادرست می‌آورند.
 
 ۴۴۴) It was the sampling method ___ explained the discrepancy.
    ۱. that
@@ -3632,7 +3632,7 @@
    ۳. Had it not been
    ۴. Had not it been
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ساختار وارونه شرطی نوع سوم: «Had it not been for…» یعنی اگر … نبود.
+   ✎ تحلیل: وارونگی شرطی نوع سوم با «Had it not been for» ساخته می‌شود: اگر پیش‌آزمون نبود، پرسشنامه شکست می‌خورد. گزینه‌های دیگر وجه یا ترتیب وارونگی را نادرست می‌آورند.
 
 ۴۵۳) The sample was small; ___, the results should be read cautiously.
    ۱. likewise
@@ -3672,7 +3672,7 @@
    ۳. Whereas
    ۴. Notwithstanding
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «notwithstanding» یعنی با وجود؛ در آغاز جمله با عبارت اسمی می‌آید.
+   ✎ تحلیل: «notwithstanding» یعنی با وجود و در آغاز جمله با عبارت اسمی می‌آید: Notwithstanding the limitations, the study offers… گزینه‌های دیگر ربط سببی یا شرطی نادرست می‌سازند.
 
 ۴۵۸) ___ the sampling frame, the authors provided little detail.
    ۱. In contrast
@@ -4130,7 +4130,7 @@
    ۳. replace gardens with buildings
    ۴. increase residents’ incomes
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «displace» در بافت افزایش ارزش ملک، بیرون‌راندن ساکنان کم‌درآمد است.
+   ✎ تحلیل: displace در بافت افزایش ارزش ملک یعنی بیرون‌راندن ساکنان کم‌درآمد: force residents to leave their homes. گزینه‌های دیگر جابه‌جایی شغل، تخریب ساختمان یا ثبت مالکیت را می‌رسانند.
 
 ۵۱۳) What is the critics’ main concern?
    ۱. Neighbourhood ties become weaker over time
@@ -4205,7 +4205,7 @@
    ۳. transcripts
    ۴. limitations
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: گزارش محدودیت‌های شناخته‌شده چارچوب، شفافیت پژوهش را بالا می‌برد.
+   ✎ تحلیل: گزارش صریح محدودیت‌های چارچوب نمونه‌گیری، دامنهٔ تعمیم را برای خواننده روشن می‌کند و شفافیت پژوهش را بالا می‌برد؛ limitations پاسخ درست است. گزینه‌های دیگر به هزینه، زمان یا نرخ پاسخ اشاره دارند.
 
 ۵۲۲) برای ارزیابی سوگیری عدم پاسخ، پاسخ‌دهندگان و پاسخ‌ندادگان در چه چیزی مقایسه می‌شوند؟
    ۱. opinions
@@ -4221,7 +4221,7 @@
    ۳. weighted
    ۴. coded
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: وزن‌دهی داده موجود را بازتوزیع می‌کند، نه اینکه داده جمع‌نشده بسازد.
+   ✎ تحلیل: وزن‌دهی دادهٔ موجود را بازتوزیع می‌کند و نمی‌تواند دادهٔ جمع‌نشده بسازد؛ پس collected پاسخ درست است. گزینه‌های دیگر ویژگی‌هایی را می‌آورند که وزن‌دهی می‌تواند اصلاح کند.
 
 ۵۲۴) شفافیت درباره تصمیم‌های نمونه‌گیری به خواننده چه کمکی می‌کند؟
    ۱. tabulated
@@ -4229,7 +4229,7 @@
    ۳. randomized
    ۴. replicated
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: خواننده با آگاهی از تصمیم‌ها می‌تواند دامنه تعمیم یافته‌ها را بسنجد.
+   ✎ تحلیل: شفافیت دربارهٔ تصمیم‌های نمونه‌گیری به خواننده کمک می‌کند دامنهٔ تعمیم یافته‌ها را بسنجد؛ generalized پاسخ درست است. گزینه‌های دیگر به سرعت انتشار، هزینه یا حجم داده اشاره دارند.
 
 — بخش ۲۴: درک مطلب و ترجمه (تکمیل) —
 «Longitudinal surveys are expensive, yet they answer questions that cross-sectional data cannot. By following the same people, they separate change within individuals from differences between them. This distinction matters: a rise in average income may reflect either that everyone earned more or that low earners left the sample. The main threats are attrition and repeated measurement, which can bias estimates if ignored.»
@@ -4591,7 +4591,7 @@ Passage 1: Sociologists have long debated whether work shapes identity or merely
    ۳. completely prove a theory
    ۴. take a photograph
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: این عبارت استعاری یعنی بخشی از واقعیت را نشان دادن، نه تبیین کامل.
+   ✎ تحلیل: عبارت «capture part of the picture» استعاری است و یعنی تنها بخشی از واقعیت را تبیین کردن: explain only one aspect of the phenomenon. گزینه‌های دیگر تبیین کامل، رد پدیده یا توصیف تصویری را می‌رسانند.
 
 Passage 2: Cities grow through migration, but migration alone does not explain urban inequality. Housing markets, transport systems, and zoning rules determine who can live near jobs and services. Where these institutions exclude low-income groups, cities become spatially divided, and the disadvantages of one neighborhood are reinforced by the advantages of another.
 
@@ -4667,7 +4667,7 @@ Passage 3: Randomized experiments are often described as the gold standard for c
    ۳. They need no data
    ۴. They support causal inference
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: متن randomized experiments را استاندارد طلایی استنباط علّی می‌نامد.
+   ✎ تحلیل: متن آزمایش‌های تصادفی‌شده را استاندارد طلایی استنباط علّی می‌نامد: They support causal inference. گزینه‌های دیگر ارزان‌بودن، سرعت یا تعمیم‌پذیری را دلیل ارزش آن می‌گویند.
 
 ۵۷۸) According to the passage, which problem can bias estimates?
    ۱. Large samples
@@ -4791,7 +4791,7 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ۳. Hiding costs from voters
    ۴. Compensation and clear communication
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: جملهٔ آخر جبران خسارت و ارتباط شفاف را هم‌ارز ابزار سیاستی می‌داند.
+   ✎ تحلیل: جملهٔ آخر متن جبران خسارت و ارتباط شفاف را هم‌ارز ابزار سیاستی می‌داند: Compensation and clear communication. گزینه‌های دیگر توقف سیاست، افزایش نظارت یا حذف مشارکت را توصیه می‌کنند.
 
 ۵۹۳) The phrase "avoided damage" refers to…
    ۱. cost of administration , which is a budget item rather than an avoided harm
@@ -4934,7 +4934,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. reliability
    ۴. rely
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: صفت پیش از اسم picture می‌آید؛ reliability اسم و reliably قید است.
+   ✎ تحلیل: جای خالی پیش از اسم picture به صفت نیاز دارد: a reliable picture؛ reliability اسم و reliably قید است. گزینه‌های دیگر نقش دستوری نادرست را می‌آورند.
 
 ۶۱۰) جای خالی (۱۰):
    ۱. even though
@@ -4942,7 +4942,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. provided that
    ۴. as a result
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: عبارت «provided that» شرط می‌سازد: به شرط آنکه با احتیاط تفسیر شوند.
+   ✎ تحلیل: «provided that» شرط می‌سازد: به شرط آنکه با احتیاط تفسیر شوند؛ پس provided that درست است. گزینه‌های دیگر ربط زمانی یا سببی نادرست می‌سازند.
 
 ۶۱۱) ترجمهٔ درست «The findings are consistent with previous research.» کدام است؟
    ۱. یافته‌ها بر پژوهش پیشین مقدم‌اند.
@@ -5030,7 +5030,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. the limitations of the study
    ۴. the design of the study
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: limitation معادل محدودیت است؛ این بخش در مقالهٔ علمی جای مشخصی دارد.
+   ✎ تحلیل: limitation معادل «محدودیت» است و بخش محدودیت‌های پژوهش جای مشخصی در مقالهٔ علمی دارد: the limitations of the study. گزینه‌های دیگر به یافته‌ها، روش یا منابع اشاره دارند.
 
 ۶۲۲) کدام عبارت برای بیان «احتمال دارد» در نوشتار علمی مناسب است؟
    ۱. It is likely that...
@@ -5070,7 +5070,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. مطالعات قدیمی
    ۴. مطالعات بی‌ربط
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: a handful of یعنی شمار اندک؛ همین عبارت در بیان شکاف پژوهشی رایج است.
+   ✎ تحلیل: «a handful of studies» یعنی شمار اندک مطالعه و در بیان شکاف پژوهشی رایج است: تعداد کمی مطالعه. گزینه‌های دیگر شمار زیاد، مطالعهٔ مروری یا نمونهٔ بزرگ را می‌رسانند.
 
 ۶۲۷) «to shed light on» یعنی…
    ۱. اندازه‌گیری کردن
@@ -5151,7 +5151,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. پرسشنامه اصلی با بیست پاسخگو اجرا شد.
    ۴. پرسشنامه پیش از پیمایش اصلی با بیست پاسخگو پیش‌آزمون شد.
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «was piloted» پیش‌آزمون ابزار است و ترتیب زمانی جمله باید حفظ شود.
+   ✎ تحلیل: «was piloted» یعنی پیش‌آزمون شد و ترتیب زمانی جمله باید حفظ شود: پرسشنامه پیش از پیمایش اصلی با بیست پاسخگو پیش‌آزمون شد. گزینه‌های دیگر ترتیب یا موضوع را وارونه می‌کنند.
 
 ۶۳۷) ترجمه درست: «Respondents were assured that their answers would remain confidential.»
    ۱. پاسخ‌ها به‌طور کامل منتشر شد.
