@@ -757,7 +757,7 @@
    ۳. has no data
    ۴. can be interpreted in more than one way
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: ابهام تفسیری، نیاز به شفاف‌سازی تعریف و سنجش را نشان می‌دهد.
+   ✎ تحلیل: یافتهٔ ambiguous را می‌توان به بیش از یک معنا تفسیر کرد و همین نیاز به شفاف‌سازی تعریف و سنجش را نشان می‌دهد؛ can be interpreted in more than one way درست است. گزینه‌های دیگر قطعیت، تکرار یا بی‌اهمیتی را می‌رسانند.
 
 ۹۵) A «prevalent» belief is:
    ۱. scientifically proven
@@ -765,7 +765,7 @@
    ۳. held by a minority
    ۴. recently abandoned
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «prevalent» شیوع و گستردگی یک باور یا پدیده را بیان می‌کند.
+   ✎ تحلیل: prevalent یعنی گسترده و شایع در یک جمعیت؛ widespread in a population درست است. گزینه‌های دیگر نادر، بحث‌برانگیز یا اثبات‌نشده بودن را می‌رسانند.
 
 ۹۶) A «compelling» argument is:
    ۱. long and repetitive
@@ -781,7 +781,7 @@
    ۳. is very small in size
    ۴. cannot be replicated
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: استواری نتیجه با تحلیل حساسیت و تغییر روش‌ها سنجیده می‌شود.
+   ✎ تحلیل: نتیجهٔ robust در برابر تغییر مشخصات مدل پایدار می‌ماند و استواری آن با تحلیل حساسیت سنجیده می‌شود؛ remains stable across different specifications درست است. گزینه‌های دیگر بزرگی اثر، معناداری یا سادگی مدل را معیار می‌گیرند.
 
 — بخش ۶: واژگان تخصصی تکمیلی —
 ۹۸) «Triangulation» in research means:
@@ -950,7 +950,7 @@
    ۳. the length of the report
    ۴. how representative the sample and setting are
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: تعمیم‌پذیری به تناسب نمونه و زمینه با جامعهٔ هدف بستگی دارد.
+   ✎ تحلیل: تعمیم‌پذیری به تناسب نمونه و زمینه با جامعهٔ هدف بستگی دارد؛ how representative the sample and setting are درست است. گزینه‌های دیگر حجم نمونه، شمار متغیرها یا شهرت پژوهشگر را معیار می‌گیرند.
 
 — بخش ۷: واژگان و اصطلاحات تکمیلی —
 ۱۱۹) A «sampling frame» is:
@@ -1280,7 +1280,7 @@
    ۳. were
    ۴. was
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: فاعل مفرد «the paper» فعل مفرد می‌گیرد: was published.
+   ✎ تحلیل: فاعل مفرد «the paper» فعل مفرد می‌گیرد و زمان جمله گذشته است: was published؛ پس was درست است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۱۶۰) Researchers rarely ___ their data publicly.
    ۱. sharing
@@ -2163,7 +2163,7 @@
    ۳. such
    ۴. so
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «such + a + صفت + اسم + that» الگوی نتیجه با عبارت اسمی است.
+   ✎ تحلیل: الگوی «such + a + صفت + اسم + that» نتیجه را با عبارت اسمی بیان می‌کند: such a complex design that…؛ پس such درست است. گزینه‌های دیگر قید مقدار یا حرف اضافه‌اند و ساختار را نمی‌سازند.
 
 ۲۷۰) The study cannot proceed ___ funding is secured.
    ۱. unless
@@ -2171,7 +2171,7 @@
    ۳. if
    ۴. in case
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «unless» یعنی «اگر … نه»؛ معنای جمله بدون آن وارونه می‌شود.
+   ✎ تحلیل: «unless» یعنی «اگر … نه»: مطالعه نمی‌تواند پیش برود مگر آنکه تأمین مالی شود؛ unless درست است. گزینه‌های دیگر رابطهٔ سببی یا زمانی نادرست می‌سازند و معنای جمله را وارونه می‌کنند.
 
 ۲۷۱) Codes were merged ___ reduce redundancy in the coding frame.
    ۱. so that
@@ -2260,7 +2260,7 @@
    ۳. to alter
    ۴. altered
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «deny» با gerund می‌آید؛ «deny to do» در این معنا نادرست است.
+   ✎ تحلیل: «deny» با gerund می‌آید: denied altering the raw data؛ صورت «deny to do» در این معنا نادرست است. گزینه‌های دیگر مصدر یا زمان نادرست را می‌آورند.
 
 ۲۸۲) The results, ___ were unexpected, forced the team to revise the model.
    ۱. that
@@ -2332,7 +2332,7 @@
    ۳. general agreement among participants or experts
    ۴. a single expert opinion which is the opposite of agreement among many experts
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: اجماع در روش دلفی و داوری علمی، توافق جمعی است نه حقیقت مطلق.
+   ✎ تحلیل: consensus یعنی توافق جمعی مشارکت‌کنندگان یا متخصصان؛ general agreement among participants or experts درست است. گزینه‌های دیگر اختلاف، رأی اکثریت رسمی یا حقیقت مطلق را می‌رسانند.
 
 ۲۹۱) A «plausible» explanation is:
    ۱. believable and consistent with the evidence
@@ -2348,7 +2348,7 @@
    ۳. casual reading
    ۴. close and critical examination
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: نظارت دقیق و انتقادی، سازوکار اصلی پاسخگویی علمی و اداری است.
+   ✎ تحلیل: scrutiny یعنی بررسی دقیق و انتقادی که سازوکار اصلی پاسخگویی علمی و اداری است؛ close and critical examination درست است. گزینه‌های دیگر پذیرش سریع، خلاصه‌سازی یا تأیید سطحی را می‌رسانند.
 
 ۲۹۳) A «cumulative» effect is one that:
    ۱. builds up over repeated exposure
@@ -2429,7 +2429,7 @@
    ۳. will be
    ۴. had been
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: شرطی نوع دوم (were + would) فرض خلاف واقع حال را بیان می‌کند.
+   ✎ تحلیل: شرطی نوع دوم با were و would فرض خلاف واقع حال را بیان می‌کند: If the assumptions were met, the results would be valid. گزینه‌های دیگر زمان یا وجه نادرست را می‌آورند.
 
 ۳۰۳) The author, ___ earlier work we discussed, replied to the review.
    ۱. who
@@ -2445,7 +2445,7 @@
    ۳. completes
    ۴. had completed
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: پس از «Not until» وارونگی رخ می‌دهد؛ فعل مجهول ماضی لازم است.
+   ✎ تحلیل: پس از «Not until» وارونگی رخ می‌دهد و فعل مجهول ماضی لازم است: Not until the audit was completed did the coding error appear. گزینه‌های دیگر ترتیب یا زمان را نادرست می‌آورند.
 
 ۳۰۵) The team ___ the coding frame before the analysis began.
    ۱. finalize
@@ -2646,7 +2646,7 @@
    ۳. that
    ۴. which
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «whose» رابطهٔ مالکیت در بند موصولی غیرمحدودکننده است.
+   ✎ تحلیل: «whose» رابطهٔ مالکیت را در بند موصولی غیرمحدودکننده بیان می‌کند: the paper, whose findings were widely cited؛ پس whose درست است. گزینه‌های دیگر ضمیر موصولی شخص یا حرف ربط را می‌آورند.
 
 ۳۳۰) By the time the fieldwork ended, the team ___ over a thousand interviews.
    ۱. completed
@@ -2718,7 +2718,7 @@
    ۳. is
    ۴. are
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: در بند شرط پس از unless، حال ساده به‌جای آینده می‌آید.
+   ✎ تحلیل: در بند شرط پس از unless فعل حال ساده به‌جای آینده می‌آید: Unless the coding rules are consistent؛ پس are درست است. گزینه‌های دیگر زمان یا شمار فعل را نادرست می‌آورند.
 
 ۳۳۹) The study aims at ___ how norms change over time.
    ۱. to understand
@@ -2758,7 +2758,7 @@
    ۳. will be
    ۴. had been
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: وارونگی شرطی نوع سوم با «would have been» کامل می‌شود.
+   ✎ تحلیل: وارونگی شرطی نوع سوم با «would have been» کامل می‌شود: Had the data been available, the analysis would have been different. گزینه‌های دیگر وجه یا زمان نادرست را می‌آورند.
 
 ۳۴۴) The variable was coded ___ 1 for yes and 0 for no.
    ۱. to
@@ -2790,7 +2790,7 @@
    ۳. are capturing
    ۴. capture
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: با «neither… nor» فعل با نزدیک‌ترین فاعل هماهنگ می‌شود.
+   ✎ تحلیل: با «neither… nor» فعل با نزدیک‌ترین فاعل هماهنگ می‌شود: neither the interviews nor the survey captures؛ پس captures درست است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۳۴۸) The findings are consistent ___ earlier work.
    ۱. with
@@ -2903,7 +2903,7 @@
    ۳. that
    ۴. what
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «that» بند موصولی محدودکننده برای اسم شیء می‌سازد.
+   ✎ تحلیل: «that» بند موصولی محدودکننده برای اسم شیء می‌سازد: the hypothesis that the authors tested؛ پس that درست است. گزینه‌های دیگر ضمیر موصولی شخص یا حرف ربط نادرست را می‌آورند.
 
 ۳۶۲) For the results ___ comparable, coding must be identical.
    ۱. be
@@ -2911,7 +2911,7 @@
    ۳. been
    ۴. to be
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: ساختار «for + مفعول + to be» هدف یا شرط را بیان می‌کند.
+   ✎ تحلیل: ساختار «for + مفعول + to be» هدف یا شرط را بیان می‌کند: For the results to be comparable؛ پس to be درست است. گزینه‌های دیگر صورت فعلی یا اسم مصدر نادرست را می‌آورند.
 
 ۳۶۳) The more the respondents trust the interviewer, ___ candid the answers.
    ۱. the more
@@ -2951,7 +2951,7 @@
    ۳. had
    ۴. has
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: وارونگی شرطی («Should…») با فعل آینده کامل می‌شود.
+   ✎ تحلیل: وارونگی شرطی با «Should the trend continue» بند نتیجه را با فعل آینده می‌سازد: inequality will widen؛ پس will درست است. گزینه‌های دیگر زمان یا وجه نادرست را می‌آورند.
 
 ۳۶۸) The interviews were transcribed ___ verbatim.
    ۱. most
@@ -3071,7 +3071,7 @@
    ۳. is
    ۴. were
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «any conclusion» مفرد است: any conclusion is premature.
+   ✎ تحلیل: «any conclusion» مفرد است و فعل مفرد می‌گیرد: any conclusion is premature؛ پس is درست است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۳۸۳) The interview guide was revised ___ several pilot sessions.
    ۱. after
@@ -3664,7 +3664,7 @@
    ۳. however
    ۴. despite
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «albeit» پیش از صفت یا عبارت کوتاه به معنای «هرچند» می‌آید.
+   ✎ تحلیل: «albeit» پیش از صفت یا عبارت کوتاه به معنای «هرچند» می‌آید: rigorous, albeit costly and slow. گزینه‌های دیگر حرف اضافه یا ربط سببی‌اند و این تقابل فشرده را نمی‌سازند.
 
 ۴۵۷) ___ the limitations, the study offers useful evidence.
    ۱. Hence
@@ -4023,7 +4023,7 @@
    ۳. generalized
    ۴. coded
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: محدودیت نمونه شهری، تعمیم به کل کشور را ناموجه می‌کند.
+   ✎ تحلیل: محدودیت نمونهٔ شهری، تعمیم به کل کشور را ناموجه می‌کند؛ generalized با فعل cannot هم‌خوان است. گزینه‌های دیگر واژه‌هایی هستند که با منطق محدودیت نمونه و ساختار مجهول جمله جور نیستند.
 
 ۵۰۰) «The two variables moved together, but the author warned that correlation is not ___.»
    ۱. description
@@ -4180,7 +4180,7 @@
    ۳. They decline
    ۴. They become formal
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: متن کاهش تبادل‌های خودانگیخته را از زیان‌های دورکاری می‌داند.
+   ✎ تحلیل: متن کاهش تبادل‌های خودانگیخته را از زیان‌های دورکاری می‌داند: They decline پاسخ درست است. گزینه‌های دیگر افزایش، بی‌تغییری یا تبدیل به جلسهٔ رسمی را می‌گویند که در متن نیست.
 
 ۵۱۹) Which factor is NOT mentioned as shaping the outcome?
    ۱. Managerial support
@@ -4263,7 +4263,7 @@
    ۳. Cost of surveys
    ۴. Attrition
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: سوگیری مصاحبه‌گر در متن نیامده است؛ سه مورد دیگر ذکر شده‌اند.
+   ✎ تحلیل: سوگیری مصاحبه‌گر در متن نیامده است، در حالی که سه تهدید دیگر ذکر شده‌اند؛ پرسش «کدام مورد ذکر نشده» را همین پاسخ می‌دهد. گزینه‌های دیگر همه در متن آمده‌اند.
 
 ۵۲۹) The author’s tone toward longitudinal surveys is:
    ۱. neutral and uninterested
@@ -4320,7 +4320,7 @@
    ۳. نمونه بر پایه سن و جنس حذف شد.
    ۴. سن و جنس از نمونه انتخاب شد.
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «stratified by» یعنی طبقه‌بندی بر پایه آن متغیرها.
+   ✎ تحلیل: «stratified by» یعنی طبقه‌بندی بر پایهٔ آن متغیرها؛ پس «نمونه بر پایهٔ سن و جنس طبقه‌بندی شد» ترجمهٔ درست است. گزینه‌های دیگر وزن‌دهی، تصادفی‌بودن یا حذف گروه‌ها را می‌رسانند که در جمله نیست.
 
 ۵۳۶) ترجمه درست: «Reported effects should be interpreted in light of measurement error.»
    ۱. خطای اندازه‌گیری باید پیش از گزارش از داده‌ها حذف شود.
@@ -4378,7 +4378,7 @@
    ۳. provokes strong reactions
    ۴. is produced by experts
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: پاداش الگوریتم به تعامل، محتوای تحریک‌کننده را برجسته می‌کند.
+   ✎ تحلیل: متن می‌گوید رتبه‌بندی بر پایهٔ تعامل، محتوایی را پاداش می‌دهد که واکنش شدید برمی‌انگیزد: provokes strong reactions. گزینه‌های دیگر محتوای آرام، علمی یا بی‌طرف را می‌گویند.
 
 ۵۴۳) The «feedback loop» described in the passage means that:
    ۱. recommendations are random , rather than shaped by earlier user behaviour
@@ -4386,7 +4386,7 @@
    ۳. content is produced once , which is the opposite of a loop
    ۴. user behaviour and displayed content shape each other
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: دادهٔ آموزش و نمایش، متقابلاً یکدیگر را تغییر می‌دهند.
+   ✎ تحلیل: حلقهٔ بازخورد یعنی دادهٔ رفتار کاربر و محتوای نمایش‌داده‌شده متقابلاً یکدیگر را شکل می‌دهند؛ user behaviour and displayed content shape each other درست است. گزینه‌های دیگر قطع ارتباط، حذف الگوریتم یا افزایش آگاهی را می‌گویند.
 
 ۵۴۴) The defenders' argument is that:
    ۱. engagement is irrelevant
@@ -4402,7 +4402,7 @@
    ۳. both sides capture part of the truth
    ۴. the debate is irrelevant
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: عبارت «both are partly right» موضع متن را نشان می‌دهد.
+   ✎ تحلیل: عبارت «both are partly right» موضع متن را نشان می‌دهد: هر دو طرف بخشی از حقیقت را دارند. گزینه‌های دیگر جانبداری کامل از یک طرف یا رد کل بحث را می‌رسانند که با متن هم‌خوان نیست.
 
 ۵۴۶) The word «provokes» is closest in meaning to:
    ۱. triggers
@@ -4691,7 +4691,7 @@ Passage 3: Randomized experiments are often described as the gold standard for c
    ۳. Theory and no data
    ۴. Administrative records only
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: جملهٔ آخر صریح است: طرح آزمایشی همراه با دادهٔ فرایندی دقیق.
+   ✎ تحلیل: جملهٔ آخر متن صریح است: ارزیابی‌های خوب طرح آزمایشی را با دادهٔ فرایندی دقیق ترکیب می‌کنند. گزینه‌های دیگر تنها یک منبع داده، نظرسنجی یا مرور ادبیات را می‌آورند.
 
 ۵۸۱) The phrase "gold standard" is used to indicate…
    ۱. an outdated method
@@ -4699,7 +4699,7 @@ Passage 3: Randomized experiments are often described as the gold standard for c
    ۳. a highly respected benchmark
    ۴. a type of sample
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: این اصطلاح استعاری به معیار برتر و پراعتبار اشاره دارد.
+   ✎ تحلیل: اصطلاح «gold standard» استعاری است و به معیار برتر و پراعتبار اشاره دارد: a highly respected benchmark. گزینه‌های دیگر هزینه، روش قدیمی یا الزام قانونی را می‌رسانند.
 
 ۵۸۲) The author's attitude toward experiments can be described as…
    ۱. completely dismissive
@@ -4783,7 +4783,7 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ۳. money
    ۴. law
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: temporal از زمان می‌آید؛ temporal mismatch یعنی ناهم‌زمانی.
+   ✎ تحلیل: temporal از زمان می‌آید و temporal mismatch یعنی ناهم‌زمانی؛ پس time پاسخ درست است. گزینه‌های دیگر مکان، دما یا متن را می‌رسانند.
 
 ۵۹۲) What does the author recommend?
    ۱. Waiting for future generations
@@ -4799,7 +4799,7 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ۳. harm that does not occur because of the policy
    ۴. statistical error , which concerns estimation rather than policy effects
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: منفعت سیاست، آسیب پیشگیری‌شده است که ماهیتی آماری و دور دارد.
+   ✎ تحلیل: «avoided damage» به آسیب پیشگیری‌شده اشاره دارد که ماهیتی آماری و دور از مشاهدهٔ مستقیم دارد: harm that does not occur because of the policy. گزینه‌های دیگر آسیب رخ‌داده، هزینهٔ اجرا یا خسارت جبران‌شده را می‌رسانند.
 
 ۵۹۴) The passage implies that policy design must consider…
    ۱. only technical efficiency
@@ -4824,7 +4824,7 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ۳. hardly
    ۴. differently
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: تفاوت تفسیر پاسخگویان، ابهام سنجهٔ تک‌گویه‌ای را نشان می‌دهد.
+   ✎ تحلیل: تفاوت تفسیر پاسخگویان از یک پرسش، ابهام سنجهٔ تک‌گویه‌ای را نشان می‌دهد؛ differently جای خالی نخست را کامل می‌کند. گزینه‌های دیگر قیدهایی هستند که با منطق پاراگراف و شاهد ابهام هم‌خوان نیستند.
 
 ۵۹۷) کدام گزینه جای خالی دوم را در پاراگراف بالا کامل می‌کند؟
    ۱. limitations
@@ -5006,7 +5006,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. پیش از گردآوری داده، تأیید اخلاقی گرفته شد.
    ۴. داده‌ها پیش از تأیید منتشر شدند.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: before یعنی پیش از؛ ethical approval تأیید کمیتهٔ اخلاق است.
+   ✎ تحلیل: before یعنی پیش از و ethical approval تأیید کمیتهٔ اخلاق است: «پیش از گردآوری داده، تأیید اخلاقی گرفته شد.» گزینه‌های دیگر ترتیب زمانی یا موضوع را وارونه می‌کنند.
 
 ۶۱۹) کدام جمله انگلیسی معادل «این یافته قابل تعمیم نیست» است؟
    ۱. This finding cannot be generalized.
