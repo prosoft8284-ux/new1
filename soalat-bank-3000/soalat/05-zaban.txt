@@ -4088,7 +4088,7 @@
    ۳. یافته‌ها بدون احتیاط تفسیر می‌شوند.
    ۴. یافته‌ها باید با احتیاط تفسیر شوند.
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «should be interpreted» بیان الزام در ترجمه است؛ گزینه ۱ زمان و وجه را درست منتقل می‌کند.
+   ✎ تحلیل: «should be interpreted» بیان الزام است، نه گذشته؛ پس «یافته‌ها باید با احتیاط تفسیر شوند» درست است. گزینهٔ «تفسیر شدند» زمان را به گذشته می‌برد، «احتیاط را افزایش می‌دهد» نقش دستوری احتیاط را عوض می‌کند و «بدون احتیاط» معنای جمله را وارونه می‌کند.
 
 ۵۰۸) ترجمه درست: «Sampling error decreases as sample size grows.»
    ۱. خطای نمونه‌گیری با افزایش حجم نمونه کاهش می‌یابد.
@@ -4902,7 +4902,7 @@ Cloze A: Sociological research often begins with a puzzle. Researchers observe a
    ✔ کلید: گزینه ۱
    ✎ تحلیل: جملهٔ دوم استثنا بر جملهٔ اول است و «but» این تضاد را بیان می‌کند. گزینه‌های دیگر ربط سببی، زمانی یا افزایشی نادرست می‌سازند.
 
-Cloze B: Surveys remain the most common tool in social research, yet they are easy to misuse. A poorly worded item can (1) ___ respondents toward a particular answer. Low response rates may introduce (2) ___, especially when certain groups are less likely to participate. Researchers therefore (3) ___ their instruments and report limitations honestly. When these steps are taken, survey data can still provide a (4) ___ picture of social life, (5) ___ they are interpreted with care.
+Cloze B: Surveys remain the most common tool in social research, yet they are easy to misuse. A poorly worded item can (6) ___ respondents toward a particular answer. Low response rates may introduce (7) ___, especially when certain groups are less likely to participate. Researchers therefore (8) ___ their instruments and report limitations honestly. When these steps are taken, survey data can still provide a (9) ___ picture of social life, (10) ___ they are interpreted with care.
 
 ۶۰۶) جای خالی (۶):
    ۱. biased
