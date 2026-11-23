@@ -532,7 +532,7 @@
    ۳. is negative and weak , which describes strength and direction rather than confounding
    ۴. cannot be measured , which is a claim about measurement, not about confounding
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: همبستگی کاذب ممکن است قوی باشد اما علّی نباشد؛ متغیر مخدوش، منشأ اصلی آن است.
+   ✎ تحلیل: همبستگی کاذب ممکن است قوی باشد اما علّی نباشد و منشأ آن متغیر مخدوش است؛ appears strong but is produced by a third factor درست است. گزینه‌های دیگر خطای اندازه‌گیری، تصادفی‌بودن یا علیت واقعی را می‌رسانند.
 
 ۶۷) A «confounding» variable:
    ۱. is always the dependent variable of the study
@@ -548,7 +548,7 @@
    ۳. a systematic distortion of results
    ۴. a type of interview
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: سوگیری خطای نظام‌مند است و با افزایش نمونه از میان نمی‌رود؛ برخلاف خطای تصادفی.
+   ✎ تحلیل: bias خطای نظام‌مند است و با افزایش نمونه از میان نمی‌رود، برخلاف خطای تصادفی: a systematic distortion of results. گزینه‌های دیگر خطای تصادفی، تنوع طبیعی یا اختلاف نظر را می‌رسانند.
 
 ۶۹) A «longitudinal» study:
    ۱. compares different groups at one moment
@@ -564,7 +564,7 @@
    ۳. standardized questionnaires
    ۴. prolonged observation and immersion in a setting
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: مردم‌نگاری با حضور طولانی، مشاهده و مصاحبه، معنای کنش را از دید اعضا می‌فهمد.
+   ✎ تحلیل: مردم‌نگاری با حضور طولانی، مشاهده و مصاحبه معنای کنش را از دید اعضا می‌فهمد: prolonged observation and immersion in a setting. گزینه‌های دیگر پیمایش، آزمایش یا تحلیل اسناد را روش اصلی آن می‌گیرند.
 
 ۷۱) «Triangulation» means:
    ۱. dividing a sample into three groups
@@ -572,7 +572,7 @@
    ۳. combining multiple methods, sources or researchers
    ۴. using three statistical models
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: مثلث‌سازی اعتبار یافته‌ها را با تلاقی شواهد چندگانه می‌سنجد، نه با تکرار یک روش.
+   ✎ تحلیل: مثلث‌سازی اعتبار یافته‌ها را با تلاقی روش‌ها، منابع یا پژوهشگران چندگانه می‌سنجد، نه با تکرار یک روش: combining multiple methods, sources or researchers. گزینه‌های دیگر نمونهٔ بزرگ، تحلیل ثانویه یا داوری را می‌رسانند.
 
 ۷۲) «Anomie» in Durkheim’s work refers to:
    ۱. a weakening of shared norms regulating conduct
@@ -580,7 +580,7 @@
    ۳. an economic recession
    ۴. a strong collective conscience
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: دورکیم آنومی را بی‌قاعدگی هنجاری می‌دانست و آن را با خودکشی آنومیک پیوند می‌داد.
+   ✎ تحلیل: دورکیم آنومی را ضعف هنجارهای مشترک تنظیم‌کنندهٔ رفتار می‌دانست و آن را با خودکشی آنومیک پیوند می‌داد: a weakening of shared norms. گزینه‌های دیگر فقر، بی‌کاری یا انزوای مکانی را می‌رسانند.
 
 ۷۳) «Hegemony» in Gramsci’s theory means:
    ۱. economic ownership of factories and capital
@@ -660,7 +660,7 @@
    ۳. the professional middle class
    ۴. the merchant class
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: پرولتاریا نیروی کار خود را برای بقا می‌فروشد و از محصول کار خود بیگانه می‌شود.
+   ✎ تحلیل: پرولتاریا طبقه‌ای است که نیروی کار خود را برای بقا می‌فروشد و از محصول کارش بیگانه می‌شود: the class that must sell its labour power. گزینه‌های دیگر مالکیت سرمایه، زمین یا ابزار تولید را به آن نسبت می‌دهند.
 
 ۸۳) A «paradigm» in Kuhn’s sense is:
    ۱. a single hypothesis that is tested in one study
@@ -717,7 +717,7 @@
    ۳. strengthen it
    ۴. weaken it
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «attenuate» کاهش شدت اثر است؛ در تحلیل میانجی، اثر مستقیم ممکن است تضعیف شود.
+   ✎ تحلیل: attenuate یعنی کاهش شدت اثر: weaken it درست است؛ در تحلیل میانجی اثر مستقیم ممکن است تضعیف شود. گزینه‌های دیگر تقویت، حذف یا اندازه‌گیری اثر را می‌رسانند.
 
 ۹۰) If a practice «proliferates», it:
    ۱. spreads and increases rapidly
@@ -854,7 +854,7 @@
    ۳. random assignment
    ۴. a third factor causing both
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: میانجی، سازوکار را توضیح می‌دهد؛ تعدیل‌گر شدت را تغییر می‌دهد.
+   ✎ تحلیل: میانجی متغیری است که اثر یک متغیر را به دیگری منتقل می‌کند و سازوکار را توضیح می‌دهد؛ تعدیل‌گر شدت یا جهت رابطه را تغییر می‌دهد. گزینه‌های دیگر نقش مخدوش‌کننده یا متغیر کنترل را به میانجی نسبت می‌دهند.
 
 ۱۰۷) «Moderation» refers to:
    ۱. a variable that changes the direction or strength of a relation
@@ -870,7 +870,7 @@
    ۳. avoid weighting while oversampling in fact requires weights
    ۴. ensure enough cases from small subgroups
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: بدون وزن‌دهی، نمونهٔ بزرگ‌نمایی‌شده نتایج را جهت می‌دهد.
+   ✎ تحلیل: هدف نمونه‌گیری سهمیه‌ای/طبقه‌ای تضمین تعداد کافی مورد از زیرگروه‌های کوچک است؛ بدون وزن‌دهی، نمونهٔ بزرگ‌نمایی‌شده نتایج را جهت می‌دهد. گزینه‌های دیگر کاهش خطای پوشش یا حذف گروه‌ها را هدف می‌گیرند.
 
 ۱۰۹) «Attrition bias» arises when:
    ۱. questions are closed which concerns item format rather than who leaves the panel
@@ -886,7 +886,7 @@
    ۳. refuse all questions
    ۴. exaggerate sample size
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: پرسش‌های غیرمستقیم و خودگزارشی ناشناس، آن را کاهش می‌دهد.
+   ✎ تحلیل: پرسش‌های غیرمستقیم و خودگزارشی ناشناس، کم‌گزارشی رفتارهای انگ‌دار را کاهش می‌دهند؛ underreport stigmatized behaviour درست است. گزینه‌های دیگر بیش‌گزارشی، تحریف عمدی یا حذف موضوع را می‌رسانند.
 
 ۱۱۱) «Ecological fallacy» is the error of:
    ۱. inferring group patterns from individuals
@@ -902,7 +902,7 @@
    ۳. selecting a journal
    ۴. writing an abstract
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: عملیاتی‌سازی، مفهوم انتزاعی را به شاخص قابل مشاهده تبدیل می‌کند.
+   ✎ تحلیل: عملیاتی‌سازی یعنی مشخص‌کردن اینکه یک مفهوم چگونه سنجیده می‌شود و مفهوم انتزاعی را به شاخص قابل مشاهده تبدیل می‌کند: specifying how a concept will be measured. گزینه‌های دیگر تعریف نظری یا تحلیل داده را می‌رسانند.
 
 ۱۱۳) «Construct validity» concerns whether:
    ۱. the sample is drawn randomly from a complete list
@@ -1039,7 +1039,7 @@
    ۳. publish early results which a pilot is not designed to do
    ۴. train coders only which is only one possible purpose of a pilot
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: پیش‌آزمون، خطاهای طراحی را پیش از اجرای اصلی آشکار می‌کند.
+   ✎ تحلیل: پیش‌آزمون یعنی آزمودن رویه‌ها و ابزارها در مقیاس کوچک تا خطاهای طراحی پیش از اجرای اصلی آشکار شود: test procedures and instruments on a small scale. گزینه‌های دیگر نمونهٔ بزرگ، تحلیل نهایی یا داوری را می‌رسانند.
 
 ۱۳۰) «Face validity» refers to:
    ۱. whether an instrument appears to measure the concept
@@ -1216,7 +1216,7 @@
    ۳. پاسخگویان به‌طور تصادفی انتخاب شدند.
    ۴. پاسخگویان داوطلب بودند.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «at random» یعنی به‌طور تصادفی؛ بنابراین پاسخگویان به‌طور تصادفی انتخاب شدند.
+   ✎ تحلیل: «at random» یعنی به‌طور تصادفی؛ پس «پاسخگویان به‌طور تصادفی انتخاب شدند» ترجمهٔ درست است. گزینه‌های دیگر گزینش هدفمند، حذف یا وزن‌دهی را می‌رسانند.
 
 ۱۵۲) ترجمه درست: «The report calls for further research.»
    ۱. گزارش منتشر نشد.
@@ -1224,7 +1224,7 @@
    ۳. گزارش پژوهشی ندارد.
    ۴. گزارش پژوهش را متوقف می‌کند.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «call for» یعنی خواستار شدن؛ گزارش خواستار پژوهش بیشتر است، نه متوقف‌کردن آن.
+   ✎ تحلیل: «call for» یعنی خواستار شدن؛ گزارش خواستار پژوهش بیشتر است، نه متوقف‌کردن آن. گزینه‌های دیگر جهت درخواست را وارونه یا موضوع را تغییر می‌دهند.
 
 ۱۵۳) ترجمه درست: «Access to the archive was restricted.»
    ۱. دسترسی آزاد بود.
@@ -1834,7 +1834,7 @@
    ۳. fabricating
    ۴. fabricated
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: فعل deny با gerund می‌آید: deny doing something؛ ساختار deny to do نادرست است.
+   ✎ تحلیل: فعل deny با gerund می‌آید: denied fabricating the data؛ ساختار deny to do نادرست است. گزینه‌های دیگر مصدر یا صورت فعلی نادرست را می‌آورند.
 
 ۲۲۹) «Despite ___ extremely hard, the team missed the deadline.»
    ۱. worked
@@ -1858,7 +1858,7 @@
    ۳. are explaining
    ۴. have explained
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: neither of + جمع، فاعل مفرد است و فعل مفرد می‌گیرد؛ از این رو explains درست است.
+   ✎ تحلیل: «neither of + جمع» فاعل مفرد است و فعل مفرد می‌گیرد: Neither of the two theories explains…؛ پس explains درست است. گزینه‌های دیگر شمار فعل را نادرست می‌آورند.
 
 ۲۳۲) «The number of respondents ___ increased sharply since 2019.»
    ۱. have
@@ -2212,7 +2212,7 @@
    ۳. have been
    ۴. are
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: «Neither of + اسم جمع» در انگلیسی رسمی با فعل مفرد می‌آید.
+   ✎ تحلیل: «neither of + اسم جمع» در انگلیسی رسمی با فعل مفرد می‌آید: Neither of the samples was representative؛ پس was درست است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۲۷۶) The data ___ collected over six months of fieldwork.
    ۱. were
@@ -2220,7 +2220,7 @@
    ۳. has been
    ۴. is
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «data» جمع «datum» است و در نگارش علمی با فعل جمع به کار می‌رود.
+   ✎ تحلیل: «data» جمع «datum» است و در نگارش علمی با فعل جمع به کار می‌رود: The data were collected…؛ پس were درست است. گزینه‌های دیگر شمار مفرد یا زمان نادرست را می‌آورند.
 
 ۲۷۷) ___ the interviews, she began coding the transcripts.
    ۱. Completing
@@ -2236,7 +2236,7 @@
    ۳. the more
    ۴. most
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ساختار «the more… the more…» دو افزایش هم‌بسته را نشان می‌دهد.
+   ✎ تحلیل: ساختار «the more… the more…» دو افزایش هم‌بسته را نشان می‌دهد: the more variables, the more complex the model؛ پس the more درست است. گزینه‌های دیگر قید یا حرف اضافهٔ نادرست را می‌آورند.
 
 ۲۷۹) It is essential that every participant ___ informed of the purpose.
    ۱. be
@@ -2284,7 +2284,7 @@
    ۳. much
    ۴. most
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: صفت چندبخشی «reliable» با «more» مقایسه می‌شود و «than» مقایسه را کامل می‌کند.
+   ✎ تحلیل: صفت چندبخشی reliable با more مقایسه می‌شود و than مقایسه را کامل می‌کند: more reliable than the pilot version. گزینه‌های دیگر شکل مقایسهٔ نادرست را می‌آورند.
 
 ۲۸۵) To «replicate» a study is to:
    ۱. summarize it briefly
@@ -2340,7 +2340,7 @@
    ۳. proven beyond doubt
    ۴. widely popular
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «plausible» یعنی باورپذیر و سازگار با شواهد، نه اثبات‌شده.
+   ✎ تحلیل: plausible یعنی باورپذیر و سازگار با شواهد، نه اثبات‌شده: believable and consistent with the evidence. گزینه‌های دیگر قطعیت، ابهام یا بی‌اعتباری را می‌رسانند.
 
 ۲۹۲) «Scrutiny» means:
    ۱. financial support
@@ -2397,7 +2397,7 @@
    ۳. we do see
    ۴. do we see
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: قید منفی در آغاز جمله، وارونگی فعل کمکی را ایجاب می‌کند.
+   ✎ تحلیل: قید منفی در آغاز جمله وارونگی فعل کمکی را ایجاب می‌کند: Rarely do we see…؛ پس do we see درست است. گزینه‌های دیگر ترتیب یا زمان را نادرست می‌آورند.
 
 ۲۹۹) It was not until 1990 ___ the national survey began.
    ۱. which
@@ -2413,7 +2413,7 @@
    ۳. will be
    ۴. have been
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: در نقل قول غیرمستقیم گذشته، ماضی بعید ترتیب زمانی را حفظ می‌کند.
+   ✎ تحلیل: در نقل قول غیرمستقیم گذشته، ماضی بعید ترتیب زمانی را حفظ می‌کند: She said the data had been collected earlier؛ پس had been درست است. گزینه‌های دیگر زمان یا وجه نادرست را می‌آورند.
 
 ۳۰۱) The more variables in the model, ___ the risk of overfitting.
    ۱. greatest
@@ -2421,7 +2421,7 @@
    ۳. the greater
    ۴. greater
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ساختار «the more… the more…» دو افزایش هم‌بسته را بیان می‌کند.
+   ✎ تحلیل: در ساختار «the more… the more…» صفت تفضیلی لازم است: the greater the sample, the lower the error؛ پس the greater درست است. گزینه‌های دیگر صفت ساده یا قید نادرست را می‌آورند.
 
 ۳۰۲) If the assumptions ___ met, the results would be valid.
    ۱. were
@@ -2437,7 +2437,7 @@
    ۳. which
    ۴. whose
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «whose» مالکیت را در بند موصولی غیرمحدودکننده بیان می‌کند.
+   ✎ تحلیل: «whose» مالکیت را در بند موصولی غیرمحدودکننده بیان می‌کند: the study, whose authors…؛ پس whose درست است. گزینه‌های دیگر ضمیر موصولی شخص یا حرف ربط را می‌آورند.
 
 ۳۰۴) Not until the audit ___ did the coding error appear.
    ۱. completed
@@ -2574,7 +2574,7 @@
    ۳. explains
    ۴. have explained
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «neither of» با اسم جمع، فعل مفرد می‌گیرد در نگارش رسمی.
+   ✎ تحلیل: «neither of» با اسم جمع در نگارش رسمی فعل مفرد می‌گیرد: Neither of the models explains…؛ پس explains درست است. گزینه‌های دیگر شمار فعل را نادرست می‌آورند.
 
 ۳۲۱) The data ___ collected over three waves.
    ۱. is
@@ -2598,7 +2598,7 @@
    ۳. were
    ۴. have been
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: پس از افعال الزام (insist, require) ساختار وجهی (subjunctive) به کار می‌رود.
+   ✎ تحلیل: پس از افعال الزام مانند insist و require ساختار وجهی (subjunctive) به کار می‌رود: insisted that the respondents be informed؛ پس be درست است. گزینه‌های دیگر زمان یا وجه نادرست را می‌آورند.
 
 ۳۲۴) ___ the results were preliminary, they attracted wide attention.
    ۱. Although
@@ -2630,7 +2630,7 @@
    ۳. the lower
    ۴. lowest
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ساختار موازی «the greater… the lower» مقایسهٔ هم‌بسته می‌سازد.
+   ✎ تحلیل: ساختار موازی «the greater… the lower» مقایسهٔ هم‌بسته می‌سازد: the greater the precision, the lower the margin of error؛ پس the lower درست است. گزینه‌های دیگر صفت یا قید نادرست را می‌آورند.
 
 ۳۲۸) Not only ___ the survey, but it also included a follow-up interview.
    ۱. conducted they
@@ -2678,7 +2678,7 @@
    ۳. completes
    ۴. completing
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «hardly anyone» فاعل مفرد است و زمان گذشته ساده می‌طلبد.
+   ✎ تحلیل: «hardly anyone» فاعل مفرد است و زمان گذشتهٔ ساده می‌طلبد: Hardly anyone completed the survey؛ پس completed درست است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۳۳۴) The results, however surprising, ___ consistent across regions.
    ۱. has been
@@ -2686,7 +2686,7 @@
    ۳. were
    ۴. was
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: فاعل «results» جمع است؛ عبارت معترضه بر تطابق اثر ندارد.
+   ✎ تحلیل: فاعل «results» جمع است و عبارت معترضه بر تطابق فاعل و فعل اثر ندارد: The results, as expected, were significant؛ پس were درست است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۳۳۵) The author suggests ___ the sample be expanded.
    ۱. what
@@ -2702,7 +2702,7 @@
    ۳. is
    ۴. have
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «a number of» فاعل جمع می‌گیرد؛ «the number of» مفرد است.
+   ✎ تحلیل: «a number of» فاعل جمع می‌گیرد اما «the number of» مفرد است: A number of studies have…؛ پس have درست است. گزینه‌های دیگر شمار فعل را نادرست می‌آورند.
 
 ۳۳۷) The number of respondents ___ lower than expected.
    ۱. was
@@ -2734,7 +2734,7 @@
    ۳. able
    ۴. possible
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «able to» ساختار درست است؛ «capable of» شکل دیگر آن است.
+   ✎ تحلیل: ساختار درست «be able to» است و «capable of + gerund» شکل دیگر آن: able to reach؛ پس able درست است. گزینه‌های دیگر حرف اضافه یا صفت نادرست را می‌آورند.
 
 ۳۴۱) There is little evidence ___ the policy reduced inequality.
    ۱. that
@@ -2967,7 +2967,7 @@
    ۳. that
    ۴. which one
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: ساختار شکاف‌دار تأکیدی: It is X, not Y, that matters؛ «that» بند تأکیدی می‌سازد.
+   ✎ تحلیل: ساختار شکاف‌دار تأکیدی «It is X, not Y, that…» است: It is the quality of the questions, not their number, that matters. گزینه‌های دیگر ضمیر موصولی یا حذف نادرست را می‌آورند.
 
 ۳۷۰) The researcher, together with two assistants, ___ the coding scheme.
    ۱. were developing
@@ -3015,7 +3015,7 @@
    ۳. that
    ۴. what
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «given that + بند» یعنی «با توجه به اینکه»؛ گزینه‌های دیگر بند علّی نمی‌سازند.
+   ✎ تحلیل: «given that + بند» یعنی با توجه به اینکه: Given that the response rate was low…؛ پس that درست است. گزینه‌های دیگر بند علّی نمی‌سازند.
 
 ۳۷۶) The findings challenge the assumption ___ institutions are stable.
    ۱. what
@@ -3135,7 +3135,7 @@
    ۳. offering
    ۴. is offer
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: فاعل مفرد «a stratified sample» فعل مفرد می‌گیرد: offers.
+   ✎ تحلیل: فاعل مفرد «a stratified sample» فعل مفرد می‌گیرد: A stratified sample offers…؛ پس offers درست است. گزینه‌های دیگر شمار یا زمان فعل را نادرست می‌آورند.
 
 ۳۹۱) The proportion of missing cases ___ small in this wave.
    ۱. was
@@ -3143,7 +3143,7 @@
    ۳. were
    ۴. are
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: هسته فاعل «the proportion of missing cases» مفرد است: was.
+   ✎ تحلیل: هستهٔ فاعل «the proportion of missing cases» مفرد است: The proportion … was small؛ پس was درست است. گزینه‌های دیگر شمار فعل را از عبارت بعد از of می‌گیرند.
 
 ۳۹۲) ___ the coding completed, the team moved to analysis.
    ۱. Although
@@ -3151,7 +3151,7 @@
    ۳. Because
    ۴. With
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: ساختار «with + مفعول + وجه وصفی» شرط/زمان را بیان می‌کند.
+   ✎ تحلیل: ساختار «with + مفعول + وجه وصفی» شرط یا زمان را بیان می‌کند: With the data collected, the analysis began؛ پس With درست است. گزینه‌های دیگر حرف اضافه یا ربط نادرست را می‌آورند.
 
 ۳۹۳) The results are in line ___ previous research.
    ۱. with
@@ -3159,7 +3159,7 @@
    ۳. of
    ۴. to
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «in line with» ترکیب ثابت است: in line with previous research.
+   ✎ تحلیل: ترکیب ثابت «in line with» است: in line with previous research؛ پس with درست است. گزینه‌های دیگر حرف اضافهٔ نادرست را می‌آورند.
 
 ۳۹۴) It is important that the report ___ all limitations.
    ۱. stated
@@ -3344,7 +3344,7 @@
    ۳. on
    ۴. to
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: depend on ترکیب ثابت است؛ همین هم‌آیند در نوشتار آکادمیک بسیار پرکاربرد است.
+   ✎ تحلیل: ترکیب ثابت «depend on» است و در نوشتار آکادمیک بسیار پرکاربرد: The findings depend on the quality of the data. گزینه‌های دیگر حرف اضافهٔ نادرست را می‌آورند.
 
 ۴۱۷) کدام جمله کاربرد حرف تعریف درست دارد؟
    ۱. A study examined effects of an inequality.
@@ -3448,7 +3448,7 @@
    ۳. The survey was shortened because the response rate was low.
    ۴. The survey was shortened because of low.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: because + جمله و because of + اسم می‌آید؛ انتخاب نادرست، ساختار جمله را می‌شکند.
+   ✎ تحلیل: «because» به جمله و «because of» به اسم وصل می‌شود؛ جملهٔ درست علت را با بند کامل بیان می‌کند: The survey was shortened because the response rate was low. گزینه‌های دیگر ساختار جمله را می‌شکنند.
 
 ۴۳۰) «She hardly ever misses a deadline, ___?»
    ۱. doesn't she
@@ -3504,7 +3504,7 @@
    ۳. The respondent's answers were anonymous for all.
    ۴. The respondents answers were anonymous.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: مالکیت جمع باقاعده با آپاستروف پس از s ساخته می‌شود؛ «respondents's» نادرست است.
+   ✎ تحلیل: مالکیت جمع باقاعده با آپاستروف پس از s ساخته می‌شود: the respondents' answers؛ صورت «respondents's» نادرست است. گزینه‌های دیگر جای آپاستروف یا جمع را غلط می‌گذارند.
 
 ۴۳۷) کدام عبارت برای نگارش آکادمیک مناسب‌تر است؟
    ۱. It's kinda clear that...
@@ -3616,7 +3616,7 @@
    ۳. Besides
    ۴. Apart
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «But for» یعنی اگر کمک تو نبود و با شرطی نوع سوم می‌آید.
+   ✎ تحلیل: «But for» یعنی اگر کمک یا وجود آن چیز نبود و با شرطی نوع سوم می‌آید: But for the pilot, the survey would have failed. گزینه‌های دیگر ربط زمانی یا سببی نادرست می‌سازند.
 
 ۴۵۱) ___ for the pilot study, many errors would have gone unnoticed.
    ۱. Was it not
@@ -3648,7 +3648,7 @@
    ۳. lest
    ۴. whereas
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: «hence» نتیجه یا استلزام را بیان می‌کند؛ سایر گزینه‌ها رابطه نتیجه نمی‌سازند.
+   ✎ تحلیل: «hence» نتیجه یا استلزام را بیان می‌کند: The model fit was poor; hence the need for respecification. گزینه‌های دیگر ربط تقابلی یا زمانی نادرست می‌سازند.
 
 ۴۵۵) Codes were merged, ___ reducing redundancy in the frame.
    ۱. whereas
@@ -3680,7 +3680,7 @@
    ۳. With regard to
    ۴. By means of
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «with regard to» درباره یک موضوع خاص صحبت می‌کند: در خصوص چارچوب نمونه‌گیری.
+   ✎ تحلیل: «with regard to» دربارهٔ یک موضوع خاص صحبت می‌کند: در خصوص چارچوب نمونه‌گیری؛ پس With regard to درست است. گزینه‌های دیگر صورت نادرست این عبارت یا ربط نادرست را می‌آورند.
 
 ۴۵۹) The analysis can proceed ___ the assumptions hold.
    ۱. as long as
@@ -3918,7 +3918,7 @@
    ۳. administering
    ۴. administer
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: جای فعل مجهول گذشته administered است؛ administer a survey یعنی اجرا کردن پیمایش.
+   ✎ تحلیل: جای فعل مجهول گذشته administered است و administer a survey یعنی اجرا کردن پیمایش: The survey was administered to 500 households. گزینه‌های دیگر فعل یا زمان نادرست را می‌آورند.
 
 ۴۸۷) «___ the small sample, the findings are suggestive rather than conclusive.»
    ۱. Despite
@@ -3942,7 +3942,7 @@
    ۳. assessed
    ۴. assumed
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: assign to groups یعنی گمارش به گروه‌ها؛ at random قید تصادفی‌بودن گمارش است.
+   ✎ تحلیل: assign to groups یعنی گمارش به گروه‌ها و at random قید تصادفی‌بودن گمارش است: Participants were assigned at random. گزینه‌های دیگر فعل یا زمان نادرست را می‌آورند.
 
 ۴۹۰) «The results were ___ with earlier findings from Europe.»
    ۱. persistent
@@ -4015,7 +4015,7 @@
    ۳. randomization
    ۴. interpretation
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: بافت جمله بر فهم و تفسیر تأکید دارد، نه بر تکرار یا تصادفی‌سازی.
+   ✎ تحلیل: بافت جمله بر فهم و تفسیر یافته‌ها تأکید دارد، نه بر تکرار، تصادفی‌سازی یا اندازه‌گیری صرف: interpretation. گزینه‌های دیگر واژه‌هایی هستند که با منطق جمله هم‌خوان نیستند.
 
 ۴۹۹) «Because the sample was drawn from a single city, the findings cannot be ___ to the whole country.»
    ۱. calculated
@@ -4047,7 +4047,7 @@
    ۳. semi-structured
    ۴. pre-coded
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: راهنمای نیمه‌ساخت‌یافته پرسش‌های اصلی دارد اما انعطاف ظهور مضمون تازه را می‌دهد.
+   ✎ تحلیل: راهنمای نیمه‌ساخت‌یافته پرسش‌های اصلی دارد اما انعطاف ظهور مضمون تازه را می‌دهد: semi-structured. گزینه‌های دیگر ساخت‌یافتهٔ کامل یا بدون راهنما را می‌رسانند.
 
 ۵۰۳) «A ___ sample is one in which every member of the population has an equal chance of selection.»
    ۱. purposive
@@ -4096,7 +4096,7 @@
    ۳. خطای نمونه‌گیری حجم نمونه را کاهش می‌دهد.
    ۴. افزایش نمونه خطا را افزایش می‌دهد.
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: ساختار «as» رابطه هم‌زمانی و جهت را نشان می‌دهد؛ گزینه ۱ جهت درست را حفظ می‌کند.
+   ✎ تحلیل: ساختار «as» رابطهٔ هم‌زمانی و جهت را نشان می‌دهد: خطای نمونه‌گیری با افزایش حجم نمونه کاهش می‌یابد. گزینه‌های دیگر جهت رابطه را وارونه یا ثابت می‌کنند.
 
 ۵۰۹) ترجمه درست: «The author argues that norms are reproduced through everyday interaction.»
    ۱. هنجارها نویسنده را در تعامل روزمره بازتولید می‌کنند.
@@ -4188,7 +4188,7 @@
    ۳. Occasional in-person meetings
    ۴. The size of the company’s budget
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: بودجه شرکت در متن نیامده است؛ سه عامل دیگر صریحاً ذکر شده‌اند.
+   ✎ تحلیل: بودجهٔ شرکت در متن نیامده است، در حالی که سه عامل دیگر صریحاً ذکر شده‌اند؛ پرسش «کدام مورد ذکر نشده» را همین پاسخ می‌دهد. گزینه‌های دیگر همه در متن آمده‌اند.
 
 «A sample is only as good as the frame from which it is drawn. If the frame leaves out part of the population, no amount of statistical sophistication can repair the resulting ___ (۲۶۶). For this reason, researchers should describe the frame explicitly and report any known ___ (۲۶۷). When response rates are low, they should also examine whether respondents differ from non-respondents on key ___ (۲۶۸). Weighting can partly correct such differences, but it cannot create information that was never ___ (۲۶۹). Finally, transparency about these decisions allows readers to judge how far the findings can be ___ (۲۷۰).»
 ۵۲۰) خطای ناشی از ناقص‌بودن چارچوب نمونه‌گیری چه نام دارد؟
@@ -4271,7 +4271,7 @@
    ۳. dismissive
    ۴. appreciative but cautious
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: «yet» و اشاره به تهدیدها، ارزیابی متعادل را نشان می‌دهد.
+   ✎ تحلیل: «yet» و اشاره به تهدیدها در کنار فرصت‌ها، ارزیابی متعادل و محتاط را نشان می‌دهد: appreciative but cautious. گزینه‌های دیگر رد کامل، بی‌طرفی مطلق یا خوش‌بینی بی‌قید را می‌رسانند.
 
 «A good indicator must be reliable, valid and feasible. Reliability concerns consistency; validity concerns whether the indicator measures what it claims. Feasibility concerns cost, time and burden on respondents. Researchers often face trade-offs: the most precise measure may be too costly, while the cheapest may be too crude. Reporting these choices openly allows readers to judge the ___ (۳۰۵) of the conclusions.»
 ۵۳۰) کدام گزینه جای خالی را به‌درستی پر می‌کند؟
@@ -4280,7 +4280,7 @@
    ۳. credibility
    ۴. length
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: شفافیت در انتخاب شاخص، امکان داوری اعتبار نتیجه را می‌دهد.
+   ✎ تحلیل: شفافیت در انتخاب شاخص به خواننده امکان داوری اعتبار نتیجه را می‌دهد؛ credibility پاسخ درست است. گزینه‌های دیگر به هزینه، سرعت یا حجم نمونه اشاره دارند.
 
 ۵۳۱) According to the passage, reliability concerns:
    ۱. consistency of measurement
@@ -4360,7 +4360,7 @@
    ۳. نویسندگان اثری متوسط اما پایدار گزارش می‌کنند.
    ۴. نویسندگان هیچ اثری نیافتند.
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: «modest but consistent» ترکیب اندازه متوسط و پایداری است.
+   ✎ تحلیل: «modest but consistent» ترکیب اندازهٔ متوسط و پایداری اثر است: نویسندگان اثری متوسط اما پایدار گزارش می‌کنند. گزینه‌های دیگر اثر را بزرگ، ناپایدار یا صفر می‌خوانند.
 
 — بخش ۲۵: درک مطلب تکمیلی —
 «Recommender systems decide what millions of people read, watch and buy. Their logic is simple: show users what similar users liked. The consequence is less simple. Because the system rewards engagement, content that provokes strong reactions travels further than content that informs. Over time, the training data itself change: what people click shapes what is shown, and what is shown shapes what people click. Critics call this a feedback loop; defenders answer that users still choose. Both are partly right, which is why regulation struggles to name the harm.»
@@ -4483,7 +4483,7 @@
    ۳. irrelevant
    ۴. often high
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: این یافته در برابر اثر modest بر تکرار جرم قرار می‌گیرد.
+   ✎ تحلیل: این یافته در برابر اثر modest بر تکرار جرم قرار می‌گیرد و نرخ بالای بازگشت به زندان را نشان می‌دهد: often high. گزینه‌های دیگر نرخ را پایین، صفر یا نامعلوم می‌گیرند.
 
 ۵۵۶) «Facilitator» in this context is:
    ۱. a police officer who enforces the rules
@@ -4617,7 +4617,7 @@ Passage 2: Cities grow through migration, but migration alone does not explain u
    ۳. keep out
    ۴. measure
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: exclude یعنی بیرون گذاشتن و محروم کردن؛ در متن به گروه‌های کم‌درآمد اشاره دارد.
+   ✎ تحلیل: exclude یعنی بیرون گذاشتن و محروم کردن؛ در متن به گروه‌های کم‌درآمد اشاره دارد: keep out. گزینه‌های دیگر شامل‌شدن، فیلتر کردن یا دعوت را می‌رسانند.
 
 ۵۷۲) What happens when institutions exclude low-income groups?
    ۱. Transport improves automatically
@@ -4641,7 +4641,7 @@ Passage 2: Cities grow through migration, but migration alone does not explain u
    ۳. Housing markets
    ۴. School curricula
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: برنامهٔ درسی در متن نیامده است؛ سه مورد دیگر صریحاً ذکر شده‌اند.
+   ✎ تحلیل: برنامهٔ درسی در متن نیامده است، در حالی که سه مورد دیگر صریحاً ذکر شده‌اند؛ پرسش «کدام مورد ذکر نشده» را همین پاسخ می‌دهد. گزینه‌های دیگر همه در متن آمده‌اند.
 
 ۵۷۵) The author's purpose is to…
    ۱. criticize migration to large cities
@@ -4715,7 +4715,7 @@ Passage 3: Randomized experiments are often described as the gold standard for c
    ۳. Randomization solves every problem
    ۴. Attrition is irrelevant
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: پیام اصلی متن این است که کیفیت اجرا به‌اندازهٔ طراحی اهمیت دارد.
+   ✎ تحلیل: پیام اصلی متن این است که کیفیت اجرا به‌اندازهٔ طراحی اهمیت دارد: Design alone does not guarantee a valid estimate. گزینه‌های دیگر برتری طراحی، بی‌اهمیتی اجرا یا کفایت نمونه را می‌گویند.
 
 Passage 4: Although women's educational attainment has risen sharply in many countries, their representation in senior management has not kept pace. Researchers point to several mechanisms: the unequal division of domestic labor, informal networks that exclude outsiders, and evaluation practices that reward self-promotion more than competence.
 
@@ -4733,7 +4733,7 @@ Passage 4: Although women's educational attainment has risen sharply in many cou
    ۳. Exclusionary networks
    ۴. Evaluation practices
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: متن سه سازوکار را نام می‌برد و تفاوت توانایی شناختی در آن نیست.
+   ✎ تحلیل: متن سه سازوکار را نام می‌برد و تفاوت توانایی شناختی در آن نیست؛ پس Differences in cognitive ability پاسخ درست است. گزینه‌های دیگر همه در متن ذکر شده‌اند.
 
 ۵۸۶) The phrase "kept pace" means…
    ۱. stopped completely
@@ -4767,7 +4767,7 @@ Passage 5: Environmental policies are often justified by future benefits, yet th
    ۳. Costs are immediate while benefits are distant
    ۴. Voters ignore prices
    ✔ کلید: گزینه ۳
-   ✎ تحلیل: متن از ناهم‌زمانی هزینهٔ امروز و منفعت آینده سخن می‌گوید.
+   ✎ تحلیل: متن از ناهم‌زمانی هزینهٔ امروز و منفعت آینده سخن می‌گوید: Costs are immediate while benefits are distant. گزینه‌های دیگر برابری زمانی، منفعت فوری یا نبود هزینه را می‌رسانند.
 
 ۵۹۰) Why is political support fragile?
    ۱. Because policies are too cheap
@@ -4900,7 +4900,7 @@ Cloze A: Sociological research often begins with a puzzle. Researchers observe a
    ۳. because
    ۴. or
    ✔ کلید: گزینه ۱
-   ✎ تحلیل: جملهٔ دوم استثنا بر جملهٔ اول است؛ but این تضاد را بیان می‌کند.
+   ✎ تحلیل: جملهٔ دوم استثنا بر جملهٔ اول است و «but» این تضاد را بیان می‌کند. گزینه‌های دیگر ربط سببی، زمانی یا افزایشی نادرست می‌سازند.
 
 Cloze B: Surveys remain the most common tool in social research, yet they are easy to misuse. A poorly worded item can (1) ___ respondents toward a particular answer. Low response rates may introduce (2) ___, especially when certain groups are less likely to participate. Researchers therefore (3) ___ their instruments and report limitations honestly. When these steps are taken, survey data can still provide a (4) ___ picture of social life, (5) ___ they are interpreted with care.
 
@@ -4918,7 +4918,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. biased
    ۴. biasing
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: پس از introduce به مفعول اسمی نیاز است؛ bias اسم غیرقابل شمارش در این معناست.
+   ✎ تحلیل: پس از introduce به مفعول اسمی نیاز است و bias اسم غیرقابل‌شمارش در این معناست: introduce bias. گزینه‌های دیگر صورت صفتی یا فعلی نادرست را می‌آورند.
 
 ۶۰۸) جای خالی (۸):
    ۱. piloted
@@ -4990,7 +4990,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. علیت همبستگی را رد می‌کند.
    ۴. همبستگی علیت را اثبات می‌کند.
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: imply یعنی دلالت داشتن؛ این جمله قاعدهٔ بنیادی تفسیر داده است.
+   ✎ تحلیل: imply یعنی دلالت داشتن؛ جملهٔ «همبستگی به معنای علیت نیست» قاعدهٔ بنیادی تفسیر داده را بیان می‌کند. گزینه‌های دیگر علیت، تعمیم یا خطای اندازه‌گیری را می‌رسانند.
 
 ۶۱۷) ترجمهٔ «The sample was drawn from three provinces.» کدام است؟
    ۱. نمونه در سه استان تقسیم شد.
@@ -4998,7 +4998,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. سه استان نمونه را رد کردند.
    ۴. نمونه از سه استان گرفته شد.
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: draw a sample یعنی نمونه گرفتن؛ در اینجا مجهول ماضی است.
+   ✎ تحلیل: draw a sample یعنی نمونه گرفتن و در اینجا مجهول ماضی است: نمونه از سه استان گرفته شد. گزینه‌های دیگر فاعل، زمان یا جهت رابطه را تغییر می‌دهند.
 
 ۶۱۸) ترجمهٔ «Ethical approval was obtained before data collection.» کدام است؟
    ۱. پس از گردآوری داده، تأیید اخلاقی گرفته شد.
@@ -5046,7 +5046,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. در گذشتهٔ دور
    ۴. در تاریخ مشخصی
    ✔ کلید: گزینه ۲
-   ✎ تحلیل: to date یعنی تاکنون؛ با حال کامل به کار می‌رود و شکاف پژوهشی را نشان می‌دهد.
+   ✎ تحلیل: to date یعنی تا امروز و با حال کامل به کار می‌رود: To date, few studies have examined…؛ همین شکاف پژوهشی را نشان می‌دهد. گزینه‌های دیگر زمان گذشته یا آینده را می‌رسانند.
 
 ۶۲۴) «by and large» چه معنایی دارد؟
    ۱. به‌زودی
@@ -5086,7 +5086,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. وابسته به
    ۴. در تضاد با
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: at odds with یعنی ناسازگار؛ کاربرد آن در بیان تناقض یافته‌ها با ادبیات رایج است.
+   ✎ تحلیل: «at odds with» یعنی در تضاد با و در بیان تناقض یافته‌ها با ادبیات رایج به کار می‌رود. گزینه‌های دیگر هم‌راستا، بی‌ارتباط یا مشابه را می‌رسانند.
 
 ۶۲۹) «to take into account» یعنی…
    ۱. نادیده گرفتن
@@ -5102,7 +5102,7 @@ Cloze B: Surveys remain the most common tool in social research, yet they are ea
    ۳. فهرست منابع
    ۴. مجموعهٔ رو به رشد پژوهش‌ها
    ✔ کلید: گزینه ۴
-   ✎ تحلیل: body of literature یعنی مجموعهٔ ادبیات پژوهشی؛ growing بر افزایش آن دلالت دارد.
+   ✎ تحلیل: «body of literature» یعنی مجموعهٔ ادبیات پژوهشی و growing بر افزایش آن دلالت دارد: مجموعهٔ رو به رشد پژوهش‌ها. گزینه‌های دیگر متن، کتاب یا نقد را می‌رسانند.
 
 ۶۳۱) کدام جمله برای نتیجه‌گیری محتاطانه مناسب است؟
    ۱. The evidence suggests that the program may be effective.
