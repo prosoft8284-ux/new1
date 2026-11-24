@@ -25,5 +25,5 @@ echo "sdk.dir=$ANDROID_HOME" > android/local.properties
 
 # ۴) خروجی
 mkdir -p ../apk
-cp android/app/build/outputs/apk/debug/app-debug.apk ../apk/soalat-4000-170ruz.apk
-echo "APK: apk/soalat-4000-170ruz.apk"
+cp android/app/build/outputs/apk/debug/app-debug.apk ../apk/soalat-4000-konkoor.apk
+echo "APK: apk/soalat-4000-konkoor.apk"

@@ -185,5 +185,34 @@ function fakePlugin({ permission = 'granted', failExact = false } = {}) {
     assert.strictEqual(res.status, 'unsupported');
   });
 
+  test('تاریخ شمسی درست تبدیل می‌شود', () => {
+    assert.deepStrictEqual(core.g2j(2026, 11, 23), { jy: 1405, jm: 9, jd: 2 });
+    assert.deepStrictEqual(core.j2g(1406, 2, 16), { gy: 2027, gm: 5, gd: 6 });
+  });
+
+  test('روز کنکور ۱۶ اردیبهشت است و فاصله تا آن حساب می‌شود', () => {
+    const e = core.examInfo('2026-11-23');
+    assert.strictEqual(e.jy, 1406);
+    assert.strictEqual(e.iso, '2027-05-06');
+    assert.strictEqual(e.totalDays, 165);
+    assert.strictEqual(core.examInfo('2027-05-06').jy, 1407, 'از خود ۱۶ اردیبهشت به بعد باید سال بعد باشد');
+  });
+
+  test('برنامه روی روزهای باقی‌مانده چیده می‌شود و روز آخر = کنکور', () => {
+    const b = core.planSchedule(165, 170);
+    assert.strictEqual(b.length, 165);
+    assert.deepStrictEqual(b[0], [1]);
+    assert.ok(b[b.length - 1].includes(170), 'روز ۱۷۰ برنامه باید روی آخرین روز باشد');
+    assert.strictEqual(b.reduce((a, x) => a + x.length, 0), 170, 'هیچ روزی نباید جا بیفتد');
+  });
+
+  test('تقویم بلندتر از برنامه: روزهای بدون محتوا خالی می‌مانند', () => {
+    const b = core.planSchedule(200, 170);
+    assert.strictEqual(b.length, 200);
+    assert.strictEqual(b.reduce((a, x) => a + x.length, 0), 170);
+    assert.strictEqual(b.filter((x) => !x.length).length, 30);
+    assert.deepStrictEqual(b[b.length - 1], [170]);
+  });
+
   console.log('\n' + passed + ' تست موفق' + (process.exitCode ? ' و برخی ناموفق' : ' — همه سبز'));
 })();

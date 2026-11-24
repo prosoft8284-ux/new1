@@ -219,15 +219,15 @@ function build() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>برنامه ۱۷۰ روزه | بانک ۴۰۰۰ سوالی</title>
+<title>برنامه تا کنکور | بانک ۴۰۰۰ سوالی</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body class="page">
 <header class="topbar">
   <a class="brand" href="index.html"><span class="logo">۴۰۰۰</span> بانک سوال جامعه‌شناسی</a>
-  <nav><a href="index.html">تمرین و آزمون</a><a class="active" href="plan.html">برنامه ۱۷۰ روزه</a></nav>
+  <nav><a href="index.html">تمرین و آزمون</a><a class="active" href="plan.html">برنامه تا کنکور</a></nav>
 </header>
-<main class="plan">${body}</main>
+<main class="plan"><p>این جدول ۱۷۰ روز محتوای برنامه است. اپ با تاریخ شروع تو فاصله تا ۱۶ اردیبهشت (روز کنکور) را حساب می‌کند و همین روزها را روی آن می‌چیند، طوری که روز آخر برنامه دقیقاً روز کنکور باشد.</p>${body}</main>
 </body>
 </html>
 `;
