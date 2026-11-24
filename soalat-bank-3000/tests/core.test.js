@@ -198,20 +198,41 @@ function fakePlugin({ permission = 'granted', failExact = false } = {}) {
     assert.strictEqual(core.examInfo('2027-05-06').jy, 1407, 'از خود ۱۶ اردیبهشت به بعد باید سال بعد باشد');
   });
 
-  test('برنامه روی روزهای باقی‌مانده چیده می‌شود و روز آخر = کنکور', () => {
-    const b = core.planSchedule(165, 170);
-    assert.strictEqual(b.length, 165);
-    assert.deepStrictEqual(b[0], [1]);
-    assert.ok(b[b.length - 1].includes(170), 'روز ۱۷۰ برنامه باید روی آخرین روز باشد');
-    assert.strictEqual(b.reduce((a, x) => a + x.length, 0), 170, 'هیچ روزی نباید جا بیفتد');
+  const planJson = require('../data/plan.json');
+  const build = (total) => core.buildPlan({ days: planJson.days, totalDays: total, startISO: '2026-11-23' });
+
+  test('برنامهٔ ۱۶۵ روزه: همهٔ سوال‌ها، سهمیهٔ بازمحاسبه‌شده، پایان = کنکور', () => {
+    const p = build(165);
+    assert.strictEqual(p.days.length, 165);
+    assert.strictEqual(p.days[164].kind, 'final');
+    const q = p.days.filter((d) => d.kind === 'study').reduce((a, d) => a + d.count, 0);
+    assert.strictEqual(q, 4000, 'همهٔ ۴۰۰۰ سوال باید در برنامه باشند');
+    assert.ok(p.perDayMax <= 45 && p.perDayMin >= 25, 'سهمیهٔ روزانه باید حدود ۴۰ بماند');
+    assert.strictEqual(p.heavy, false);
   });
 
-  test('تقویم بلندتر از برنامه: روزهای بدون محتوا خالی می‌مانند', () => {
-    const b = core.planSchedule(200, 170);
-    assert.strictEqual(b.length, 200);
-    assert.strictEqual(b.reduce((a, x) => a + x.length, 0), 170);
-    assert.strictEqual(b.filter((x) => !x.length).length, 30);
-    assert.deepStrictEqual(b[b.length - 1], [170]);
+  test('ریتم هفتگی روی روز واقعی می‌نشیند', () => {
+    const p = build(165);
+    assert.strictEqual(p.days.filter((d) => d.weekdayTitle === 'جمعه' && d.kind === 'study').length, 0, 'جمعه نباید روز مطالعه باشد');
+    assert.ok(p.days.filter((d) => d.weekdayTitle === 'جمعه' && d.kind === 'rest').length >= 20, 'جمعه‌ها باید استراحت باشند');
+    const thursdays = p.days.filter((d) => d.weekdayTitle === 'پنجشنبه');
+    assert.ok(thursdays.filter((d) => d.kind === 'exam').length >= thursdays.length - 3, 'پنجشنبه‌ها باید آزمون مبحثی باشند');
+    assert.strictEqual(p.days[0].weekdayTitle, 'دوشنبه', 'اولین روز باید با تاریخ شروع هم‌خوان باشد');
+  });
+
+  test('بازهٔ فشرده: سهمیه بالا می‌رود و هشدار داده می‌شود', () => {
+    const p = build(40);
+    assert.strictEqual(p.heavy, true);
+    assert.ok(p.perDayMin >= 100, 'در ۴۰ روز باید روزی حدود ۱۰۰ سوال شود');
+    const q = p.days.filter((d) => d.kind === 'study').reduce((a, d) => a + d.count, 0);
+    assert.strictEqual(q, 4000, 'حتی در بازهٔ فشرده هم نباید سوالی عقب بماند');
+  });
+
+  test('بازهٔ بلند: سهمیه سبک می‌شود و روز مطالعه زیاد می‌آید', () => {
+    const p = build(400);
+    assert.strictEqual(p.heavy, false);
+    assert.ok(p.studyDays > 200);
+    assert.ok(p.perDayMax <= 20);
   });
 
   console.log('\n' + passed + ' تست موفق' + (process.exitCode ? ' و برخی ناموفق' : ' — همه سبز'));

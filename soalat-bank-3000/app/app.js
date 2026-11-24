@@ -54,7 +54,7 @@ function schedule() {
     start: ST.start,
     exam,
     total: exam.totalDays,
-    buckets: SBCore.planSchedule(exam.totalDays, PLAN.totalDays),
+    plan: SBCore.buildPlan({ days: PLAN.days, totalDays: exam.totalDays, startISO: ST.start }),
   };
   return SCHED;
 }
@@ -68,24 +68,8 @@ function currentDay() {
   const diff = Math.round((b - a) / 86400000);
   return Math.min(s.total, Math.max(1, diff + 1));
 }
-/* روزهای برنامه که در یک روز تقویم می‌آیند (می‌تواند صفر یا دو روز باشد) */
-function planDaysOf(dayNum) {
-  const s = schedule();
-  if (!s) return [];
-  const d = dayNum || currentDay();
-  return s.buckets[d - 1] || [];
-}
-/* آخرین روز برنامهٔ رسیده؛ مبنای شمارش عقب‌افتادگی */
-function planDayNow() {
-  const s = schedule();
-  if (!s) return null;
-  for (let k = currentDay(); k >= 1; k -= 1) {
-    const list = s.buckets[k - 1];
-    if (list && list.length) return list[list.length - 1];
-  }
-  return 1;
-}
-const dayByNum = (n) => PLAN.days[n - 1];
+/* روزهای برنامه بر اساس تقویم واقعی ساخته می‌شوند (جمعه استراحت، پنجشنبه آزمون) */
+const dayByNum = (n) => { const s = schedule(); return s ? s.plan.days[n - 1] : null; };
 
 /* ---------- کمکی ---------- */
 function subShort(id) { const m = IDX.subjects.find((s) => s.id === id); return m ? m.short : id; }
@@ -145,13 +129,15 @@ function itemOfId(id) {
    سوال‌های پاسخ‌ندادهٔ روزهای گذشته را بین روزهای مطالعهٔ باقی‌مانده پخش می‌کند
    تا نه روی یک روز بار سنگین بیفتد و نه سوالی جا بماند. */
 function studyDayList() {
-  return PLAN.days
+  const s = schedule();
+  if (!s) return [];
+  return s.plan.days
     .filter((d) => d.kind === 'study')
     .map((d) => ({ d: d.d, ids: idsOfRanges(rangesOfDay(d)) }));
 }
 function backlogPlan() {
   if (BACKLOG) return BACKLOG;
-  const d = planDayNow();
+  const d = currentDay();
   if (!d) return (BACKLOG = { total: 0, perDay: 0, byDay: {}, pending: [] });
   BACKLOG = SBCore.planBacklog(studyDayList(), Object.keys(ST.q), d);
   return BACKLOG;
@@ -270,7 +256,8 @@ function dayCardHTML(day, isToday) {
   const ids = idsOfRanges(rs);
   const doneQ = ids.filter((id) => ST.q[id]).length;
   const rec = ST.days[day.d] || {};
-  const phase = PLAN.phases.find((p) => p.id === day.phase) || {};
+  const sched = schedule();
+  const phase = ((sched && sched.plan.phases) || []).find((p) => p.id === day.phase) || {};
 
   const progressLine = day.kind === 'study'
     ? `<div class="hero-stat">${fa(doneQ)} از ${fa(ids.length)} سوال این روز</div>${tallyHTML(ids.length, doneQ)}`
@@ -279,7 +266,7 @@ function dayCardHTML(day, isToday) {
   let head = `
   <header class="hero">
     <div class="hero-row">
-      <span class="kicker">روز برنامه ${fa(day.d)} از ${fa(PLAN.totalDays)}</span>
+      <span class="kicker">روز ${fa(day.d)} از ${fa(totalDays())}</span>
       <span class="kicker dim">هفته ${fa(day.w)} · ${day.weekdayTitle}</span>
     </div>
     <div class="hero-body">
@@ -407,22 +394,12 @@ function dayCardHTML(day, isToday) {
 
 function examStripHTML(d, s) {
   const left = s.total - d + 1;
+  const p = s.plan;
+  const quota = p.perDayMin === p.perDayMax ? `${fa(p.perDayMin)} سوال` : `${fa(p.perDayMin)} تا ${fa(p.perDayMax)} سوال`;
   return `<div class="card tight">
     <div class="row-between"><b>${left > 1 ? `${fa(left)} روز تا کنکور` : 'امروز روز کنکور است'}</b><small>۱۶ اردیبهشت ${fa(s.exam.jy)}</small></div>
-    <p class="tiny mt8">برنامه روی ${fa(s.total)} روز چیده شده است (روز ${fa(d)} از ${fa(s.total)}) و روز آخر برنامه همان روز کنکور است.</p>
-  </div>`;
-}
-
-/* روزی که محتوای تازه ندارد: تقویم بلندتر از برنامهٔ ۱۷۰ روزه است */
-function gapDayHTML() {
-  const pd = planDayNow();
-  return `<div class="card">
-    <h2>روز مرور و تثبیت</h2>
-    <p class="tiny mt8">امروز روز محتوای تازه نیست؛ از این فرصت برای مرور خطاها و تثبیت مباحث استفاده کن. تا امروز ${fa(pd)} روز از ${fa(PLAN.totalDays)} روز برنامه پوشش داده شده است.</p>
-    <div class="practice-row mt12">
-      <button class="btn primary" data-act="review-day" data-day="${pd}">مرور سوالات نادرست</button>
-      <button class="btn ghost" data-act="free" data-n="25">۲۵ سوال تصادفی</button>
-    </div>
+    <p class="tiny mt8">${fa(p.studyDays)} روز مطالعه، ${fa(p.examDays)} آزمون مبحثی، ${fa(p.restDays)} جمعهٔ استراحت. سهمیهٔ هر روز مطالعه: ${quota} (روی ${fa(p.questions)} سوال پخش شده).</p>
+    ${p.heavy ? `<p class="tiny mt8" style="color:#b3261e">این بازه فشرده است: روزی ${fa(p.perDayMax)} سوال می‌شود. یا برنامهٔ روزانه را طولانی‌تر کن یا شروع را عقب‌تر نگذار.</p>` : ''}
   </div>`;
 }
 
@@ -431,7 +408,6 @@ function renderToday() {
   if (!ST.start) { v.innerHTML = setupHTML(); return; }
   const d = currentDay();
   const s = schedule();
-  const list = planDaysOf(d);
   const b = backlogPlan();
   const banner = b.total
     ? `<div class="card tight notice">
@@ -439,10 +415,7 @@ function renderToday() {
         <p class="tiny mt8">این سوال‌ها را بین روزهای مطالعهٔ بعدی پخش کردم (حدود ${fa(b.perDay)} سوال در روز) تا هیچ روزی سنگین نشود و چیزی هم جا نماند.</p>
       </div>`
     : '';
-  const cards = list.length
-    ? list.map((n, i) => dayCardHTML(dayByNum(n), i === 0)).join('')
-    : gapDayHTML();
-  v.innerHTML = banner + examStripHTML(d, s) + cards + freePracticeHTML();
+  v.innerHTML = banner + examStripHTML(d, s) + dayCardHTML(dayByNum(d), true) + freePracticeHTML();
   const left = s.total - d;
   $('#hdr-sub').textContent = `روز ${fa(d)} از ${fa(s.total)}` + (left > 0 ? ` • ${fa(left)} روز تا کنکور` : ' • روز کنکور');
 }
@@ -480,13 +453,17 @@ function renderPlan() {
   const doneDays = Object.values(ST.days).filter((x) => x.done).length;
   const s = schedule();
   let html = `<div class="row-between"><h2>برنامه تا کنکور</h2><span class="pill">${fa(doneDays)} روز تمام‌شده</span></div>`;
-  html += s
-    ? `<p class="tiny mt8">کنکور ۱۶ اردیبهشت ${fa(s.exam.jy)}. از تاریخ شروع تو تا آن روز ${fa(s.total)} روز است و ${fa(PLAN.totalDays)} روز محتوای برنامه روی همین روزها چیده شده: روز آخر برنامه همان روز کنکور است.</p>`
-    : `<p class="tiny mt8">اول تاریخ شروع را در صفحهٔ «امروز» انتخاب کن تا برنامه تا روز کنکور (۱۶ اردیبهشت) چیده شود.</p>`;
-  html += `<p class="tiny mt8">۱۰۰ روز مطالعه، ۲۰ آزمون مبحثی، ۲۰ روز استراحت، ۲۵ روز مرور و تحلیل، ۲ آزمون جامع و ۲ شبیه‌ساز.</p>`;
-  for (const ph of PLAN.phases) {
+  if (!s) {
+    v.innerHTML = html + `<p class="tiny mt8">اول تاریخ شروع را در صفحهٔ «امروز» انتخاب کن تا برنامه تا روز کنکور (۱۶ اردیبهشت) چیده شود.</p>`;
+    return;
+  }
+  const p = s.plan;
+  const quota = p.perDayMin === p.perDayMax ? `${fa(p.perDayMin)} سوال` : `${fa(p.perDayMin)} تا ${fa(p.perDayMax)} سوال`;
+  html += `<p class="tiny mt8">کنکور ۱۶ اردیبهشت ${fa(s.exam.jy)}؛ از شروع تو ${fa(s.total)} روز. برنامه روی همین روزها چیده شده: ${fa(p.studyDays)} روز مطالعه (${quota} در روز)، آزمون مبحثی هر پنجشنبه، استراحت هر جمعه، ${fa(p.mockDays)} آزمون جامع/شبیه‌ساز و روز کنکور در پایان.</p>`;
+  if (p.heavy) html += `<p class="tiny mt8" style="color:#b3261e">بازه فشرده است (تا ${fa(p.perDayMax)} سوال در روز)؛ با شروع زودتر، سهمیهٔ روزانه سبک‌تر می‌شود.</p>`;
+  for (const ph of p.phases) {
     html += `<div class="phase-h"><b>فاز ${fa(ph.id)} — ${ph.title}</b><small>روز ${fa(ph.from)} تا ${fa(ph.to)}</small></div>`;
-    for (const day of PLAN.days) if (day.d >= ph.from && day.d <= ph.to) html += dayRowHTML(day);
+    for (const day of p.days) if (day.d >= ph.from && day.d <= ph.to) html += dayRowHTML(day);
   }
   v.innerHTML = html;
 }
@@ -589,7 +566,7 @@ function renderHelp() {
 
   const rows = [
     ['۱', '<b>چهار هزار سوال، دقیقاً یک بار.</b> بانک از پنج درس تشکیل شده است: ' + subj + '. هر سوال چهار گزینه، یک کلید و یک تحلیل کوتاه دارد. در دور اول هر سوال فقط یک بار در برنامه می‌آید.'],
-    ['۲', '<b>برنامه تا ۱۶ اردیبهشت، ۱۰۰ روز مطالعه.</b> برنامه ۱۷۰ روز محتوا دارد و اپ آن را روی روزهای واقعیِ باقی‌مانده تا کنکور می‌چیند؛ هر روز مطالعه ۴۰ سوال است: ۸ بلوک ۵ سوالی. کنار آن ۲۰ آزمون مبحثی هفتگی، ۲۰ روز استراحت فعال، ۲۵ روز مرور و تحلیل، ۲ آزمون جامع، ۲ شبیه‌ساز و روز کنکور قرار دارد.'],
+    ['۲', '<b>برنامه روی تقویم واقعی چیده می‌شود.</b> تاریخ شروع را که بزنی، اپ فاصله تا ۱۶ اردیبهشت را حساب می‌کند و ۴۰۰۰ سوال را روی روزهای مطالعهٔ واقعی پخش می‌کند: جمعه‌ها استراحت، پنجشنبه‌ها آزمون مبحثی. سهمیهٔ هر روز از تعداد روزهای باقی‌مانده می‌آید — با شروع زودتر حدود ۴۰ سوال در روز، با بازهٔ فشرده بیشتر (و با هشدار). روز آخر برنامه همیشه روز کنکور است.'],
     ['۳', '<b>ترتیب درس‌ها ثابت است.</b> هر روز به این ترتیب پیش می‌رود: نظریات، جامعه‌شناسی‌ها، روش، آمار، زبان. درون هر درس، سوال‌ها از بخش نخست کتاب به بخش‌های پیشرفته‌تر جلو می‌روند تا مبحث تازه روی پایهٔ قبلی سوار شود.'],
     ['۴', '<b>درون هر جلسه، آسان به سخت.</b> اپ سوال‌های همان درس را بر پایهٔ طول صورت سوال، محاسبه‌ای بودن و تلفیقی بودن مرتب می‌کند؛ جلسه با سوال سبک‌تر گرم می‌شود و سنگین‌ترها آخر می‌آیند. ترتیب درس‌ها و بلوک‌های روز دست‌نخورده می‌ماند.'],
     ['۵', '<b>حالت مطالعه.</b> گزینه را می‌زنی، پاسخ درست و تحلیل باز می‌شود، بعد «سوال بعد». اگر نمی‌دانی، «نمایش پاسخ» را بزن و صادقانه «می‌دانستم / نمی‌دانستم» را انتخاب کن؛ همین پاسخ، آمار مرور را می‌سازد.'],
@@ -796,8 +773,10 @@ async function startExam({ mode, day }) {
   let items = [], minutes = 25, title = 'آزمون مبحثی هفته';
   if (mode === 'week') {
     const d = dayByNum(day);
-    const curDays = PLAN.days.filter((x) => x.w === d.w && x.kind === 'study');
-    const prevDays = PLAN.days.filter((x) => x.w === d.w - 1 && x.kind === 'study');
+    const sched = schedule();
+    const planDays = (sched ? sched.plan.days : PLAN.days);
+    const curDays = planDays.filter((x) => x.w === d.w && x.kind === 'study');
+    const prevDays = planDays.filter((x) => x.w === d.w - 1 && x.kind === 'study');
     const cur = shuffle(await questionsOfRanges(curDays.flatMap(rangesOfDay)));
     const prev = shuffle(await questionsOfRanges(prevDays.flatMap(rangesOfDay)));
     items = [...cur.slice(0, 15), ...prev.slice(0, 10)];
