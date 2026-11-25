@@ -62,6 +62,26 @@ class SearchSmokeTests(unittest.TestCase):
                          "bustan")
 
 
+class LanguageTests(unittest.TestCase):
+    """An English book must never be OCR'd with the Persian model."""
+
+    ENGLISH = ("Sociology is the study of groups and group interactions, societies and social "
+               "interactions, from small and personal groups to very large groups.") * 2
+
+    def test_english_detects_as_en(self):
+        from rag.textutil import detect_language
+        self.assertEqual(detect_language(self.ENGLISH), "en")
+
+    def test_english_text_layer_is_not_garbled(self):
+        from rag.textutil import looks_garbled
+        self.assertFalse(looks_garbled(self.ENGLISH))
+
+    def test_persian_still_wins_for_persian(self):
+        from rag.textutil import detect_language
+        fa = "در این کتاب از جامعه‌شناسی و گروه‌های اجتماعی می‌خوانیم که چگونه مردم با هم کار می‌کنند." * 2
+        self.assertEqual(detect_language(fa), "fa")
+
+
 class RobotsTests(unittest.TestCase):
     ROBOTS = """# Search engines: full access, except file downloads
 User-agent: *

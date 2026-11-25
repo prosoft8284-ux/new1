@@ -73,6 +73,13 @@ def detect_language(text: str) -> str:
     """
     if not text:
         return "fa"
+    # Latin-script books (they arrive through `rag fetch`) are not Persian:
+    # without this, every English page "detects" as fa and gets OCR'd with the
+    # Persian model, which turns it into gibberish.
+    latin = sum(1 for ch in text if ("a" <= ch <= "z") or ("A" <= ch <= "Z"))
+    arabic_script = sum(1 for ch in text if "\u0600" <= ch <= "\u06FF")
+    if latin >= 20 and latin >= 3 * arabic_script:
+        return "en"
     tokens = normalize(text).split()
     fa_words = sum(1 for tok in tokens if tok in _PERSIAN_WORDS)
     ar_words = sum(1 for tok in tokens if tok in _ARABIC_WORDS)
@@ -108,7 +115,8 @@ def looks_garbled(text: str) -> bool:
         return True
     script = sum(1 for ch in letters if "\u0600" <= ch <= "\u06FF") / len(letters)
     if script < 0.5:
-        return True
+        # Latin script is a healthy English text layer, not a broken Persian one.
+        return detect_language(text) != "en"
     common = sum(1 for word in words if word in _ALL_FUNCTION_WORDS)
     return common / len(words) < 0.01
 

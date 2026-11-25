@@ -227,11 +227,20 @@ def _native_dpi(page) -> float | None:
 
 def _auto_lang(pdf: Path, sample_pages: list[int], dpi: int, model: str, psm: int,
                tesseract: str | None, tessdata: str | None) -> str:
-    """Pick the OCR language from a one-page probe: fas, ara, or both."""
+    """Pick the OCR language from one page: fas, ara, both, or eng."""
     import pymupdf
 
     if not sample_pages:
         return "fas"
+    doc = pymupdf.open(pdf)
+    try:
+        # A page that already carries readable Latin text needs no probe: OCRing
+        # it with the Persian model is precisely how an English book gets ruined.
+        own_text = " ".join(doc[p].get_text() for p in sample_pages[:2])
+    finally:
+        doc.close()
+    if detect_language(own_text) == "en":
+        return "eng"
     engine = OcrEngine(lang="fas", dpi=dpi, model=model, psm=psm,
                        tesseract=tesseract, tessdata=tessdata)
     doc = pymupdf.open(pdf)
@@ -243,7 +252,8 @@ def _auto_lang(pdf: Path, sample_pages: list[int], dpi: int, model: str, psm: in
         )
     finally:
         doc.close()
-    return {"fa": "fas", "ar": "ara", "mixed": "fas+ara"}.get(detect_language(probe), "fas")
+    return {"fa": "fas", "ar": "ara", "mixed": "fas+ara",
+            "en": "eng"}.get(detect_language(probe), "fas")
 
 
 def _book_dpi(doc, pages: list[int]) -> int | None:
@@ -377,13 +387,16 @@ def _plan_book(pdf_path, root: str = "data", dpi: int | str = "auto", lang: str 
         needs_ocr = _wants_ocr(page, force_ocr, min_text_coverage)
         ocr_planned += int(needs_ocr)
         cached = cache / f"p{pno + 1:05d}.txt"
-        if cached.exists():
+        if not needs_ocr:
+            # A good text layer always wins. The cache is only an accelerator for
+            # pages that really need OCR; letting it win meant one bad OCR run
+            # (wrong language) poisoned every later run, `--force` included.
+            plan.append((pno, "text", page.get_text("text")))
+        elif cached.exists():
             plan.append((pno, "cached", cached.read_text(encoding="utf-8")))
             cached_hits += 1
-        elif needs_ocr:
-            plan.append((pno, "ocr", None))
         else:
-            plan.append((pno, "text", page.get_text("text")))
+            plan.append((pno, "ocr", None))
     doc.close()
 
     ocr_pages = [p for p, kind, _ in plan if kind == "ocr"]
@@ -393,8 +406,8 @@ def _plan_book(pdf_path, root: str = "data", dpi: int | str = "auto", lang: str 
         else:
             sample = " ".join(str(payload) for _p, kind, payload in plan
                               if kind in ("text", "cached") and payload)
-            lang = {"fa": "fas", "ar": "ara", "mixed": "fas+ara"}.get(
-                detect_language(sample), "fas")
+            lang = {"fa": "fas", "ar": "ara", "mixed": "fas+ara",
+                    "en": "eng"}.get(detect_language(sample), "fas")
 
     return _BookPlan(pdf=pdf, wanted=wanted, plan=plan, cache=cache, lang=lang,
                      dpi=effective_dpi, native=native, cached_hits=cached_hits,

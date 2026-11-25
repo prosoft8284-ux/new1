@@ -126,6 +126,7 @@ def main(argv: list[str] | None = None) -> int:
     fet.add_argument("--query", help="عبارت جست‌وجو")
     fet.add_argument("--id", action="append", default=None, help="شناسه archive.org (تکرارپذیر)")
     fet.add_argument("--url", action="append", default=None, help="لینک مستقیم فایل (تکرارپذیر)")
+    fet.add_argument("--title", default=None, help="نام فایل ذخیره‌شده برای --url")
     fet.add_argument("--lang", default=None, help="fa | ar | en")
     fet.add_argument("--creator", default=None,
                      help="فقط نتایجی که نام پدیدآور این واژه را دارد (مثل Weber)")
@@ -266,7 +267,7 @@ def main(argv: list[str] | None = None) -> int:
         for ident in args.id or []:
             downloaded.append(bookfetch.download_archive(ident, out, prefer=args.prefer))
         for url in args.url or []:
-            downloaded.append(bookfetch.download_url(url, out))
+            downloaded.append(bookfetch.download_url(url, out, title=args.title))
 
         if results and not (args.yes or args.all):
             print("\nبرای دانلود: `--yes` (بهترین نتیجه) یا `--all` (تا --limit)")

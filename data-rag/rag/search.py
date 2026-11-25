@@ -48,6 +48,7 @@ class Retriever:
             raise SystemExit("no index found - run `python -m rag ingest --input ...` first")
         self.meta = json.loads(meta_path.read_text(encoding="utf-8"))
         self.embedder = Embedder.from_meta(self.meta)
+        self.index_sig = self._fingerprint()
         self.k_vec = k_vec
         self.k_lex = k_lex
         self.use_cache = use_cache
@@ -279,8 +280,10 @@ class Retriever:
         lance_where, sql_where, params = self._filters(filters)
 
         # Ordering depends on the rerank settings too, so they belong in the key;
-        # otherwise a cached fuzzy ranking leaks into a reranked query.
-        sig = json.dumps([filters or {}, self.rerank, self.rerank_k],
+        # otherwise a cached fuzzy ranking leaks into a reranked query. The index
+        # fingerprint matters just as much: without it, results cached before a
+        # book was removed keep coming back at score 1.0.
+        sig = json.dumps([filters or {}, self.rerank, self.rerank_k, self.index_sig],
                          sort_keys=True, ensure_ascii=False)
         source = "hybrid"
         fused: list[tuple[str, float]] = []
@@ -336,6 +339,12 @@ class Retriever:
             "total_ms": round((time.perf_counter() - t0) * 1000, 1),
             "results": results,
         }
+
+    def _fingerprint(self) -> str:
+        """Cheap identity for the index contents, used to key the query cache."""
+        files = list((self.root / "raw").rglob("*.parquet"))
+        newest = max((f.stat().st_mtime for f in files), default=0.0)
+        return f"{len(files)}:{int(newest)}"
 
     def _index_info(self) -> str:
         try:
