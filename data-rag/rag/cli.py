@@ -240,6 +240,10 @@ def main(argv: list[str] | None = None) -> int:
 
         out = Path(args.out)
         results = []
+        wants_web = args.source in ("web", "all") or (args.url and not args.query)
+        if args.query and wants_web and not bookfetch._reach_binary():
+            print("⚠ agent-reach نصب نیست؛ منبع وب نادیده گرفته می‌شود. "
+                  "یک‌بار اجرا کن: bash scripts/install-agent-reach.sh")
         if args.query:
             results = bookfetch.search(args.query, lang=args.lang, limit=args.limit,
                                        source=args.source)
