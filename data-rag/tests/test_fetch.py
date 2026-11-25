@@ -76,6 +76,13 @@ class LanguageTests(unittest.TestCase):
         from rag.textutil import looks_garbled
         self.assertFalse(looks_garbled(self.ENGLISH))
 
+    def test_word_signal_separates_the_two_scripts(self):
+        from rag.textutil import word_signal
+        fa, en = word_signal("Sociology is the study of groups and the society")
+        self.assertGreater(en, fa)
+        fa2, en2 = word_signal("در این کتاب از جامعه و مردم و کار سخن می‌رود که با از و در")
+        self.assertGreater(fa2, en2)
+
     def test_persian_still_wins_for_persian(self):
         from rag.textutil import detect_language
         fa = "در این کتاب از جامعه‌شناسی و گروه‌های اجتماعی می‌خوانیم که چگونه مردم با هم کار می‌کنند." * 2

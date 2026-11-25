@@ -28,7 +28,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .textutil import detect_language, looks_garbled
+from .textutil import detect_language, looks_garbled, word_signal
 
 _TESSERACT_HINTS = [
     Path.home() / "tools" / "squashfs-root" / "AppRun",
@@ -241,17 +241,28 @@ def _auto_lang(pdf: Path, sample_pages: list[int], dpi: int, model: str, psm: in
         doc.close()
     if detect_language(own_text) == "en":
         return "eng"
-    engine = OcrEngine(lang="fas", dpi=dpi, model=model, psm=psm,
-                       tesseract=tesseract, tessdata=tessdata)
-    doc = pymupdf.open(pdf)
-    try:
-        probe = " ".join(
-            engine.ocr_pgm(_pgm_bytes(
-                doc[p].get_pixmap(dpi=dpi, colorspace=pymupdf.csGRAY, annots=False)))
-            for p in sample_pages[:2]
-        )
-    finally:
-        doc.close()
+    def probe_with(candidate: str) -> str:
+        engine = OcrEngine(lang=candidate, dpi=dpi, model=model, psm=psm,
+                           tesseract=tesseract, tessdata=tessdata)
+        doc = pymupdf.open(pdf)
+        try:
+            return " ".join(
+                engine.ocr_pgm(_pgm_bytes(
+                    doc[p].get_pixmap(dpi=dpi, colorspace=pymupdf.csGRAY, annots=False)))
+                for p in sample_pages[:2]
+            )
+        finally:
+            doc.close()
+
+    probe = probe_with("fas")
+    fa_hits, en_hits = word_signal(probe)
+    if fa_hits < 3 and en_hits < 3:
+        # Neither model produced its own common words: ask the other model too.
+        # This is the only way to see that a scanned page is English.
+        english_probe = probe_with("eng")
+        fa2, en2 = word_signal(english_probe)
+        if en2 >= 2 and en2 > fa2:
+            return "eng"
     return {"fa": "fas", "ar": "ara", "mixed": "fas+ara",
             "en": "eng"}.get(detect_language(probe), "fas")
 

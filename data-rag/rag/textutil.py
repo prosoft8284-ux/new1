@@ -94,6 +94,23 @@ def detect_language(text: str) -> str:
     return "fa"
 
 
+# A handful of words every English sentence contains. A scanned English page
+# OCR'd with the Persian model produces almost none of them, so counting them is
+# what tells the two models apart when there is no text layer to inspect.
+_ENGLISH_WORDS = {
+    "the", "and", "of", "to", "in", "is", "that", "for", "with", "as", "on", "by",
+    "are", "was", "were", "this", "from", "which", "has", "have", "not", "but", "or",
+}
+
+
+def word_signal(text: str) -> tuple[int, int]:
+    """(Persian function-word hits, English function-word hits) in `text`."""
+    tokens = normalize(text or "").split()
+    fa = sum(1 for tok in tokens if tok in _PERSIAN_WORDS)
+    en = sum(1 for tok in tokens if tok in _ENGLISH_WORDS)
+    return fa, en
+
+
 _ALL_FUNCTION_WORDS = _PERSIAN_WORDS | _ARABIC_WORDS
 _WORD = re.compile(r"[\w\u0600-\u06FF]+")
 
