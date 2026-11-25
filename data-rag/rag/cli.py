@@ -49,7 +49,9 @@ def main(argv: list[str] | None = None) -> int:
 
     sea = sub.add_parser("search", help="جست‌وجوی ترکیبی")
     sea.add_argument("query")
-    sea.add_argument("-k", type=int, default=8, help="تعداد نتایج نهایی")
+    # Every other subcommand spells it `--limit`; accept that here too.
+    sea.add_argument("-k", "--limit", dest="k", type=int, default=8,
+                     help="تعداد نتایج نهایی")
     sea.add_argument("--k-vec", type=int, default=60, help="کاندید لایه برداری")
     sea.add_argument("--k-lex", type=int, default=60, help="کاندید لایه متنی")
     sea.add_argument("--category", action="append", default=None, help="فیلتر دسته (تکرارپذیر)")
