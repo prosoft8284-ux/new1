@@ -23,97 +23,233 @@ window.KITS = (function () {
   var P = {};
 
   /* ============================================================ CITY */
+  /* A war-torn grid: three avenues each way, paved blocks with kerbs, real
+     street furniture and enough buildings that the player always has cover. */
   P.city = {
     paint: function (c, W, H, S, rnd) {
-      c.fillStyle = '#35363a'; c.fillRect(0, 0, W, H);
-      // asphalt grain
-      speckle(c, W, H, rnd, Math.round(W * H / 900), ['#3b3c40', '#2f3034', '#404144', '#2a2b2e'], 3);
-      // two avenues
-      var roadY = H * 0.34, roadH = 92 * S / 1.6, roadX = W * 0.52, roadW = 96 * S / 1.6;
-      c.fillStyle = '#4b4c50'; c.fillRect(0, roadY, W, roadH);
-      c.fillRect(roadX, 0, roadW, H);
-      // sidewalks
-      c.fillStyle = '#5c5d61';
-      c.fillRect(0, roadY - 7, W, 7); c.fillRect(0, roadY + roadH, W, 7);
-      c.fillRect(roadX - 7, 0, 7, H); c.fillRect(roadX + roadW, 0, 7, H);
-      // lane markings, faded and broken
-      c.fillStyle = 'rgba(226,220,190,.35)';
-      for (var x = 0; x < W; x += 54) {
-        if (rnd() < 0.22) continue;
-        c.fillRect(x, roadY + roadH / 2 - 2, 26, 4);
+      var i, x, y, R = function (a, b) { return a + rnd() * (b - a); };
+      var VX = [0.20 * W, 0.50 * W, 0.80 * W];
+      var HY = [0.24 * H, 0.52 * H, 0.80 * H];
+      var ROAD = 92, WALK = 20;
+
+      // asphalt base
+      c.fillStyle = '#37383c'; c.fillRect(0, 0, W, H);
+      for (i = 0; i < 220; i++) {
+        c.fillStyle = rnd() < 0.5 ? 'rgba(58,59,64,.5)' : 'rgba(44,45,49,.55)';
+        var bw = R(60, 320), bh = R(40, 200);
+        c.fillRect(R(0, W), R(0, H), bw, bh);
       }
-      for (var y = 0; y < H; y += 54) {
-        if (rnd() < 0.22) continue;
-        c.fillRect(roadX + roadW / 2 - 2, y, 4, 26);
-      }
-      // cracks
-      c.strokeStyle = 'rgba(16,17,20,.5)'; c.lineWidth = 1.4;
-      for (var k = 0; k < 40; k++) {
-        var cx = rnd() * W, cy = rnd() * H;
-        c.beginPath(); c.moveTo(cx, cy);
-        for (var j = 0; j < 4; j++) {
-          cx += (rnd() - 0.5) * 40; cy += (rnd() - 0.5) * 40;
-          c.lineTo(cx, cy);
+      speckle(c, W, H, rnd, Math.round(W * H / 700), ['#3d3e43', '#313236', '#434449', '#2b2c30'], 3);
+
+      // sidewalks (paving) then lots inside them
+      function blockRect(x0, y0, x1, y1) {
+        c.fillStyle = '#63646a';
+        c.fillRect(x0, y0, x1 - x0, y1 - y0);
+        c.fillStyle = '#5a5b61';
+        for (var ty = y0; ty < y1; ty += 26) {
+          c.fillRect(x0, ty, x1 - x0, 1.5);
+          for (var tx = x0 + (Math.floor(ty / 26) % 2 ? 13 : 0); tx < x1; tx += 26) c.fillRect(tx, ty, 1.5, 26);
         }
+        // kerb highlight + shadow
+        c.strokeStyle = 'rgba(140,142,148,.55)'; c.lineWidth = 2.5;
+        c.strokeRect(x0 + 1, y0 + 1, x1 - x0 - 2, y1 - y0 - 2);
+        c.strokeStyle = 'rgba(16,17,20,.45)'; c.lineWidth = 3;
+        c.strokeRect(x0 + 4, y0 + 4, x1 - x0 - 8, y1 - y0 - 8);
+        // lot interior
+        var lx0 = x0 + WALK, ly0 = y0 + WALK, lx1 = x1 - WALK, ly1 = y1 - WALK;
+        if (lx1 <= lx0 || ly1 <= ly0) return;
+        var kindLot = rnd();
+        c.fillStyle = kindLot < 0.45 ? '#4a4b50' : (kindLot < 0.8 ? '#565144' : '#4d483c');
+        c.fillRect(lx0, ly0, lx1 - lx0, ly1 - ly0);
+        if (kindLot < 0.45) {
+          // car park: painted bays + a couple of empty planters
+          c.strokeStyle = 'rgba(226,222,206,.30)'; c.lineWidth = 2;
+          for (var bx2 = lx0 + 26; bx2 < lx1 - 14; bx2 += 52) {
+            c.beginPath(); c.moveTo(bx2, ly0 + 16); c.lineTo(bx2, ly1 - 16); c.stroke();
+          }
+          c.fillStyle = 'rgba(38,54,36,.55)';
+          for (var pb = 0; pb < 3; pb++) c.fillRect(lx0 + R(20, lx1 - lx0 - 20), ly0 + R(14, ly1 - ly0 - 24), 26, 16);
+        } else {
+          // gravel yard with weeds and drag marks
+          for (var wd = 0; wd < Math.round((lx1 - lx0) * (ly1 - ly0) / 2600); wd++) {
+            c.fillStyle = rnd() < 0.5 ? 'rgba(78,92,54,.55)' : 'rgba(96,88,62,.5)';
+            c.fillRect(R(lx0, lx1), R(ly0, ly1), R(3, 9), R(2, 6));
+          }
+          c.strokeStyle = 'rgba(30,29,26,.35)'; c.lineWidth = 3;
+          for (var dr = 0; dr < 3; dr++) {
+            var dx0 = R(lx0, lx1), dy0 = R(ly0, ly1);
+            c.beginPath(); c.moveTo(dx0, dy0);
+            c.quadraticCurveTo(dx0 + R(-60, 60), dy0 + R(-40, 40), dx0 + R(-90, 90), dy0 + R(-60, 60));
+            c.stroke();
+          }
+        }
+      }
+      var xs = [0].concat(VX).concat([W]);
+      var ys = [0].concat(HY).concat([H]);
+      for (var bi = 0; bi < xs.length - 1; bi++) {
+        for (var bj = 0; bj < ys.length - 1; bj++) {
+          var x0 = xs[bi] + (bi ? ROAD / 2 : 40), x1 = xs[bi + 1] - (bi < xs.length - 2 ? ROAD / 2 : 40);
+          var y0 = ys[bj] + (bj ? ROAD / 2 : 40), y1 = ys[bj + 1] - (bj < ys.length - 2 ? ROAD / 2 : 40);
+          if (x1 > x0 && y1 > y0) blockRect(x0, y0, x1, y1);
+        }
+      }
+
+      // roads on top of the block edges
+      function road(x0, y0, x1, y1, vertical) {
+        c.fillStyle = '#4a4b50';
+        c.fillRect(x0, y0, x1 - x0, y1 - y0);
+        c.fillStyle = 'rgba(30,31,35,.35)';
+        if (vertical) c.fillRect(x0, y0, 6, y1 - y0); else c.fillRect(x0, y0, x1 - x0, 6);
+        // faded centre line
+        c.fillStyle = 'rgba(222,208,150,.42)';
+        var p2;
+        if (vertical) {
+          for (p2 = y0; p2 < y1; p2 += 54) c.fillRect((x0 + x1) / 2 - 2, p2, 4, 26);
+        } else {
+          for (p2 = x0; p2 < x1; p2 += 54) c.fillRect(p2, (y0 + y1) / 2 - 2, 26, 4);
+        }
+      }
+      VX.forEach(function (vx) { road(vx - ROAD / 2, 0, vx + ROAD / 2, H, true); });
+      HY.forEach(function (hy) { road(0, hy - ROAD / 2, W, hy + ROAD / 2, false); });
+
+      // crosswalks + manholes + tyre marks at every junction
+      VX.forEach(function (vx) {
+        HY.forEach(function (hy) {
+          c.fillStyle = 'rgba(226,224,214,.5)';
+          for (i = 0; i < 7; i++) {
+            c.fillRect(vx - ROAD / 2 + 6 + i * 12, hy - ROAD / 2 - 26, 7, 20);
+            c.fillRect(vx - ROAD / 2 + 6 + i * 12, hy + ROAD / 2 + 6, 7, 20);
+            c.fillRect(vx - ROAD / 2 - 26, hy - ROAD / 2 + 6 + i * 12, 20, 7);
+            c.fillRect(vx + ROAD / 2 + 6, hy - ROAD / 2 + 6 + i * 12, 20, 7);
+          }
+          c.fillStyle = 'rgba(24,25,28,.55)';
+          c.beginPath(); c.arc(vx + R(-18, 18), hy + R(-18, 18), 9, 0, 6.2832); c.fill();
+        });
+      });
+
+      // wear: cracks, potholes, oil, patches over both roads and lots
+      for (i = 0; i < 260; i++) {
+        var cx = R(0, W), cy = R(0, H);
+        c.strokeStyle = 'rgba(14,15,18,' + R(0.25, 0.5).toFixed(2) + ')';
+        c.lineWidth = R(0.8, 2);
+        c.beginPath(); c.moveTo(cx, cy);
+        for (var seg = 0; seg < 4; seg++) { cx += R(-32, 32); cy += R(-32, 32); c.lineTo(cx, cy); }
         c.stroke();
       }
-      // craters: scorched rings with debris
-      for (var n = 0; n < 5; n++) {
-        var px = (0.12 + rnd() * 0.76) * W, py = (0.12 + rnd() * 0.76) * H;
-        var rr2 = (26 + rnd() * 40) * (S / 1.6);
-        var g = c.createRadialGradient(px, py, 2, px, py, rr2);
-        g.addColorStop(0, 'rgba(12,12,14,.92)');
-        g.addColorStop(0.6, 'rgba(26,24,22,.55)');
-        g.addColorStop(1, 'rgba(30,28,26,0)');
-        c.fillStyle = g; c.beginPath(); c.arc(px, py, rr2, 0, 6.2832); c.fill();
-        c.strokeStyle = 'rgba(18,16,15,.5)'; c.lineWidth = 2;
-        c.beginPath(); c.arc(px, py, rr2 * 1.05, 0, 6.2832); c.stroke();
+      for (i = 0; i < 60; i++) {
+        var ox = R(0, W), oy = R(0, H), orr = R(18, 52);
+        var g2 = c.createRadialGradient(ox, oy, 2, ox, oy, orr);
+        g2.addColorStop(0, 'rgba(12,12,14,.7)');
+        g2.addColorStop(1, 'rgba(12,12,14,0)');
+        c.fillStyle = g2;
+        c.beginPath(); c.ellipse(ox, oy, orr, orr * R(0.4, 0.8), 0, 0, 6.2832); c.fill();
       }
-      // rubble dust along the kerbs
-      speckle(c, W, H, rnd, Math.round(W * H / 2600), ['rgba(120,116,108,.5)', 'rgba(86,82,76,.5)'], 2);
+      for (i = 0; i < 26; i++) {
+        var px2 = R(0, W), py2 = R(0, H);
+        c.fillStyle = 'rgba(96,86,66,' + R(0.25, 0.5).toFixed(2) + ')';
+        c.beginPath(); c.ellipse(px2, py2, R(20, 60), R(10, 30), R(0, 3), 0, 6.2832); c.fill();
+      }
+      // puddles with a cold sheen
+      for (i = 0; i < 14; i++) {
+        var wx = R(0, W), wy = R(0, H), wr = R(24, 70);
+        c.fillStyle = 'rgba(38,52,62,.55)';
+        c.beginPath(); c.ellipse(wx, wy, wr, wr * 0.45, R(0, 3), 0, 6.2832); c.fill();
+        c.strokeStyle = 'rgba(150,190,210,.25)'; c.lineWidth = 1.5;
+        c.beginPath(); c.ellipse(wx, wy, wr * 0.8, wr * 0.32, 0, 0, 6.2832); c.stroke();
+      }
+      // rubble and litter
+      speckle(c, W, H, rnd, Math.round(W * H / 1800), ['rgba(150,146,134,.45)', 'rgba(96,92,84,.5)', 'rgba(60,58,54,.5)'], 2);
+      // war scorch near junctions
+      for (i = 0; i < 7; i++) {
+        var sx = VX[i % VX.length] + R(-120, 120), sy = HY[(i + 1) % HY.length] + R(-120, 120), sr = R(70, 130);
+        var sg2 = c.createRadialGradient(sx, sy, 4, sx, sy, sr);
+        sg2.addColorStop(0, 'rgba(10,10,12,.5)');
+        sg2.addColorStop(1, 'rgba(10,10,12,0)');
+        c.fillStyle = sg2;
+        c.beginPath(); c.arc(sx, sy, sr, 0, 6.2832); c.fill();
+      }
     },
     props: function (add, W, H, S, rnd) {
-      var roadY = H * 0.34, roadH = 92 * S / 1.6, roadX = W * 0.52, roadW = 96 * S / 1.6;
-      // blocks of buildings along both avenues
-      for (var i = 0; i < 16; i++) {
-        var bx = (0.06 + rnd() * 0.88) * W;
-        var by = (0.06 + rnd() * 0.88) * H;
-        if (Math.abs(by - roadY) < roadH * 1.4) by += Math.sign(by - roadY) * roadH * 1.5;
-        if (Math.abs(bx - roadX) < roadW * 1.6) bx += Math.sign(bx - roadX) * roadW * 1.6;
-        if (inClear(bx, by, S)) continue;
-        var w = 52 + rnd() * 70, h = 44 + rnd() * 50;
-        add({
-          kind: 'bldg', x: bx, y: by, s: 0.9 + rnd() * 0.5, w: w, h: h,
-          tall: 1.2 + rnd() * 1.1, ruined: rnd() < 0.55,
-          wall: rnd() < 0.5 ? '#4f5054' : '#5d5348', wallDark: '#33343a', glass: '#7d9fb5',
-          r: Math.max(w, h) * 0.36
+      var R = function (a, b) { return a + rnd() * (b - a); };
+      var VX = [0.20 * W, 0.50 * W, 0.80 * W];
+      var HY = [0.24 * H, 0.52 * H, 0.80 * H];
+      var ROAD = 92, WALK = 20;
+      var CARCOL = ['#8e9aa0', '#b4a184', '#7d3f3a', '#d3d6d0', '#3f5568', '#6e7c6a'];
+
+      // buildings hugging every block edge, so cover is never far away
+      function fillEdge(x0, y0, x1, y1, edge) {
+        var len = edge === 'n' || edge === 's' ? (x1 - x0) : (y1 - y0);
+        var pos = 0;
+        while (pos < len - 40) {
+          var wid = Math.min(len - pos, R(90, 190));
+          var dep = R(54, 88);
+          var bwx = edge === 'n' || edge === 's' ? wid : dep;
+          var bwh = edge === 'n' || edge === 's' ? dep : wid;
+          var bx, by;
+          if (edge === 'n') { bx = x0 + pos + wid / 2; by = y0 + dep / 2; }
+          else if (edge === 's') { bx = x0 + pos + wid / 2; by = y1 - dep / 2; }
+          else if (edge === 'w') { bx = x0 + dep / 2; by = y0 + pos + wid / 2; }
+          else { bx = x1 - dep / 2; by = y0 + pos + wid / 2; }
+          add({
+            kind: 'bldg', x: bx, y: by + bwh / 2, s: 1, w: bwx, h: bwh,
+            tall: R(1.0, 2.4), ruined: rnd() < 0.5,
+            wall: rnd() < 0.5 ? '#55565b' : '#5f5548',
+            roof: ['#5b5d63', '#6a6357', '#525b5f', '#6d6455', '#5a5f57'][Math.floor(rnd() * 5)],
+            wallDark: '#34353a', glass: rnd() < 0.3 ? '#9fc4d6' : '#6d8fa4',
+            antenna: rnd() < 0.25, shop: rnd() < 0.35,
+            r: Math.max(bwx, bwh) * 0.5
+          });
+          pos += wid + R(6, 26);
+        }
+      }
+      var xs = [0].concat(VX).concat([W]);
+      var ys = [0].concat(HY).concat([H]);
+      for (var bi = 0; bi < xs.length - 1; bi++) {
+        for (var bj = 0; bj < ys.length - 1; bj++) {
+          var x0 = xs[bi] + (bi ? ROAD / 2 : 40) + WALK, x1 = xs[bi + 1] - (bi < xs.length - 2 ? ROAD / 2 : 40) - WALK;
+          var y0 = ys[bj] + (bj ? ROAD / 2 : 40) + WALK, y1 = ys[bj + 1] - (bj < ys.length - 2 ? ROAD / 2 : 40) - WALK;
+          if (x1 - x0 < 80 || y1 - y0 < 80) continue;
+          fillEdge(x0, y0, x1, y1, 'n');
+          fillEdge(x0, y0, x1, y1, 'w');
+          if (rnd() < 0.7) fillEdge(x0, y0, x1, y1, 'e');
+          if (rnd() < 0.55) fillEdge(x0, y0, x1, y1, 's');
+          // yard clutter in the middle of the block
+          var mcx = (x0 + x1) / 2, mcy = (y0 + y1) / 2;
+          for (var q = 0; q < 4; q++) {
+            add({ kind: 'rubble', x: mcx + R(-90, 90), y: mcy + R(-70, 70), s: R(0.7, 1.3), r: 12 });
+          }
+          if (rnd() < 0.8) add({ kind: 'car', x: mcx + R(-70, 70), y: mcy + R(-50, 50), s: R(0.9, 1.2), rot: R(0, 3.14), burnt: rnd() < 0.5, color: CARCOL[Math.floor(rnd() * CARCOL.length)], r: 16 });
+          if (rnd() < 0.5) add({ kind: 'car', x: mcx + R(-80, 80), y: mcy + R(-60, 60), s: R(0.85, 1.1), rot: R(0, 3.14), burnt: true, r: 16 });
+          if (rnd() < 0.5) add({ kind: 'fence', x: mcx, y: mcy + 60, s: 1, len: 120, r: 10 });
+          if (rnd() < 0.55) add({ kind: 'tank', x: mcx + R(-80, 80), y: mcy + R(-55, 55), s: R(0.45, 0.75), r: 14 });
+          add({ kind: 'sandbag', x: mcx + R(-90, 90), y: mcy + R(-60, 60), s: R(0.9, 1.3), r: 13 });
+          for (var rq = 0; rq < 2; rq++) add({ kind: 'rubble', x: mcx + R(-95, 95), y: mcy + R(-65, 65), s: R(0.6, 1.1), r: 11 });
+        }
+      }
+
+      // parked wrecks along every kerb
+      VX.forEach(function (vx) {
+        for (var y = 120; y < H - 120; y += R(150, 280)) {
+          add({ kind: 'car', x: vx - ROAD / 2 + 16, y: y, s: R(0.9, 1.2), rot: 1.57, burnt: rnd() < 0.45, color: CARCOL[Math.floor(rnd() * CARCOL.length)], r: 16 });
+          if (rnd() < 0.6) add({ kind: 'car', x: vx + ROAD / 2 - 16, y: y + R(40, 120), s: R(0.9, 1.2), rot: 1.57, burnt: rnd() < 0.45, color: CARCOL[Math.floor(rnd() * CARCOL.length)], r: 16 });
+        }
+      });
+      HY.forEach(function (hy) {
+        for (var x = 140; x < W - 140; x += R(170, 300)) {
+          add({ kind: 'car', x: x, y: hy - ROAD / 2 + 16, s: R(0.9, 1.2), rot: 0, burnt: rnd() < 0.45, color: CARCOL[Math.floor(rnd() * CARCOL.length)], r: 16 });
+        }
+      });
+
+      // lamps, barricades and sandbag checkpoints at junctions
+      VX.forEach(function (vx) {
+        HY.forEach(function (hy) {
+          add({ kind: 'lamp', x: vx - ROAD / 2 - 14, y: hy - ROAD / 2 - 10, s: 1, dead: rnd() < 0.45, r: 7 });
+          add({ kind: 'lamp', x: vx + ROAD / 2 + 14, y: hy + ROAD / 2 + 10, s: 1, dead: rnd() < 0.45, r: 7 });
+          add({ kind: 'sandbag', x: vx + R(-26, 26), y: hy + ROAD / 2 + 26, s: R(1, 1.4), r: 13 });
+          add({ kind: 'sandbag', x: vx + R(-26, 26), y: hy - ROAD / 2 - 26, s: R(1, 1.4), r: 13 });
+          add({ kind: 'rubble', x: vx + R(-40, 40), y: hy + R(-30, 30), s: R(0.8, 1.2), r: 12 });
         });
-      }
-      // burnt cars on the roads
-      for (var c2 = 0; c2 < 9; c2++) {
-        var onH = rnd() < 0.5;
-        var cx = onH ? rnd() * W : roadX + rnd() * roadW;
-        var cy = onH ? roadY + rnd() * roadH : rnd() * H;
-        add({ kind: 'car', x: cx, y: cy, s: 0.9 + rnd() * 0.4, rot: onH ? 0 : 1.57, burnt: rnd() < 0.7, r: 16 });
-      }
-      // lamps, dead half the time
-      for (var l = 0; l < 10; l++) {
-        var lx = rnd() < 0.5 ? rnd() * W : (rnd() < 0.5 ? roadX - 14 : roadX + roadW + 14);
-        var ly = rnd() < 0.5 ? roadY - 16 : rnd() * H;
-        add({ kind: 'lamp', x: lx, y: ly, s: 0.9 + rnd() * 0.3, dead: rnd() < 0.45, r: 7 });
-      }
-      // rubble heaps + barricades
-      for (var r2 = 0; r2 < 14; r2++) {
-        var rx = rnd() * W, ry = rnd() * H;
-        if (inClear(rx, ry, S)) continue;
-        add({ kind: 'rubble', x: rx, y: ry, s: 0.8 + rnd() * 0.7, r: 12 });
-      }
-      for (var b = 0; b < 6; b++) {
-        add({
-          kind: 'sandbag', x: (0.15 + rnd() * 0.7) * W, y: (0.15 + rnd() * 0.7) * H,
-          s: 1 + rnd() * 0.5, r: 13
-        });
-      }
+      });
     }
   };
 

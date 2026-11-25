@@ -1,0 +1,5 @@
+package ir.soalat.bank3000;
+
+import com.getcapacitor.BridgeActivity;
+
+public class MainActivity extends BridgeActivity {}

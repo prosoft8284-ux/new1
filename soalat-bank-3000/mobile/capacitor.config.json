@@ -1,0 +1,9 @@
+{
+  "appId": "ir.soalat.bank3000",
+  "appName": "۴۰۰۰ سوال",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#f5f6fa"
+  }
+}

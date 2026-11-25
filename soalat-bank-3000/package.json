@@ -1,0 +1,16 @@
+{
+  "name": "soalat-bank-4000",
+  "version": "1.0.0",
+  "private": true,
+  "description": "بانک ۴۰۰۰ سوالی کارشناسی ارشد جامعه‌شناسی + برنامه ۱۷۰ روزه + اپلیکیشن تمرین و آزمون",
+  "scripts": {
+    "build": "node tools/build-data.js && node tools/build-plan.js",
+    "start": "node server.js",
+    "check": "node tools/check.js && node tools/dups.js",
+    "plan": "node tools/plan.js",
+    "audit": "node tools/exam-audit.js",
+    "audit:quality": "node tools/audit-quality.js",
+    "curate": "node tools/curate.js",
+    "test": "node tests/core.test.js"
+  }
+}

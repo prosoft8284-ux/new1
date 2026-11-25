@@ -41,8 +41,9 @@ export function emptyProgress() {
     kills: 0,
     best: 0,
     upgrades: { engine: 0, chassis: 0, ram: 0, spikes: 0, tires: 0 },
-    weapons: { mg: 1, flame: 0, harpoon: 0 },
+    weapons: { mg: 0, flame: 0, harpoon: 0 },
     weapon: 'mg',
+    weaponReset: true,
     difficulty: 'normal',
     quality: 'auto',
   };
@@ -54,12 +55,20 @@ export function loadProgress() {
     if (!raw) return emptyProgress();
     const parsed = JSON.parse(raw);
     const base = emptyProgress();
+    const weapons = { ...base.weapons, ...(parsed.weapons || {}) };
+    let points = Number(parsed.points) || 0;
+    // saves from before weapons became upgrades started with a free roof gun
+    if (!parsed.weaponReset && Number(weapons.mg) === 1 && !weapons.flame && !weapons.harpoon) {
+      weapons.mg = 0;
+      points += 150;
+    }
     return {
-      points: Number(parsed.points) || 0,
+      weaponReset: true,
+      points,
       kills: Number(parsed.kills) || 0,
       best: Number(parsed.best) || 0,
       upgrades: { ...base.upgrades, ...(parsed.upgrades || {}) },
-      weapons: { ...base.weapons, ...(parsed.weapons || {}) },
+      weapons,
       weapon: parsed.weapon || base.weapon,
       difficulty: parsed.difficulty || base.difficulty,
       quality: parsed.quality || base.quality,

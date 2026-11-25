@@ -683,9 +683,9 @@
 
   /* ---------------- trees ---------------- */
   function drawTrees(c, v, z, fast) {
-    if (z < 0.40) return;          // baked canopy carries the far view
+    if (z < 0.18) return;          // baked canopy carries the far view
     var trees = BS.world.trees, i, t, sp, spr;
-    var minPx = fast ? 10 : 6;
+    var minPx = fast ? 8 : 4;
     for (i = 0; i < trees.length; i++) {
       t = trees[i];
       if (!inView(v, t.x, t.y, 40)) continue;
@@ -733,7 +733,7 @@
     };
     // terrain
     c.imageSmoothingEnabled = true;
-    c.imageSmoothingQuality = z > 0.8 ? 'high' : 'low';
+    c.imageSmoothingQuality = 'high';
     c.drawImage(BS.baseCanvas, 0, 0, BS.W, BS.H);
 
     // reef / shelf soft glow is baked. props under the road layer:

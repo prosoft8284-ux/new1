@@ -1387,3 +1387,278 @@ kbd {
 .menu-sub {
   text-align: center;
 }
+
+/* ================= landscape, thumb-friendly controls ================= */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#game {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+}
+
+#touch {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+    max(10px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  pointer-events: none;
+  direction: ltr;
+}
+
+.touch-steer,
+.touch-pedals {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.touch-steer button {
+  width: clamp(84px, 12vw, 118px);
+  height: clamp(84px, 12vw, 118px);
+  border-radius: 28px;
+  font-size: 34px;
+}
+
+#touch button.gas {
+  width: clamp(96px, 14vw, 134px);
+  height: clamp(96px, 14vw, 134px);
+  font-size: 30px;
+  border-color: rgba(140, 255, 190, 0.5);
+  background: radial-gradient(circle at 34% 26%, rgba(110, 235, 150, 0.45), rgba(18, 84, 42, 0.92) 72%);
+}
+
+#touch button.brake {
+  width: clamp(68px, 9vw, 94px);
+  height: clamp(68px, 9vw, 94px);
+  border-color: rgba(255, 140, 120, 0.45);
+  color: #ffd0c4;
+}
+
+.touch-pedals {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  gap: 10px;
+  justify-items: center;
+  align-items: end;
+}
+
+.touch-pedals .gas {
+  grid-area: 2 / 2;
+}
+.touch-pedals .brake {
+  grid-area: 2 / 1;
+}
+.touch-pedals .boost {
+  grid-area: 1 / 2;
+}
+.touch-pedals .fire {
+  grid-area: 1 / 1;
+}
+
+#touch button.fire,
+#touch button.boost {
+  width: clamp(60px, 8vw, 80px);
+  height: clamp(60px, 8vw, 80px);
+  font-size: 24px;
+}
+
+@media (orientation: landscape) {
+  #hud {
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: 0;
+  }
+
+  #hud .weapons {
+    top: max(6px, env(safe-area-inset-top));
+    bottom: auto;
+    max-width: 40vw;
+  }
+
+  .hud-bottom {
+    padding-bottom: max(6px, env(safe-area-inset-bottom));
+    gap: 10px;
+  }
+
+  .gauges {
+    width: min(210px, 26vw);
+    padding: 5px 9px;
+  }
+
+  .bar {
+    height: 7px;
+  }
+
+  .speedo-value {
+    font-size: clamp(24px, 4.4vw, 34px);
+  }
+
+  .stats {
+    padding: 5px 9px;
+    gap: 8px;
+  }
+
+  .stat strong {
+    font-size: 16px;
+  }
+}
+
+@media (orientation: portrait) {
+  #touch {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+
+  .touch-steer,
+  .touch-pedals {
+    justify-content: center;
+  }
+}
+
+/* ================= landscape layout fix ================= */
+/* #touch button used to win the cascade, which shrank the new pads */
+#touch .touch-steer button {
+  width: clamp(84px, 12vw, 118px);
+  height: clamp(84px, 12vw, 118px);
+  border-radius: 26px;
+  font-size: 32px;
+}
+
+#touch button.gas {
+  width: clamp(96px, 14vw, 134px);
+  height: clamp(96px, 14vw, 134px);
+}
+
+#touch button.brake {
+  width: clamp(68px, 9vw, 94px);
+  height: clamp(68px, 9vw, 94px);
+}
+
+#touch button.fire,
+#touch button.boost {
+  width: clamp(60px, 8vw, 78px);
+  height: clamp(60px, 8vw, 78px);
+  font-size: 24px;
+}
+
+@media (orientation: landscape) {
+  #touch .touch-steer button {
+    width: clamp(76px, 10vw, 104px);
+    height: clamp(76px, 10vw, 104px);
+    font-size: 30px;
+  }
+
+  #touch button.gas {
+    width: clamp(88px, 12vw, 120px);
+    height: clamp(88px, 12vw, 120px);
+  }
+
+  #touch button.brake {
+    width: clamp(62px, 8vw, 86px);
+    height: clamp(62px, 8vw, 86px);
+  }
+
+  #touch button.fire,
+  #touch button.boost {
+    width: clamp(56px, 7vw, 70px);
+    height: clamp(56px, 7vw, 70px);
+  }
+
+  /* the gauge block sits between the two thumb zones, never under them */
+  #hud .hud-bottom {
+    position: fixed;
+    left: 50%;
+    bottom: max(6px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    width: auto;
+    padding-bottom: 0;
+    gap: 10px;
+    pointer-events: none;
+  }
+
+  .gauges {
+    width: min(200px, 24vw);
+  }
+
+  .speedo {
+    position: fixed;
+    left: max(16px, env(safe-area-inset-left));
+    top: max(10px, env(safe-area-inset-top));
+    margin: 0;
+  }
+
+  .speedo-value {
+    font-size: 30px;
+  }
+
+  #msg {
+    top: 42%;
+    bottom: auto;
+  }
+}
+
+/* ================= final layout corrections ================= */
+@media (orientation: landscape) {
+  #hud .hud-bottom {
+    padding-bottom: 0;
+  }
+
+  /* plain values: env() inside max() was being dropped by the browser */
+  .speedo {
+    position: fixed;
+    left: 16px;
+    top: 12px;
+    margin: 0;
+    z-index: 13;
+  }
+
+  .speedo-value {
+    font-size: 30px;
+  }
+}
+
+@media (orientation: portrait) {
+  /* lift the gauges clear of the two stacked thumb rows */
+  #hud {
+    padding-bottom: 300px;
+  }
+
+  #hud .hud-bottom {
+    position: static;
+    transform: none;
+  }
+
+  .speedo {
+    position: static;
+  }
+
+  .gauges {
+    width: min(230px, 62vw);
+  }
+}
+
+/* a transformed ancestor becomes the containing block for fixed children,
+   which pinned the speedo inside the gauges — centre by flexbox instead */
+@media (orientation: landscape) {
+  #hud .hud-bottom {
+    left: 0;
+    right: 0;
+    transform: none;
+    justify-content: center;
+  }
+}

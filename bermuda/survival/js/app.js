@@ -201,7 +201,7 @@
   }
 
   var verEl = document.getElementById('mapVer');
-  if (verEl) verEl.textContent = 'v4.0';
+  if (verEl) verEl.textContent = 'v4.1';
 
   /* ---------------- POI card ---------------- */
   var card = document.getElementById('card');

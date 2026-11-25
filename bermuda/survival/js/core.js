@@ -829,6 +829,17 @@ window.BS = window.BS || {};
         buildVegetation(mulberry32(4471));
       }],
       ['آماده‌سازی لایه‌های نقشه…', function () {
+        // every marker must stand on dry land, never float in open water
+        for (var pi = 0; pi < POIS.length; pi++) {
+          var pp = POIS[pi], guard = 0;
+          while (BS.mask(pp.x, pp.y) < 0.02 && guard++ < 300) {
+            var ang = pi * 2.399 + guard * 0.9, rad = 20 + guard * 7;
+            pp.x += Math.cos(ang) * rad * 0.16;
+            pp.y += Math.sin(ang) * rad * 0.16;
+            if (pp.x < 70) pp.x = 70; if (pp.y < 70) pp.y = 70;
+            if (pp.x > W - 70) pp.x = W - 70; if (pp.y > H - 70) pp.y = H - 70;
+          }
+        }
         BS.world = {
           roads: roads, rivers: rivers, buildings: buildings, props: props,
           trees: trees, wrecks: wrecks, pois: POIS, regions: REGIONS
